@@ -1444,7 +1444,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       }
       
       public void actionPerformed(ActionEvent e) {
-         graph.setScale(2 * graph.getScale());
+         graph.setScale(1.3 * graph.getScale());
          
          setTitle(createTitle(graph.getModelName(), graphModified));
       }
@@ -1461,7 +1461,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       }
       
       public void actionPerformed(ActionEvent e) {
-         graph.setScale(graph.getScale() / 2);
+         graph.setScale(graph.getScale() / 1.3);
          
          setTitle(createTitle(graph.getModelName(), graphModified));
       }
