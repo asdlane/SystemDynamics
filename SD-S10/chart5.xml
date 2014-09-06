@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charts name="chart5 2012/09/27 19:43:30 EDT">
+  <Chart id="CH0001" name="Units Produced - Air Vehicles" file="AirVehicleProduction_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Number of Vehicles">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0008" label="Number of Air Vehicles" />
+    </ChartLevelNodes>
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0019" label="Production Target" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0002" name="Units Produced - Airframes" file="AirframeProduction_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Number of Airframes">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0043" label="Number of Airframes" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0003" name="Unis Produced - Command &amp; Control Systems" file="CommandControlProduction_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Number of Command &amp; Control Systems">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0057" label="Number of Command &amp; Control Systems" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0004" name="Unis Produced - Ground Stations" file="GroundStation_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Number of Ground Stations">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0026" label="Number of Ground Stations" />
+      <ChartLevelNode levelNodeIdRef="LN0024" label="Production Target" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0005" name="KPP: Range" file="Range_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Range (miles)" global="1" pr="LN0028">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0028" label="Range Requirement" />
+      <ChartLevelNode levelNodeIdRef="LN0006" label="Range Reported" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0001" label="Range Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0006" name="TPM: Drag" file="Drag_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Drag (kN)" global="1" pr="LN0042">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0059" label="Drag" />
+      <ChartLevelNode levelNodeIdRef="LN0042" label="Drag Target" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0002" label="Drag Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0007" name="TPM: Overall Weight" file="OverallWeight_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Weight (lbs)" global="1" pr="LN0053">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0025" label="Weight" />
+      <ChartLevelNode levelNodeIdRef="LN0053" label="Weight Target" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0003" label="Weight Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0008" name="TPM: Propulsion Efficiency" file="PropulsionEff_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Propulsion Efficiency (Specific Impulse, s)" global="1" pr="LN0011">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0023" label="Propulsion Efficiency" />
+      <ChartLevelNode levelNodeIdRef="LN0011" label="Propulsion Efficiency Target" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0004" label="Propulsion Efficiency Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0009" name="TPM: Weight for Command &amp; Control" file="WeightCC_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Weight (lbs)" global="1" pr="LN0050">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0031" label="Weight" />
+      <ChartLevelNode levelNodeIdRef="LN0050" label="Weight Allocation" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH00010" name="TPM: Weight for Airframe &amp; Propulsion" file="WeightAP_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Weight (lbs)" global="1" pr="LN0047">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0061" label="Weight" />
+      <ChartLevelNode levelNodeIdRef="LN0047" label="Weight Allocation" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0011" name="EVM Gold Card - Air Vehicles" file="EVMGoldCardS0_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0062" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0045" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0044" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0037" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0012" name="EVM Gold Card - Airframes" file="EVMGoldCardS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0054" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0003" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0060" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0004" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0013" name="EVM Gold Card - Command &amp; Control" file="EVMGoldCardS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0021" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0002" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0016" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0013" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0014" name="EVM Gold Card - Ground Station" file="EVMGoldCardS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0051" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0048" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0035" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0033" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0015" name="EVM Gold Card - Overall System" file="EVMGoldCardTotal_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0041" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0007" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0020" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0052" label="Budget" />
+      <ChartLevelNode levelNodeIdRef="LN0018" label="Budget_without_Management_Reserve" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0016" name="EVM Gold Card - Cost Efficiency - Air Vehicles" file="EVMGoldCardCPIS0_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0058" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0017" name="EVM Gold Card - Cost Efficiency - Airframes" file="EVMGoldCardCPIS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0001" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0018" name="EVM Gold Card - Cost Efficiency - Command &amp; Control" file="EVMGoldCardCPIS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0040" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0019" name="EVM Gold Card - Cost Efficiency - Ground Station" file="EVMGoldCardCPIS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0010" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0020" name="EVM Gold Card - Cost Efficiency - Overall System" file="EVMGoldCardCPITotal_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0005" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0021" name="EVM Gold Card - Schedule Efficiency - Airframes" file="EVMGoldCardSPIS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="SPI = BCWP/BCWS">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0056" label="SPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0022" name="EVM Gold Card - Schedule Efficiency - Command &amp; Control" file="EVMGoldCardSPIS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="SPI = BCWP/BCWS">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0029" label="SPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0023" name="EVM Gold Card - Schedule Efficiency - Ground Station" file="EVMGoldCardSPIS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="SPI = BCWP/BCWS">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0039" label="SPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0024" name="EVM Gold Card - Cost Variance - Air Vehicles" file="EVMGoldCardCostVarS0_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0009" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0025" name="EVM Gold Card - Cost Variance - Airframes" file="EVMGoldCardCostVarS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0015" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0026" name="EVM Gold Card - Cost Variance - Command &amp; Control" file="EVMGoldCardCostVarS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0036" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0027" name="EVM Gold Card - Cost Variance - Ground Station" file="EVMGoldCardCostVarS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0012" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0028" name="EVM Gold Card - Cost Variance - Overall System" file="EVMGoldCardCostVarTotal_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0014" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0029" name="EVM Gold Card - Schedule Variance - Airframes" file="EVMGoldCardSchedVarS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - BCWS)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0038" label="Schedule Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0030" name="EVM Gold Card - Schedule Variance - Command &amp; Control" file="EVMGoldCardSchedVarS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - BCWS)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0030" label="Schedule Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0031" name="EVM Gold Card - Schedule Variance - Ground Station" file="EVMGoldCardSchedVarS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - BCWS)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0034" label="Schedule Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <PlanNodes>
+    <PlanNode id="PN0001" name="Range_Plan" startValue="5200">
+      <PlanNodeIncrement id="PI0001" length="89" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="-100" />
+      <PlanNodeIncrement id="PI0003" length="720" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0005" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="360" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0002" name="Drag_Plan" startValue="2.5">
+      <PlanNodeIncrement id="PI0001" length="180" slope="0.0025" />
+      <PlanNodeIncrement id="PI0002" length="630" slope="0" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0005" length="360" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0003" name="Weight_Plan" startValue="9500">
+      <PlanNodeIncrement id="PI0001" length="180" slope="2.5" />
+      <PlanNodeIncrement id="PI0002" length="630" slope="0" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0005" length="360" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0004" name="PropulsionEff_Plan" startValue="1250">
+      <PlanNodeIncrement id="PI0001" length="810" slope="0.0" />
+      <PlanNodeIncrement id="PI0002" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+    </PlanNode>
+  </PlanNodes>
+</Charts>

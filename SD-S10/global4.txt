@@ -1,0 +1,12 @@
+Drag
+Drag_Target
+Range
+Range_Reported
+Specific_Impulse
+Specific_Impulse_Target
+Weight
+Weight_S1
+Weight_S2
+Weight_Allocation_S1
+Weight_Allocation_S2
+Weight_Target

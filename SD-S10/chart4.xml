@@ -1,0 +1,676 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charts name="chart4 2012/09/27 19:43:30 EDT">
+  <Chart id="CH0001" name="TPM: Range" file="Range_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Range (miles)" global="1" pr="LN0108">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0108" label="Range Requirement" />
+      <ChartLevelNode levelNodeIdRef="LN0097" label="Range Reported" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0001" label="Range Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0002" name="Quality: Critical Software Errors in Command &amp; Control System" file="CriticalSoftwareErrors_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Number of Errors" global="1" pr="LN0080">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0072" label="Errors Outstanding" />
+      <ChartLevelNode levelNodeIdRef="LN0080" label="Maximum Error Target" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0003" name="Quality: General Software Errors in Command &amp; Control System" file="GeneralSoftwareErrors_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Number of Errors" global="1" pr="LN0125">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0106" label="Errors Outstanding" />
+      <ChartLevelNode levelNodeIdRef="LN0125" label="Maximum Error Target" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0004" name="PRR Entrance Criterion: Airworthiness Certification Milestones (Overall System)" file="Airworthiness(Overall System)_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0017" label="PRR_ACM" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0005" label="ACM Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0005" name="PRR Entrance Criterion: Affordability Demonstrated (Overall System)" file="AffordabilityDemonstrated(Overall System)_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0111" label="PRR_AD" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0004" label="AD Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0006" name="PRR Entrance Criterion: Drawings (Overall System)" file="Drawings(Overall System)_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0091" label="PRR_D" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0006" label="D Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0007" name="PRR Entrance Criterion: Production Facilities (Overall System)" file="ProductionFacilities(Overall System)_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0010" label="PRR_PF" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0007" label="PF Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0008" name="PRR Entrance Criterion: Production Line Demonstrated (Overall System)" file="ProductionLineDemonstrated(Overall System)_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0006" label="PRR_PLD" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0008" label="PLD Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0009" name="PRR Entrance Criterion: Production Personnel Trained (Overall System)" file="ProductionPersonnelTrained(Overall System)_chartt" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0116" label="PRR_PPT" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0009" label="PPT Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0010" name="Test Flight Progress" file="TestFlight_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0020" label="Flight_Test_Hours" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0011" name="EVM Gold Card - System Integrator" file="EVMGoldCardS0_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0041" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0120" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0070" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0068" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0012" name="EVM Gold Card - Airframe &amp; Propulsion" file="EVMGoldCardS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0084" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0135" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0046" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0066" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0013" name="EVM Gold Card - Command &amp; Control" file="EVMGoldCardS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0123" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0034" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0092" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0033" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0014" name="EVM Gold Card - Ground Station" file="EVMGoldCardS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0075" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0050" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0081" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0093" label="Budget" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0015" name="EVM Gold Card - Overall System" file="EVMGoldCardTotal_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0031" label="BCWP" />
+      <ChartLevelNode levelNodeIdRef="LN0040" label="ACWP" />
+      <ChartLevelNode levelNodeIdRef="LN0109" label="BCWS" />
+      <ChartLevelNode levelNodeIdRef="LN0044" label="Budget" />
+      <ChartLevelNode levelNodeIdRef="LN0039" label="Budget_without_Management_Reserve" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0016" name="EVM Gold Card - Cost Efficiency - System Integrator" file="EVMGoldCardCPIS0_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0012" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0017" name="EVM Gold Card - Cost Efficiency - Airframe &amp; Propulsion" file="EVMGoldCardCPIS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0013" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0018" name="EVM Gold Card - Cost Efficiency - Command &amp; Control" file="EVMGoldCardCPIS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0113" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0019" name="EVM Gold Card - Cost Efficiency - Ground Station" file="EVMGoldCardCPIS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0074" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0020" name="EVM Gold Card - Cost Efficiency - Overall System" file="EVMGoldCardCPITotal_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="CPI = BCWP/ACWP">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0008" label="CPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0021" name="EVM Gold Card - Schedule Efficiency - Airframe &amp; Propulsion" file="EVMGoldCardSPIS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="SPI = BCWP/BCWS">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0121" label="SPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0022" name="EVM Gold Card - Schedule Efficiency - Command &amp; Control" file="EVMGoldCardSPIS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="SPI = BCWP/BCWS">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0024" label="SPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0023" name="EVM Gold Card - Schedule Efficiency - Ground Station" file="EVMGoldCardSPIS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="SPI = BCWP/BCWS">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0134" label="SPI" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0024" name="EVM Gold Card - Cost Variance - System Integrator" file="EVMGoldCardCostVarS0_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0089" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0025" name="EVM Gold Card - Cost Variance - Airframe &amp; Propulsion" file="EVMGoldCardCostVarS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0003" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0026" name="EVM Gold Card - Cost Variance - Command &amp; Control" file="EVMGoldCardCostVarS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0099" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0027" name="EVM Gold Card - Cost Variance - Ground Station" file="EVMGoldCardCostVarS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0114" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0028" name="EVM Gold Card - Cost Variance - Overall System" file="EVMGoldCardCostVarTotal_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - ACWP)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0127" label="Cost Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0029" name="EVM Gold Card - Schedule Variance - Airframe &amp; Propulsion" file="EVMGoldCardSchedVarS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - BCWS)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0133" label="Schedule Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0030" name="EVM Gold Card - Schedule Variance - Command &amp; Control" file="EVMGoldCardSchedVarS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - BCWS)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0129" label="Schedule Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0031" name="EVM Gold Card - Schedule Variance - Ground Station" file="EVMGoldCardSchedVarS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Million $ (BCWP - BCWS)">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0032" label="Schedule Variance" />
+    </ChartLevelNodes>
+  </Chart>
+  <Chart id="CH0032" name="TPM: Drag" file="Drag_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Drag (kN)" global="1" pr="LN0105">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0140" label="Drag" />
+      <ChartLevelNode levelNodeIdRef="LN0105" label="Drag Target" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0002" label="Drag Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0033" name="TPM: Overall Weight" file="OverallWeight_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Weight (lbs)" global="1" pr="LN0085">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0015" label="Weight" />
+      <ChartLevelNode levelNodeIdRef="LN0085" label="Weight Target" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0003" label="Weight Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0034" name="TPM: Weight for Command &amp; Control" file="WeightCC_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Weight (lbs)" global="1" pr="LN0049">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0139" label="Weight" />
+      <ChartLevelNode levelNodeIdRef="LN0049" label="Weight Allocation" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0028" label="Historical Weight Growth" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0035" name="TPM: Weight for Airframe &amp; Propulsion" file="WeightAP_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Weight (lbs)" global="1" pr="LN0061">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0138" label="Weight" />
+      <ChartLevelNode levelNodeIdRef="LN0061" label="Weight Allocation" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0029" label="Historical Weight Growth" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0036" name="PRR Entrance Criterion: Affordability Demonstrated for Airframe &amp; Propulsion" file="AffordabilityDemonstratedS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0100" label="PRR_AD_S1" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0010" label="AD S1 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0037" name="PRR Entrance Criterion: Affordability Demonstrated for Command &amp; Control" file="AffordabilityDemonstratedS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0028" label="PRR_AD_S2" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0016" label="ADS2 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0038" name="PRR Entrance Criterion: Affordability Demonstrated for Ground Station" file="AffordabilityDemonstratedS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0101" label="PRR_AD_S3" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0022" label="ADS3 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0039" name="PRR Entrance Criterion: Airworthiness Certification Milestones for Airframe &amp; Propulsion" file="AirworthinessCertificationMilestonesS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0019" label="PRR_ACM_S1" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0011" label="ACM S1 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0040" name="PRR Entrance Criterion: Airworthiness Certification Milestones for Command &amp; Control" file="AirworthinessCertificationMilestonesS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0082" label="PRR_ACM_S2" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0017" label="ACMS2 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0041" name="PRR Entrance Criterion: Airworthiness Certification Milestones for Ground Station" file="AirworthinessCertificationMilestonesS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0063" label="PRR_ACM_S3" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0023" label="ACMS3 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0042" name="PRR Entrance Criterion: Drawings for Airframe &amp; Propulsion" file="DrawingsS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0118" label="PRR_D_S1" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0012" label="D S1 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0043" name="PRR Entrance Criterion: Drawings for Command &amp; Control" file="DrawingsS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0124" label="PRR_D_S2" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0018" label="DS2 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0044" name="PRR Entrance Criterion: Drawings for Ground Station" file="DrawingsS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0103" label="PRR_D_S3" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0024" label="DS3 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0045" name="PRR Entrance Criterion: Production Facilities for Airframe &amp; Propulsion" file="ProductionFacilitiesS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0071" label="PRR_PF_S1" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0013" label="PF S1 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0046" name="PRR Entrance Criterion: Production Facilities for Command &amp; Control" file="ProductionFacilitiesS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0132" label="PRR_PF_S2" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0019" label="PFS2 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0047" name="PRR Entrance Criterion: Production Facilities for Ground Station" file="ProductionFacilitiesS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0117" label="PRR_PF_S3" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0025" label="PFS3 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0048" name="PRR Entrance Criterion: Production Line Demonstrated for Airframe &amp; Propulsion" file="ProductionLineDemonstratedS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0045" label="PRR_PLD_S1" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0014" label="PLD S1 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0049" name="PRR Entrance Criterion: Production Line Demonstrated for Command &amp; Control" file="ProductionLineDemonstratedS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0035" label="PRR_PLD_S2" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0020" label="PLDS2 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0050" name="PRR Entrance Criterion: Production Line Demonstrated for Ground Station" file="ProductionLineDemonstratedS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0053" label="PRR_PLD_S3" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0026" label="PLDS3 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0051" name="PRR Entrance Criterion: Production Personnel Trained for Airframe &amp; Propulsion" file="ProductionPersonnelTrainedS1_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)" Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0042" label="PRR_PPT_S1" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0015" label="PPT S1 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0052" name="PRR Entrance Criterion: Production Personnel Trained for Command &amp; Control" file="ProductionPersonnelTrainedS2_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0048" label="PRR_PPT_S2" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0021" label="PPTS2 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <Chart id="CH0053" name="PRR Entrance Criterion: Production Personnel Trained for Ground Station" file="ProductionPersonnelTrainedS3_chart" xAxisLabel="Months Since Contract Award" yAxisLabel="Progress (% complete)"  Fstep="1">
+    <ChartLevelNodes>
+      <ChartLevelNode levelNodeIdRef="LN0065" label="PRR_PPT_S3" />
+    </ChartLevelNodes>
+    <ChartPlanNodes>
+      <ChartPlanNode planNodeIdRef="PN0027" label="PPTS3 Plan" />
+    </ChartPlanNodes>
+  </Chart>
+  <PlanNodes>
+    <PlanNode id="PN0001" name="Range_Plan" startValue="5200">
+      <PlanNodeIncrement id="PI0001" length="89" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="-100" />
+      <PlanNodeIncrement id="PI0003" length="720" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0005" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="360" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0002" name="Drag_Plan" startValue="2.5">
+      <PlanNodeIncrement id="PI0001" length="180" slope="0.0025" />
+      <PlanNodeIncrement id="PI0002" length="630" slope="0" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0005" length="360" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0003" name="Weight_Plan" startValue="9500">
+      <PlanNodeIncrement id="PI0001" length="180" slope="2.5" />
+      <PlanNodeIncrement id="PI0002" length="630" slope="0" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="360" slope="0" />
+      <PlanNodeIncrement id="PI0005" length="360" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0004" name="AD_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="129" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="10" />
+      <PlanNodeIncrement id="PI0003" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0009" length="50" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0005" name="ACM_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="129" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="10" />
+      <PlanNodeIncrement id="PI0003" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0009" length="50" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0006" name="D_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="129" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="10" />
+      <PlanNodeIncrement id="PI0003" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0009" length="50" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0007" name="PF_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="129" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="10" />
+      <PlanNodeIncrement id="PI0003" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0009" length="50" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0008" name="PLD_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="129" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="10" />
+      <PlanNodeIncrement id="PI0003" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0009" length="50" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0009" name="PPT_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="129" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="10" />
+      <PlanNodeIncrement id="PI0003" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="59" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0009" length="50" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0010" name="ADS1_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="34" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="49" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="79" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="190" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0011" name="ACMS1_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="34" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="49" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="79" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="190" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0012" name="DS1_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="34" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="49" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="79" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="190" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0013" name="PFS1_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="34" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="49" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="79" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="190" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0014" name="PLDS1_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="34" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="49" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="79" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="190" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0015" name="PPTS1_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="34" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="49" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="79" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="190" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0016" name="ADS2_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="14" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="39" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="94" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="205" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0017" name="ACMS2_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="14" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="39" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="94" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="205" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0018" name="DS2_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="14" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="39" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="94" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="205" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0019" name="PFS2_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="14" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="39" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="94" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="205" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0020" name="PLDS2_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="14" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="39" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="94" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="205" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0021" name="PPTS2_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="14" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="39" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="94" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="205" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0022" name="ADS3_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="13" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="29" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="109" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="201" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0023" name="ACMS3_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="13" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="29" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="109" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="201" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0024" name="DS3_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="13" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="29" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="109" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="201" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0025" name="PFS3_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="13" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="29" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="109" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="201" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0026" name="PLDS3_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="13" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="29" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="109" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="201" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0027" name="PPTS3_Plan" startValue="0">
+      <PlanNodeIncrement id="PI0001" length="4" slope="0" />
+      <PlanNodeIncrement id="PI0002" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0003" length="13" slope="0" />
+      <PlanNodeIncrement id="PI0004" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0005" length="29" slope="0" />
+      <PlanNodeIncrement id="PI0006" length="1" slope="30" />
+      <PlanNodeIncrement id="PI0007" length="109" slope="0" />
+      <PlanNodeIncrement id="PI0008" length="1" slope="20" />
+      <PlanNodeIncrement id="PI0009" length="201" slope="0" />
+    </PlanNode>
+    <PlanNode id="PN0028" name="Weight_S2_Plan" startValue="2400">
+      <PlanNodeIncrement id="PI0001" length="810" slope="0.0948" />
+      <PlanNodeIncrement id="PI0002" length="720" slope="0.0275" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0.0" />
+    </PlanNode>
+    <PlanNode id="PN0029" name="Weight_S1_Plan" startValue="7150">
+      <PlanNodeIncrement id="PI0001" length="810" slope="0.260" />
+      <PlanNodeIncrement id="PI0002" length="720" slope="0.1020" />
+      <PlanNodeIncrement id="PI0003" length="360" slope="0.0" />
+    </PlanNode>
+  </PlanNodes>
+</Charts>
