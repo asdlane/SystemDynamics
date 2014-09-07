@@ -96,7 +96,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    
    private static final String LANGUAGE_ENGLISH = "English";
    private static final String LANGUAGE_GERMAN = "Deutsch";
-   private static final String LANGUAGE_SPANISH = "Espa�ol";
+   private static final String LANGUAGE_SPANISH = "Español";
    
    private SystemDynamics start;
    
