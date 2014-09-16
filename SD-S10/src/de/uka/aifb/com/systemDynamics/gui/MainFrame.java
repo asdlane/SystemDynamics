@@ -48,6 +48,8 @@ import javax.swing.event.*;
  *             for useless source/sink node
  * 2008-01-24: createMenuBar was rewritten: additional language 'Spanish'
  * 2008-01-24: actionPerformed was rewritten: additional code for Spanish GUI
+ * 2014-09-15: changed zoom level to zoom in by a factor of 1.3 instead of 2.  replaced question 
+ * mark character in spanish language option with the correct character. *John Hinkel
  */
 
 /**
