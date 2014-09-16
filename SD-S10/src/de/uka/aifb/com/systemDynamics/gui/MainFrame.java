@@ -136,7 +136,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    private JRadioButtonMenuItem rbMenuItemSpanish;
    
    private JFileChooser fileChooser;
-   
+   private File[] selectedFiles;
    /**
     * Constructor.
     * 
@@ -176,13 +176,69 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
       contentPanel = new JPanel(new BorderLayout());
       getContentPane().add(contentPanel, BorderLayout.CENTER);
-      
+      registerDelAction();
       setVisible(true);
 
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       addWindowListener(this);
    }
    
+   //ADDED BY JOHN HINKEL.  The registerDelAction and askconfirm methods
+   //allow you to capture the delete key for file deletion.  code modified from
+   //http://java-demos.blogspot.com/2013/07/how-to-delete-file-through-jfilechooser.html
+   
+   private void registerDelAction()
+   {
+       // Create AbstractAction
+       // It is an implementation of javax.swing.Action
+       AbstractAction a=new AbstractAction(){
+       
+           // Write the handler
+           public void actionPerformed(ActionEvent ae)
+           {
+               JFileChooser jf=(JFileChooser)ae.getSource();
+               try
+               {
+               
+               // Get the selected files
+               selectedFiles=jf.getSelectedFiles();                   
+                   // If some file is selected
+                   if(selectedFiles!=null)
+                   {
+                       // If user confirms to delete
+                       if(askConfirm()==JOptionPane.YES_OPTION)
+                       {
+                       
+                       // Call Files.delete(), if any problem occurs
+                       // the exception can be printed, it can be
+                       // analysed
+                       for(File f:selectedFiles)
+                       java.nio.file.Files.delete(f.toPath());
+
+                       // Rescan the directory after deletion
+                       jf.rescanCurrentDirectory();
+                       }
+                   }
+               }catch(Exception e){
+                   System.out.println(e);
+               }
+           }
+       };
+       
+       // Get action map and map, "delAction" with a
+       fileChooser.getActionMap().put("delAction",a);
+       
+       // Get input map when fileChooser is in focused window and put a keystroke DELETE
+       // associate the key stroke (DELETE) (here) with "delAction"
+       fileChooser.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),"delAction");
+   }
+   
+   public int askConfirm()
+   {
+       // Ask the user whether he/she wants to confirm deleting
+       // Return the option chosen by the user either YES/NO
+       return JOptionPane.showConfirmDialog(this,"Are you sure want to delete this file?","Confirm",JOptionPane.YES_NO_OPTION);
+   }
    /**
     * Initializes the used actions.
     */
