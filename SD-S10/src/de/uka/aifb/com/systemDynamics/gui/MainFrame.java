@@ -26,14 +26,14 @@ import de.uka.aifb.com.systemDynamics.event.SystemDynamicsGraphModifiedEventList
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import java.util.Calendar;
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
@@ -136,7 +136,8 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    private JRadioButtonMenuItem rbMenuItemSpanish;
    
    private JFileChooser fileChooser;
-   private File[] selectedFiles;
+   //File[] selectedFiles;
+   File selectedFiles;
    /**
     * Constructor.
     * 
@@ -154,6 +155,8 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       
       fileChooser = new JFileChooser();
       fileChooser.setFileFilter(new XMLFileFilter(start));
+      //allows JFileChooser to select both files and directories.
+      fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
       
       setTitle(messages.getString("MainFrame.Title"));
       
@@ -197,12 +200,16 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
            public void actionPerformed(ActionEvent ae)
            {
                JFileChooser jf=(JFileChooser)ae.getSource();
+               //allow the filechooser to select both files and directories
+               jf.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                try
-               {
+               {           	
+           	   
+               // Get the selected file
+               selectedFiles = jf.getSelectedFile();
                
-               // Get the selected files
-               selectedFiles=jf.getSelectedFiles();                   
                    // If some file is selected
+               
                    if(selectedFiles!=null)
                    {
                        // If user confirms to delete
@@ -211,12 +218,13 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
                        
                        // Call Files.delete(), if any problem occurs
                        // the exception can be printed, it can be
-                       // analysed
-                       for(File f:selectedFiles)
-                       java.nio.file.Files.delete(f.toPath());
+                       // analysed                       
+                                           
+                       java.nio.file.Files.delete(selectedFiles.toPath());
 
                        // Rescan the directory after deletion
                        jf.rescanCurrentDirectory();
+                       
                        }
                    }
                }catch(Exception e){
