@@ -541,8 +541,8 @@ public class DrawGraphs_Init {
 		// rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		File imgFile = new File(folder + "/" + chartObj.getFile() + "_" + run
 				+ ".jpg");
-		// Chart resolution - originally 550 x 400, now 900 x 500
-		ChartUtilities.saveChartAsJPEG(imgFile, chart, 900, 500);
+		// Chart resolution - originally 550 x 400, next 900 x 500, now 1000 x 727
+		ChartUtilities.saveChartAsJPEG(imgFile, chart, 1000, 727);
 		writeTime(--xIntercept);
 	}
 
