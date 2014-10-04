@@ -75,7 +75,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    
    private static final String FILE_NEW_ICON = "resources/page_white.png";
    private static final String FILE_OPEN_ICON = "resources/folder_page_white.png";
-   private static final String COPY_ICON = "resources/scissors.png";
+   private static final String CUT_ICON = "resources/scissors.png";
+   private static final String COPY_ICON = "resources/copy.png";
+   private static final String PASTE_ICON = "resources/paste.png";
    private static final String FILE_SAVE_ICON = "resources/disk.png";
    
    private static final String FILE_NEW_AN_ICON = "resources/new_auxiliary_node_en_US.png";
@@ -119,6 +121,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    private Action newAction;
    private Action openAction;
    private Action closeAction;
+   private Action cutAction;
+   private Action copyAction;
+   private Action pasteAction;
    private Action saveAction;
    private Action saveAsAction;
    private Action newAuxiliaryNodeAction;
@@ -132,9 +137,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    private Action zoomStandardAction;
    private Action zoomInAction;
    private Action zoomOutAction;
-   private Action cut;
-   private Action copy;
-   private Action paste;
+   private Action cutActionFunction = javax.swing.TransferHandler.getCutAction();
+   private Action copyActionFunction = javax.swing.TransferHandler.getCopyAction();
+   private Action pasteActionFunction = javax.swing.TransferHandler.getPasteAction();
    private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
    private JRadioButtonMenuItem rbMenuItemEnglish;
    private JRadioButtonMenuItem rbMenuItemGerman;
@@ -251,12 +256,6 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    }
    
    
-   //*********************************STUFF THAT COULD HELP WITH CUT, COPY, PASTE*************************************************
-   //graph.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('p',InputEvent.CTRL_MASK), actionMapKey);
-   //javax.swing.TransferHandler.getCutAction();
-   //javax.swing.TransferHandler.getCopyAction();
-   //javax.swing.TransferHandler.getPasteAction();
-   
    public int askConfirm()
    {
        // Ask the user whether he/she wants to confirm deleting
@@ -275,6 +274,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
                                   messages.getString("MainFrame.MenuBar.File.Open"));
       
       closeAction = new CloseAction(messages.getString("MainFrame.MenuBar.File.Close"));
+      cutAction = new CutAction("Cut", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(CUT_ICON)), "Cut",cutActionFunction);
+      copyAction = new CopyAction("Copy", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON)), "Copy",copyActionFunction);
+      pasteAction = new PasteAction("Paste", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Paste",pasteActionFunction);
       closeAction.setEnabled(false);
       
       saveAction = new SaveAction(messages.getString("MainFrame.MenuBar.File.Save"),
@@ -283,6 +285,10 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       saveAction.setEnabled(false);
       saveAsAction = new SaveAsAction(messages.getString("MainFrame.MenuBar.File.SaveAs"));
       saveAsAction.setEnabled(false);
+      cutAction.setEnabled(false);
+      copyAction.setEnabled(false);
+      pasteAction.setEnabled(false);
+      
       
       if (start.getLocale() == Locale.GERMANY) {
          newAuxiliaryNodeAction = new NewAuxiliaryNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewAuxiliaryNode"),
@@ -645,37 +651,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       toolBar.add(zoomStandardAction);
       toolBar.add(zoomInAction);
       toolBar.add(zoomOutAction);
-      Action action;
-      
-      // Cut Action
-      action = javax.swing.TransferHandler.getCutAction();
-      ImageIcon CutIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON), "Cut");
-      action.putValue(Action.LARGE_ICON_KEY, CutIcon);
-      cut = new EventRedirector(action);
-      toolBar.add(cut);
-      System.out.println(CutIcon.getIconHeight());
-      System.out.println(CutIcon.getIconWidth());
-      System.out.println();
-      
-      // Copy Action
-      action = javax.swing.TransferHandler.getCopyAction();    
-      ImageIcon CopyIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON), "Copy");    		  
-      action.putValue(Action.LARGE_ICON_KEY, CopyIcon);
-      copy = new EventRedirector(action);
-      toolBar.add(copy);
-      System.out.println(CopyIcon.getIconHeight());
-      System.out.println(CopyIcon.getIconWidth());
-      System.out.println();
-      
-      // Paste Action
-      action = javax.swing.TransferHandler.getPasteAction();
-      ImageIcon PasteIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON), "Paste");
-      System.out.println(PasteIcon.getIconHeight());
-      System.out.println(PasteIcon.getIconWidth());
-	  action.putValue(Action.SMALL_ICON, PasteIcon);
-	  paste = new EventRedirector(action);
-	  toolBar.add(paste);
-      
+      toolBar.add(cutAction);
+      toolBar.add(copyAction);
+      toolBar.add(pasteAction);      
 	  
       return toolBar;
    }
@@ -761,6 +739,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
             zoomStandardAction.setEnabled(true);
             zoomInAction.setEnabled(true);
             zoomOutAction.setEnabled(true);
+            
          } else {
             // tab "chart" or "export" selected
             zoomStandardAction.setEnabled(false);
@@ -896,6 +875,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
             zoomStandardAction.setEnabled(true);
             zoomInAction.setEnabled(true);
             zoomOutAction.setEnabled(true);
+            cutAction.setEnabled(true);
+            copyAction.setEnabled(true);
+            pasteAction.setEnabled(true);
          }
 
       }
@@ -1060,6 +1042,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
          zoomStandardAction.setEnabled(false);
          zoomInAction.setEnabled(false);
          zoomOutAction.setEnabled(false);
+         cutAction.setEnabled(false);
+         copyAction.setEnabled(false);
+         pasteAction.setEnabled(false);
       }
    }
    
@@ -1583,6 +1568,51 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
          
          setTitle(createTitle(graph.getModelName(), graphModified));
       }
+   }
+   private class CutAction extends AbstractAction {
+	   private static final long serialVersionUID = 1L;
+	   protected Action action;
+	   private CutAction(String name, Icon icon, String toolTipText, Action a){
+		   super(name, icon);
+		   putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		   this.action = a;
+	   }
+	   public void actionPerformed(ActionEvent e){
+		   e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
+					.getModifiers());
+			action.actionPerformed(e);
+	   }
+	   
+   }
+   private class CopyAction extends AbstractAction {
+	   private static final long serialVersionUID = 1L;
+	   protected Action action;
+	   private CopyAction(String name, Icon icon, String toolTipText, Action a){
+		   super(name, icon);
+		   putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		   this.action = a;
+	   }
+	   public void actionPerformed(ActionEvent e){
+		   e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
+					.getModifiers());
+			action.actionPerformed(e);
+	   }
+	   
+   }
+   private class PasteAction extends AbstractAction {
+	   private static final long serialVersionUID = 1L;
+	   protected Action action;
+	   private PasteAction(String name, Icon icon, String toolTipText, Action a){
+		   super(name, icon);
+		   putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		   this.action = a;
+	   }
+	   public void actionPerformed(ActionEvent e){		   
+		   e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
+					.getModifiers());
+			action.actionPerformed(e);
+	   }
+	   
    }
    // This will change the source of the actionevent to graph.
 	public class EventRedirector extends AbstractAction {
