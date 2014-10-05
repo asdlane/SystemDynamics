@@ -75,6 +75,9 @@ public void paint(Graphics g) {
                   getWidth(), getHeight(), gradientColor, true));
          }
          g.fillOval(d.height / 4 + b - 1, b - 1, d.height - b, d.height - b);
+         
+         g.drawRect(d.height / 4 + b - 5, b - 1, d.height - b +8, d.height - b);
+        
       }
       try {
          setBorder(null);
@@ -89,6 +92,7 @@ public void paint(Graphics g) {
          g2.setStroke(new BasicStroke(b));
          // draw circle
          g.drawOval(d.height / 4 + b - 1, b - 1, d.height - b, d.height - b);
+         g.drawRect(d.height / 4 + b - 5, b - 1, d.height - b +8, d.height - b);
          // draw line
          g.drawLine(0, (int)(d.getHeight()/2), (int)(d.getWidth()), (int)(d.getHeight()/2));
       }
@@ -97,6 +101,7 @@ public void paint(Graphics g) {
          g.setColor(highlightColor);
          // draw circle
          g.drawOval(d.height / 4 + b - 1, b - 1, d.height - b, d.height - b);
+         g.drawRect(d.height / 4 + b - 5, b - 1, d.height - b +8, d.height - b);
       }
    }
 }
