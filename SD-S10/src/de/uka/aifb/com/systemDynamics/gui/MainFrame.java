@@ -96,8 +96,8 @@ WindowListener {
 	private static final String FILE_NEW_SSN_ICON = "resources/new_source_sink_node_en_US.png";
 	private static final String FILE_NEW_SSN_de_DE_ICON = "resources/new_source_sink_node_de_DE.png";
 
-	private static final String FILE_ENTER_ADD_FLOW_MODE_ICON = "resources/connect.png";
-	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/disconnect.png";
+	private static final String FILE_ENTER_ADD_FLOW_MODE_ICON = "resources/disconnect.png";
+	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/connect.png";
 	private static final String FILE_CHANGE_MODEL_NAME_ICON = "resources/page_white_edit.png";
 	private static final String FILE_EXECUTE_MODEL_ICON = "resources/page_white_gear.png";
 
