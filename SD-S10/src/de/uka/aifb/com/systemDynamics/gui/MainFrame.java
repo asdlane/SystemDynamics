@@ -28,6 +28,9 @@ import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
@@ -38,6 +41,8 @@ import java.text.SimpleDateFormat;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
+
+import org.jgraph.JGraph;
 
 /*
  * Changes:
@@ -1364,7 +1369,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       }
       
       public void actionPerformed(ActionEvent e) {
-         graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+         graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);         
       }
    }
    
@@ -1581,6 +1586,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
 		   e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
 					.getModifiers());
 			action.actionPerformed(e);
+
 	   }
 	   
    }
@@ -1608,9 +1614,28 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
 		   this.action = a;
 	   }
 	   public void actionPerformed(ActionEvent e){		   
-		   e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
-					.getModifiers());
-			action.actionPerformed(e);
+		   Clipboard c=Toolkit.getDefaultToolkit().getSystemClipboard();
+		   DataFlavor x = null;
+		   try {
+			x = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType);
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		   
+		   try {
+			c.getData(x);
+		} catch (UnsupportedFlavorException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		   System.out.println(c.getAvailableDataFlavors()[0]);
+		   System.out.println();
+		   
+		   
 	   }
 	   
    }
