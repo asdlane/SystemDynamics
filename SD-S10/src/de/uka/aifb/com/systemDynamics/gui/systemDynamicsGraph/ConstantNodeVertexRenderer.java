@@ -93,8 +93,7 @@ public void paint(Graphics g) {
          // draw circle
          g.drawOval(d.height / 4 + b - 1, b - 1, d.height - b, d.height - b);
          g.drawRect(d.height / 4 + b - 5, b - 1, d.height - b +8, d.height - b);
-         // draw line
-         g.drawLine(0, (int)(d.getHeight()/2), (int)(d.getWidth()), (int)(d.getHeight()/2));
+         
       }
       if (selected) {
          g2.setStroke(GraphConstants.SELECTION_STROKE);

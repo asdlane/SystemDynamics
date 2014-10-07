@@ -42,7 +42,7 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
-import org.jgraph.JGraph;
+import org.jgraph.*;
 
 /*
  * Changes:
@@ -81,7 +81,7 @@ WindowListener {
 	private static final String FILE_NEW_ICON = "resources/page_white.png";
 	private static final String FILE_OPEN_ICON = "resources/folder_page_white.png";
 	private static final String CUT_ICON = "resources/scissors.png";
-	private static final String COPY_ICON = "resources/copy.png";
+	private static final String COPY_ICON = "resources/Copy.png";
 	private static final String PASTE_ICON = "resources/paste.png";
 	private static final String FILE_SAVE_ICON = "resources/disk.png";
 
