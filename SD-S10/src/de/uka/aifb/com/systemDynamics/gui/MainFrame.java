@@ -1212,7 +1212,7 @@ WindowListener {
 				// no file selected
 				return;
 			}
-
+			
 			try {
 				graph.storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1244,12 +1244,23 @@ WindowListener {
 
 				return;
 			} catch (UselessNodeException excep ) {
-				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
-						messages.getString("MainFrame.SaveFile.Error"),
-						JOptionPane.ERROR_MESSAGE);
+				//if UselessNodeException is caused by a Source/Sink node, then Source/Sink nodes don't have names, which causes getNodeName() to throw an error.
+				//the if statement accounts for this case.
+				
+				if(excep.getUselessNode().getClass().toString().equals("class de.uka.aifb.com.systemDynamics.model.SourceSinkNode")){
+					JOptionPane.showMessageDialog(MainFrame.this,
+							"Invalid model:" + " A Source/Sink node " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
 
-				return;
+				}else{
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}				
 			} catch (XMLModelReaderWriterException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.XMLModelReaderWriterException.Text") + " " + excep.getException().getMessage(),
@@ -1257,7 +1268,7 @@ WindowListener {
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
-			}
+			} 
 
 			// saving was successful
 			xmlFile = file;
