@@ -139,6 +139,7 @@ WindowListener {
 	private Action toggleAddFlowAction;
 	private Action changeModelNameAction;
 	private Action executeModelAction;
+	private Action exitExecuteModelAction;
 	private Action zoomStandardAction;
 	private Action zoomInAction;
 	private Action zoomOutAction;
@@ -354,6 +355,10 @@ WindowListener {
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_EXECUTE_MODEL_ICON)),
 				messages.getString("MainFrame.MenuBar.Edit.ExecuteModel"));
 		executeModelAction.setEnabled(false);
+		exitExecuteModelAction = new exitExecuteModelAction(messages.getString("MainFrame.MenuBar.Edit.ExecuteModel"),
+				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_EXECUTE_MODEL_ICON)),
+				messages.getString("MainFrame.MenuBar.Edit.ExecuteModel"));
+		exitExecuteModelAction.setEnabled(false);
 
 		zoomStandardAction = new ZoomStandardAction(messages.getString("MainFrame.MenuBar.View.ZoomStandard"),
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_ZOOM_STANDARD_ICON)),
@@ -650,7 +655,8 @@ WindowListener {
 		toolBar.addSeparator();
 
 		toolBar.add(executeModelAction);
-
+		toolBar.add(exitExecuteModelAction);
+		
 		toolBar.addSeparator();
 
 		toolBar.add(zoomStandardAction);
@@ -1538,18 +1544,52 @@ WindowListener {
 			ModelExecutionChartPanel chartPanel = graph.getChartPanel();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart"), chartPanel);
 			ExportPanel exportPanel = graph.getExportPanel();
+			
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Export"), exportPanel);
 			tabbedPane.addChangeListener(MainFrame.this);
 			tabbedPane.setSelectedIndex(1);
 
 			MainFrame.this.getRootPane().setDefaultButton(chartPanel.getExecutionButton());
-
+			
 			contentPanel.removeAll();
 			contentPanel.add(tabbedPane);
+			
 			MainFrame.this.getContentPane().validate();
+			exitExecuteModelAction.setEnabled(true);
 		}
 	}
 
+	private class exitExecuteModelAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public exitExecuteModelAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
+
+			putValue(Action.SHORT_DESCRIPTION, "Return to model view");
+		}
+ 
+		public void actionPerformed(ActionEvent e) {			
+
+			//reset everything.  Remove the tabbedPane and scrollPane
+			newAuxiliaryNodeAction.setEnabled(true);
+			newConstantNodeAction.setEnabled(true);
+			newLevelNodeAction.setEnabled(true);
+			newRateNodeAction.setEnabled(true);
+			newSourceSinkNodeAction.setEnabled(true);
+			toggleAddFlowAction.setEnabled(true);
+			changeModelNameAction.setEnabled(true);
+			executeModelAction.setEnabled(true);
+			
+			contentPanel.remove(tabbedPane);
+			contentPanel.add(scrollPane);
+			contentPanel.repaint();
+			exitExecuteModelAction.setEnabled(false);
+			
+			MainFrame.this.getContentPane().validate();
+		}
+	}
+	
 	private class ZoomStandardAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
