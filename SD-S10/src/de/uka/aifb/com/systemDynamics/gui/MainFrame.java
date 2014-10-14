@@ -43,6 +43,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
 import org.jgraph.*;
+import org.jgraph.graph.GraphTransferable;
 
 /*
  * Changes:
@@ -81,7 +82,7 @@ WindowListener {
 	private static final String FILE_NEW_ICON = "resources/page_white.png";
 	private static final String FILE_OPEN_ICON = "resources/folder_page_white.png";
 	private static final String CUT_ICON = "resources/scissors.png";
-	private static final String COPY_ICON = "resources/Copy.png";
+	private static final String COPY_ICON = "resources/copy.png";
 	private static final String PASTE_ICON = "resources/paste.png";
 	private static final String FILE_SAVE_ICON = "resources/disk.png";
 
@@ -1681,16 +1682,25 @@ WindowListener {
 		}
 		public void actionPerformed(ActionEvent e){		   
 			Clipboard c=Toolkit.getDefaultToolkit().getSystemClipboard();
-			DataFlavor x = null;
-			x = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "class=org.jgraph.graph.GraphTransferable");
-
-
+			
 			try {
-				c.getData(x);
+				//SEEMS TO BE CUTTING/COPYING A 2d PICTURE OF THE THING INSTEAD OF THE THING ITSELF.......
+				GraphTransferable s = (GraphTransferable) c.getData(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + org.jgraph.graph.GraphTransferable.class.getName()));
+				System.out.println(s.getAttributeMap().values().toString()); 
+				
+				
+				/*
+				AbstractNode node = (AbstractNode)s;
+				if(node instanceof SourceSinkNode){
+					System.out.println("SUCCESS!");
+				}*/
 			} catch (UnsupportedFlavorException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
