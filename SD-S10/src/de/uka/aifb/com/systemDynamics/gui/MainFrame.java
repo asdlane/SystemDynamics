@@ -101,6 +101,7 @@ WindowListener {
 	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/connect.png";
 	private static final String FILE_CHANGE_MODEL_NAME_ICON = "resources/page_white_edit.png";
 	private static final String FILE_EXECUTE_MODEL_ICON = "resources/page_white_gear.png";
+	private static final String FILE_CANCEL_EXEUTE_MODEL_ICON = "resources/cancel.png";
 
 	private static final String FILE_ZOOM_STANDARD_ICON = "resources/zoom.png";
 	private static final String FILE_ZOOM_IN_ICON = "resources/zoom_in.png";
@@ -357,7 +358,7 @@ WindowListener {
 				messages.getString("MainFrame.MenuBar.Edit.ExecuteModel"));
 		executeModelAction.setEnabled(false);
 		exitExecuteModelAction = new exitExecuteModelAction(messages.getString("MainFrame.MenuBar.Edit.ExecuteModel"),
-				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_EXECUTE_MODEL_ICON)),
+				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_CANCEL_EXEUTE_MODEL_ICON)),
 				messages.getString("MainFrame.MenuBar.Edit.ExecuteModel"));
 		exitExecuteModelAction.setEnabled(false);
 
