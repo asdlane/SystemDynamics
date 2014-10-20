@@ -992,10 +992,13 @@ WindowListener {
 					toggleAddFlowAction.setEnabled(true);
 					changeModelNameAction.setEnabled(true);
 					executeModelAction.setEnabled(true);
-
+					
 					zoomStandardAction.setEnabled(true);
 					zoomInAction.setEnabled(true);
 					zoomOutAction.setEnabled(true);
+					cutAction.setEnabled(true);
+					copyAction.setEnabled(true);
+					pasteAction.setEnabled(true);
 				}
 			}
 		}
