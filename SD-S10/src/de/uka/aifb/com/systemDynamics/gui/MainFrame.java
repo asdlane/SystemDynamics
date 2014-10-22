@@ -850,7 +850,7 @@ WindowListener {
 			//changes reply if "no" option is selected.
 			//only asks the question if there are components in the graph
 			if(graphModified != false){
-				reply = JOptionPane.showConfirmDialog(null, "Creating a new document will cause any unsaved changes to be lost. \n Have all changes been saved?", "Open", JOptionPane.YES_NO_OPTION);
+				reply = JOptionPane.showConfirmDialog(null, "Creating a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create/open a new document?", "Open", JOptionPane.YES_NO_OPTION);
 			}
 			if(reply==JOptionPane.YES_OPTION){
 				String modelName =
@@ -920,7 +920,7 @@ WindowListener {
 			//changes reply if "no" option is selected.
 			//only asks the question if there are components in the graph
 			if(graphModified != false){
-				reply = JOptionPane.showConfirmDialog(null, "Opening a new document will cause any unsaved changes to be lost. \n Have all changes been saved?", "Open", JOptionPane.YES_NO_OPTION);
+				reply = JOptionPane.showConfirmDialog(null, "Opening a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create/open a new document?", "Open", JOptionPane.YES_NO_OPTION);
 			}
 			if(reply == JOptionPane.YES_OPTION){
 				int returnVal = fileChooser.showOpenDialog(MainFrame.this);
