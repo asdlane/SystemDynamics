@@ -856,7 +856,7 @@ WindowListener {
 			//changes reply if "no" option is selected.
 			//only asks the question if there are components in the graph
 			if(graphModified != false){
-				reply = JOptionPane.showConfirmDialog(null, "Creating a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create/open a new document?", "Open", JOptionPane.YES_NO_OPTION);
+				reply = JOptionPane.showConfirmDialog(null, "Creating a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create a new document?", "Create", JOptionPane.YES_NO_OPTION);
 			}
 			if(reply==JOptionPane.YES_OPTION){
 				String modelName =
@@ -926,7 +926,7 @@ WindowListener {
 			//changes reply if "no" option is selected.
 			//only asks the question if there are components in the graph
 			if(graphModified != false){
-				reply = JOptionPane.showConfirmDialog(null, "Opening a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create/open a new document?", "Open", JOptionPane.YES_NO_OPTION);
+				reply = JOptionPane.showConfirmDialog(null, "Opening a new document will cause any unsaved changes to be lost. \n Are you sure you would like to open a new document?", "Open", JOptionPane.YES_NO_OPTION);
 			}
 			if(reply == JOptionPane.YES_OPTION){
 				int returnVal = fileChooser.showOpenDialog(MainFrame.this);
@@ -1666,36 +1666,7 @@ WindowListener {
 
 			//GET SELECTED CELLS
 			//THEN WRITE THIS ARRAY TO A FILE.  READ IT IN FOR PASTE
-			Object[] x2 = graph.getSelectionCells();
-
-			//THIS IS HOW I DO PASTE!!!!!!!
-			for(int i=0; i<x2.length;i++){
-				if (x2[0] instanceof AuxiliaryNodeGraphCell) {
-
-
-				}
-				else if (x2[0] instanceof LevelNodeGraphCell){
-
-				}
-				else if(x2[0] instanceof SourceSinkNodeGraphCell){
-					System.out.println("SOURCESINK");
-					graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
-				}
-				else if(x2[0] instanceof FlowEdge){
-
-				}
-				else if(x2[0] instanceof ConstantNodeGraphCell){
-					
-					graph.createConstantNodeGraphCell("tempName", 0, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
-
-				}
-				else if(x2[0] instanceof RateNodeGraphCell){
-
-
-				}
-			}
-			System.out.println(x2.length);
-
+			
 
 		}
 
@@ -1709,9 +1680,56 @@ WindowListener {
 			this.action = a;
 		}
 		public void actionPerformed(ActionEvent e){
-			e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
-					.getModifiers());
-			action.actionPerformed(e);
+			Object[] copyObjects = graph.getSelectionCells();
+			File fout = new File("copyClipboard.txt");
+			FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(fout);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		 
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		 
+				//reads all the selected objects and writes an indication of which type of object it is to the clipboard (i.e. copyClipboard.txt)
+				try {
+					for(int i=0; i<copyObjects.length;i++){
+						if (copyObjects[i] instanceof AuxiliaryNodeGraphCell) {
+							bw.write("Auxiliary");
+							bw.newLine();
+						}
+						else if (copyObjects[i] instanceof LevelNodeGraphCell){
+							bw.write("Level");
+							bw.newLine();
+						}
+						else if(copyObjects[i] instanceof SourceSinkNodeGraphCell){
+							bw.write("SourceSink");
+							bw.newLine();
+						}
+						
+						else if(copyObjects[i] instanceof ConstantNodeGraphCell){
+							bw.write("Constant");
+							bw.newLine();							
+
+						}
+						else if(copyObjects[i] instanceof RateNodeGraphCell){
+							bw.write("Rate");
+							bw.newLine();
+
+						}
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		 
+			try {
+				bw.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 	}
@@ -1723,33 +1741,47 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 			this.action = a;
 		}
-		public void actionPerformed(ActionEvent e){		   
-			Clipboard c=Toolkit.getDefaultToolkit().getSystemClipboard();
-
+		public void actionPerformed(ActionEvent e){
+			FileInputStream fis = null;
+			BufferedReader br = null;
+			ArrayList<String> pasteCells = new ArrayList<String>(); 
 			try {
-				//SEEMS TO BE CUTTING/COPYING A 2d PICTURE OF THE THING INSTEAD OF THE THING ITSELF.......
-				GraphTransferable s = (GraphTransferable) c.getData(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + org.jgraph.graph.GraphTransferable.class.getName()));
-				System.out.println(s.getAttributeMap().values().toString()); 
-
-
-				/*
-				AbstractNode node = (AbstractNode)s;
-				if(node instanceof SourceSinkNode){
-					System.out.println("SUCCESS!");
-				}*/
-			} catch (UnsupportedFlavorException e1) {
+				fis = new FileInputStream("copyClipboard.txt");
+				br = new BufferedReader(new InputStreamReader(fis));
+				String line = null;
+				while((line = br.readLine()) != null){
+					pasteCells.add(line);
+				}
+			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
-			System.out.println(c.getAvailableDataFlavors()[0]);
-			System.out.println();
+			//reads in from copyClipboard.txt and, based on which indicator is read in, creates the right node.
+			for(int i=0; i<pasteCells.size();i++){
+				if (pasteCells.get(i).equals("Auxiliary")) {
+					graph.createAuxiliaryNodeGraphCell("tempName", MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					
+				}
+				else if (pasteCells.get(i).equals("Level")){
+					graph.createLevelNodeGraphCell("tempName", 25, 0, 39, 23, MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+				}
+				else if(pasteCells.get(i).equals("SourceSink")){
+					graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+				}
+				
+				else if(pasteCells.get(i).equals("Constant")){
+					
+					graph.createConstantNodeGraphCell("tempName", 0, MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
+				}
+				else if(pasteCells.get(i).equals("Rate")){
+					graph.createRateNodeGraphCell("tempName", MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+
+				}
+			}
 
 		}
 
