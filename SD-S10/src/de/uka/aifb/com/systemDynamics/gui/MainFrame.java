@@ -23,6 +23,12 @@ package de.uka.aifb.com.systemDynamics.gui;
 
 import de.uka.aifb.com.systemDynamics.SystemDynamics;
 import de.uka.aifb.com.systemDynamics.event.SystemDynamicsGraphModifiedEventListener;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.AuxiliaryNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.ConstantNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.FlowEdge;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.LevelNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.RateNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SourceSinkNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
@@ -658,7 +664,7 @@ WindowListener {
 
 		toolBar.add(executeModelAction);
 		toolBar.add(exitExecuteModelAction);
-		
+
 		toolBar.addSeparator();
 
 		toolBar.add(zoomStandardAction);
@@ -992,7 +998,7 @@ WindowListener {
 					toggleAddFlowAction.setEnabled(true);
 					changeModelNameAction.setEnabled(true);
 					executeModelAction.setEnabled(true);
-					
+
 					zoomStandardAction.setEnabled(true);
 					zoomInAction.setEnabled(true);
 					zoomOutAction.setEnabled(true);
@@ -1223,7 +1229,7 @@ WindowListener {
 				// no file selected
 				return;
 			}
-			
+
 			try {
 				graph.storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1257,7 +1263,7 @@ WindowListener {
 			} catch (UselessNodeException excep ) {
 				//if UselessNodeException is caused by a Source/Sink node, then Source/Sink nodes don't have names, which causes getNodeName() to throw an error.
 				//the if statement accounts for this case.
-				
+
 				if(excep.getUselessNode().getClass().toString().equals("class de.uka.aifb.com.systemDynamics.model.SourceSinkNode")){
 					JOptionPane.showMessageDialog(MainFrame.this,
 							"Invalid model:" + " A Source/Sink node " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
@@ -1549,16 +1555,16 @@ WindowListener {
 			ModelExecutionChartPanel chartPanel = graph.getChartPanel();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart"), chartPanel);
 			ExportPanel exportPanel = graph.getExportPanel();
-			
+
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Export"), exportPanel);
 			tabbedPane.addChangeListener(MainFrame.this);
 			tabbedPane.setSelectedIndex(1);
 
 			MainFrame.this.getRootPane().setDefaultButton(chartPanel.getExecutionButton());
-			
+
 			contentPanel.removeAll();
 			contentPanel.add(tabbedPane);
-			
+
 			MainFrame.this.getContentPane().validate();
 			exitExecuteModelAction.setEnabled(true);
 		}
@@ -1573,7 +1579,7 @@ WindowListener {
 
 			putValue(Action.SHORT_DESCRIPTION, "Return to model view");
 		}
- 
+
 		public void actionPerformed(ActionEvent e) {			
 
 			//reset everything.  Remove the tabbedPane and scrollPane
@@ -1585,16 +1591,16 @@ WindowListener {
 			toggleAddFlowAction.setEnabled(true);
 			changeModelNameAction.setEnabled(true);
 			executeModelAction.setEnabled(true);
-			
+
 			contentPanel.remove(tabbedPane);
 			contentPanel.add(scrollPane);
 			contentPanel.repaint();
 			exitExecuteModelAction.setEnabled(false);
-			
+
 			MainFrame.this.getContentPane().validate();
 		}
 	}
-	
+
 	private class ZoomStandardAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -1654,9 +1660,42 @@ WindowListener {
 			this.action = a;
 		}
 		public void actionPerformed(ActionEvent e){
-			e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
-					.getModifiers());
-			action.actionPerformed(e);
+			//e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
+			//.getModifiers());
+			//action.actionPerformed(e);
+
+			//GET SELECTED CELLS
+			//THEN WRITE THIS ARRAY TO A FILE.  READ IT IN FOR PASTE
+			Object[] x2 = graph.getSelectionCells();
+
+			//THIS IS HOW I DO PASTE!!!!!!!
+			for(int i=0; i<x2.length;i++){
+				if (x2[0] instanceof AuxiliaryNodeGraphCell) {
+
+
+				}
+				else if (x2[0] instanceof LevelNodeGraphCell){
+
+				}
+				else if(x2[0] instanceof SourceSinkNodeGraphCell){
+					System.out.println("SOURCESINK");
+					graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else if(x2[0] instanceof FlowEdge){
+
+				}
+				else if(x2[0] instanceof ConstantNodeGraphCell){
+					
+					graph.createConstantNodeGraphCell("tempName", 0, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+
+				}
+				else if(x2[0] instanceof RateNodeGraphCell){
+
+
+				}
+			}
+			System.out.println(x2.length);
+
 
 		}
 
@@ -1686,13 +1725,13 @@ WindowListener {
 		}
 		public void actionPerformed(ActionEvent e){		   
 			Clipboard c=Toolkit.getDefaultToolkit().getSystemClipboard();
-			
+
 			try {
 				//SEEMS TO BE CUTTING/COPYING A 2d PICTURE OF THE THING INSTEAD OF THE THING ITSELF.......
 				GraphTransferable s = (GraphTransferable) c.getData(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + org.jgraph.graph.GraphTransferable.class.getName()));
 				System.out.println(s.getAttributeMap().values().toString()); 
-				
-				
+
+
 				/*
 				AbstractNode node = (AbstractNode)s;
 				if(node instanceof SourceSinkNode){
