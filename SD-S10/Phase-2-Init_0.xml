@@ -3,7 +3,7 @@
   <Nodes>
     <LevelNodes>
       <LevelNode curve="3.0" id="LN0001" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S1" startValue="0.0" xCoordinate="3951.0" yCoordinate="1637.0"/>
-      <LevelNode curve="3.0" id="LN0002" maxValue="0.0" minValue="0.0" name="Range_Target" startValue="5000.0" xCoordinate="831.0" yCoordinate="1628.0"/>
+      <LevelNode curve="3.0" id="LN0002" maxValue="0.0" minValue="0.0" name="Range_Target" startValue="5000" xCoordinate="831.0" yCoordinate="1628.0"/>
       <LevelNode curve="3.0" id="LN0003" maxValue="0.0" minValue="0.0" name="Budget_S3" startValue="15.0" xCoordinate="2792.0" yCoordinate="1926.0"/>
       <LevelNode curve="3.0" id="LN0004" maxValue="0.0" minValue="0.0" name="SW_Errors_S3_Target" startValue="6.88" xCoordinate="2447.0" yCoordinate="2259.0"/>
       <LevelNode curve="1.0" id="LN0005" maxValue="0.0" minValue="0.0" name="ACWP_Total" startValue="4.7" xCoordinate="3782.0" yCoordinate="2502.0"/>
@@ -96,7 +96,7 @@
       <LevelNode curve="3.0" id="LN0092" maxValue="0.0" minValue="0.0" name="Specific_Impulse" startValue="1225.0" xCoordinate="784.0" yCoordinate="2045.0"/>
       <LevelNode curve="3.0" id="LN0093" maxValue="0.0" minValue="0.0" name="CPI_S0" startValue="1.0" xCoordinate="1462.0" yCoordinate="108.0"/>
       <LevelNode curve="3.0" id="LN0094" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S1" startValue="0.0" xCoordinate="3768.0" yCoordinate="1984.0"/>
-      <LevelNode curve="1.0" id="LN0095" maxValue="100" minValue="0.0" name="CDR_SDD" startValue="3.0" xCoordinate="1575.0" yCoordinate="314.0"/>
+      <LevelNode curve="1.0" id="LN0095" maxValue="100" minValue="0.0" name="CDR_SDD" startValue="120" xCoordinate="1575.0" yCoordinate="314.0"/>
       <LevelNode curve="3.0" id="LN0096" maxValue="0.0" minValue="0.0" name="Budget_S2" startValue="100.0" xCoordinate="1274.0" yCoordinate="749.0"/>
       <LevelNode curve="3.0" id="LN0097" maxValue="0.0" minValue="0.0" name="Rookie_Staff_QA_S3" startValue="0.0" xCoordinate="2004.0" yCoordinate="2259.0"/>
       <LevelNode curve="1.0" id="LN0098" maxValue="0.0" minValue="0.0" name="BCWP_Total" startValue="4.7" xCoordinate="3782.0" yCoordinate="2330.0"/>
@@ -2689,7 +2689,7 @@
       <ConstantNode constantValue="1.6E-4" id="CN0029" name="Labor_Rate_Rookies_QA_S2" xCoordinate="2417.0" yCoordinate="624.0"/>
       <ConstantNode constantValue="0.00" id="CN0030" name="Hiring_Rate_Rookie_Staff_Gen_S0" xCoordinate="762.0" yCoordinate="159.0"/>
       <ConstantNode constantValue="3.4" id="CN0031" name="CDR_SDD_BoostFactor" xCoordinate="1901.0" yCoordinate="454.0"/>
-      <ConstantNode constantValue="0.03" id="CN0032" name="Design_Review_Freq_S2" xCoordinate="2208.0" yCoordinate="1015.0"/>
+      <ConstantNode constantValue="0.1" id="CN0032" name="Design_Review_Freq_S2" xCoordinate="2208.0" yCoordinate="1015.0"/>
       <ConstantNode constantValue="6.0E-6" id="CN0033" name="CDR_SSDV_S2_Progress_Capacity_Factor" xCoordinate="2407.0" yCoordinate="828.0"/>
       <ConstantNode constantValue="0.00375" id="CN0034" name="Avg_Tasks_Per_Person_S3" xCoordinate="1801.0" yCoordinate="1882.0"/>
       <ConstantNode constantValue="1.0" id="CN0035" name="Communication_Intercept_S0" xCoordinate="940.0" yCoordinate="471.0"/>
@@ -2734,7 +2734,7 @@
       <ConstantNode constantValue="0.03" id="CN0074" name="SW_Errors_P2_S3_Weight" xCoordinate="2477.0" yCoordinate="2351.0"/>
       <ConstantNode constantValue="0.0001" id="CN0075" name="Labor_Rate_Rookies_S3" xCoordinate="2266.0" yCoordinate="1786.0"/>
       <ConstantNode constantValue="35.0" id="CN0076" name="SW_Error_P2_Rate_S3" xCoordinate="1790.0" yCoordinate="2158.0"/>
-      <ConstantNode constantValue="0.0" id="CN0077" name="Hiring_Rate_Rookie_Staff_Gen_S2" xCoordinate="2002.0" yCoordinate="231.0"/>
+      <ConstantNode constantValue="0.1" id="CN0077" name="Hiring_Rate_Rookie_Staff_Gen_S2" xCoordinate="2002.0" yCoordinate="231.0"/>
       <ConstantNode constantValue="0.0" id="CN0078" name="Attrition_Rate_Pro_Staff_S1" xCoordinate="4005.0" yCoordinate="1062.0"/>
       <ConstantNode constantValue="0.38" id="CN0079" name="Nominal_Potential_Prod_Rookies_S1" xCoordinate="3946.0" yCoordinate="1334.0"/>
       <ConstantNode constantValue="0.0" id="CN0080" name="Attrition_Rate_Pro_Staff_S0" xCoordinate="1083.0" yCoordinate="305.0"/>
@@ -2755,7 +2755,7 @@
       <ConstantNode constantValue="35.0" id="CN0095" name="SW_Error_P2_Rate_S0" xCoordinate="716.0" yCoordinate="845.0"/>
       <ConstantNode constantValue="1.0" id="CN0096" name="Communication_Intercept_S2" xCoordinate="2180.0" yCoordinate="543.0"/>
       <ConstantNode constantValue="0.06" id="CN0097" name="CDR_DTR_WF_Constant" xCoordinate="2872.0" yCoordinate="1437.0"/>
-      <ConstantNode constantValue="0.0" id="CN0098" name="Hiring_Rate_Rookie_Staff_QA_S2" xCoordinate="2026.0" yCoordinate="990.0"/>
+      <ConstantNode constantValue="0.003125" id="CN0098" name="Hiring_Rate_Rookie_Staff_QA_S2" xCoordinate="2026.0" yCoordinate="990.0"/>
       <ConstantNode constantValue="0.00043" id="CN0099" name="Test_P1_Effectiveness_S2" xCoordinate="2142.0" yCoordinate="1172.0"/>
       <ConstantNode constantValue="0.0" id="CN0100" name="Specific_Impulse_Increase_Rate_Constant" xCoordinate="726.0" yCoordinate="2121.0"/>
       <ConstantNode constantValue="0.95" id="CN0101" name="Budgeted_Cost_Rate_S2" xCoordinate="1609.0" yCoordinate="583.0"/>
@@ -2763,7 +2763,7 @@
       <ConstantNode constantValue="0.00034" id="CN0103" name="Labor_Rate_Pros_S0" xCoordinate="919.0" yCoordinate="103.0"/>
       <ConstantNode constantValue="0.0041" id="CN0104" name="Avg_Tasks_Per_Person_S1" xCoordinate="3784.0" yCoordinate="1308.0"/>
       <ConstantNode constantValue="0.0111" id="CN0105" name="Design_Review_Freq_S3" xCoordinate="2058.0" yCoordinate="2191.0"/>
-      <ConstantNode constantValue="0.0" id="CN0106" name="Hiring_Rate_Pro_Staff_Gen_S2" xCoordinate="2326.0" yCoordinate="259.0"/>
+      <ConstantNode constantValue="0.1" id="CN0106" name="Hiring_Rate_Pro_Staff_Gen_S2" xCoordinate="2326.0" yCoordinate="259.0"/>
       <ConstantNode constantValue="0.0" id="CN0107" name="Hiring_Rate_Pro_Staff_QA_S3" xCoordinate="2287.0" yCoordinate="2147.0"/>
       <ConstantNode constantValue="0.0" id="CN0108" name="Attrition_Rate_Pro_Staff_S2" xCoordinate="2323.0" yCoordinate="377.0"/>
       <ConstantNode constantValue="0.1" id="CN0109" name="Training_Overhead_S2" xCoordinate="1967.0" yCoordinate="412.0"/>
@@ -2776,7 +2776,7 @@
       <ConstantNode constantValue="1.0" id="CN0116" name="Nominal_Potential_Prod_Pros_S1" xCoordinate="3948.0" yCoordinate="1256.0"/>
       <ConstantNode constantValue="1.0" id="CN0117" name="Nominal_Potential_Prod_Pros_S3" xCoordinate="1671.0" yCoordinate="1699.0"/>
       <ConstantNode constantValue="0.0" id="CN0118" name="Attrition_Rate_Pro_Staff_S3" xCoordinate="2274.0" yCoordinate="1573.0"/>
-      <ConstantNode constantValue="0.0" id="CN0119" name="Hiring_Rate_Pro_Staff_QA_S2" xCoordinate="2428.0" yCoordinate="1080.0"/>
+      <ConstantNode constantValue="0.003125" id="CN0119" name="Hiring_Rate_Pro_Staff_QA_S2" xCoordinate="2428.0" yCoordinate="1080.0"/>
       <ConstantNode constantValue="1.0" id="CN0120" name="Current_Time_Rate" xCoordinate="219.0" yCoordinate="341.0"/>
       <ConstantNode constantValue="2.5" id="CN0121" name="Design_Review_P2_Effectiveness_S0" xCoordinate="770.0" yCoordinate="1072.0"/>
       <ConstantNode constantValue="1.0" id="CN0122" name="Communication_Intercept_S3" xCoordinate="1819.0" yCoordinate="1726.0"/>
@@ -2800,7 +2800,7 @@
       <ConstantNode constantValue="0.29" id="CN0140" name="CDR_SSDV_S0_Constant" xCoordinate="630.0" yCoordinate="556.0"/>
       <ConstantNode constantValue="0.00025" id="CN0141" name="Labor_Rate_Rookies_S0" xCoordinate="823.0" yCoordinate="102.0"/>
       <ConstantNode constantValue="0.5" id="CN0142" name="C2" xCoordinate="644.0" yCoordinate="1957.0"/>
-      <ConstantNode constantValue="0.0" id="CN0143" name="Hiring_Rate_Rookie_Staff_S3" xCoordinate="1964.0" yCoordinate="1574.0"/>
+      <ConstantNode constantValue="0.1" id="CN0143" name="Hiring_Rate_Rookie_Staff_S3" xCoordinate="1964.0" yCoordinate="1574.0"/>
       <ConstantNode constantValue="0.0003" id="CN0144" name="Drag_Increase_Rate_Constant" xCoordinate="236.0" yCoordinate="1748.0"/>
       <ConstantNode constantValue="0.00015" id="CN0145" name="Training_Rate_Gen_S0" xCoordinate="897.0" yCoordinate="159.0"/>
       <ConstantNode constantValue="0.0" id="CN0146" name="Hiring_Rate_Rookie_Staff_QA_S3" xCoordinate="1912.0" yCoordinate="2186.0"/>
