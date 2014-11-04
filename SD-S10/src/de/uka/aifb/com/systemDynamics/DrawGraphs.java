@@ -877,8 +877,10 @@ public class DrawGraphs {
 		double extend;
 		if (max == 0)
 			extend = Math.abs((0.1*min));			
-		else if (max < 1)
-			extend = 1 + Math.abs((0.1*max));			
+		else if (max < 1){
+			extend = Math.abs((0.1*max));
+			min = min + extend;
+		}
 		else if(min > 2200)
 			extend = Math.abs((0.01*max));						
 		else
