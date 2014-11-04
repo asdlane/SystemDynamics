@@ -1063,7 +1063,7 @@ public class DrawGraphs {
 		// rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		File imgFile = new File(folder + "/" + chartObj.getFile() + "_" + run
 				+ ".jpg");
-		ChartUtilities.saveChartAsJPEG(imgFile, chart, 550, 400);
+		ChartUtilities.saveChartAsJPEG(imgFile, chart, width, height);
 		//System.out.println("Run value:" + xIntercept);
 		//writeTime(runValue);
 		return rValue;

@@ -565,7 +565,7 @@ public class DrawGraphs_Init {
 		File imgFile = new File(folder + "/" + chartObj.getFile() + "_" + run
 				+ ".jpg");
 		// Chart resolution - originally 550 x 400, next 900 x 500, now 1000 x 727
-		ChartUtilities.saveChartAsJPEG(imgFile, chart, 1000, 727);
+		ChartUtilities.saveChartAsJPEG(imgFile, chart, width, height);
 		writeTime(--xIntercept);
 	}
 
