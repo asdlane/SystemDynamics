@@ -181,7 +181,7 @@ public class XMLModelWriter {
       }
 
       // check: is model valide?
-      model.validateModel();
+      //model.validateModel();
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
 
