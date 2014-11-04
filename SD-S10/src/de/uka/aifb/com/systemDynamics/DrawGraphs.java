@@ -1,22 +1,21 @@
 package de.uka.aifb.com.systemDynamics;
 
-import com.csvreader.CsvReader;
-
-import en.gt.ti.com.systemDynamics.graphUtil.ChartLevelNode;
-import en.gt.ti.com.systemDynamics.graphUtil.Increment;
-import en.gt.ti.com.systemDynamics.graphUtil.LevelNodeGraphInfo;
-import en.gt.ti.com.systemDynamics.graphUtil.PlannedRef;
-import en.gt.ti.com.systemDynamics.graphUtil.PlannedVariable;
-import en.gt.ti.com.systemDynamics.graphUtil.PlannedVariableExt;
-import en.gt.ti.com.systemDynamics.graphUtil.PlannedXML;
-import en.gt.ti.com.systemDynamics.graphUtil.SysDynChart;
-
-import java.lang.Math;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Vector;
 
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.annotations.XYTextAnnotation;
@@ -37,15 +36,21 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
-import org.jfree.chart.ChartUtilities;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
-import java.util.Map.Entry;
+import com.csvreader.CsvReader;
+
+import en.gt.ti.com.systemDynamics.graphUtil.ChartLevelNode;
+import en.gt.ti.com.systemDynamics.graphUtil.Increment;
+import en.gt.ti.com.systemDynamics.graphUtil.LevelNodeGraphInfo;
+import en.gt.ti.com.systemDynamics.graphUtil.PlannedRef;
+import en.gt.ti.com.systemDynamics.graphUtil.PlannedVariable;
+import en.gt.ti.com.systemDynamics.graphUtil.PlannedVariableExt;
+import en.gt.ti.com.systemDynamics.graphUtil.PlannedXML;
+import en.gt.ti.com.systemDynamics.graphUtil.SysDynChart;
 
 public class DrawGraphs {
+
+	private static final String SYSTEM_DYNAMICS_PROPERTIES_FILE = "systemDynamics.properties";
 
 	HashMap<String, PlannedVariable> plannedMap;
 	HashMap<String, SysDynChart> chartMap;
@@ -1034,6 +1039,25 @@ public class DrawGraphs {
 			plot.setRenderer(2, renderer3);
 		}
 
+		int width = 1000;
+		int height = 727;
+		
+		Properties properties = new Properties();
+		try {
+			properties.load(new FileInputStream(SYSTEM_DYNAMICS_PROPERTIES_FILE));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String resWidthString = properties.getProperty("width");
+		String resHeightString = properties.getProperty("height");
+		if(resWidthString != null){
+			width = Integer.valueOf(resWidthString);
+		}
+		if(resHeightString != null){
+			height = Integer.valueOf(resHeightString);
+		}
+
+		
 		// change the auto tick unit selection to integer units only...
 		// final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		// rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());

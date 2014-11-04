@@ -1,5 +1,41 @@
 package de.uka.aifb.com.systemDynamics;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.annotations.XYTextAnnotation;
+import org.jfree.chart.axis.AxisLocation;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYStepRenderer;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
+import org.jfree.ui.TextAnchor;
+
 import com.csvreader.CsvReader;
 
 import en.gt.ti.com.systemDynamics.graphUtil.ChartLevelNode;
@@ -11,48 +47,9 @@ import en.gt.ti.com.systemDynamics.graphUtil.PlannedVariableExt;
 import en.gt.ti.com.systemDynamics.graphUtil.PlannedXML;
 import en.gt.ti.com.systemDynamics.graphUtil.SysDynChart;
 
-
-import java.lang.Math;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.io.*;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItem;
-import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.plot.Marker;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.ValueMarker;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYStepRenderer;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.Layer;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RectangleInsets;
-import org.jfree.ui.TextAnchor;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.annotations.XYTextAnnotation;
-import org.jfree.chart.axis.AxisLocation;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.*;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
-import java.util.Map.Entry;
-
 public class DrawGraphs_Init {
+
+	private static final String SYSTEM_DYNAMICS_PROPERTIES_FILE = "systemDynamics.properties";
 
 	HashMap<String, PlannedVariable> plannedMap;
 	HashMap<String, SysDynChart> chartMap;
@@ -544,6 +541,24 @@ public class DrawGraphs_Init {
 			plot.setRenderer(2, renderer3);
 		}
 
+		Properties properties = new Properties();
+		try {
+			properties.load(new FileInputStream(SYSTEM_DYNAMICS_PROPERTIES_FILE));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		int width = 1000;
+		int height = 727;
+		
+		String resWidthString = properties.getProperty("width");
+		String resHeightString = properties.getProperty("height");
+		if(resWidthString != null){
+			width = Integer.valueOf(resWidthString);
+		}
+		if(resHeightString != null){
+			height = Integer.valueOf(resHeightString);
+		}
 		// change the auto tick unit selection to integer units only...
 		// final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		// rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
