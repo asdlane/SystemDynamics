@@ -1215,11 +1215,19 @@ WindowListener {
 
 				return;
 			} catch (UselessNodeException excep ) {
+				
+				if (excep.getUselessNode() instanceof SourceSinkNode){
+					JOptionPane.showMessageDialog(MainFrame.this,
+							"Useless node exception caused by a SourceSinkNode",
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+					
+				}else{
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
-
+				}
 				return;
 			}
 
