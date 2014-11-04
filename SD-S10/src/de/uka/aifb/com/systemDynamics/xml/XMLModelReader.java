@@ -1041,43 +1041,6 @@ public class XMLModelReader {
          throw new XMLModelReaderWriterException(e);
       }
       
-      // is model valide? (check for errors that cannot be expressed in the XML Schema)
-      try {
-         graph.validateModel();
-      } catch (RateNodeFlowException e) {
-         // search problematic rate node ID
-         RateNode problematicRateNode = e.getProblematicRateNode();
-         for (String id : id2rateNode.keySet()) {
-            if (id2rateNode.get(id) == problematicRateNode) {
-               throw new XMLRateNodeFlowException(id);
-            }
-         }
-      } catch (UselessNodeException e) {
-         // search problematic node ID (only constant, auxiliary or source/sink node possible!)
-         AbstractNode problematicNode = e.getUselessNode();
-         for (String id : id2constantNode.keySet()) {
-            if (id2constantNode.get(id) == problematicNode) {
-               throw new XMLUselessNodeException(id);
-            }
-         }
-         for (String id : id2auxiliaryNode.keySet()) {
-            if (id2auxiliaryNode.get(id) == problematicNode) {
-               throw new XMLUselessNodeException(id);
-            }
-         }
-         for (String id : id2sourceSinkNode.keySet()) {
-            if (id2sourceSinkNode.get(id) == problematicNode) {
-               throw new XMLUselessNodeException(id);
-            }
-         }
-      } catch (NoFormulaException e) {
-         // that must not happen -> SAXException is thrown earlier
-         throw new XMLModelReaderWriterException(e);
-      } catch (NoLevelNodeException e) {
-         // that must not happen -> SAXException is thrown earlier
-         throw new XMLModelReaderWriterException(e);
-      }
-      
       // automatic graph layout (if necessary)
       if (automaticGraphLayoutNecessary) {
          graphLayout.doLayout();

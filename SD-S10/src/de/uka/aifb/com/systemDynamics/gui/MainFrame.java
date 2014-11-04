@@ -936,7 +936,7 @@ WindowListener {
 					try {
 						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						graph.addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
-
+						
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
 								messages.getString("MainFrame.OpenFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -973,7 +973,7 @@ WindowListener {
 
 						return;
 					}
-
+					
 					// opening successful
 					xmlFile = file;
 
@@ -1005,6 +1005,56 @@ WindowListener {
 					cutAction.setEnabled(true);
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
+					
+					try {
+						graph.validateModel();
+					} catch (AuxiliaryNodesCycleDependencyException excep) {
+						JOptionPane.showMessageDialog(MainFrame.this,
+								messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
+								messages.getString("MainFrame.SaveFile.Error"),
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					} catch (NoFormulaException excep) {
+						JOptionPane.showMessageDialog(MainFrame.this,
+								messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2"),
+								messages.getString("MainFrame.SaveFile.Error"),
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					} catch (NoLevelNodeException excep) {
+						JOptionPane.showMessageDialog(MainFrame.this,
+								messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text"),
+								messages.getString("MainFrame.SaveFile.Error"),
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					} catch (RateNodeFlowException excep) {
+						JOptionPane.showMessageDialog(MainFrame.this,
+								messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2"),
+								messages.getString("MainFrame.SaveFile.Error"),
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					} catch (UselessNodeException excep ) {
+						if(excep.getUselessNode().getClass().toString().equals("class de.uka.aifb.com.systemDynamics.model.SourceSinkNode")){
+							JOptionPane.showMessageDialog(MainFrame.this,
+									"Invalid model:" + " A Source/Sink node " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+									messages.getString("MainFrame.SaveFile.Error"),
+									JOptionPane.ERROR_MESSAGE);
+							return;
+
+						}else{
+							JOptionPane.showMessageDialog(MainFrame.this,
+									messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+									messages.getString("MainFrame.SaveFile.Error"),
+									JOptionPane.ERROR_MESSAGE);
+
+							return;
+						}			
+					}
+
+					
 				}
 			}
 		}
@@ -1162,12 +1212,21 @@ WindowListener {
 
 				return;
 			} catch (UselessNodeException excep ) {
-				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
-						messages.getString("MainFrame.SaveFile.Error"),
-						JOptionPane.ERROR_MESSAGE);
+				if(excep.getUselessNode().getClass().toString().equals("class de.uka.aifb.com.systemDynamics.model.SourceSinkNode")){
+					JOptionPane.showMessageDialog(MainFrame.this,
+							"Invalid model:" + " A Source/Sink node " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+					return;
 
-				return;
+				}else{
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}			
 			} catch (XMLModelReaderWriterException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.XMLModelReaderWriterException.Text") + " " + excep.getException().getMessage(),
@@ -1316,6 +1375,7 @@ WindowListener {
 							"Invalid model:" + " A Source/Sink node " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
+					return;
 
 				}else{
 					JOptionPane.showMessageDialog(MainFrame.this,
