@@ -158,12 +158,18 @@ public class DrawGraphs_Init {
 		for (int i = -1; i < run; i++) {
 			String outputFile = getFileName(i, fname);
 			CsvReader products = new CsvReader(outputFile, ';');
+			double PRR_DATE = 123;
 			products.skipLine();
 			products.readHeaders();
 			while (products.readRecord()) {
 				for (LevelNodeGraphInfo lnode : levelVector) {
-					double value = Double.parseDouble(products.get(lnode.getNodeName()));  
-
+					double value = Double.parseDouble(products.get(lnode.getNodeName()));
+//					System.out.println(lnode.getNodeName());
+//					if(lnode.getNodeName().contains("DATE")){
+//						PRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
+//						System.out.println(PRR_DATE);
+//
+//					}
 					if(chartObj.getFStep() == 1)
 					{
 						int j;
@@ -173,7 +179,7 @@ public class DrawGraphs_Init {
 								break;
 							else
 								continue;
-						}
+						}//
 						if(value == bounds.lastElement())
 							lnode.getSeries().add(xIntercept, bounds.lastElement());
 						else
@@ -401,8 +407,10 @@ public class DrawGraphs_Init {
 		double extend;
 		if (max == 0)
 			extend = Math.abs((0.1*min));			
-		else if (max < 1)
-			extend = 1 + Math.abs((0.1*max));			
+		else if (max < 1){
+			extend = Math.abs((0.1*max));
+			min += extend;
+		}			
 		else if(min > 2200)
 			extend = Math.abs((0.01*max));						
 		else

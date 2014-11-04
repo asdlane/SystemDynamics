@@ -34,8 +34,8 @@ public class PlannedXML {
 		HashMap<String, PlannedVariable> plannedMap = new HashMap<String, PlannedVariable>();
 		try {
 
-			// System.out.println("Root element :" +
-			// doc.getDocumentElement().getNodeName());
+			 System.out.println("Root element :" +
+			 doc.getDocumentElement().getNodeName());
 			// Parse chart nodes
 			NodeList nList = doc.getElementsByTagName("PlanNode");
 			for (int temp = 0; temp < nList.getLength(); temp++) {

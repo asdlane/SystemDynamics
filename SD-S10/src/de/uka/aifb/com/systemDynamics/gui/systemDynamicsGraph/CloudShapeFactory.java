@@ -21,6 +21,7 @@
 
 package de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
 /**
@@ -82,6 +83,10 @@ public class CloudShapeFactory {
       cloud.curveTo(x( 25.18), y( 29.41), x( 25.35), y( 29.41), x( 25.53), y( 29.41));
       cloud.closePath();
       
+      //scale the cloud shape to more closely match the size of the other shapes
+      AffineTransform rat = new AffineTransform();
+      rat.scale(.8, .8);
+      cloud.transform(rat);
       return cloud;
    }
    

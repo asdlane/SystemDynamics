@@ -21,22 +21,66 @@
 
 package de.uka.aifb.com.systemDynamics.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import de.uka.aifb.com.systemDynamics.SystemDynamics;
 import de.uka.aifb.com.systemDynamics.event.SystemDynamicsGraphModifiedEventListener;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
-import de.uka.aifb.com.systemDynamics.model.*;
-import de.uka.aifb.com.systemDynamics.xml.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.event.*;
+import de.uka.aifb.com.systemDynamics.model.AuxiliaryNodesCycleDependencyException;
+import de.uka.aifb.com.systemDynamics.model.ConstantNode;
+import de.uka.aifb.com.systemDynamics.model.LevelNode;
+import de.uka.aifb.com.systemDynamics.model.NoFormulaException;
+import de.uka.aifb.com.systemDynamics.model.NoLevelNodeException;
+import de.uka.aifb.com.systemDynamics.model.RateNodeFlowException;
+import de.uka.aifb.com.systemDynamics.model.SourceSinkNode;
+import de.uka.aifb.com.systemDynamics.model.UselessNodeException;
+import de.uka.aifb.com.systemDynamics.xml.XMLModelReader;
+import de.uka.aifb.com.systemDynamics.xml.XMLModelReaderWriterException;
+import de.uka.aifb.com.systemDynamics.xml.XMLNodeParameterOutOfRangeException;
+import de.uka.aifb.com.systemDynamics.xml.XMLRateNodeFlowException;
+import de.uka.aifb.com.systemDynamics.xml.XMLUselessNodeException;
 
 /*
  * Changes:
@@ -74,6 +118,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    
    private static final String FILE_NEW_ICON = "resources/page_white.png";
    private static final String FILE_OPEN_ICON = "resources/folder_page_white.png";
+   private static final String COPY_ICON = "resources/scissors.png";
    private static final String FILE_SAVE_ICON = "resources/disk.png";
    
    private static final String FILE_NEW_AN_ICON = "resources/new_auxiliary_node_en_US.png";
@@ -130,6 +175,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
    private Action zoomStandardAction;
    private Action zoomInAction;
    private Action zoomOutAction;
+   private Action cut;
+   private Action copy;
+   private Action paste;
    private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
    private JRadioButtonMenuItem rbMenuItemEnglish;
    private JRadioButtonMenuItem rbMenuItemGerman;
@@ -148,6 +196,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
          throw new IllegalArgumentException("'start' must not be null.");
       }
       
+ 
       this.start = start;
       messages = start.getMessages();
       
@@ -180,10 +229,12 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       contentPanel = new JPanel(new BorderLayout());
       getContentPane().add(contentPanel, BorderLayout.CENTER);
       registerDelAction();
+
       setVisible(true);
 
       setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       addWindowListener(this);
+
    }
    
    //ADDED BY JOHN HINKEL.  The registerDelAction and askconfirm methods
@@ -210,23 +261,23 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
                
                    // If some file is selected
                
-                   if(selectedFiles!=null)
-                   {
-                       // If user confirms to delete
-                       if(askConfirm()==JOptionPane.YES_OPTION)
-                       {
-                       
-                       // Call Files.delete(), if any problem occurs
-                       // the exception can be printed, it can be
-                       // analysed                       
-                                           
-                       java.nio.file.Files.delete(selectedFiles.toPath());
-
-                       // Rescan the directory after deletion
-                       jf.rescanCurrentDirectory();
-                       
-                       }
-                   }
+//                   if(selectedFiles!=null)
+//                   {
+//                       // If user confirms to delete
+//                       if(askConfirm()==JOptionPane.YES_OPTION)
+//                       {
+//                       
+//                       // Call Files.delete(), if any problem occurs
+//                       // the exception can be printed, it can be
+//                       // analysed                       
+//                                           
+//                       java.nio.file.Files.delete(selectedFiles.toPath());
+//
+//                       // Rescan the directory after deletion
+//                       jf.rescanCurrentDirectory();
+//                       
+//                       }
+//                   }
                }catch(Exception e){
                    System.out.println(e);
                }
@@ -239,7 +290,15 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
        // Get input map when fileChooser is in focused window and put a keystroke DELETE
        // associate the key stroke (DELETE) (here) with "delAction"
        fileChooser.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"),"delAction");
+       
    }
+   
+   
+   //*********************************STUFF THAT COULD HELP WITH CUT, COPY, PASTE*************************************************
+   //graph.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('p',InputEvent.CTRL_MASK), actionMapKey);
+   //javax.swing.TransferHandler.getCutAction();
+   //javax.swing.TransferHandler.getCopyAction();
+   //javax.swing.TransferHandler.getPasteAction();
    
    public int askConfirm()
    {
@@ -629,7 +688,38 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
       toolBar.add(zoomStandardAction);
       toolBar.add(zoomInAction);
       toolBar.add(zoomOutAction);
+      Action action;
       
+      // Cut Action
+      action = javax.swing.TransferHandler.getCutAction();
+      ImageIcon CutIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON), "Cut");
+      action.putValue(Action.LARGE_ICON_KEY, CutIcon);
+      cut = new EventRedirector(action);
+      toolBar.add(cut);
+      System.out.println(CutIcon.getIconHeight());
+      System.out.println(CutIcon.getIconWidth());
+      System.out.println();
+      
+      // Copy Action
+      action = javax.swing.TransferHandler.getCopyAction();    
+      ImageIcon CopyIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON), "Copy");    		  
+      action.putValue(Action.LARGE_ICON_KEY, CopyIcon);
+      copy = new EventRedirector(action);
+      toolBar.add(copy);
+      System.out.println(CopyIcon.getIconHeight());
+      System.out.println(CopyIcon.getIconWidth());
+      System.out.println();
+      
+      // Paste Action
+      action = javax.swing.TransferHandler.getPasteAction();
+      ImageIcon PasteIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON), "Paste");
+      System.out.println(PasteIcon.getIconHeight());
+      System.out.println(PasteIcon.getIconWidth());
+	  action.putValue(Action.SMALL_ICON, PasteIcon);
+	  paste = new EventRedirector(action);
+	  toolBar.add(paste);
+      
+	  
       return toolBar;
    }
    
@@ -803,6 +893,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
          super(name, icon);
          
          putValue(Action.SHORT_DESCRIPTION, toolTipText);
+
       }
       
       public void actionPerformed(ActionEvent e) {
@@ -813,6 +904,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
                                                 "");
          
          graph = new SystemDynamicsGraph(start, MainFrame.this);
+
          if (modelName != null) {
         	 DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
         	 Date today = Calendar.getInstance().getTime();
@@ -848,7 +940,9 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
             zoomInAction.setEnabled(true);
             zoomOutAction.setEnabled(true);
          }
+
       }
+      
    }
    
    private class OpenAction extends AbstractAction {
@@ -869,6 +963,7 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
             try {
                graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
                graph.addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+               
             } catch (AuxiliaryNodesCycleDependencyException excep) {
                JOptionPane.showMessageDialog(MainFrame.this,
                                              messages.getString("MainFrame.OpenFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1532,4 +1627,22 @@ public class MainFrame extends JFrame implements ActionListener, ChangeListener,
          setTitle(createTitle(graph.getModelName(), graphModified));
       }
    }
+   // This will change the source of the actionevent to graph.
+	public class EventRedirector extends AbstractAction {
+
+		protected Action action;
+
+		// Construct the "Wrapper" Action
+		public EventRedirector(Action a) {
+			super("", (ImageIcon) a.getValue(Action.SMALL_ICON));
+			this.action = a;
+		}
+
+		// Redirect the Actionevent
+		public void actionPerformed(ActionEvent e) {
+			e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
+					.getModifiers());
+			action.actionPerformed(e);
+		}
+	}
 }
