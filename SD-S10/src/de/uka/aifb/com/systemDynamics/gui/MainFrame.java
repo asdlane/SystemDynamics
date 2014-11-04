@@ -1663,7 +1663,9 @@ WindowListener {
 			//e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
 			//.getModifiers());
 			//action.actionPerformed(e);
-
+			Object[] cells = graph.getSelectionCells();
+			graph.getModel().remove(cells);
+			
 			//GET SELECTED CELLS
 			//THEN WRITE THIS ARRAY TO A FILE.  READ IT IN FOR PASTE
 			
