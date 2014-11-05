@@ -40,6 +40,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -247,7 +248,8 @@ WindowListener {
 							// the exception can be printed, it can be
 							// analysed                       
 
-							java.nio.file.Files.delete(selectedFiles.toPath());
+							
+							Files.delete(selectedFiles.toPath());
 
 							// Rescan the directory after deletion
 							jf.rescanCurrentDirectory();
