@@ -247,7 +247,7 @@ WindowListener {
 							// the exception can be printed, it can be
 							// analysed                       
 
-							File f = new File(selectedFiles.toPath().toString());
+							File f = new File(selectedFiles.getPath().toString());
 							f.delete();
 							
 

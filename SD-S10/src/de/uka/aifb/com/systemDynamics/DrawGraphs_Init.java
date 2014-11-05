@@ -350,35 +350,35 @@ public class DrawGraphs_Init {
 		{
 			Marker pdr = new ValueMarker(0);
 			pdr.setLabel("PDR");
-			pdr.setStroke(new BasicStroke(3));
+			pdr.setStroke(new BasicStroke(5));
 			pdr.setPaint(Color.CYAN);
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
 	
 			Marker cdr = new ValueMarker(810);
 			cdr.setLabel("CDR");
-			cdr.setStroke(new BasicStroke(2));
+			cdr.setStroke(new BasicStroke(5));
 			cdr.setPaint(Color.CYAN);
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(cdr);
 	
 			Marker frr = new ValueMarker(1170);
 			frr.setLabel("FRR");
-			frr.setStroke(new BasicStroke(2));
+			frr.setStroke(new BasicStroke(5));
 			frr.setPaint(Color.CYAN);
 			frr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(frr);
 	
 			Marker prr = new ValueMarker(1530);
 			prr.setLabel("PRR");
-			prr.setStroke(new BasicStroke(2));
+			prr.setStroke(new BasicStroke(5));
 			prr.setPaint(Color.CYAN);
 			prr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(prr);
 	
 			Marker isr = new ValueMarker(1890);
 			isr.setLabel("ISR");
-			isr.setStroke(new BasicStroke(2));
+			isr.setStroke(new BasicStroke(5));
 			isr.setPaint(Color.CYAN);
 			isr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(isr);
@@ -387,14 +387,14 @@ public class DrawGraphs_Init {
 		{
 			Marker pdr = new ValueMarker(0);
 			pdr.setLabel("PDR");
-			pdr.setStroke(new BasicStroke(3));
+			pdr.setStroke(new BasicStroke(5));
 			pdr.setPaint(Color.CYAN);
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
 	
 			Marker cdr = new ValueMarker(810);
 			cdr.setLabel("CDR");
-			cdr.setStroke(new BasicStroke(2));
+			cdr.setStroke(new BasicStroke(5));
 			cdr.setPaint(Color.CYAN);
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(cdr);			
@@ -454,7 +454,7 @@ public class DrawGraphs_Init {
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setBaseLinesVisible(true);
 		renderer.setBaseShapesVisible(false);
-//		renderer.setBaseStroke(new BasicStroke(3));
+		renderer.setBaseStroke(new BasicStroke(5));
 		if(isPlan == 1)
 			renderer.setSeriesPaint(seriesNumber, Color.black);
 		plot.setRenderer(renderer);
