@@ -21,11 +21,15 @@
 
 package de.uka.aifb.com.systemDynamics.xml;
 
+import de.uka.aifb.com.systemDynamics.gui.MainFrame;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.*;
 import de.uka.aifb.com.systemDynamics.model.*;
+
 import java.awt.geom.*;
 import java.io.*;
 import java.util.*;
+
+import javax.swing.JOptionPane;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
@@ -137,14 +141,21 @@ public class XMLModelWriter {
       HashMap<AbstractNode, String> node2Id = createNode2IdMap();
 
       // create DOM document for model
-      Document document = createDocumentForModel(model, node2Id);
+      Document document = null;
+      try{
+    	  document = createDocumentForModel(model, node2Id);
+    	  // add position information of nodes and additional control points to DOC document
+          addPositionInformationToDocument(document, graph, graphNodes, flowEdges, dependencyEdges,
+                                           node2Id);
 
-      // add position information of nodes and additional control points to DOC document
-      addPositionInformationToDocument(document, graph, graphNodes, flowEdges, dependencyEdges,
-                                       node2Id);
+          // XML output
+          writeDocumentToXMLFile(document, fileName);
+      }catch(Exception e){
+    	  JOptionPane.showMessageDialog(null, "Rate nodes must have a formula","missing formula on rate node", JOptionPane.ERROR_MESSAGE);
+    	  
+      }
 
-      // XML output
-      writeDocumentToXMLFile(document, fileName);
+     
    }
 
    /**

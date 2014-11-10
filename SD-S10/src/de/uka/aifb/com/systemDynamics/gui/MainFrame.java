@@ -1400,7 +1400,52 @@ WindowListener {
 			xmlFile = file;
 			graphModified = false;
 			saveAction.setEnabled(false);
+			try {
+				graph.validateModel();
+			} catch (AuxiliaryNodesCycleDependencyException excep) {
+				JOptionPane.showMessageDialog(MainFrame.this,
+						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
+						messages.getString("MainFrame.SaveFile.Error"),
+						JOptionPane.ERROR_MESSAGE);
 
+				return;
+			} catch (NoFormulaException excep) {
+				JOptionPane.showMessageDialog(MainFrame.this,
+						messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2"),
+						messages.getString("MainFrame.SaveFile.Error"),
+						JOptionPane.ERROR_MESSAGE);
+
+				return;
+			} catch (NoLevelNodeException excep) {
+				JOptionPane.showMessageDialog(MainFrame.this,
+						messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text"),
+						messages.getString("MainFrame.SaveFile.Error"),
+						JOptionPane.ERROR_MESSAGE);
+
+				return;
+			} catch (RateNodeFlowException excep) {
+				JOptionPane.showMessageDialog(MainFrame.this,
+						messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2"),
+						messages.getString("MainFrame.SaveFile.Error"),
+						JOptionPane.ERROR_MESSAGE);
+
+				return;
+			} catch (UselessNodeException excep ) {
+				
+				if (excep.getUselessNode() instanceof SourceSinkNode){
+					JOptionPane.showMessageDialog(MainFrame.this,
+							"Useless node exception caused by a SourceSinkNode",
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+					
+				}else{
+				JOptionPane.showMessageDialog(MainFrame.this,
+						messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+						messages.getString("MainFrame.SaveFile.Error"),
+						JOptionPane.ERROR_MESSAGE);
+				}
+				return;
+			}
 			fileName = xmlFile.getAbsolutePath();
 			setTitle(createTitle(graph.getModelName(), graphModified));
 		}
