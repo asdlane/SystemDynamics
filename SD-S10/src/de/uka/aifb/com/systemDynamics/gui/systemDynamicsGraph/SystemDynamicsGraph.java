@@ -26,11 +26,14 @@ import de.uka.aifb.com.systemDynamics.event.SystemDynamicsGraphModifiedEventList
 import de.uka.aifb.com.systemDynamics.gui.*;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
+
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.text.*;
 import java.util.*;
+
 import javax.swing.*;
+
 import org.jgraph.JGraph;
 import org.jgraph.event.*;
 import org.jgraph.graph.*;
@@ -266,7 +269,11 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       // create node
       ConstantNode constantNode = model.createConstantNode(nodeName, constantValue);
-      ConstantNodeGraphCell constantNodeGraphCell = new ConstantNodeGraphCell(nodeName, x, y);
+      //put all the nodes properties in an attribute map so they can be accessed for later use.
+      AttributeMap vals = new AttributeMap();
+	  vals.put("name", nodeName);
+	  vals.put("constval", constantValue);
+      ConstantNodeGraphCell constantNodeGraphCell = new ConstantNodeGraphCell(nodeName, x, y,vals);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(constantNodeGraphCell);

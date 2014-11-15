@@ -49,6 +49,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
 import org.jgraph.*;
+import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferable;
 
 /*
@@ -1818,8 +1819,32 @@ WindowListener {
 			//.getModifiers());
 			//action.actionPerformed(e);
 			Object[] cells = graph.getSelectionCells();
-			graph.getModel().remove(cells);
+			//graph.getModel().remove(cells);
 			
+			
+			for(int i=0; i<cells.length;i++){
+				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+					
+				}
+				else if (cells[i] instanceof LevelNodeGraphCell){
+					
+				}
+				else if(cells[i] instanceof SourceSinkNodeGraphCell){
+					
+				}
+				
+				else if(cells[i] instanceof ConstantNodeGraphCell){
+					String name = ((ConstantNodeGraphCell)cells[0]).getUserObject().toString();
+					String values = ((ConstantNodeGraphCell)cells[0]).getAttributes().get("constval").toString();
+					System.out.println(values);
+				}
+				else if(cells[i] instanceof RateNodeGraphCell){
+					
+
+				}
+			}
+			
+
 			//GET SELECTED CELLS
 			//THEN WRITE THIS ARRAY TO A FILE.  READ IT IN FOR PASTE
 			
@@ -1836,7 +1861,7 @@ WindowListener {
 			this.action = a;
 		}
 		public void actionPerformed(ActionEvent e){
-			Object[] copyObjects = graph.getSelectionCells();
+			Object[] cells = graph.getSelectionCells();
 			File fout = new File("copyClipboard.txt");
 			FileOutputStream fos = null;
 			try {

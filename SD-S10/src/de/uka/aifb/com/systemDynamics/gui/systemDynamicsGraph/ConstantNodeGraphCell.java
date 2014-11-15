@@ -47,8 +47,11 @@ public class ConstantNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public ConstantNodeGraphCell(String name, double x, double y) {
-      super(name);
+   public ConstantNodeGraphCell(String name, double x, double y, AttributeMap vals) {
+	   super(name,vals);
+	   
+      
+      
       
       if (name == null) {
          throw new IllegalArgumentException("'name' must not be null.");
