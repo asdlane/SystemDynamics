@@ -198,10 +198,19 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
-      
+      //create a new attribute map to store all the values that pertain to the node trying to be created.
+      AttributeMap vals = new AttributeMap();
+	  vals.put("name", nodeName);
+	  vals.put("startVal", startValue);
+	  vals.put("minVal", minValue);
+	  vals.put("maxVal", maxValue);
+	  vals.put("curve", curve);
+	  
       // create node
       LevelNode levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve);
-      LevelNodeGraphCell levelNodeGraphCell = new LevelNodeGraphCell(nodeName, x, y);
+      
+      //create graph cell with the attribute map attached to it.
+      LevelNodeGraphCell levelNodeGraphCell = new LevelNodeGraphCell(nodeName, x, y, vals);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(levelNodeGraphCell);
@@ -231,10 +240,14 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
-      
+      //create a new attribute map to store all the values that pertain to the node trying to be created.
+      AttributeMap vals = new AttributeMap();
+	  vals.put("name", nodeName);
       // create node
       RateNode rateNode = model.createRateNode(nodeName);
-      RateNodeGraphCell rateNodeGraphCell = new RateNodeGraphCell(nodeName, x, y);
+      
+      //create graph cell with the attribute map attached to it.
+      RateNodeGraphCell rateNodeGraphCell = new RateNodeGraphCell(nodeName, x, y, vals);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(rateNodeGraphCell);
@@ -269,10 +282,13 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       // create node
       ConstantNode constantNode = model.createConstantNode(nodeName, constantValue);
-      //put all the nodes properties in an attribute map so they can be accessed for later use.
+      
+      //create a new attribute map to store all the values that pertain to the node trying to be created.
       AttributeMap vals = new AttributeMap();
 	  vals.put("name", nodeName);
 	  vals.put("constval", constantValue);
+	  
+  	  //create graph cell with the attribute map attached to it.
       ConstantNodeGraphCell constantNodeGraphCell = new ConstantNodeGraphCell(nodeName, x, y,vals);
       
       // insert vertex to graph
@@ -303,10 +319,15 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
+      //create a new attribute map to store all the values that pertain to the node trying to be created.
+
+      AttributeMap vals = new AttributeMap();
+	  vals.put("name", nodeName);
+	        
       
-      // create node
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode(nodeName);
-      AuxiliaryNodeGraphCell auxiliaryNodeGraphCell = new AuxiliaryNodeGraphCell(nodeName, x, y);
+  	  //create graph cell with the attribute map attached to it.
+      AuxiliaryNodeGraphCell auxiliaryNodeGraphCell = new AuxiliaryNodeGraphCell(nodeName, x, y, vals);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(auxiliaryNodeGraphCell);

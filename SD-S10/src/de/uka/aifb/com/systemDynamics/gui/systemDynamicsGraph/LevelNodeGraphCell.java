@@ -23,6 +23,7 @@ package de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+
 import org.jgraph.graph.*;
 
 /**
@@ -46,8 +47,8 @@ public class LevelNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public LevelNodeGraphCell(String name, double x, double y) {
-      super(name);
+   public LevelNodeGraphCell(String name, double x, double y, AttributeMap vals) {
+      super(name, vals);
       
       if (name == null) {
          throw new IllegalArgumentException("'name' must not be null.");

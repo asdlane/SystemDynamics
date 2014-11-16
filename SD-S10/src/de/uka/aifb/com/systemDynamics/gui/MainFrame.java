@@ -1815,38 +1815,68 @@ WindowListener {
 			this.action = a;
 		}
 		public void actionPerformed(ActionEvent e){
-			//e = new ActionEvent(graph, e.getID(), e.getActionCommand(), e
-			//.getModifiers());
-			//action.actionPerformed(e);
+
 			Object[] cells = graph.getSelectionCells();
-			//graph.getModel().remove(cells);
+			graph.getModel().remove(cells);
 			
-			
+			File fout = new File("Clipboard.txt");
+			FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(fout);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		 
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			try{
 			for(int i=0; i<cells.length;i++){
+				//for each graph cell, get the appropriate attributes from that cell's attribute map.  then, write all the attributes
+				//to the clipboard as one line with each attribute delimited by a comma (helps when pasteAction reads the values in from the 
+				//clipboard).
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
 					
+					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();					
+					
+					bw.write("Auxiliary," + name);
+					bw.newLine();
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
+					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
+					String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
+					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
+					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
 					
+					bw.write("Level," + name + "," + startVal + "," + minVal + "," + maxVal + "," + curve);
+					bw.newLine();
+					  
 				}
-				else if(cells[i] instanceof SourceSinkNodeGraphCell){
-					
+				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
+					bw.write("SourceSink");
+					bw.newLine();
 				}
 				
 				else if(cells[i] instanceof ConstantNodeGraphCell){
-					String name = ((ConstantNodeGraphCell)cells[0]).getUserObject().toString();
-					String values = ((ConstantNodeGraphCell)cells[0]).getAttributes().get("constval").toString();
-					System.out.println(values);
+					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
+					bw.write("Constant,"+name+","+values);
+					bw.newLine();
 				}
 				else if(cells[i] instanceof RateNodeGraphCell){
-					
-
+					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					bw.write("Rate,"+name);
 				}
 			}
-			
-
-			//GET SELECTED CELLS
-			//THEN WRITE THIS ARRAY TO A FILE.  READ IT IN FOR PASTE
+			}catch(IOException e1){
+				
+			}
+			try {
+				bw.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 
 		}
@@ -1860,9 +1890,11 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 			this.action = a;
 		}
+		//same code as CutAction, but doesn't remove any graph cells.
 		public void actionPerformed(ActionEvent e){
 			Object[] cells = graph.getSelectionCells();
-			File fout = new File("copyClipboard.txt");
+			
+			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
 			try {
 				fos = new FileOutputStream(fout);
@@ -1872,39 +1904,44 @@ WindowListener {
 			}
 		 
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-		 
-				//reads all the selected objects and writes an indication of which type of object it is to the clipboard (i.e. copyClipboard.txt)
-				try {
-					for(int i=0; i<copyObjects.length;i++){
-						if (copyObjects[i] instanceof AuxiliaryNodeGraphCell) {
-							bw.write("Auxiliary");
-							bw.newLine();
-						}
-						else if (copyObjects[i] instanceof LevelNodeGraphCell){
-							bw.write("Level");
-							bw.newLine();
-						}
-						else if(copyObjects[i] instanceof SourceSinkNodeGraphCell){
-							bw.write("SourceSink");
-							bw.newLine();
-						}
-						
-						else if(copyObjects[i] instanceof ConstantNodeGraphCell){
-							bw.write("Constant");
-							bw.newLine();							
-
-						}
-						else if(copyObjects[i] instanceof RateNodeGraphCell){
-							bw.write("Rate");
-							bw.newLine();
-
-						}
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			try{
+			for(int i=0; i<cells.length;i++){
+				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();					
+					
+					bw.write("Auxiliary," + name);
+					bw.newLine();
 				}
-		 
+				else if (cells[i] instanceof LevelNodeGraphCell){
+					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
+					String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
+					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
+					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
+					
+					bw.write("Level," + name + "," + startVal + "," + minVal + "," + maxVal + "," + curve);
+					bw.newLine();
+					  
+				}
+				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
+					bw.write("SourceSink");
+					bw.newLine();
+				}
+				
+				else if(cells[i] instanceof ConstantNodeGraphCell){
+					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
+					bw.write("Constant,"+name+","+values);
+					bw.newLine();
+				}
+				else if(cells[i] instanceof RateNodeGraphCell){
+					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					bw.write("Rate,"+name);
+				}
+			}
+			}catch(IOException e1){
+				
+			}
 			try {
 				bw.close();
 			} catch (IOException e1) {
@@ -1927,7 +1964,7 @@ WindowListener {
 			BufferedReader br = null;
 			ArrayList<String> pasteCells = new ArrayList<String>(); 
 			try {
-				fis = new FileInputStream("copyClipboard.txt");
+				fis = new FileInputStream("Clipboard.txt");
 				br = new BufferedReader(new InputStreamReader(fis));
 				String line = null;
 				while((line = br.readLine()) != null){
@@ -1942,24 +1979,29 @@ WindowListener {
 			}
 			//reads in from copyClipboard.txt and, based on which indicator is read in, creates the right node.
 			for(int i=0; i<pasteCells.size();i++){
-				if (pasteCells.get(i).equals("Auxiliary")) {
-					graph.createAuxiliaryNodeGraphCell("tempName", MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+				if (pasteCells.get(i).contains("Auxiliary")) {
+					String[] attributes = pasteCells.get(i).split(",");
+					
+					graph.createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 					
 				}
-				else if (pasteCells.get(i).equals("Level")){
-					graph.createLevelNodeGraphCell("tempName", 25, 0, 39, 23, MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+				else if (pasteCells.get(i).contains("Level")){
+					String[] attributes = pasteCells.get(i).split(",");
+							
+					graph.createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
-				else if(pasteCells.get(i).equals("SourceSink")){
+				else if(pasteCells.get(i).contains("SourceSink")){
 					graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				
-				else if(pasteCells.get(i).equals("Constant")){
-					
-					graph.createConstantNodeGraphCell("tempName", 0, MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+				else if(pasteCells.get(i).contains("Constant")){
+					String[] attributes = pasteCells.get(i).split(",");
+					graph.createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
-				else if(pasteCells.get(i).equals("Rate")){
-					graph.createRateNodeGraphCell("tempName", MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+				else if(pasteCells.get(i).contains("Rate")){
+					String[] attributes = pasteCells.get(i).split(",");
+					graph.createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 			}
