@@ -420,11 +420,17 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (newNodeName == null) {
          throw new IllegalArgumentException("'newNodeName' must not be null.");
       }
+      //apply changed value to the attribute list
+      AttributeMap newAttributes = vertex.getAttributes();
+      newAttributes.applyValue("name", newNodeName);
       
       AbstractNode node = graphNode2modelNode.get(vertex);
       model.setNodeName(node, newNodeName);
       
+      vertex.setAttributes(newAttributes);
+      
       Hashtable map = new Hashtable();
+      
       GraphConstants.setValue(map, newNodeName);
       getGraphLayoutCache().editCell(vertex, map);
       
@@ -432,6 +438,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
          listener.performGraphModifiedEvent();
       }
+      
    }
    
    /**
@@ -444,9 +451,15 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (vertex == null) {
          throw new IllegalArgumentException("'vertex' must not be null.");
       }
-      
+   	  //apply changed value to the attribute list
+      AttributeMap newAttributes = vertex.getAttributes();
+      newAttributes.applyValue("startVal", newStartValue);
+      vertex.setAttributes(newAttributes);
       LevelNode levelNode = (LevelNode)graphNode2modelNode.get(vertex);
       model.setStartValue(levelNode, newStartValue);
+      
+
+      
       
       // inform listeners
       for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
@@ -464,7 +477,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (vertex == null) {
          throw new IllegalArgumentException("'vertex' must not be null.");
       }
-      
+      //apply changed value to the attribute list
+      AttributeMap newAttributes = vertex.getAttributes();
+      newAttributes.applyValue("minVal", newMinValue);
+      vertex.setAttributes(newAttributes);
       LevelNode levelNode = (LevelNode)graphNode2modelNode.get(vertex);
       model.setMinValue(levelNode, newMinValue);
       
@@ -484,6 +500,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (vertex == null) {
          throw new IllegalArgumentException("'vertex' must not be null.");
       }
+      //apply changed value to the attribute list
+      AttributeMap newAttributes = vertex.getAttributes();
+      newAttributes.applyValue("maxVal", newMaxValue);
+      vertex.setAttributes(newAttributes);
       
       LevelNode levelNode = (LevelNode)graphNode2modelNode.get(vertex);
       model.setMaxValue(levelNode, newMaxValue);
@@ -504,6 +524,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	      if (vertex == null) {
 	         throw new IllegalArgumentException("'vertex' must not be null.");
 	      }
+	      //apply changed value to the attribute list
+	      AttributeMap newAttributes = vertex.getAttributes();
+	      newAttributes.applyValue("curve", newCurve);
+	      vertex.setAttributes(newAttributes);
 	      
 	      LevelNode levelNode = (LevelNode)graphNode2modelNode.get(vertex);
 	      model.setCurveValue(levelNode, newCurve);
@@ -524,6 +548,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       if (vertex == null) {
          throw new IllegalArgumentException("'vertex' must not be null.");
       }
+      //apply changed value to the attribute list
+      AttributeMap newAttributes = vertex.getAttributes();
+      newAttributes.applyValue("constval", newConstantValue);
+      vertex.setAttributes(newAttributes);
       
       ConstantNode constantNode = (ConstantNode)graphNode2modelNode.get(vertex);
       model.setConstantValue(constantNode, newConstantValue);
