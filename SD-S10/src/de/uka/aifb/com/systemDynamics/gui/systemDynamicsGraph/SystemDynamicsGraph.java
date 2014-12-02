@@ -1043,7 +1043,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param rateNode rate node
     * @return <code>true</code> iff the flow could be removed
     */
-   private boolean removeFlow(LevelNodeGraphCell levelNode, RateNodeGraphCell rateNode) {
+   public boolean removeFlow(LevelNodeGraphCell levelNode, RateNodeGraphCell rateNode) {
       if (levelNode == null) {
          throw new IllegalArgumentException("'levelNode' must not be null.");
       }
@@ -1074,7 +1074,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param levelNode level node
     * @return <code>true</code> iff the flow could be removed
     */
-   private boolean removeFlow(RateNodeGraphCell rateNode, LevelNodeGraphCell levelNode) {
+   public boolean removeFlow(RateNodeGraphCell rateNode, LevelNodeGraphCell levelNode) {
       if (rateNode == null) {
          throw new IllegalArgumentException("'rateNode' must not be null.");
       }
@@ -1105,7 +1105,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param rateNode rate node
     * @return <code>true</code> iff the flow could be removed
     */
-   private boolean removeFlow(SourceSinkNodeGraphCell sourceSinkNode, RateNodeGraphCell rateNode) {
+   public boolean removeFlow(SourceSinkNodeGraphCell sourceSinkNode, RateNodeGraphCell rateNode) {
       if (sourceSinkNode == null) {
          throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
       }
@@ -1136,7 +1136,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param sourceSinkNode source/sink node
     * @return <code>true</code> iff the flow could be removed
     */
-   private boolean removeFlow(RateNodeGraphCell rateNode, SourceSinkNodeGraphCell sourceSinkNode) {
+   public boolean removeFlow(RateNodeGraphCell rateNode, SourceSinkNodeGraphCell sourceSinkNode) {
       if (rateNode == null) {
          throw new IllegalArgumentException("'rateNode' must not be null.");
       }
@@ -1168,7 +1168,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param vertex1 edge's source vertex
     * @param vertex2 edge's target vertex
     */
-   private void removeFlowEdge(DefaultGraphCell vertex1, DefaultGraphCell vertex2) {
+   public void removeFlowEdge(DefaultGraphCell vertex1, DefaultGraphCell vertex2) {
       if (vertex1 == null) {
          throw new IllegalArgumentException("'vertex1' must not be null.");
       }

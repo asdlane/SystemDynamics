@@ -49,6 +49,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
 import org.jgraph.*;
+import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferable;
 
@@ -1817,7 +1818,8 @@ WindowListener {
 		public void actionPerformed(ActionEvent e){
 
 			Object[] cells = graph.getSelectionCells();
-			graph.getModel().remove(cells);
+	
+			graph.getModel().remove(cells);		
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -1866,6 +1868,23 @@ WindowListener {
 				else if(cells[i] instanceof RateNodeGraphCell){
 					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					bw.write("Rate,"+name);
+				}
+				else if(cells[i] instanceof FlowEdge){
+					FlowEdge edge = (FlowEdge)cells[i];
+					 final Object edgeSource = graph.getModel().getParent(graph.getModel().getSource(edge));
+					 final Object edgeTarget = graph.getModel().getParent(graph.getModel().getTarget(edge));
+					 if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+		                 graph.removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		              }
+		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+		            	  graph.removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+		              }
+		              if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+		            	  graph.removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		              }
+		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+		            	  graph.removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+		              }
 				}
 			}
 			}catch(IOException e1){
