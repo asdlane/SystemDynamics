@@ -85,7 +85,7 @@ public class DrawGraphs {
 		Iterator it = chartMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pairs = (Map.Entry) it.next();
-			System.out.println(pairs.getKey());
+//			System.out.println(pairs.getKey());
 			SysDynChart chartObj = (SysDynChart) pairs.getValue();
 			xValue = this.createGraph(chartObj, fname, run, folder);
 		}
@@ -588,7 +588,6 @@ public class DrawGraphs {
 			while (products.readRecord()) {
 				for (LevelNodeGraphInfo lnode : levelVector) {
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
-
 					if(chartObj.getFStep() == 1)
 					{
 						int jbounds;
@@ -939,7 +938,7 @@ public class DrawGraphs {
 //		renderer.setSeriesShapesVisible(1, false);
 		renderer.setBaseLinesVisible(true);
 		renderer.setBaseShapesVisible(false);
-//		renderer.setBaseStroke(new BasicStroke(3));
+		renderer.setBaseStroke(new BasicStroke(8));
 		if(isPlan == 1)
 			renderer.setSeriesPaint(seriesNumber, Color.black);
 		plot.setRenderer(renderer);
@@ -947,6 +946,7 @@ public class DrawGraphs {
 		if(stepSet == 1)
 		{
 			final XYStepRenderer stepRenderer = new XYStepRenderer();
+			stepRenderer.setBaseStroke(new BasicStroke(8));
 			plot.setRenderer(stepRenderer);
 		}
 
@@ -962,6 +962,7 @@ public class DrawGraphs {
 			XYItemRenderer renderer2 = new StandardXYItemRenderer();
 			renderer2.setBaseSeriesVisible(false);
 			renderer2.setBaseSeriesVisibleInLegend(false);
+			renderer2.setBaseStroke(new BasicStroke(8));
 //			renderer2.setSeriesVisibleInLegend(0, false);
 //			renderer2.setSeriesVisibleInLegend(1, false);
 //			renderer2.setSeriesVisibleInLegend(2, false);
@@ -1001,6 +1002,7 @@ public class DrawGraphs {
 			XYItemRenderer renderer3 = new StandardXYItemRenderer();
 			renderer3.setBaseSeriesVisible(false);
 			renderer3.setBaseSeriesVisibleInLegend(false);
+			renderer3.setBaseStroke(new BasicStroke(8));
 			plot.setRenderer(2, renderer3);
 		}
 		else if(chartObj.getXLabel().contains("Quarters"))
@@ -1035,6 +1037,7 @@ public class DrawGraphs {
 //			xAxis2.setRange(0, (max_xIntercept/7));
 			XYItemRenderer renderer3 = new StandardXYItemRenderer();
 			renderer3.setBaseSeriesVisible(false);
+			renderer3.setBaseStroke(new BasicStroke(8));
 			renderer3.setBaseSeriesVisibleInLegend(false);
 			plot.setRenderer(2, renderer3);
 		}

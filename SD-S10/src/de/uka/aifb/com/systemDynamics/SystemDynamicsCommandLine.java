@@ -35,6 +35,7 @@ import java.util.StringTokenizer;
  * @author Joachim Melcher, Institut AIFB, Universitaet Karlsruhe (TH), Germany
  * @author Pradeep Jawahar Georgia Institute of Technology
  * @author Subbu Ramanathan Georgia Institute of Technology
+ * @author Gopi Krishnan Nambiar Georgia Institute of Technology
  * @version 2.0
  */
 public class SystemDynamicsCommandLine {
@@ -118,6 +119,7 @@ public class SystemDynamicsCommandLine {
       // (4) execute model and export values
       LevelNode[] levelNodes = model.getLevelNodes().toArray(new LevelNode[0]);
       // sort level nodes alphabetically
+      
       Arrays.sort(levelNodes);
       
       try {

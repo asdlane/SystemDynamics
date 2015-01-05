@@ -6,6 +6,7 @@ import java.util.Vector;
  * XML file
  * @author Pradeep Jawahar, Tennenbaum Institute of TEchnology, Ga Tech
  * @author Subbu Ramanathan, Tennenbaum Institute of TEchnology, Ga Tech
+ * @author Gopi Krishnan Nambiar, Georgia Institute of Technology
  * @version 1.0
  */
 public class SysDynChart {

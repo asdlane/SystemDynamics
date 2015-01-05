@@ -1,163 +1,186 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Model name="Phase-2 2012/09/27 19:43:30 EDT" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
+<Model name="Phase-2-Init/Phase-2 2014/11/18" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
   <Nodes>
     <LevelNodes>
-      <LevelNode curve="3.0" id="LN0001" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S1" startValue="266.067359809" xCoordinate="3951.0" yCoordinate="1637.0"/>
+      <LevelNode curve="3.0" id="LN0001" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S1" startValue="4088.42271119" xCoordinate="3951.0" yCoordinate="1637.0"/>
       <LevelNode curve="3.0" id="LN0002" maxValue="0.0" minValue="0.0" name="Range_Target" startValue="5000" xCoordinate="831.0" yCoordinate="1628.0"/>
       <LevelNode curve="3.0" id="LN0003" maxValue="0.0" minValue="0.0" name="Budget_S3" startValue="15" xCoordinate="2792.0" yCoordinate="1926.0"/>
       <LevelNode curve="3.0" id="LN0004" maxValue="0.0" minValue="0.0" name="SW_Errors_S3_Target" startValue="6.88" xCoordinate="2447.0" yCoordinate="2259.0"/>
-      <LevelNode curve="1.0" id="LN0005" maxValue="0.0" minValue="0.0" name="ACWP_Total" startValue="218.729587808" xCoordinate="3782.0" yCoordinate="2502.0"/>
-      <LevelNode curve="1.0" id="LN0006" maxValue="100" minValue="0.0" name="CDR_SSDV_S0" startValue="99.938482666" xCoordinate="873.0" yCoordinate="720.0"/>
-      <LevelNode curve="3.0" id="LN0007" maxValue="0.0" minValue="0.0" name="Cost_Var_S2" startValue="-35.567457102" xCoordinate="1554.0" yCoordinate="978.0"/>
-      <LevelNode curve="1.0" id="LN0008" maxValue="100" minValue="0.0" name="CDR_SSDV_S3" startValue="99.937874423" xCoordinate="1995.0" yCoordinate="1954.0"/>
+      <LevelNode curve="1.0" id="LN0005" maxValue="0.0" minValue="0.0" name="ACWP_Total" startValue="178.335803372" xCoordinate="3782.0" yCoordinate="2502.0"/>
+      <LevelNode curve="1.0" id="LN0006" maxValue="100" minValue="0.0" name="CDR_SSDV_S0" startValue="99.881287363" xCoordinate="873.0" yCoordinate="720.0"/>
+      <LevelNode curve="3.0" id="LN0007" maxValue="0.0" minValue="0.0" name="Cost_Var_S2" startValue="5.077971273" xCoordinate="1554.0" yCoordinate="978.0"/>
+      <LevelNode curve="1.0" id="LN0008" maxValue="100" minValue="0.0" name="CDR_SSDV_S3" startValue="99.923528445" xCoordinate="1995.0" yCoordinate="1954.0"/>
       <LevelNode curve="3.0" id="LN0009" maxValue="0.0" minValue="0.0" name="Current_Time" startValue="810.01" xCoordinate="317.0" yCoordinate="251.0"/>
-      <LevelNode curve="1.0" id="LN0010" maxValue="0.0" minValue="0.0" name="BCWP_S0" startValue="38.98904868" xCoordinate="655.0" yCoordinate="425.0"/>
-      <LevelNode curve="1.0" id="LN0011" maxValue="0.0" minValue="0.0" name="BCWP_S1" startValue="33.8579059" xCoordinate="2901.0" yCoordinate="342.0"/>
+      <LevelNode curve="1.0" id="LN0010" maxValue="0.0" minValue="0.0" name="BCWP_S0" startValue="40.068537793" xCoordinate="655.0" yCoordinate="425.0"/>
+      <LevelNode curve="1.0" id="LN0011" maxValue="0.0" minValue="0.0" name="BCWP_S1" startValue="35.697054687" xCoordinate="2901.0" yCoordinate="342.0"/>
       <LevelNode curve="3.0" id="LN0012" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_S0_Target" startValue="4" xCoordinate="1169.0" yCoordinate="943.0"/>
-      <LevelNode curve="3.0" id="LN0013" maxValue="0.0" minValue="0.0" name="Rookie_Staff_S3" startValue="15.940493688" xCoordinate="2007.0" yCoordinate="1654.0"/>
+      <LevelNode curve="3.0" id="LN0013" maxValue="54.0" minValue="0.0" name="Rookie_Staff_S3" startValue="17.83281765" xCoordinate="2007.0" yCoordinate="1654.0"/>
       <LevelNode curve="3.0" id="LN0014" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_S1_Target" startValue="4" xCoordinate="4214.0" yCoordinate="1639.0"/>
       <LevelNode curve="3.0" id="LN0015" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_S3_Target" startValue="100" xCoordinate="2397.0" yCoordinate="2431.0"/>
       <LevelNode curve="3.0" id="LN0016" maxValue="0.0" minValue="0.0" name="SW_Errors_S0_Target" startValue="6.88" xCoordinate="1188.0" yCoordinate="1107.0"/>
-      <LevelNode curve="3.0" id="LN0017" maxValue="0.0" minValue="0.0" name="SW_Errors_Detected_S2" startValue="18.585586443" xCoordinate="1627.0" yCoordinate="1031.0"/>
-      <LevelNode curve="3.0" id="LN0018" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S2" startValue="8.650119868" xCoordinate="2094.0" yCoordinate="1234.0"/>
+      <LevelNode curve="3.0" id="LN0017" maxValue="0.0" minValue="0.0" name="SW_Errors_Detected_S2" startValue="22.998909296" xCoordinate="1627.0" yCoordinate="1031.0"/>
+      <LevelNode curve="3.0" id="LN0018" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S2" startValue="26.333167683" xCoordinate="2094.0" yCoordinate="1234.0"/>
       <LevelNode curve="3.0" id="LN0019" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_S2_Target" startValue="4" xCoordinate="2523.0" yCoordinate="885.0"/>
-      <LevelNode curve="3.0" id="LN0020" maxValue="0.0" minValue="0.0" name="Cost_Var_S1" startValue="-7.874172405" xCoordinate="3740.0" yCoordinate="392.0"/>
+      <LevelNode curve="3.0" id="LN0020" maxValue="0.0" minValue="0.0" name="Cost_Var_S1" startValue="-4.576554655" xCoordinate="3740.0" yCoordinate="392.0"/>
       <LevelNode curve="3.0" id="LN0021" maxValue="0.0" minValue="0.0" name="Budget_Total" startValue="200" xCoordinate="3939.0" yCoordinate="2141.0"/>
       <LevelNode curve="3.0" id="LN0022" maxValue="0.0" minValue="0.0" name="Budget_S1" startValue="40" xCoordinate="2764.0" yCoordinate="93.0"/>
       <LevelNode curve="3.0" id="LN0023" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_S1_Target" startValue="100" xCoordinate="4195.0" yCoordinate="1987.0"/>
-      <LevelNode curve="3.0" id="LN0024" maxValue="0.0" minValue="0.0" name="Weight_Target" startValue="10000" xCoordinate="570.0" yCoordinate="2121.0"/>
-      <LevelNode curve="3.0" id="LN0025" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S2" startValue="20.228834034" xCoordinate="2288.0" yCoordinate="1090.0"/>
+      <LevelNode curve="3.0" id="LN0024" maxValue="0.0" minValue="0.0" name="Weight_Threshold" startValue="10000" xCoordinate="570.0" yCoordinate="2121.0"/>
+      <LevelNode curve="3.0" id="LN0025" maxValue="40.0" minValue="0.0" name="Pro_Staff_QA_S2" startValue="20.027016016" xCoordinate="2288.0" yCoordinate="1090.0"/>
       <LevelNode curve="3.0" id="LN0026" maxValue="0.0" minValue="0.0" name="Phase_Duration" startValue="8.1" xCoordinate="319.0" yCoordinate="187.0"/>
-      <LevelNode curve="1.0" id="LN0027" maxValue="0.0" minValue="0.0" name="BCWS_S3" startValue="13.965604938" xCoordinate="2752.0" yCoordinate="1856.0"/>
-      <LevelNode curve="1.0" id="LN0028" maxValue="100" minValue="0.0" name="CDR_DTR" startValue="91.641338197" xCoordinate="3008.0" yCoordinate="1238.0"/>
-      <LevelNode curve="3.0" id="LN0029" maxValue="0.0" minValue="0.0" name="Rookie_Staff_S1" startValue="53.134978958" xCoordinate="3766.0" yCoordinate="996.0"/>
-      <LevelNode curve="3.0" id="LN0030" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S3" startValue="3.883543922" xCoordinate="2113.0" yCoordinate="2423.0"/>
-      <LevelNode curve="3.0" id="LN0031" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S0" startValue="251.659879124" xCoordinate="918.0" yCoordinate="942.0"/>
+      <LevelNode curve="1.0" id="LN0027" maxValue="0.0" minValue="0.0" name="BCWS_S3" startValue="15.003049877" xCoordinate="2752.0" yCoordinate="1856.0"/>
+      <LevelNode curve="1.0" id="LN0028" maxValue="100" minValue="0.0" name="CDR_DTR" startValue="91.605564661" xCoordinate="3008.0" yCoordinate="1238.0"/>
+      <LevelNode curve="3.0" id="LN0029" maxValue="120.0" minValue="0.0" name="Rookie_Staff_S1" startValue="59.442725502" xCoordinate="3766.0" yCoordinate="996.0"/>
+      <LevelNode curve="3.0" id="LN0030" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S3" startValue="75.717553369" xCoordinate="2113.0" yCoordinate="2423.0"/>
+      <LevelNode curve="3.0" id="LN0031" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S0" startValue="3887.733199158" xCoordinate="918.0" yCoordinate="942.0"/>
       <LevelNode curve="3.0" id="LN0032" maxValue="0.0" minValue="0.0" name="Rookie_Staff_QA_S0" startValue="0" xCoordinate="796.0" yCoordinate="1148.0"/>
-      <LevelNode curve="1.0" id="LN0033" maxValue="0.0" minValue="0.0" name="BCWS_S1" startValue="37.906641975" xCoordinate="2786.0" yCoordinate="240.0"/>
-      <LevelNode curve="3.0" id="LN0034" maxValue="0.0" minValue="0.0" name="SPI_S1" startValue="0.893655482" xCoordinate="3352.0" yCoordinate="190.0"/>
-      <LevelNode curve="1.0" id="LN0035" maxValue="0.0" minValue="0.0" name="BCWS_S0" startValue="38.904185185" xCoordinate="550.0" yCoordinate="285.0"/>
-      <LevelNode curve="3.0" id="LN0036" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S1" startValue="3.766500432" xCoordinate="3934.0" yCoordinate="1984.0"/>
-      <LevelNode curve="3.0" id="LN0037" maxValue="0.0" minValue="0.0" name="Range_Reported" startValue="5182.970912158" xCoordinate="710.0" yCoordinate="1753.0"/>
-      <LevelNode curve="3.0" id="LN0038" maxValue="0.0" minValue="0.0" name="Rookie_Staff_Hires_S2" startValue="0" xCoordinate="2088.0" yCoordinate="309.0"/>
-      <LevelNode curve="3.0" id="LN0039" maxValue="0.0" minValue="0.0" name="Range" startValue="5168.132484859" xCoordinate="660.0" yCoordinate="1629.0"/>
-      <LevelNode curve="1.0" id="LN0040" maxValue="100" minValue="0.0" name="CDR_ED" startValue="87.464085988" xCoordinate="3099.0" yCoordinate="897.0"/>
-      <LevelNode curve="3.0" id="LN0041" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_ReSolved_S1" startValue="46.021378171" xCoordinate="4088.0" yCoordinate="1988.0"/>
+      <LevelNode curve="1.0" id="LN0033" maxValue="0.0" minValue="0.0" name="BCWS_S1" startValue="40.001482716" xCoordinate="2786.0" yCoordinate="240.0"/>
+      <LevelNode curve="3.0" id="LN0034" maxValue="0.0" minValue="0.0" name="SPI_S1" startValue="0.892866125" xCoordinate="3352.0" yCoordinate="190.0"/>
+      <LevelNode curve="1.0" id="LN0035" maxValue="0.0" minValue="0.0" name="BCWS_S0" startValue="40.001482716" xCoordinate="550.0" yCoordinate="285.0"/>
+      <LevelNode curve="3.0" id="LN0036" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S1" startValue="49.836939782" xCoordinate="3934.0" yCoordinate="1984.0"/>
+      <LevelNode curve="3.0" id="LN0037" maxValue="0.0" minValue="0.0" name="Range_Reported" startValue="4593.795002175" xCoordinate="710.0" yCoordinate="1753.0"/>
+      <LevelNode curve="3.0" id="LN0038" maxValue="320.0" minValue="0.0" name="Rookie_Staff_S2" startValue="158.513934671" xCoordinate="2088.0" yCoordinate="309.0"/>
+      <LevelNode curve="3.0" id="LN0039" maxValue="0.0" minValue="0.0" name="Range" startValue="4591.385106037" xCoordinate="660.0" yCoordinate="1629.0"/>
+      <LevelNode curve="1.0" id="LN0040" maxValue="100" minValue="0.0" name="CDR_ED" startValue="87.384530421" xCoordinate="3099.0" yCoordinate="897.0"/>
+      <LevelNode curve="3.0" id="LN0041" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_ReSolved_S1" startValue="0" xCoordinate="4088.0" yCoordinate="1988.0"/>
       <LevelNode curve="3.0" id="LN0042" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_S2_Target" startValue="100" xCoordinate="2521.0" yCoordinate="1237.0"/>
-      <LevelNode curve="3.0" id="LN0043" maxValue="0.0" minValue="0.0" name="CPI_Total" startValue="0.754986241" xCoordinate="4272.0" yCoordinate="2438.0"/>
-      <LevelNode curve="3.0" id="LN0044" maxValue="0.0" minValue="0.0" name="Specific_Impulse_Target" startValue="1250" xCoordinate="783.0" yCoordinate="1973.0"/>
-      <LevelNode curve="3.0" id="LN0045" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S1" startValue="20" xCoordinate="3962.0" yCoordinate="1840.0"/>
-      <LevelNode curve="3.0" id="LN0046" maxValue="0.0" minValue="0.0" name="Sched_Var_S3" startValue="0.042981432" xCoordinate="3142.0" yCoordinate="2358.0"/>
+      <LevelNode curve="3.0" id="LN0043" maxValue="0.0" minValue="0.0" name="CPI_Total" startValue="0.999806628" xCoordinate="4272.0" yCoordinate="2438.0"/>
+      <LevelNode curve="3.0" id="LN0044" maxValue="0.0" minValue="0.0" name="TSFC_Design_Spec" startValue="0.3248" xCoordinate="961.0" yCoordinate="2053.0"/>
+      <LevelNode curve="3.0" id="LN0045" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S1" startValue="0" xCoordinate="3962.0" yCoordinate="1840.0"/>
+      <LevelNode curve="3.0" id="LN0046" maxValue="0.0" minValue="0.0" name="Sched_Var_S3" startValue="0.044016703" xCoordinate="3142.0" yCoordinate="2358.0"/>
       <LevelNode curve="3.0" id="LN0047" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_S3_Target" startValue="4" xCoordinate="2408.0" yCoordinate="2074.0"/>
-      <LevelNode curve="3.0" id="LN0048" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S0" startValue="4.24472947" xCoordinate="906.0" yCoordinate="1292.0"/>
+      <LevelNode curve="3.0" id="LN0048" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S0" startValue="-109.706480521" xCoordinate="906.0" yCoordinate="1292.0"/>
       <LevelNode curve="3.0" id="LN0049" maxValue="0.0" minValue="0.0" name="SW_Errors_S2_Target" startValue="6.88" xCoordinate="2545.0" yCoordinate="1047.0"/>
-      <LevelNode curve="3.0" id="LN0050" maxValue="0.0" minValue="0.0" name="Rookie_Staff_QA_S2" startValue="1.771165966" xCoordinate="2150.0" yCoordinate="1090.0"/>
-      <LevelNode curve="3.0" id="LN0051" maxValue="0.0" minValue="0.0" name="Pro_Staff_Hires_S2" startValue="0" xCoordinate="2239.0" yCoordinate="310.0"/>
-      <LevelNode curve="1.0" id="LN0052" maxValue="100" minValue="0.0" name="CDR_SSDV_S1" startValue="89.521715298" xCoordinate="3888.0" yCoordinate="1420.0"/>
-      <LevelNode curve="3.0" id="LN0053" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S0" startValue="43.176172955" xCoordinate="1060.0" yCoordinate="1296.0"/>
-      <LevelNode curve="3.0" id="LN0054" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S0" startValue="20" xCoordinate="934.0" yCoordinate="1148.0"/>
-      <LevelNode curve="1.0" id="LN0055" maxValue="0.0" minValue="0.0" name="ACWP_S0" startValue="44.004493688" xCoordinate="845.0" yCoordinate="39.0"/>
-      <LevelNode curve="3.0" id="LN0056" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S3" startValue="194.587512787" xCoordinate="1951.0" yCoordinate="2080.0"/>
-      <LevelNode curve="3.0" id="LN0057" maxValue="0.0" minValue="0.0" name="Pro_Staff_S0" startValue="133.432510521" xCoordinate="999.0" yCoordinate="238.0"/>
-      <LevelNode curve="3.0" id="LN0058" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S0" startValue="3638.575637553" xCoordinate="1062.0" yCoordinate="942.0"/>
+      <LevelNode curve="3.0" id="LN0050" maxValue="0.0" minValue="0.0" name="Rookie_Staff_QA_S2" startValue="1.981424183" xCoordinate="2150.0" yCoordinate="1090.0"/>
+      <LevelNode curve="3.0" id="LN0051" maxValue="360.0" minValue="0.0" name="Pro_Staff_S2" startValue="242.16128128" xCoordinate="2239.0" yCoordinate="310.0"/>
+      <LevelNode curve="1.0" id="LN0052" maxValue="100" minValue="0.0" name="CDR_SSDV_S1" startValue="89.423338552" xCoordinate="3888.0" yCoordinate="1420.0"/>
+      <LevelNode curve="3.0" id="LN0053" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S0" startValue="157.103675528" xCoordinate="1060.0" yCoordinate="1296.0"/>
+      <LevelNode curve="3.0" id="LN0054" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S0" startValue="0" xCoordinate="934.0" yCoordinate="1148.0"/>
+      <LevelNode curve="1.0" id="LN0055" maxValue="0.0" minValue="0.0" name="ACWP_S0" startValue="40.607649282" xCoordinate="845.0" yCoordinate="39.0"/>
+      <LevelNode curve="3.0" id="LN0056" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S3" startValue="194.181005944" xCoordinate="1951.0" yCoordinate="2080.0"/>
+      <LevelNode curve="3.0" id="LN0057" maxValue="260.0" minValue="0.0" name="Pro_Staff_S0" startValue="130.40524024" xCoordinate="999.0" yCoordinate="238.0"/>
+      <LevelNode curve="3.0" id="LN0058" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S0" startValue="0" xCoordinate="1062.0" yCoordinate="942.0"/>
       <LevelNode curve="3.0" id="LN0059" maxValue="0.0" minValue="0.0" name="SW_Errors_S1_Target" startValue="6.88" xCoordinate="4220.0" yCoordinate="1806.0"/>
-      <LevelNode curve="3.0" id="LN0060" maxValue="0.0" minValue="0.0" name="Schedule _State_S0" startValue="99.971919692" xCoordinate="405.0" yCoordinate="423.0"/>
-      <LevelNode curve="3.0" id="LN0061" maxValue="0.0" minValue="0.0" name="Weight_S2" startValue="2538.493375502" xCoordinate="232.0" yCoordinate="2165.0"/>
-      <LevelNode curve="3.0" id="LN0062" maxValue="0.0" minValue="0.0" name="Pro_Staff_S3" startValue="77.059506312" xCoordinate="2189.0" yCoordinate="1658.0"/>
+      <LevelNode curve="3.0" id="LN0060" maxValue="0.0" minValue="0.0" name="Schedule _State_S0" startValue="99.921540632" xCoordinate="405.0" yCoordinate="423.0"/>
+      <LevelNode curve="3.0" id="LN0061" maxValue="10000.0" minValue="0.0" name="Weight_S2" startValue="2730.284380451" xCoordinate="232.0" yCoordinate="2165.0"/>
+      <LevelNode curve="3.0" id="LN0062" maxValue="120.0" minValue="0.0" name="Pro_Staff_S3" startValue="75.243144144" xCoordinate="2189.0" yCoordinate="1658.0"/>
       <LevelNode curve="3.0" id="LN0063" maxValue="0.0" minValue="0.0" name="Budget_Total_No_MR" startValue="195" xCoordinate="4084.0" yCoordinate="2145.0"/>
-      <LevelNode curve="3.0" id="LN0064" maxValue="0.0" minValue="0.0" name="Sched_Var_S2" startValue="-16.430024298" xCoordinate="1644.0" yCoordinate="1404.0"/>
-      <LevelNode curve="3.0" id="LN0065" maxValue="0.0" minValue="0.0" name="Rookie_Staff_S0" startValue="26.567489479" xCoordinate="848.0" yCoordinate="237.0"/>
-      <LevelNode curve="3.0" id="LN0066" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S3" startValue="71.835903479" xCoordinate="2285.0" yCoordinate="2424.0"/>
-      <LevelNode curve="3.0" id="LN0067" maxValue="0.0" minValue="0.0" name="Weight_Spike_S2" startValue="2600" xCoordinate="442.0" yCoordinate="2168.0"/>
-      <LevelNode curve="1.0" id="LN0068" maxValue="0.0" minValue="0.0" name="BCWS_Total" startValue="185.313407407" xCoordinate="3782.0" yCoordinate="2140.0"/>
-      <LevelNode curve="3.0" id="LN0069" maxValue="0.0" minValue="0.0" name="Weight" startValue="9888.039585274" xCoordinate="366.0" yCoordinate="1972.0"/>
-      <LevelNode curve="1.0" id="LN0070" maxValue="100" minValue="0.0" name="CDR_SL" startValue="88.205633311" xCoordinate="3426.0" yCoordinate="688.0"/>
-      <LevelNode curve="3.0" id="LN0071" maxValue="0.0" minValue="0.0" name="CPI_S3" startValue="0.917074691" xCoordinate="3116.0" yCoordinate="1730.0"/>
-      <LevelNode curve="3.0" id="LN0072" maxValue="0.0" minValue="0.0" name="Weight_S1" startValue="7350.910316427" xCoordinate="230.0" yCoordinate="2074.0"/>
-      <LevelNode curve="1.0" id="LN0073" maxValue="0.0" minValue="0.0" name="BCWP_S3" startValue="13.991302419" xCoordinate="2701.0" yCoordinate="2063.0"/>
-      <LevelNode curve="3.0" id="LN0074" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S1" startValue="191.966892433" xCoordinate="3788.0" yCoordinate="1632.0"/>
+      <LevelNode curve="3.0" id="LN0064" maxValue="0.0" minValue="0.0" name="Sched_Var_S2" startValue="-12.455121701" xCoordinate="1644.0" yCoordinate="1404.0"/>
+      <LevelNode curve="3.0" id="LN0065" maxValue="90.0" minValue="0.0" name="Rookie_Staff_S0" startValue="29.721362751" xCoordinate="848.0" yCoordinate="237.0"/>
+      <LevelNode curve="3.0" id="LN0066" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S3" startValue="0" xCoordinate="2285.0" yCoordinate="2424.0"/>
+      <LevelNode curve="3.0" id="LN0067" maxValue="0.0" minValue="0.0" name="Weight_Spike_S2" startValue="2800" xCoordinate="442.0" yCoordinate="2168.0"/>
+      <LevelNode curve="1.0" id="LN0068" maxValue="0.0" minValue="0.0" name="BCWS_Total" startValue="194.76837642" xCoordinate="3782.0" yCoordinate="2140.0"/>
+      <LevelNode curve="3.0" id="LN0069" maxValue="20000.0" minValue="0.0" name="Weight" startValue="10140.097735366" xCoordinate="366.0" yCoordinate="1972.0"/>
+      <LevelNode curve="1.0" id="LN0070" maxValue="100" minValue="0.0" name="CDR_SL" startValue="88.157791911" xCoordinate="3426.0" yCoordinate="688.0"/>
+      <LevelNode curve="3.0" id="LN0071" maxValue="0.0" minValue="0.0" name="CPI_S3" startValue="0.989976729" xCoordinate="3116.0" yCoordinate="1730.0"/>
+      <LevelNode curve="3.0" id="LN0072" maxValue="10000.0" minValue="0.0" name="Weight_S1" startValue="7410.942032089" xCoordinate="230.0" yCoordinate="2074.0"/>
+      <LevelNode curve="1.0" id="LN0073" maxValue="0.0" minValue="0.0" name="BCWP_S3" startValue="15.028498678" xCoordinate="2701.0" yCoordinate="2063.0"/>
+      <LevelNode curve="3.0" id="LN0074" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S1" startValue="190.519894573" xCoordinate="3788.0" yCoordinate="1632.0"/>
       <LevelNode curve="3.0" id="LN0075" maxValue="0.0" minValue="0.0" name="Budget_S0" startValue="40" xCoordinate="631.0" yCoordinate="331.0"/>
-      <LevelNode curve="3.0" id="LN0076" maxValue="0.0" minValue="0.0" name="Drag" startValue="2.662" xCoordinate="294.0" yCoordinate="1831.0"/>
-      <LevelNode curve="1.0" id="LN0077" maxValue="100" minValue="0.0" name="CDR_SSDV_S2" startValue="82.467127277" xCoordinate="2229.0" yCoordinate="724.0"/>
+      <LevelNode curve="3.0" id="LN0076" maxValue="0.0314" minValue="0.0278" name="Drag_Coefficient" startValue="0.03139953" xCoordinate="294.0" yCoordinate="1831.0"/>
+      <LevelNode curve="1.0" id="LN0077" maxValue="100" minValue="0.0" name="CDR_SSDV_S2" startValue="87.93602392" xCoordinate="2229.0" yCoordinate="724.0"/>
       <LevelNode curve="3.0" id="LN0078" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_S0_Target" startValue="100" xCoordinate="1167.0" yCoordinate="1295.0"/>
-      <LevelNode curve="3.0" id="LN0079" maxValue="0.0" minValue="0.0" name="Cost_Var_S0" startValue="-4.96343644" xCoordinate="1510.0" yCoordinate="206.0"/>
-      <LevelNode curve="3.0" id="LN0080" maxValue="0.0" minValue="0.0" name="Sched_Var_S1" startValue="-4.026174568" xCoordinate="3348.0" yCoordinate="324.0"/>
-      <LevelNode curve="3.0" id="LN0081" maxValue="0.0" minValue="0.0" name="Pro_Staff_S1" startValue="66.865021042" xCoordinate="3923.0" yCoordinate="998.0"/>
-      <LevelNode curve="3.0" id="LN0082" maxValue="0.0" minValue="0.0" name="Drag_Target" startValue="2.7" xCoordinate="36.0" yCoordinate="1830.0"/>
-      <LevelNode curve="3.0" id="LN0083" maxValue="0.0" minValue="0.0" name="Schedule _State_S3" startValue="99.937874423" xCoordinate="2354.0" yCoordinate="1954.0"/>
-      <LevelNode curve="3.0" id="LN0084" maxValue="0.0" minValue="0.0" name="Schedule_Target" startValue="99.877777778" xCoordinate="319.0" yCoordinate="120.0"/>
-      <LevelNode curve="3.0" id="LN0085" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S2" startValue="43.176172955" xCoordinate="2414.0" yCoordinate="1238.0"/>
-      <LevelNode curve="3.0" id="LN0086" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S3" startValue="11.635463707" xCoordinate="1964.0" yCoordinate="2422.0"/>
-      <LevelNode curve="3.0" id="LN0087" maxValue="0.0" minValue="0.0" name="CPI_S2" startValue="0.687420056" xCoordinate="1554.0" yCoordinate="844.0"/>
-      <LevelNode curve="3.0" id="LN0088" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S3" startValue="3900.338996647" xCoordinate="2274.0" yCoordinate="2077.0"/>
-      <LevelNode curve="1.0" id="LN0089" maxValue="0.0" minValue="0.0" name="ACWP_S3" startValue="15.27499495" xCoordinate="2556.0" yCoordinate="1744.0"/>
-      <LevelNode curve="3.0" id="LN0090" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S2" startValue="14.486171575" xCoordinate="2260.0" yCoordinate="1234.0"/>
-      <LevelNode curve="1.0" id="LN0091" maxValue="0.0" minValue="0.0" name="ACWP_S1" startValue="45.789957915" xCoordinate="4206.0" yCoordinate="1127.0"/>
-      <LevelNode curve="3.0" id="LN0092" maxValue="0.0" minValue="0.0" name="Specific_Impulse" startValue="1225" xCoordinate="784.0" yCoordinate="2045.0"/>
-      <LevelNode curve="3.0" id="LN0093" maxValue="0.0" minValue="0.0" name="CPI_S0" startValue="0.887072678" xCoordinate="1462.0" yCoordinate="108.0"/>
-      <LevelNode curve="3.0" id="LN0094" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S1" startValue="11.34822586" xCoordinate="3768.0" yCoordinate="1984.0"/>
-      <LevelNode curve="1.0" id="LN0095" maxValue="100" minValue="0.0" name="CDR_SDD" startValue="82.849869527" xCoordinate="1575.0" yCoordinate="314.0"/>
+      <LevelNode curve="3.0" id="LN0079" maxValue="0.0" minValue="0.0" name="Cost_Var_S0" startValue="-0.49143754" xCoordinate="1510.0" yCoordinate="206.0"/>
+      <LevelNode curve="3.0" id="LN0080" maxValue="0.0" minValue="0.0" name="Sched_Var_S1" startValue="-4.280210077" xCoordinate="3348.0" yCoordinate="324.0"/>
+      <LevelNode curve="3.0" id="LN0081" maxValue="90.0" minValue="0.0" name="Pro_Staff_S1" startValue="60.81048048" xCoordinate="3923.0" yCoordinate="998.0"/>
+      <LevelNode curve="3.0" id="LN0082" maxValue="0.0" minValue="0.0" name="Drag_Coefficient_Threshold" startValue="0.0302" xCoordinate="36.0" yCoordinate="1830.0"/>
+      <LevelNode curve="3.0" id="LN0083" maxValue="0.0" minValue="0.0" name="Schedule _State_S3" startValue="99.923528445" xCoordinate="2354.0" yCoordinate="1954.0"/>
+      <LevelNode curve="3.0" id="LN0084" maxValue="100.0" minValue="0.0" name="Schedule_Target" startValue="99.877777778" xCoordinate="319.0" yCoordinate="120.0"/>
+      <LevelNode curve="3.0" id="LN0085" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S2" startValue="157.103675528" xCoordinate="2414.0" yCoordinate="1238.0"/>
+      <LevelNode curve="3.0" id="LN0086" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S3" startValue="11.618151141" xCoordinate="1964.0" yCoordinate="2422.0"/>
+      <LevelNode curve="3.0" id="LN0087" maxValue="0.0" minValue="0.0" name="CPI_S2" startValue="1.061665642" xCoordinate="1554.0" yCoordinate="844.0"/>
+      <LevelNode curve="3.0" id="LN0088" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S3" startValue="0" xCoordinate="2274.0" yCoordinate="2077.0"/>
+      <LevelNode curve="1.0" id="LN0089" maxValue="0.0" minValue="0.0" name="ACWP_S3" startValue="15.198995308" xCoordinate="2556.0" yCoordinate="1744.0"/>
+      <LevelNode curve="3.0" id="LN0090" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S2" startValue="16.885520772" xCoordinate="2260.0" yCoordinate="1234.0"/>
+      <LevelNode curve="1.0" id="LN0091" maxValue="0.0" minValue="0.0" name="ACWP_S1" startValue="40.296627566" xCoordinate="4206.0" yCoordinate="1127.0"/>
+      <LevelNode curve="3.0" id="LN0092" maxValue="0.3341" minValue="0.3274" name="TSFC" startValue="0.332677198" xCoordinate="963.0" yCoordinate="2116.0"/>
+      <LevelNode curve="3.0" id="LN0093" maxValue="0.0" minValue="0.0" name="CPI_S0" startValue="0.987883682" xCoordinate="1462.0" yCoordinate="108.0"/>
+      <LevelNode curve="3.0" id="LN0094" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S1" startValue="11.290811728" xCoordinate="3768.0" yCoordinate="1984.0"/>
+      <LevelNode curve="1.0" id="LN0095" maxValue="100" minValue="0.0" name="CDR_SDD" startValue="85.998573175" xCoordinate="1575.0" yCoordinate="314.0"/>
       <LevelNode curve="3.0" id="LN0096" maxValue="0.0" minValue="0.0" name="Budget_S2" startValue="100" xCoordinate="1274.0" yCoordinate="749.0"/>
       <LevelNode curve="3.0" id="LN0097" maxValue="0.0" minValue="0.0" name="Rookie_Staff_QA_S3" startValue="0" xCoordinate="2004.0" yCoordinate="2259.0"/>
-      <LevelNode curve="1.0" id="LN0098" maxValue="0.0" minValue="0.0" name="BCWP_Total" startValue="165.033201616" xCoordinate="3782.0" yCoordinate="2330.0"/>
+      <LevelNode curve="1.0" id="LN0098" maxValue="0.0" minValue="0.0" name="BCWP_Total" startValue="178.193622594" xCoordinate="3782.0" yCoordinate="2330.0"/>
       <LevelNode curve="3.0" id="LN0099" maxValue="0.0" minValue="0.0" name="Rookie_Staff_QA_S1" startValue="0" xCoordinate="3824.0" yCoordinate="1840.0"/>
-      <LevelNode curve="3.0" id="LN0100" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S3" startValue="20" xCoordinate="2254.0" yCoordinate="2271.0"/>
-      <LevelNode curve="1.0" id="LN0101" maxValue="0.0" minValue="0.0" name="ACWP_S2" startValue="113.926310362" xCoordinate="2598.0" yCoordinate="546.0"/>
-      <LevelNode curve="3.0" id="LN0102" maxValue="0.0" minValue="0.0" name="Sched_Var_S0" startValue="0.133011643" xCoordinate="402.0" yCoordinate="1006.0"/>
-      <LevelNode curve="3.0" id="LN0103" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S2" startValue="10.632109091" xCoordinate="2114.0" yCoordinate="882.0"/>
-      <LevelNode curve="3.0" id="LN0104" maxValue="0.0" minValue="0.0" name="Schedule _State_S2" startValue="82.487317254" xCoordinate="1452.0" yCoordinate="436.0"/>
-      <LevelNode curve="1.0" id="LN0105" maxValue="0.0" minValue="0.0" name="BCWS_S2" startValue="94.766604938" xCoordinate="1558.0" yCoordinate="742.0"/>
-      <LevelNode curve="3.0" id="LN0106" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S2" startValue="520.225084416" xCoordinate="2416.0" yCoordinate="884.0"/>
-      <LevelNode curve="3.0" id="LN0107" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_ReSolved_S1" startValue="3821.493060258" xCoordinate="4104.0" yCoordinate="1638.0"/>
-      <LevelNode curve="3.0" id="LN0108" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S2" startValue="151.213868893" xCoordinate="2272.0" yCoordinate="884.0"/>
-      <LevelNode curve="3.0" id="LN0109" maxValue="0.0" minValue="0.0" name="Cost_Var_Total" startValue="-53.526544238" xCoordinate="4270.0" yCoordinate="2594.0"/>
-      <LevelNode curve="3.0" id="LN0110" maxValue="0.0" minValue="0.0" name="Schedule _State_S1" startValue="89.163736638" xCoordinate="2843.0" yCoordinate="466.0"/>
-      <LevelNode curve="3.0" id="LN0111" maxValue="0.0" minValue="0.0" name="Cost_Var_S3" startValue="-1.265145677" xCoordinate="3116.0" yCoordinate="1906.0"/>
-      <LevelNode curve="3.0" id="LN0112" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S3" startValue="269.917268218" xCoordinate="2109.0" yCoordinate="2077.0"/>
-      <LevelNode curve="3.0" id="LN0113" maxValue="0.0" minValue="0.0" name="CPI_S1" startValue="0.73979156" xCoordinate="3740.0" yCoordinate="260.0"/>
-      <LevelNode curve="3.0" id="LN0114" maxValue="0.0" minValue="0.0" name="SPI_S3" startValue="1.003081477" xCoordinate="3138.0" yCoordinate="2196.0"/>
-      <LevelNode curve="3.0" id="LN0115" maxValue="0.0" minValue="0.0" name="Weight_Allocation_S1" startValue="7500" xCoordinate="444.0" yCoordinate="2071.0"/>
-      <LevelNode curve="1.0" id="LN0116" maxValue="100" minValue="0.0" name="CDR_VVSIL" startValue="99.971919692" xCoordinate="305.0" yCoordinate="629.0"/>
-      <LevelNode curve="3.0" id="LN0117" maxValue="0.0" minValue="0.0" name="SPI_S2" startValue="0.826411599" xCoordinate="1646.0" yCoordinate="1252.0"/>
-      <LevelNode curve="3.0" id="LN0118" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S0" startValue="181.411751622" xCoordinate="760.0" yCoordinate="940.0"/>
-      <LevelNode curve="3.0" id="LN0119" maxValue="0.0" minValue="0.0" name="SPI_S0" startValue="1.003423191" xCoordinate="400.0" yCoordinate="832.0"/>
-      <LevelNode curve="1.0" id="LN0120" maxValue="0.0" minValue="0.0" name="BCWP_S2" startValue="78.291159557" xCoordinate="1728.0" yCoordinate="653.0"/>
-      <LevelNode curve="3.0" id="LN0121" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S0" startValue="10.745487121" xCoordinate="740.0" yCoordinate="1292.0"/>
-      <LevelNode curve="3.0" id="LN0122" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S2_Reported" startValue="14" xCoordinate="2355.0" yCoordinate="1320.0"/>
-      <LevelNode curve="3.0" id="LN0123" maxValue="0.0" minValue="0.0" name="Error_Rate_P1_Detected_S2" startValue="0.000111586" xCoordinate="2350.0" yCoordinate="1310.0"/>
-      <LevelNode curve="3.0" id="LN0124" maxValue="0.0" minValue="0.0" name="Error_Rate_P1_Resolved_S2" startValue="0.079662021" xCoordinate="2360.0" yCoordinate="1320.0"/>
-      <LevelNode curve="3.0" id="LN0125" maxValue="0.0" minValue="0.0" name="FRR_SST" startValue="47.276020424" xCoordinate="2946.0" yCoordinate="272.0"/>
+      <LevelNode curve="3.0" id="LN0100" maxValue="0.0" minValue="0.0" name="Pro_Staff_QA_S3" startValue="0" xCoordinate="2254.0" yCoordinate="2271.0"/>
+      <LevelNode curve="1.0" id="LN0101" maxValue="0.0" minValue="0.0" name="ACWP_S2" startValue="82.447577918" xCoordinate="2598.0" yCoordinate="546.0"/>
+      <LevelNode curve="3.0" id="LN0102" maxValue="0.0" minValue="0.0" name="Sched_Var_S0" startValue="0.11656125" xCoordinate="402.0" yCoordinate="1006.0"/>
+      <LevelNode curve="3.0" id="LN0103" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S2" startValue="41.06999013" xCoordinate="2114.0" yCoordinate="882.0"/>
+      <LevelNode curve="3.0" id="LN0104" maxValue="0.0" minValue="0.0" name="Schedule _State_S2" startValue="87.370119937" xCoordinate="1452.0" yCoordinate="436.0"/>
+      <LevelNode curve="1.0" id="LN0105" maxValue="0.0" minValue="0.0" name="BCWS_S2" startValue="100.00370679" xCoordinate="1558.0" yCoordinate="742.0"/>
+      <LevelNode curve="3.0" id="LN0106" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S2" startValue="2352.634295815" xCoordinate="2416.0" yCoordinate="884.0"/>
+      <LevelNode curve="3.0" id="LN0107" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_ReSolved_S1" startValue="0" xCoordinate="4104.0" yCoordinate="1638.0"/>
+      <LevelNode curve="3.0" id="LN0108" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S2" startValue="220.672328754" xCoordinate="2272.0" yCoordinate="884.0"/>
+      <LevelNode curve="3.0" id="LN0109" maxValue="0.0" minValue="0.0" name="Cost_Var_Total" startValue="-0.034443485" xCoordinate="4270.0" yCoordinate="2594.0"/>
+      <LevelNode curve="3.0" id="LN0110" maxValue="0.0" minValue="0.0" name="Schedule _State_S1" startValue="89.083047909" xCoordinate="2843.0" yCoordinate="466.0"/>
+      <LevelNode curve="3.0" id="LN0111" maxValue="0.0" minValue="0.0" name="Cost_Var_S3" startValue="-0.152159856" xCoordinate="3116.0" yCoordinate="1906.0"/>
+      <LevelNode curve="3.0" id="LN0112" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S3" startValue="4169.318309833" xCoordinate="2109.0" yCoordinate="2077.0"/>
+      <LevelNode curve="3.0" id="LN0113" maxValue="0.0" minValue="0.0" name="CPI_S1" startValue="0.886292036" xCoordinate="3740.0" yCoordinate="260.0"/>
+      <LevelNode curve="3.0" id="LN0114" maxValue="0.0" minValue="0.0" name="SPI_S3" startValue="1.002937486" xCoordinate="3138.0" yCoordinate="2196.0"/>
+      <LevelNode curve="3.0" id="LN0115" maxValue="10000.0" minValue="0.0" name="Weight_Allocation_S1" startValue="7500" xCoordinate="444.0" yCoordinate="2071.0"/>
+      <LevelNode curve="1.0" id="LN0116" maxValue="100" minValue="0.0" name="CDR_VVSIL" startValue="99.921540632" xCoordinate="305.0" yCoordinate="629.0"/>
+      <LevelNode curve="3.0" id="LN0117" maxValue="0.0" minValue="0.0" name="SPI_S2" startValue="0.875299069" xCoordinate="1646.0" yCoordinate="1252.0"/>
+      <LevelNode curve="3.0" id="LN0118" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Undetected_S0" startValue="181.042375063" xCoordinate="760.0" yCoordinate="940.0"/>
+      <LevelNode curve="3.0" id="LN0119" maxValue="0.0" minValue="0.0" name="SPI_S0" startValue="1.002917534" xCoordinate="400.0" yCoordinate="832.0"/>
+      <LevelNode curve="1.0" id="LN0120" maxValue="0.0" minValue="0.0" name="BCWP_S2" startValue="87.506721662" xCoordinate="1728.0" yCoordinate="653.0"/>
+      <LevelNode curve="3.0" id="LN0121" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Undetected_S0" startValue="10.72817034" xCoordinate="740.0" yCoordinate="1292.0"/>
+      <LevelNode curve="3.0" id="LN0122" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Detected_S2_Reported" startValue="17" xCoordinate="2355.0" yCoordinate="1320.0"/>
+      <LevelNode curve="3.0" id="LN0123" maxValue="0.0" minValue="0.0" name="Error_Rate_P1_Detected_S2" startValue="0.000339696" xCoordinate="2350.0" yCoordinate="1310.0"/>
+      <LevelNode curve="3.0" id="LN0124" maxValue="0.0" minValue="0.0" name="Error_Rate_P1_Resolved_S2" startValue="0.248984798" xCoordinate="2360.0" yCoordinate="1320.0"/>
+      <LevelNode curve="1.0" id="LN0125" maxValue="0.0" minValue="0.0" name="FRR_SST" startValue="47.197367936" xCoordinate="2946.0" yCoordinate="272.0"/>
       <LevelNode curve="1.0" id="LN0126" maxValue="100" minValue="0.0" name="CDR_DTR_Reported" startValue="92" xCoordinate="3008.0" yCoordinate="1248.0"/>
       <LevelNode curve="1.0" id="LN0127" maxValue="100" minValue="0.0" name="CDR_SL_Reported" startValue="88" xCoordinate="3426.0" yCoordinate="698.0"/>
-      <LevelNode curve="1.0" id="LN0128" maxValue="100" minValue="0.0" name="CDR_SDD_Reported" startValue="83" xCoordinate="1575.0" yCoordinate="324.0"/>
+      <LevelNode curve="1.0" id="LN0128" maxValue="100" minValue="0.0" name="CDR_SDD_Reported" startValue="86" xCoordinate="1575.0" yCoordinate="324.0"/>
       <LevelNode curve="1.0" id="LN0129" maxValue="100" minValue="0.0" name="CDR_SSDV_S3_Reported" startValue="100" xCoordinate="1995.0" yCoordinate="1964.0"/>
       <LevelNode curve="1.0" id="LN0130" maxValue="100" minValue="0.0" name="CDR_ED_Reported" startValue="87" xCoordinate="3099.0" yCoordinate="907.0"/>
       <LevelNode curve="1.0" id="LN0131" maxValue="100" minValue="0.0" name="CDR_VVSIL_Reported" startValue="100" xCoordinate="305.0" yCoordinate="639.0"/>
       <LevelNode curve="1.0" id="LN0132" maxValue="100" minValue="0.0" name="CDR_SSDV_S0_Reported" startValue="100" xCoordinate="873.0" yCoordinate="730.0"/>
-      <LevelNode curve="1.0" id="LN0133" maxValue="100" minValue="0.0" name="CDR_SSDV_S2_Reported" startValue="82" xCoordinate="2229.0" yCoordinate="734.0"/>
+      <LevelNode curve="1.0" id="LN0133" maxValue="100" minValue="0.0" name="CDR_SSDV_S2_Reported" startValue="88" xCoordinate="2229.0" yCoordinate="734.0"/>
       <LevelNode curve="1.0" id="LN0134" maxValue="100" minValue="0.0" name="CDR_SSDV_S1_Reported" startValue="89" xCoordinate="3888.0" yCoordinate="1430.0"/>
-      <LevelNode curve="3.0" id="LN0135" maxValue="0.0" minValue="0.0" name="FRR_SST_Reported" startValue="47" xCoordinate="2946.0" yCoordinate="282.0"/>
-      <LevelNode curve="3.0" id="LN0136" maxValue="0.0" minValue="0.0" name="Drag_Reported" startValue="2.66" xCoordinate="294.0" yCoordinate="1851.0"/>
-      <LevelNode curve="3.0" id="LN0137" maxValue="0.0" minValue="0.0" name="Weight_Spike_S1" startValue="7450" xCoordinate="230.0" yCoordinate="2084.0"/>
-      <LevelNode curve="3.0" id="LN0138" maxValue="0.0" minValue="0.0" name="Weight_S1_Reported" startValue="7350.638915046" xCoordinate="232.0" yCoordinate="2185.0"/>
-      <LevelNode curve="3.0" id="LN0139" maxValue="0.0" minValue="0.0" name="Weight_S2_Reported" startValue="2537.400670228" xCoordinate="232.0" yCoordinate="2205.0"/>
-      <LevelNode curve="3.0" id="LN0140" maxValue="0.0" minValue="0.0" name="Weight_Allocation_S2" startValue="2500" xCoordinate="442.0" yCoordinate="2168.0"/>
-      <LevelNode curve="3.0" id="LN0141" maxValue="0.0" minValue="0.0" name="Sched_Var_Total" startValue="-20.146900234" xCoordinate="4470.0" yCoordinate="2330.0"/>
-      <LevelNode curve="3.0" id="LN0142" maxValue="0.0" minValue="0.0" name="SPI_Total" startValue="0.891147131" xCoordinate="4470.0" yCoordinate="2130.0"/>
-      <LevelNode curve="3.0" id="LN0143" maxValue="0.0" minValue="0.0" name="Burn_Rate_S0" startValue="1.560257017" xCoordinate="4200.0" yCoordinate="50.0"/>
-      <LevelNode curve="3.0" id="LN0144" maxValue="0.0" minValue="0.0" name="Burn_Rate_S1" startValue="1.681713446" xCoordinate="4200.0" yCoordinate="200.0"/>
-      <LevelNode curve="3.0" id="LN0145" maxValue="0.0" minValue="0.0" name="Burn_Rate_S2" startValue="4.186697128" xCoordinate="4200.0" yCoordinate="350.0"/>
-      <LevelNode curve="3.0" id="LN0146" maxValue="0.0" minValue="0.0" name="Burn_Rate_S3" startValue="0.556405614" xCoordinate="4200.0" yCoordinate="500.0"/>
-      <LevelNode curve="3.0" id="LN0147" maxValue="0.0" minValue="0.0" name="Burn_Rate_Total" startValue="7.985073205" xCoordinate="4200.0" yCoordinate="650.0"/>
-      <LevelNode curve="3.0" id="LN0148" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S2_Reported" startValue="43" xCoordinate="2600.0" yCoordinate="2550.0"/>
-      <LevelNode curve="3.0" id="LN0149" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Total_S2_Reported" startValue="57" xCoordinate="2600.0" yCoordinate="2600.0"/>
-      <LevelNode curve="3.0" id="LN0150" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S2_Reported" startValue="151" xCoordinate="2900.0" yCoordinate="2550.0"/>
-      <LevelNode curve="3.0" id="LN0151" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S2_Reported" startValue="519" xCoordinate="3200.0" yCoordinate="2550.0"/>
-      <LevelNode curve="3.0" id="LN0152" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Total_S2_Reported" startValue="670" xCoordinate="2900.0" yCoordinate="2600.0"/>
-      <LevelNode curve="3.0" id="LN0153" maxValue="0.0" minValue="0.0" name="Rookie_Staff_S2" startValue="160" xCoordinate="2088.0" yCoordinate="2600.0"/>
-      <LevelNode curve="3.0" id="LN0154" maxValue="0.0" minValue="0.0" name="Pro_Staff_S2" startValue="240" xCoordinate="2239.0" yCoordinate="150.0"/>
-      <LevelNode curve="3.0" id="LN0155" maxValue="0.0" minValue="0.0" name="Rookie_Staff_Total_S2" startValue="160" xCoordinate="2388.0" yCoordinate="150.0"/>
-      <LevelNode curve="3.0" id="LN0156" maxValue="0.0" minValue="0.0" name="Pro_Staff_Total_S2" startValue="240" xCoordinate="2539.0" yCoordinate="150.0"/>
+      <LevelNode curve="1.0" id="LN0135" maxValue="0.0" minValue="0.0" name="FRR_SST_Reported" startValue="47" xCoordinate="2946.0" yCoordinate="282.0"/>
+      <LevelNode curve="3.0" id="LN0136" maxValue="0.0" minValue="0.0" name="Drag_Coefficient_Reported" startValue="0.031327313" xCoordinate="294.0" yCoordinate="1851.0"/>
+      <LevelNode curve="3.0" id="LN0137" maxValue="0.0" minValue="0.0" name="Weight_Spike_S1" startValue="7500" xCoordinate="230.0" yCoordinate="2084.0"/>
+      <LevelNode curve="3.0" id="LN0138" maxValue="0.0" minValue="0.0" name="Weight_S1_Reported" startValue="7410.060920308" xCoordinate="232.0" yCoordinate="2185.0"/>
+      <LevelNode curve="3.0" id="LN0139" maxValue="0.0" minValue="0.0" name="Weight_S2_Reported" startValue="2730.036815059" xCoordinate="232.0" yCoordinate="2205.0"/>
+      <LevelNode curve="3.0" id="LN0140" maxValue="10000.0" minValue="0.0" name="Weight_Allocation_S2" startValue="2500" xCoordinate="442.0" yCoordinate="2168.0"/>
+      <LevelNode curve="3.0" id="LN0141" maxValue="0.0" minValue="0.0" name="Sched_Var_Total" startValue="-16.440717553" xCoordinate="4470.0" yCoordinate="2330.0"/>
+      <LevelNode curve="3.0" id="LN0142" maxValue="0.0" minValue="0.0" name="SPI_Total" startValue="0.915483635" xCoordinate="4470.0" yCoordinate="2130.0"/>
+      <LevelNode curve="3.0" id="LN0143" maxValue="0.0" minValue="0.0" name="Burn_Rate_S0" startValue="1.430218477" xCoordinate="4200.0" yCoordinate="50.0"/>
+      <LevelNode curve="3.0" id="LN0144" maxValue="0.0" minValue="0.0" name="Burn_Rate_S1" startValue="1.449193351" xCoordinate="4200.0" yCoordinate="200.0"/>
+      <LevelNode curve="3.0" id="LN0145" maxValue="0.0" minValue="0.0" name="Burn_Rate_S2" startValue="3.021886016" xCoordinate="4200.0" yCoordinate="350.0"/>
+      <LevelNode curve="3.0" id="LN0146" maxValue="0.0" minValue="0.0" name="Burn_Rate_S3" startValue="0.550103202" xCoordinate="4200.0" yCoordinate="500.0"/>
+      <LevelNode curve="3.0" id="LN0147" maxValue="0.0" minValue="0.0" name="Burn_Rate_Total" startValue="6.451401047" xCoordinate="4200.0" yCoordinate="650.0"/>
+      <LevelNode curve="3.0" id="LN0148" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Resolved_S2_Reported" startValue="157" xCoordinate="2600.0" yCoordinate="2550.0"/>
+      <LevelNode curve="3.0" id="LN0149" maxValue="0.0" minValue="0.0" name="SW_Errors_P1_Total_S2_Reported" startValue="174" xCoordinate="2600.0" yCoordinate="2600.0"/>
+      <LevelNode curve="3.0" id="LN0150" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Detected_S2_Reported" startValue="221" xCoordinate="2900.0" yCoordinate="2550.0"/>
+      <LevelNode curve="3.0" id="LN0151" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Resolved_S2_Reported" startValue="2349" xCoordinate="3200.0" yCoordinate="2550.0"/>
+      <LevelNode curve="3.0" id="LN0152" maxValue="0.0" minValue="0.0" name="SW_Errors_P2_Total_S2_Reported" startValue="2567" xCoordinate="2900.0" yCoordinate="2600.0"/>
+      <LevelNode curve="3.0" id="LN0153" maxValue="0.0" minValue="0.0" name="Budget_MR" startValue="5" xCoordinate="3939.0" yCoordinate="2075.0"/>
+      <LevelNode curve="3.0" id="LN0154" maxValue="1000.0" minValue="0.0" name="Rookie_Staff_S0_Target" startValue="30" xCoordinate="848.0" yCoordinate="267.0"/>
+      <LevelNode curve="3.0" id="LN0155" maxValue="1000.0" minValue="0.0" name="Pro_Staff_S0_Target" startValue="130" xCoordinate="999.0" yCoordinate="267.0"/>
+      <LevelNode curve="3.0" id="LN0156" maxValue="1000.0" minValue="0.0" name="Rookie_Staff_S1_Target" startValue="60" xCoordinate="3923.0" yCoordinate="1016.0"/>
+      <LevelNode curve="3.0" id="LN0157" maxValue="1000.0" minValue="0.0" name="Pro_Staff_S1_Target" startValue="60" xCoordinate="3766.0" yCoordinate="1016.0"/>
+      <LevelNode curve="3.0" id="LN0158" maxValue="1000.0" minValue="0.0" name="Rookie_Staff_S2_Target" startValue="160" xCoordinate="2088.0" yCoordinate="340.0"/>
+      <LevelNode curve="3.0" id="LN0159" maxValue="1000.0" minValue="0.0" name="Pro_Staff_S2_Target" startValue="240" xCoordinate="2239.0" yCoordinate="340.0"/>
+      <LevelNode curve="3.0" id="LN0160" maxValue="1000.0" minValue="0.0" name="Rookie_Staff_S3_Target" startValue="18" xCoordinate="2007.0" yCoordinate="1688.0"/>
+      <LevelNode curve="3.0" id="LN0161" maxValue="1000.0" minValue="0.0" name="Pro_Staff_S3_Target" startValue="75" xCoordinate="2189.0" yCoordinate="1688.0"/>
+      <LevelNode curve="3.0" id="LN0162" maxValue="0.04" minValue="0.0" name="Drag_Coefficient_Target" startValue="0" xCoordinate="36.0" yCoordinate="1780.0"/>
+      <LevelNode curve="3.0" id="LN0163" maxValue="0.0" minValue="0.0" name="Drag_Coefficient_Target_Natural" startValue="0.0315" xCoordinate="36.0" yCoordinate="1730.0"/>
+      <LevelNode curve="3.0" id="LN0164" maxValue="0.0" minValue="0.0" name="Drag_Reduction_On" startValue="0" xCoordinate="36.0" yCoordinate="1680.0"/>
+      <LevelNode curve="3.0" id="LN0165" maxValue="0.4" minValue="0.0" name="TSFC_Target" startValue="0" xCoordinate="869.0" yCoordinate="2206.0"/>
+      <LevelNode curve="3.0" id="LN0166" maxValue="0.0" minValue="0.0" name="TSFC_Target_Natural" startValue="0.3328" xCoordinate="1144.0" yCoordinate="2226.0"/>
+      <LevelNode curve="3.0" id="LN0167" maxValue="0.0" minValue="0.0" name="TSFC_Improvement_On" startValue="0" xCoordinate="972.0" yCoordinate="2282.0"/>
+      <LevelNode curve="3.0" id="LN0168" maxValue="1000.0" minValue="0.0" name="Rookie_Staff_QA_S2_Target" startValue="2" xCoordinate="2150.0" yCoordinate="1140.0"/>
+      <LevelNode curve="3.0" id="LN0169" maxValue="1000.0" minValue="0.0" name="Pro_Staff_QA_S2_Target" startValue="20" xCoordinate="2288.0" yCoordinate="1140.0"/>
+      <LevelNode curve="3.0" id="LN0170" maxValue="0.0" minValue="0.0" name="Range_Objective" startValue="5200" xCoordinate="831.0" yCoordinate="1578.0"/>
+      <LevelNode curve="3.0" id="LN0171" maxValue="0.0" minValue="0.0" name="Design_Review_Freq_S2" startValue="0.03" xCoordinate="2208.0" yCoordinate="1015.0"/>
+      <LevelNode curve="3.0" id="LN0172" maxValue="0.0" minValue="0.0" name="Endurance" startValue="4" xCoordinate="660.0" yCoordinate="1569.0"/>
+      <LevelNode curve="3.0" id="LN0173" maxValue="0.0" minValue="0.0" name="True_Air_Speed" startValue="400" xCoordinate="660.0" yCoordinate="1509.0"/>
+      <LevelNode curve="3.0" id="LN0174" maxValue="0.0" minValue="0.0" name="Weight_Payload" startValue="2500" xCoordinate="366.0" yCoordinate="1912.0"/>
+      <LevelNode curve="3.0" id="LN0175" maxValue="0.0" minValue="0.0" name="PDR_Date" startValue="0" xCoordinate="0.0" yCoordinate="0.0"/>
+      <LevelNode curve="3.0" id="LN0176" maxValue="0.0" minValue="0.0" name="CDR_Date" startValue="810" xCoordinate="0.0" yCoordinate="0.0"/>
+      <LevelNode curve="3.0" id="LN0177" maxValue="0.0" minValue="0.0" name="FRR_Date" startValue="1170" xCoordinate="0.0" yCoordinate="0.0"/>
+      <LevelNode curve="3.0" id="LN0178" maxValue="0.0" minValue="0.0" name="PRR_Date" startValue="1530" xCoordinate="0.0" yCoordinate="0.0"/>
+      <LevelNode curve="3.0" id="LN0179" maxValue="0.0" minValue="0.0" name="ISR_Date" startValue="1890" xCoordinate="0.0" yCoordinate="0.0"/>
     </LevelNodes>
     <SourceSinkNodes>
       <SourceSinkNode id="SN0001" xCoordinate="2725.0" yCoordinate="322.0"/>
@@ -288,9 +311,10 @@
       <SourceSinkNode id="SN0126" xCoordinate="2400.0" yCoordinate="2600.0"/>
       <SourceSinkNode id="SN0127" xCoordinate="2700.0" yCoordinate="2550.0"/>
       <SourceSinkNode id="SN0128" xCoordinate="3000.0" yCoordinate="2550.0"/>
-      <SourceSinkNode id="SN0129" xCoordinate="2700.0" yCoordinate="2600.0"/>
-      <SourceSinkNode id="SN0130" xCoordinate="2388.0" yCoordinate="50.0"/>
-      <SourceSinkNode id="SN0131" xCoordinate="2539.0" yCoordinate="50.0"/>
+      <SourceSinkNode id="SN0129" xCoordinate="3700.0" yCoordinate="2600.0"/>
+      <SourceSinkNode id="SN0130" xCoordinate="4100.0" yCoordinate="2000.0"/>
+      <SourceSinkNode id="SN0131" xCoordinate="3900.0" yCoordinate="2300.0"/>
+      <SourceSinkNode id="SN0132" xCoordinate="570.0" yCoordinate="2300.0"/>
     </SourceSinkNodes>
     <RateNodes>
       <RateNode id="RN0001" name="Error_P2_Detection_S2" xCoordinate="2212.0" yCoordinate="886.0">
@@ -487,9 +511,18 @@
           </ASTMultiply>
         </Formula>
       </RateNode>
-      <RateNode id="RN0023" name="Specific_Impulse_Increase_Rate" xCoordinate="732.0" yCoordinate="2045.0">
+      <RateNode id="RN0023" name="TSFC_Increase_Rate" xCoordinate="886.0" yCoordinate="2113.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0100"/>
+          <ASTMultiply>
+            <ASTConstantNode constantNodeIdRef="CN0100"/>
+            <ASTMultiply>
+              <ASTMinus>
+                <ASTLevelNode levelNodeIdRef="LN0165"/>
+                <ASTLevelNode levelNodeIdRef="LN0092"/>
+              </ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0167"/>
+            </ASTMultiply>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0024" name="Error_P2_Generation_S2" xCoordinate="2052.0" yCoordinate="880.0">
@@ -499,7 +532,7 @@
               <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0054"/>
               <ASTConstantNode constantNodeIdRef="CN0125"/>
             </ASTMultiply>
-            <ASTConstantNode constantNodeIdRef="CN0032"/>
+            <ASTLevelNode levelNodeIdRef="LN0171"/>
           </ASTDivide>
         </Formula>
       </RateNode>
@@ -536,7 +569,13 @@
       </RateNode>
       <RateNode id="RN0030" name="Hiring_Progress_Rookies_S3" xCoordinate="1937.0" yCoordinate="1652.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0143"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0160"/>
+              <ASTLevelNode levelNodeIdRef="LN0013"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0143"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0031" name="SPI_Rate_S0" xCoordinate="334.0" yCoordinate="830.0">
@@ -650,7 +689,7 @@
           <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0070"/>
         </Formula>
       </RateNode>
-      <RateNode id="RN0043" name="Hiring_Progress_Pro_Staff_QA_S2" xCoordinate="2313.0" yCoordinate="2211.0">
+      <RateNode id="RN0043" name="Hiring_Progress_Pro_Staff_QA_S3" xCoordinate="2313.0" yCoordinate="2211.0">
         <Formula>
           <ASTConstantNode constantNodeIdRef="CN0107"/>
         </Formula>
@@ -676,7 +715,13 @@
       </RateNode>
       <RateNode id="RN0046" name="Hiring_Progress_Pros_S2" xCoordinate="2251.0" yCoordinate="261.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0106"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0159"/>
+              <ASTLevelNode levelNodeIdRef="LN0051"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0106"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0047" name="Rate_S3" xCoordinate="2567.0" yCoordinate="2259.0">
@@ -744,9 +789,15 @@
           </ASTMinus>
         </Formula>
       </RateNode>
-      <RateNode id="RN0054" name="Drag_Increase_Rate" xCoordinate="246.0" yCoordinate="1831.0">
+      <RateNode id="RN0054" name="Drag_Coefficient_Increase_Rate" xCoordinate="246.0" yCoordinate="1831.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0144"/>
+          <ASTMultiply>
+            <ASTConstantNode constantNodeIdRef="CN0144"/>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0163"/>
+              <ASTLevelNode levelNodeIdRef="LN0076"/>
+            </ASTMinus>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0055" name="CDR_SDD_Progress" xCoordinate="1513.0" yCoordinate="313.0">
@@ -861,7 +912,7 @@
               <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0054"/>
               <ASTConstantNode constantNodeIdRef="CN0062"/>
             </ASTMultiply>
-            <ASTConstantNode constantNodeIdRef="CN0032"/>
+            <ASTLevelNode levelNodeIdRef="LN0171"/>
           </ASTDivide>
         </Formula>
       </RateNode>
@@ -892,22 +943,46 @@
       </RateNode>
       <RateNode id="RN0070" name="Range_Reported_Decrease_Rate" xCoordinate="819.0" yCoordinate="1753.0">
         <Formula>
-          <ASTMultiply>
-            <ASTMinus>
-              <ASTLevelNode levelNodeIdRef="LN0037"/>
-              <ASTLevelNode levelNodeIdRef="LN0039"/>
-            </ASTMinus>
-            <ASTRound>
-              <ASTMultiply>
+          <ASTMinus>
+            <ASTMultiply>
+              <ASTMax>
                 <ASTMinus>
                   <ASTLevelNode levelNodeIdRef="LN0037"/>
                   <ASTLevelNode levelNodeIdRef="LN0039"/>
                 </ASTMinus>
-                <ASTConstantNode constantNodeIdRef="CN0131"/>
-              </ASTMultiply>
-              <ASTConstantNode constantNodeIdRef="CN0008"/>
-            </ASTRound>
-          </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMax>
+              <ASTRound>
+                <ASTMultiply>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0037"/>
+                    <ASTLevelNode levelNodeIdRef="LN0039"/>
+                  </ASTMinus>
+                  <ASTConstantNode constantNodeIdRef="CN0131"/>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTRound>
+            </ASTMultiply>
+            <ASTMultiply>
+              <ASTMin>
+                <ASTMinus>
+                  <ASTLevelNode levelNodeIdRef="LN0037"/>
+                  <ASTLevelNode levelNodeIdRef="LN0039"/>
+                </ASTMinus>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMin>
+              <ASTRound>
+                <ASTMultiply>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0037"/>
+                    <ASTLevelNode levelNodeIdRef="LN0039"/>
+                  </ASTMinus>
+                  <ASTConstantNode constantNodeIdRef="CN0131"/>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTRound>
+            </ASTMultiply>
+          </ASTMinus>
         </Formula>
       </RateNode>
       <RateNode id="RN0071" name="Training_Progress_QA_S2" xCoordinate="2240.0" yCoordinate="1090.0">
@@ -928,7 +1003,13 @@
       </RateNode>
       <RateNode id="RN0073" name="Hiring_Progress_Pros_S1" xCoordinate="3935.0" yCoordinate="949.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0005"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0157"/>
+              <ASTLevelNode levelNodeIdRef="LN0081"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0005"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0074" name="Training_Progress_QA_S1" xCoordinate="3914.0" yCoordinate="1840.0">
@@ -949,12 +1030,24 @@
       </RateNode>
       <RateNode id="RN0076" name="Hiring_Progress_Rookies_S2" xCoordinate="2027.0" yCoordinate="308.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0077"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0158"/>
+              <ASTLevelNode levelNodeIdRef="LN0038"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0077"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0077" name="Hiring_Progress_Pros_S0" xCoordinate="1011.0" yCoordinate="189.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0052"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0155"/>
+              <ASTLevelNode levelNodeIdRef="LN0057"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0052"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0078" name="Hiring_Progress_Pro_Staff_QA_S0" xCoordinate="1024.0" yCoordinate="1096.0">
@@ -985,7 +1078,13 @@
       </RateNode>
       <RateNode id="RN0082" name="Hiring_Rate_Rookie_Staff_S2" xCoordinate="2096.0" yCoordinate="1090.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0098"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0168"/>
+              <ASTLevelNode levelNodeIdRef="LN0050"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0098"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0083" name="BCWS_Rate_S2" xCoordinate="1494.0" yCoordinate="742.0">
@@ -1043,7 +1142,13 @@
       </RateNode>
       <RateNode id="RN0090" name="Hiring_Progress_Pro_Staff_QA_S2" xCoordinate="2378.0" yCoordinate="1038.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0119"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0169"/>
+              <ASTLevelNode levelNodeIdRef="LN0025"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0119"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0091" name="Error_P1_Detection_S1" xCoordinate="3868.0" yCoordinate="1984.0">
@@ -1057,9 +1162,15 @@
           </ASTMultiply>
         </Formula>
       </RateNode>
-      <RateNode id="RN0092" name="Specific_Impulse_Decrease_Rate" xCoordinate="872.0" yCoordinate="2044.0">
+      <RateNode id="RN0092" name="TSFC_Decrease_Rate" xCoordinate="1089.0" yCoordinate="2117.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0102"/>
+          <ASTMultiply>
+            <ASTConstantNode constantNodeIdRef="CN0102"/>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0092"/>
+              <ASTLevelNode levelNodeIdRef="LN0166"/>
+            </ASTMinus>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0093" name="ACWP_Rate_S3" xCoordinate="2484.0" yCoordinate="1746.0">
@@ -1108,7 +1219,13 @@
       </RateNode>
       <RateNode id="RN0100" name="Hiring_Progress_Rookies_S0" xCoordinate="787.0" yCoordinate="236.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0030"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0154"/>
+              <ASTLevelNode levelNodeIdRef="LN0065"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0030"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0101" name="CDR_SSDV_S2_Slowdown" xCoordinate="2348.0" yCoordinate="726.0">
@@ -1143,7 +1260,13 @@
       </RateNode>
       <RateNode id="RN0104" name="Hiring_Progress_Rookies_S1" xCoordinate="3711.0" yCoordinate="996.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0056"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0156"/>
+              <ASTLevelNode levelNodeIdRef="LN0029"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0056"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0105" name="Error_P2_Generation_S3" xCoordinate="1861.0" yCoordinate="2072.0">
@@ -1205,7 +1328,13 @@
       </RateNode>
       <RateNode id="RN0111" name="Hiring_Progress_Pros_S3" xCoordinate="2176.0" yCoordinate="1569.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0068"/>
+          <ASTMultiply>
+            <ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0161"/>
+              <ASTLevelNode levelNodeIdRef="LN0062"/>
+            </ASTMinus>
+            <ASTConstantNode constantNodeIdRef="CN0068"/>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0112" name="Error_P2_Resolution_S0" xCoordinate="1010.0" yCoordinate="944.0">
@@ -1232,9 +1361,18 @@
           <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0011"/>
         </Formula>
       </RateNode>
-      <RateNode id="RN0115" name="Drag_Decrease_Rate" xCoordinate="403.0" yCoordinate="1829.0">
+      <RateNode id="RN0115" name="Drag_Coefficient_Decrease_Rate" xCoordinate="403.0" yCoordinate="1829.0">
         <Formula>
-          <ASTConstantNode constantNodeIdRef="CN0006"/>
+          <ASTMultiply>
+            <ASTConstantNode constantNodeIdRef="CN0006"/>
+            <ASTMultiply>
+              <ASTMinus>
+                <ASTLevelNode levelNodeIdRef="LN0076"/>
+                <ASTLevelNode levelNodeIdRef="LN0162"/>
+              </ASTMinus>
+              <ASTLevelNode levelNodeIdRef="LN0164"/>
+            </ASTMultiply>
+          </ASTMultiply>
         </Formula>
       </RateNode>
       <RateNode id="RN0116" name="Hiring_Rate_Rookie_Staff_S3" xCoordinate="1930.0" yCoordinate="2259.0">
@@ -1314,7 +1452,7 @@
           <ASTMinus>
             <ASTMultiply>
               <ASTMultiply>
-                <ASTConstantNode constantNodeIdRef="CN0032"/>
+                <ASTLevelNode levelNodeIdRef="LN0171"/>
                 <ASTConstantNode constantNodeIdRef="CN0099"/>
               </ASTMultiply>
               <ASTLevelNode levelNodeIdRef="LN0018"/>
@@ -1466,24 +1604,48 @@
           </ASTMinus>
         </Formula>
       </RateNode>
-      <RateNode id="RN0139" name="Discretized_Drag" xCoordinate="284.0" yCoordinate="1851.0">
+      <RateNode id="RN0139" name="Discretized_Drag_Coefficient" xCoordinate="284.0" yCoordinate="1851.0">
         <Formula>
-          <ASTMultiply>
-            <ASTMinus>
-              <ASTLevelNode levelNodeIdRef="LN0076"/>
-              <ASTLevelNode levelNodeIdRef="LN0136"/>
-            </ASTMinus>
-            <ASTRound>
-              <ASTMultiply>
+          <ASTMinus>
+            <ASTMultiply>
+              <ASTMax>
                 <ASTMinus>
                   <ASTLevelNode levelNodeIdRef="LN0076"/>
                   <ASTLevelNode levelNodeIdRef="LN0136"/>
                 </ASTMinus>
-                <ASTConstantNode constantNodeIdRef="CN0157"/>
-              </ASTMultiply>
-              <ASTConstantNode constantNodeIdRef="CN0008"/>
-            </ASTRound>
-          </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMax>
+              <ASTRound>
+                <ASTMultiply>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0076"/>
+                    <ASTLevelNode levelNodeIdRef="LN0136"/>
+                  </ASTMinus>
+                  <ASTConstantNode constantNodeIdRef="CN0157"/>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTRound>
+            </ASTMultiply>
+            <ASTMultiply>
+              <ASTMin>
+                <ASTMinus>
+                  <ASTLevelNode levelNodeIdRef="LN0076"/>
+                  <ASTLevelNode levelNodeIdRef="LN0136"/>
+                </ASTMinus>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMin>
+              <ASTRound>
+                <ASTMultiply>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0076"/>
+                    <ASTLevelNode levelNodeIdRef="LN0136"/>
+                  </ASTMinus>
+                  <ASTConstantNode constantNodeIdRef="CN0157"/>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTRound>
+            </ASTMultiply>
+          </ASTMinus>
         </Formula>
       </RateNode>
       <RateNode id="RN0140" name="Discretized_Weight_S1" xCoordinate="212.0" yCoordinate="2185.0">
@@ -1661,25 +1823,42 @@
           </ASTMinus>
         </Formula>
       </RateNode>
-      <RateNode id="RN0154" name="Rookie_Staff_Change_Rate_S2" xCoordinate="2388.0" yCoordinate="100.0">
+      <RateNode id="RN0154" name="Budget_Total_No_MR_Change_Rate" xCoordinate="4100.0" yCoordinate="2050.0">
         <Formula>
           <ASTMinus>
             <ASTPlus>
-              <ASTLevelNode levelNodeIdRef="LN0153"/>
-              <ASTLevelNode levelNodeIdRef="LN0038"/>
+              <ASTPlus>
+                <ASTLevelNode levelNodeIdRef="LN0075"/>
+                <ASTLevelNode levelNodeIdRef="LN0022"/>
+              </ASTPlus>
+              <ASTPlus>
+                <ASTLevelNode levelNodeIdRef="LN0096"/>
+                <ASTLevelNode levelNodeIdRef="LN0003"/>
+              </ASTPlus>
             </ASTPlus>
-            <ASTLevelNode levelNodeIdRef="LN0155"/>
+            <ASTLevelNode levelNodeIdRef="LN0063"/>
           </ASTMinus>
         </Formula>
       </RateNode>
-      <RateNode id="RN0155" name="Pro_Staff_Change_Rate_S2" xCoordinate="2539.0" yCoordinate="100.0">
+      <RateNode id="RN0155" name="Budget_Total_Change_Rate" xCoordinate="3900.0" yCoordinate="2150.0">
         <Formula>
           <ASTMinus>
             <ASTPlus>
-              <ASTLevelNode levelNodeIdRef="LN0154"/>
-              <ASTLevelNode levelNodeIdRef="LN0051"/>
+              <ASTLevelNode levelNodeIdRef="LN0063"/>
+              <ASTLevelNode levelNodeIdRef="LN0153"/>
             </ASTPlus>
-            <ASTLevelNode levelNodeIdRef="LN0156"/>
+            <ASTLevelNode levelNodeIdRef="LN0021"/>
+          </ASTMinus>
+        </Formula>
+      </RateNode>
+      <RateNode id="RN0156" name="Weight_Threshold_Change_Rate" xCoordinate="600.0" yCoordinate="2250.0">
+        <Formula>
+          <ASTMinus>
+            <ASTPlus>
+              <ASTLevelNode levelNodeIdRef="LN0115"/>
+              <ASTLevelNode levelNodeIdRef="LN0140"/>
+            </ASTPlus>
+            <ASTLevelNode levelNodeIdRef="LN0024"/>
           </ASTMinus>
         </Formula>
       </RateNode>
@@ -2030,10 +2209,25 @@
       <AuxiliaryNode id="AN0034" name="Avg_Nominal_Potential_Prod_S1" xCoordinate="3876.0" yCoordinate="1297.0">
         <Formula>
           <ASTMultiply>
-            <ASTPlus>
-              <ASTConstantNode constantNodeIdRef="CN0116"/>
-              <ASTConstantNode constantNodeIdRef="CN0079"/>
-            </ASTPlus>
+            <ASTDivide>
+              <ASTPlus>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0116"/>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0081"/>
+                    <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0007"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0079"/>
+                  <ASTLevelNode levelNodeIdRef="LN0029"/>
+                </ASTMultiply>
+              </ASTPlus>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0032"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0007"/>
+              </ASTMinus>
+            </ASTDivide>
             <ASTConstantNode constantNodeIdRef="CN0040"/>
           </ASTMultiply>
         </Formula>
@@ -2057,7 +2251,7 @@
       <AuxiliaryNode id="AN0037" name="Cost_Var_Function_S1" xCoordinate="3680.0" yCoordinate="470.0">
         <Formula>
           <ASTMinus>
-            <ASTLevelNode levelNodeIdRef="LN0033"/>
+            <ASTLevelNode levelNodeIdRef="LN0011"/>
             <ASTLevelNode levelNodeIdRef="LN0091"/>
           </ASTMinus>
         </Formula>
@@ -2067,9 +2261,15 @@
           <ASTDivide>
             <ASTPlus>
               <ASTConstantNode constantNodeIdRef="CN0004"/>
-              <ASTLevelNode levelNodeIdRef="LN0069"/>
+              <ASTPlus>
+                <ASTLevelNode levelNodeIdRef="LN0069"/>
+                <ASTLevelNode levelNodeIdRef="LN0174"/>
+              </ASTPlus>
             </ASTPlus>
-            <ASTLevelNode levelNodeIdRef="LN0069"/>
+            <ASTPlus>
+              <ASTLevelNode levelNodeIdRef="LN0069"/>
+              <ASTLevelNode levelNodeIdRef="LN0174"/>
+            </ASTPlus>
           </ASTDivide>
         </Formula>
       </AuxiliaryNode>
@@ -2176,10 +2376,25 @@
       <AuxiliaryNode id="AN0050" name="Avg_Nominal_Potential_Prod_S2" xCoordinate="2192.0" yCoordinate="609.0">
         <Formula>
           <ASTMultiply>
-            <ASTPlus>
-              <ASTConstantNode constantNodeIdRef="CN0018"/>
-              <ASTConstantNode constantNodeIdRef="CN0041"/>
-            </ASTPlus>
+            <ASTDivide>
+              <ASTPlus>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0018"/>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0051"/>
+                    <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0046"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0041"/>
+                  <ASTLevelNode levelNodeIdRef="LN0038"/>
+                </ASTMultiply>
+              </ASTPlus>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0081"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0046"/>
+              </ASTMinus>
+            </ASTDivide>
             <ASTConstantNode constantNodeIdRef="CN0086"/>
           </ASTMultiply>
         </Formula>
@@ -2238,10 +2453,25 @@
       <AuxiliaryNode id="AN0057" name="Avg_Nominal_Potential_Prod_S0" xCoordinate="952.0" yCoordinate="537.0">
         <Formula>
           <ASTMultiply>
-            <ASTPlus>
-              <ASTConstantNode constantNodeIdRef="CN0011"/>
-              <ASTConstantNode constantNodeIdRef="CN0129"/>
-            </ASTPlus>
+            <ASTDivide>
+              <ASTPlus>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0011"/>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0057"/>
+                    <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0025"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0129"/>
+                  <ASTLevelNode levelNodeIdRef="LN0065"/>
+                </ASTMultiply>
+              </ASTPlus>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0005"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0025"/>
+              </ASTMinus>
+            </ASTDivide>
             <ASTConstantNode constantNodeIdRef="CN0127"/>
           </ASTMultiply>
         </Formula>
@@ -2260,7 +2490,7 @@
           </ASTPlus>
         </Formula>
       </AuxiliaryNode>
-      <AuxiliaryNode id="AN0059" name="Schedule _State_S3" xCoordinate="2478.0" yCoordinate="1882.0">
+      <AuxiliaryNode id="AN0059" name="Schedule_State_S3" xCoordinate="2478.0" yCoordinate="1882.0">
         <Formula>
           <ASTMinus>
             <ASTMultiply>
@@ -2373,10 +2603,25 @@
       <AuxiliaryNode id="AN0069" name="Avg_Nominal_Potential_Prod_S3" xCoordinate="1638.0" yCoordinate="1822.0">
         <Formula>
           <ASTMultiply>
-            <ASTPlus>
-              <ASTConstantNode constantNodeIdRef="CN0051"/>
-              <ASTConstantNode constantNodeIdRef="CN0117"/>
-            </ASTPlus>
+            <ASTDivide>
+              <ASTPlus>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0117"/>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0062"/>
+                    <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0006"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0051"/>
+                  <ASTLevelNode levelNodeIdRef="LN0013"/>
+                </ASTMultiply>
+              </ASTPlus>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0008"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0006"/>
+              </ASTMinus>
+            </ASTDivide>
             <ASTConstantNode constantNodeIdRef="CN0007"/>
           </ASTMultiply>
         </Formula>
@@ -2387,11 +2632,11 @@
             <ASTPlus>
               <ASTPlus>
                 <ASTMultiply>
-                  <ASTLevelNode levelNodeIdRef="LN0155"/>
+                  <ASTLevelNode levelNodeIdRef="LN0038"/>
                   <ASTConstantNode constantNodeIdRef="CN0067"/>
                 </ASTMultiply>
                 <ASTMultiply>
-                  <ASTLevelNode levelNodeIdRef="LN0156"/>
+                  <ASTLevelNode levelNodeIdRef="LN0051"/>
                   <ASTConstantNode constantNodeIdRef="CN0130"/>
                 </ASTMultiply>
               </ASTPlus>
@@ -2455,13 +2700,22 @@
       </AuxiliaryNode>
       <AuxiliaryNode id="AN0076" name="Range_Update" xCoordinate="601.0" yCoordinate="1717.0">
         <Formula>
-          <ASTMultiply>
+          <ASTMinus>
+            <ASTDivide>
+              <ASTMultiply>
+                <ASTLevelNode levelNodeIdRef="LN0173"/>
+                <ASTMultiply>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0047"/>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0029"/>
+                </ASTMultiply>
+              </ASTMultiply>
+              <ASTLevelNode levelNodeIdRef="LN0092"/>
+            </ASTDivide>
             <ASTMultiply>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0047"/>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0029"/>
+              <ASTLevelNode levelNodeIdRef="LN0172"/>
+              <ASTLevelNode levelNodeIdRef="LN0173"/>
             </ASTMultiply>
-            <ASTLevelNode levelNodeIdRef="LN0092"/>
-          </ASTMultiply>
+          </ASTMinus>
         </Formula>
       </AuxiliaryNode>
       <AuxiliaryNode id="AN0077" name="CDR_SSDV_S1_Rate" xCoordinate="3598.0" yCoordinate="1232.0">
@@ -2473,7 +2727,10 @@
             </ASTMultiply>
             <ASTMinus>
               <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0032"/>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0007"/>
+              <ASTPlus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0007"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0097"/>
+              </ASTPlus>
             </ASTMinus>
           </ASTMultiply>
         </Formula>
@@ -2488,16 +2745,25 @@
       </AuxiliaryNode>
       <AuxiliaryNode id="AN0079" name="Weight_Increase_Rate_S2" xCoordinate="246.0" yCoordinate="2239.0">
         <Formula>
-          <ASTMultiply>
+          <ASTMax>
             <ASTMinus>
-              <ASTLevelNode levelNodeIdRef="LN0067"/>
-              <ASTLevelNode levelNodeIdRef="LN0061"/>
+              <ASTMultiply>
+                <ASTMinus>
+                  <ASTLevelNode levelNodeIdRef="LN0067"/>
+                  <ASTLevelNode levelNodeIdRef="LN0061"/>
+                </ASTMinus>
+                <ASTMax>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0082"/>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0086"/>
+                </ASTMax>
+              </ASTMultiply>
+              <ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0172"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0100"/>
+              </ASTMultiply>
             </ASTMinus>
-            <ASTMax>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0082"/>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0086"/>
-            </ASTMax>
-          </ASTMultiply>
+            <ASTConstantNode constantNodeIdRef="CN0008"/>
+          </ASTMax>
         </Formula>
       </AuxiliaryNode>
       <AuxiliaryNode id="AN0080" name="CDR_SSDV_S2_Rate" xCoordinate="2007.0" yCoordinate="570.0">
@@ -2509,7 +2775,10 @@
             </ASTMultiply>
             <ASTMinus>
               <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0081"/>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0046"/>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0046"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0098"/>
+              </ASTMinus>
             </ASTMinus>
           </ASTMultiply>
         </Formula>
@@ -2517,8 +2786,8 @@
       <AuxiliaryNode id="AN0081" name="Total_Workforce_S2" xCoordinate="2191.0" yCoordinate="393.0">
         <Formula>
           <ASTPlus>
-            <ASTLevelNode levelNodeIdRef="LN0155"/>
-            <ASTLevelNode levelNodeIdRef="LN0156"/>
+            <ASTLevelNode levelNodeIdRef="LN0038"/>
+            <ASTLevelNode levelNodeIdRef="LN0051"/>
           </ASTPlus>
         </Formula>
       </AuxiliaryNode>
@@ -2628,16 +2897,25 @@
       </AuxiliaryNode>
       <AuxiliaryNode id="AN0092" name="Weight_Increase_Rate_S1" xCoordinate="180.0" yCoordinate="2084.0">
         <Formula>
-          <ASTMultiply>
+          <ASTMax>
             <ASTMinus>
-              <ASTLevelNode levelNodeIdRef="LN0137"/>
-              <ASTLevelNode levelNodeIdRef="LN0072"/>
+              <ASTMultiply>
+                <ASTMinus>
+                  <ASTLevelNode levelNodeIdRef="LN0137"/>
+                  <ASTLevelNode levelNodeIdRef="LN0072"/>
+                </ASTMinus>
+                <ASTMax>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0090"/>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0091"/>
+                </ASTMax>
+              </ASTMultiply>
+              <ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0171"/>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0099"/>
+              </ASTMultiply>
             </ASTMinus>
-            <ASTMax>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0090"/>
-              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0091"/>
-            </ASTMax>
-          </ASTMultiply>
+            <ASTConstantNode constantNodeIdRef="CN0008"/>
+          </ASTMax>
         </Formula>
       </AuxiliaryNode>
       <AuxiliaryNode id="AN0093" name="Sched_Var_Function_Total" xCoordinate="4370.0" yCoordinate="2430.0">
@@ -2656,15 +2934,129 @@
           </ASTDivide>
         </Formula>
       </AuxiliaryNode>
+      <AuxiliaryNode id="AN0095" name="Drag_Reduction_Staff" xCoordinate="130.0" yCoordinate="1630.0">
+        <Formula>
+          <ASTMultiply>
+            <ASTPlus>
+              <ASTConstantNode constantNodeIdRef="CN0161"/>
+              <ASTMax>
+                <ASTMultiply>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0136"/>
+                    <ASTLevelNode levelNodeIdRef="LN0162"/>
+                  </ASTMinus>
+                  <ASTConstantNode constantNodeIdRef="CN0162"/>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMax>
+            </ASTPlus>
+            <ASTLevelNode levelNodeIdRef="LN0164"/>
+          </ASTMultiply>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0096" name="TSFC_Improvement_Staff" xCoordinate="692.0" yCoordinate="2176.0">
+        <Formula>
+          <ASTMultiply>
+            <ASTPlus>
+              <ASTConstantNode constantNodeIdRef="CN0163"/>
+              <ASTMax>
+                <ASTMultiply>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0165"/>
+                    <ASTLevelNode levelNodeIdRef="LN0092"/>
+                  </ASTMinus>
+                  <ASTConstantNode constantNodeIdRef="CN0164"/>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMax>
+            </ASTPlus>
+            <ASTLevelNode levelNodeIdRef="LN0167"/>
+          </ASTMultiply>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0097" name="Pros_Needed_For_Special_Tasks_S1" xCoordinate="130.0" yCoordinate="1580.0">
+        <Formula>
+          <ASTPlus>
+            <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0095"/>
+            <ASTPlus>
+              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0096"/>
+              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0099"/>
+            </ASTPlus>
+          </ASTPlus>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0098" name="Pros_Needed_For_Special_Tasks_S2" xCoordinate="1840.0" yCoordinate="230.0">
+        <Formula>
+          <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0100"/>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0099" name="Weight_Reduction_Staff_S1" xCoordinate="90.0" yCoordinate="1930.0">
+        <Formula>
+          <ASTPlus>
+            <ASTDivide>
+              <ASTConstantNode constantNodeIdRef="CN0168"/>
+              <ASTMax>
+                <ASTMinus>
+                  <ASTLevelNode levelNodeIdRef="LN0115"/>
+                  <ASTLevelNode levelNodeIdRef="LN0072"/>
+                </ASTMinus>
+                <ASTConstantNode constantNodeIdRef="CN0124"/>
+              </ASTMax>
+            </ASTDivide>
+            <ASTMin>
+              <ASTMax>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0169"/>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0072"/>
+                    <ASTLevelNode levelNodeIdRef="LN0115"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMax>
+              <ASTConstantNode constantNodeIdRef="CN0170"/>
+            </ASTMin>
+          </ASTPlus>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0100" name="Weight_Reduction_Staff_S2" xCoordinate="130.0" yCoordinate="1930.0">
+        <Formula>
+          <ASTPlus>
+            <ASTDivide>
+              <ASTConstantNode constantNodeIdRef="CN0165"/>
+              <ASTMax>
+                <ASTMinus>
+                  <ASTLevelNode levelNodeIdRef="LN0140"/>
+                  <ASTLevelNode levelNodeIdRef="LN0061"/>
+                </ASTMinus>
+                <ASTConstantNode constantNodeIdRef="CN0124"/>
+              </ASTMax>
+            </ASTDivide>
+            <ASTMin>
+              <ASTMax>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0166"/>
+                  <ASTMinus>
+                    <ASTLevelNode levelNodeIdRef="LN0061"/>
+                    <ASTLevelNode levelNodeIdRef="LN0140"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0008"/>
+              </ASTMax>
+              <ASTConstantNode constantNodeIdRef="CN0167"/>
+            </ASTMin>
+          </ASTPlus>
+        </Formula>
+      </AuxiliaryNode>
     </AuxiliaryNodes>
     <ConstantNodes>
       <ConstantNode constantValue="0.6" id="CN0001" name="Design_Review_P1_Effectiveness_S3" xCoordinate="2082.0" yCoordinate="2491.0"/>
-      <ConstantNode constantValue="0.14" id="CN0002" name="Budgeted_Cost_Rate_S3" xCoordinate="2671.0" yCoordinate="2014.0"/>
+      <ConstantNode constantValue="0.1504" id="CN0002" name="Budgeted_Cost_Rate_S3" xCoordinate="2671.0" yCoordinate="2014.0"/>
       <ConstantNode constantValue="0.97" id="CN0003" name="SW_Errors_P1_S0_Weight" xCoordinate="1198.0" yCoordinate="1037.0"/>
-      <ConstantNode constantValue="3090.0" id="CN0004" name="Fuel_Weight" xCoordinate="408.0" yCoordinate="1904.0"/>
-      <ConstantNode constantValue="0.0" id="CN0005" name="Hiring_Rate_Pro_Staff_Gen_S1" xCoordinate="4039.0" yCoordinate="914.0"/>
-      <ConstantNode constantValue="1.0E-4" id="CN0006" name="Drag_Decrease_Rate_Constant" xCoordinate="338.0" yCoordinate="1748.0"/>
-      <ConstantNode constantValue="0.33" id="CN0007" name="Prod_Avg_Factor_S3" xCoordinate="1699.0" yCoordinate="1862.0"/>
+      <ConstantNode constantValue="3600.0" id="CN0004" name="Weight_Fuel" xCoordinate="408.0" yCoordinate="1904.0"/>
+      <ConstantNode constantValue="0.011" id="CN0005" name="Hiring_Rate_Pro_Staff_Gen_S1" xCoordinate="4039.0" yCoordinate="914.0"/>
+      <ConstantNode constantValue="0.003" id="CN0006" name="Drag_Coefficient_Decrease_Factor" xCoordinate="338.0" yCoordinate="1748.0"/>
+      <ConstantNode constantValue="0.5504" id="CN0007" name="Prod_Avg_Factor_S3" xCoordinate="1699.0" yCoordinate="1862.0"/>
       <ConstantNode constantValue="0.0" id="CN0008" name="C4" xCoordinate="788.0" yCoordinate="1831.0"/>
       <ConstantNode constantValue="0.001" id="CN0009" name="Communication_Overhead_Multiplier_S2" xCoordinate="2276.0" yCoordinate="480.0"/>
       <ConstantNode constantValue="0.03" id="CN0010" name="SW_Errors_P2_S1_Weight" xCoordinate="4271.0" yCoordinate="1889.0"/>
@@ -2676,20 +3068,19 @@
       <ConstantNode constantValue="0.007" id="CN0016" name="Avg_Tasks_Per_Person_S0" xCoordinate="860.0" yCoordinate="548.0"/>
       <ConstantNode constantValue="0.0" id="CN0017" name="Hiring_Rate_Rookie_Staff_QA_S0" xCoordinate="698.0" yCoordinate="1051.0"/>
       <ConstantNode constantValue="1.0" id="CN0018" name="Nominal_Potential_Prod_Pros_S2" xCoordinate="2264.0" yCoordinate="568.0"/>
-      <ConstantNode constantValue="0.38" id="CN0019" name="Budgeted_Cost_Rate_S1" xCoordinate="2707.0" yCoordinate="418.0"/>
+      <ConstantNode constantValue="0.401" id="CN0019" name="Budgeted_Cost_Rate_S1" xCoordinate="2707.0" yCoordinate="418.0"/>
       <ConstantNode constantValue="0.87" id="CN0020" name="CDR_SSDV_S1_Constant" xCoordinate="3652.0" yCoordinate="1292.0"/>
       <ConstantNode constantValue="0.28" id="CN0021" name="Training_Overhead_S1" xCoordinate="3651.0" yCoordinate="1100.0"/>
-      <ConstantNode constantValue="0.02" id="CN0022" name="Training_Rate_QA_S0" xCoordinate="910.0" yCoordinate="1216.0"/>
+      <ConstantNode constantValue="0.00015" id="CN0022" name="Training_Rate_QA_S0" xCoordinate="910.0" yCoordinate="1216.0"/>
       <ConstantNode constantValue="0.33" id="CN0023" name="CDR_VVSIL_Constant" xCoordinate="412.0" yCoordinate="486.0"/>
       <ConstantNode constantValue="0.00015" id="CN0024" name="Training_Rate_Gen_S2" xCoordinate="2137.0" yCoordinate="231.0"/>
-      <ConstantNode constantValue="0.39" id="CN0025" name="Budgeted_Cost_Rate_S0" xCoordinate="417.0" yCoordinate="350.0"/>
+      <ConstantNode constantValue="0.401" id="CN0025" name="Budgeted_Cost_Rate_S0" xCoordinate="417.0" yCoordinate="350.0"/>
       <ConstantNode constantValue="2400.0" id="CN0026" name="Weight_S2_Start_Value" xCoordinate="430.0" yCoordinate="2225.0"/>
       <ConstantNode constantValue="0.15" id="CN0027" name="Weight_S1_ED" xCoordinate="3040.0" yCoordinate="632.0"/>
-      <ConstantNode constantValue="8.5E-4" id="CN0028" name="Avg_Tasks_Per_Person_S2" xCoordinate="2100.0" yCoordinate="620.0"/>
+      <ConstantNode constantValue="0.00169" id="CN0028" name="Avg_Tasks_Per_Person_S2" xCoordinate="2100.0" yCoordinate="620.0"/>
       <ConstantNode constantValue="1.6E-4" id="CN0029" name="Labor_Rate_Rookies_QA_S2" xCoordinate="2417.0" yCoordinate="624.0"/>
-      <ConstantNode constantValue="0.00" id="CN0030" name="Hiring_Rate_Rookie_Staff_Gen_S0" xCoordinate="762.0" yCoordinate="159.0"/>
-      <ConstantNode constantValue="3.4" id="CN0031" name="CDR_SDD_BoostFactor" xCoordinate="1901.0" yCoordinate="454.0"/>
-      <ConstantNode constantValue="0.03" id="CN0032" name="Design_Review_Freq_S2" xCoordinate="2208.0" yCoordinate="1015.0"/>
+      <ConstantNode constantValue="0.016&#13;&#10;" id="CN0030" name="Hiring_Rate_Rookie_Staff_Gen_S0" xCoordinate="762.0" yCoordinate="159.0"/>
+      <ConstantNode constantValue="3.9" id="CN0031" name="CDR_SDD_BoostFactor" xCoordinate="1901.0" yCoordinate="454.0"/>
       <ConstantNode constantValue="6.0E-6" id="CN0033" name="CDR_SSDV_S2_Progress_Capacity_Factor" xCoordinate="2407.0" yCoordinate="828.0"/>
       <ConstantNode constantValue="0.00375" id="CN0034" name="Avg_Tasks_Per_Person_S3" xCoordinate="1801.0" yCoordinate="1882.0"/>
       <ConstantNode constantValue="1.0" id="CN0035" name="Communication_Intercept_S0" xCoordinate="940.0" yCoordinate="471.0"/>
@@ -2697,10 +3088,10 @@
       <ConstantNode constantValue="0.2" id="CN0037" name="Training_Overhead_S3" xCoordinate="1862.0" yCoordinate="1667.0"/>
       <ConstantNode constantValue="3.0E-6" id="CN0038" name="CDR_DTR_Progress_Capacity_Factor" xCoordinate="3266.0" yCoordinate="1337.0"/>
       <ConstantNode constantValue="0.0" id="CN0039" name="Hiring_Rate_Pro_Staff_QA_S0" xCoordinate="1074.0" yCoordinate="1138.0"/>
-      <ConstantNode constantValue="0.33" id="CN0040" name="Prod_Avg_Factor_S1" xCoordinate="4018.0" yCoordinate="1303.0"/>
-      <ConstantNode constantValue="0.95" id="CN0041" name="Nominal_Potential_Prod_Rookies_S2" xCoordinate="2262.0" yCoordinate="646.0"/>
+      <ConstantNode constantValue="0.7121" id="CN0040" name="Prod_Avg_Factor_S1" xCoordinate="4018.0" yCoordinate="1303.0"/>
+      <ConstantNode constantValue="0.3" id="CN0041" name="Nominal_Potential_Prod_Rookies_S2" xCoordinate="2262.0" yCoordinate="646.0"/>
       <ConstantNode constantValue="0.001" id="CN0042" name="QA_Prod_S0" xCoordinate="928.0" yCoordinate="1072.0"/>
-      <ConstantNode constantValue="0.00025" id="CN0043" name="QA_Prod_S2" xCoordinate="2282.0" yCoordinate="1014.0"/>
+      <ConstantNode constantValue="0.00067" id="CN0043" name="QA_Prod_S2" xCoordinate="2282.0" yCoordinate="1014.0"/>
       <ConstantNode constantValue="7150.0" id="CN0044" name="Weight_S1_Start_Value" xCoordinate="125.0" yCoordinate="1998.0"/>
       <ConstantNode constantValue="0.6" id="CN0045" name="Design_Review_P1_Effectiveness_S1" xCoordinate="3816.0" yCoordinate="1922.0"/>
       <ConstantNode constantValue="0.41" id="CN0046" name="CDR_SL_WF_Constant" xCoordinate="3222.0" yCoordinate="784.0"/>
@@ -2709,23 +3100,23 @@
       <ConstantNode constantValue="0.0" id="CN0049" name="Hiring_Rate_Pro_Staff_QA_S1" xCoordinate="4102.0" yCoordinate="1830.0"/>
       <ConstantNode constantValue="2.5" id="CN0050" name="Design_Review_P2_Effectiveness_S3" xCoordinate="2118.0" yCoordinate="2154.0"/>
       <ConstantNode constantValue="0.5" id="CN0051" name="Nominal_Potential_Prod_Rookies_S3" xCoordinate="1534.0" yCoordinate="1745.0"/>
-      <ConstantNode constantValue="0.0" id="CN0052" name="Hiring_Rate_Pro_Staff_Gen_S0" xCoordinate="1086.0" yCoordinate="187.0"/>
+      <ConstantNode constantValue="0.011" id="CN0052" name="Hiring_Rate_Pro_Staff_Gen_S0" xCoordinate="1086.0" yCoordinate="187.0"/>
       <ConstantNode constantValue="0.00015" id="CN0053" name="Training_Rate_S3" xCoordinate="2119.0" yCoordinate="1741.0"/>
       <ConstantNode constantValue="0.5" id="CN0054" name="SW_Error_P1_Rate_S1" xCoordinate="3672.0" yCoordinate="1916.0"/>
       <ConstantNode constantValue="0.97" id="CN0055" name="SW_Errors_P1_S2_Weight_Detected" xCoordinate="1681.0" yCoordinate="940.0"/>
-      <ConstantNode constantValue="0.0" id="CN0056" name="Hiring_Rate_Rookie_Staff_Gen_S1" xCoordinate="3686.0" yCoordinate="919.0"/>
+      <ConstantNode constantValue="0.016&#13;&#10;" id="CN0056" name="Hiring_Rate_Rookie_Staff_Gen_S1" xCoordinate="3686.0" yCoordinate="919.0"/>
       <ConstantNode constantValue="2.2E-6" id="CN0057" name="CDR_SSDV_S0_Progress_Capacity_Factor" xCoordinate="1044.0" yCoordinate="857.0"/>
-      <ConstantNode constantValue="6.0E-6" id="CN0058" name="CDR_SDD_Progress_Capacity_Factor" xCoordinate="1764.0" yCoordinate="429.0"/>
+      <ConstantNode constantValue="4.0E-6" id="CN0058" name="CDR_SDD_Progress_Capacity_Factor" xCoordinate="1764.0" yCoordinate="429.0"/>
       <ConstantNode constantValue="0.00015" id="CN0059" name="Training_Rate_QA_S2" xCoordinate="2264.0" yCoordinate="1158.0"/>
       <ConstantNode constantValue="0.0111" id="CN0060" name="Design_Review_Freq_S1" xCoordinate="3882.0" yCoordinate="1765.0"/>
       <ConstantNode constantValue="0.12" id="CN0061" name="CDR_ED_WF_Constant" xCoordinate="2931.0" yCoordinate="1124.0"/>
-      <ConstantNode constantValue="0.021" id="CN0062" name="SW_Error_P1_Rate_S2" xCoordinate="1998.0" yCoordinate="1166.0"/>
+      <ConstantNode constantValue="0.059" id="CN0062" name="SW_Error_P1_Rate_S2" xCoordinate="1998.0" yCoordinate="1166.0"/>
       <ConstantNode constantValue="0.97" id="CN0063" name="SW_Errors_P1_S2_Weight" xCoordinate="2545.0" yCoordinate="960.0"/>
       <ConstantNode constantValue="0.0009" id="CN0064" name="Communication_Overhead_Multiplier_S1" xCoordinate="3960.0" yCoordinate="1168.0"/>
       <ConstantNode constantValue="1.0E-5" id="CN0065" name="CDR_ED_Progress_Capacity_Factor" xCoordinate="3130.0" yCoordinate="998.0"/>
       <ConstantNode constantValue="0.03" id="CN0066" name="SW_Errors_P2_S2_Weight" xCoordinate="2624.0" yCoordinate="1138.0"/>
-      <ConstantNode constantValue="2.3E-4" id="CN0067" name="Labor_Rate_Rookies_Gen_S2" xCoordinate="2430.0" yCoordinate="424.0"/>
-      <ConstantNode constantValue="0.0" id="CN0068" name="Hiring_Rate_Pro_Staff_S3" xCoordinate="2161.0" yCoordinate="1501.0"/>
+      <ConstantNode constantValue="1.5E-4" id="CN0067" name="Labor_Rate_Rookies_Gen_S2" xCoordinate="2430.0" yCoordinate="424.0"/>
+      <ConstantNode constantValue="0.011" id="CN0068" name="Hiring_Rate_Pro_Staff_S3" xCoordinate="2161.0" yCoordinate="1501.0"/>
       <ConstantNode constantValue="0.03" id="CN0069" name="SW_Errors_P2_S0_Weight" xCoordinate="1196.0" yCoordinate="1181.0"/>
       <ConstantNode constantValue="0.0016" id="CN0070" name="Communication_Overhead_Multiplier_S0" xCoordinate="1036.0" yCoordinate="408.0"/>
       <ConstantNode constantValue="2.5" id="CN0071" name="Design_Review_P2_Effectiveness_S1" xCoordinate="3798.0" yCoordinate="1764.0"/>
@@ -2734,18 +3125,18 @@
       <ConstantNode constantValue="0.03" id="CN0074" name="SW_Errors_P2_S3_Weight" xCoordinate="2477.0" yCoordinate="2351.0"/>
       <ConstantNode constantValue="0.0001" id="CN0075" name="Labor_Rate_Rookies_S3" xCoordinate="2266.0" yCoordinate="1786.0"/>
       <ConstantNode constantValue="35.0" id="CN0076" name="SW_Error_P2_Rate_S3" xCoordinate="1790.0" yCoordinate="2158.0"/>
-      <ConstantNode constantValue="0.0" id="CN0077" name="Hiring_Rate_Rookie_Staff_Gen_S2" xCoordinate="2002.0" yCoordinate="231.0"/>
+      <ConstantNode constantValue="0.016" id="CN0077" name="Hiring_Rate_Rookie_Staff_Gen_S2" xCoordinate="2002.0" yCoordinate="231.0"/>
       <ConstantNode constantValue="0.0" id="CN0078" name="Attrition_Rate_Pro_Staff_S1" xCoordinate="4005.0" yCoordinate="1062.0"/>
       <ConstantNode constantValue="0.38" id="CN0079" name="Nominal_Potential_Prod_Rookies_S1" xCoordinate="3946.0" yCoordinate="1334.0"/>
       <ConstantNode constantValue="0.0" id="CN0080" name="Attrition_Rate_Pro_Staff_S0" xCoordinate="1083.0" yCoordinate="305.0"/>
-      <ConstantNode constantValue="41" id="CN0081" name="Lift" xCoordinate="354.0" yCoordinate="1673.0"/>
+      <ConstantNode constantValue="0.6417" id="CN0081" name="Lift_Coefficient" xCoordinate="354.0" yCoordinate="1673.0"/>
       <ConstantNode constantValue="0.000004" id="CN0082" name="CDR_SSDV_S3_Progress_Capacity_Factor" xCoordinate="2009.0" yCoordinate="2030.0"/>
       <ConstantNode constantValue="1.0" id="CN0083" name="Weight_S3_SSDV" xCoordinate="2354.0" yCoordinate="1840.0"/>
       <ConstantNode constantValue="35.0" id="CN0084" name="SW_Error_P2_Rate_S1" xCoordinate="3674.0" yCoordinate="1545.0"/>
       <ConstantNode constantValue="1.7" id="CN0085" name="CDR_SL_Boost_Factor" xCoordinate="3306.0" yCoordinate="825.0"/>
-      <ConstantNode constantValue="0.6" id="CN0086" name="Prod_Avg_Factor_S2" xCoordinate="2334.0" yCoordinate="615.0"/>
+      <ConstantNode constantValue="0.781" id="CN0086" name="Prod_Avg_Factor_S2" xCoordinate="2334.0" yCoordinate="615.0"/>
       <ConstantNode constantValue="0.1" id="CN0087" name="Weight_S1_DTR" xCoordinate="3096.0" yCoordinate="632.0"/>
-      <ConstantNode constantValue="0.22" id="CN0088" name="Base_Increment" xCoordinate="340.0" yCoordinate="2168.0"/>
+      <ConstantNode constantValue="0.88" id="CN0088" name="Base_Increment" xCoordinate="340.0" yCoordinate="2168.0"/>
       <ConstantNode constantValue="3.2E-4" id="CN0089" name="Labor_Rate_Pros_QA_S2" xCoordinate="2499.0" yCoordinate="623.0"/>
       <ConstantNode constantValue="0.97" id="CN0090" name="SW_Errors_P1_S1_Weight" xCoordinate="4262.0" yCoordinate="1725.0"/>
       <ConstantNode constantValue="0.00022" id="CN0091" name="Labor_Rate_Pros_S3" xCoordinate="2266.0" yCoordinate="1726.0"/>
@@ -2755,42 +3146,42 @@
       <ConstantNode constantValue="35.0" id="CN0095" name="SW_Error_P2_Rate_S0" xCoordinate="716.0" yCoordinate="845.0"/>
       <ConstantNode constantValue="1.0" id="CN0096" name="Communication_Intercept_S2" xCoordinate="2180.0" yCoordinate="543.0"/>
       <ConstantNode constantValue="0.06" id="CN0097" name="CDR_DTR_WF_Constant" xCoordinate="2872.0" yCoordinate="1437.0"/>
-      <ConstantNode constantValue="0.0" id="CN0098" name="Hiring_Rate_Rookie_Staff_QA_S2" xCoordinate="2026.0" yCoordinate="990.0"/>
+      <ConstantNode constantValue="0.016" id="CN0098" name="Hiring_Rate_Rookie_Staff_QA_S2" xCoordinate="2026.0" yCoordinate="990.0"/>
       <ConstantNode constantValue="0.00043" id="CN0099" name="Test_P1_Effectiveness_S2" xCoordinate="2142.0" yCoordinate="1172.0"/>
-      <ConstantNode constantValue="0.0" id="CN0100" name="Specific_Impulse_Increase_Rate_Constant" xCoordinate="726.0" yCoordinate="2121.0"/>
-      <ConstantNode constantValue="0.95" id="CN0101" name="Budgeted_Cost_Rate_S2" xCoordinate="1609.0" yCoordinate="583.0"/>
-      <ConstantNode constantValue="0.0" id="CN0102" name="Specific_Impulse_Decrease_Rate_Constant" xCoordinate="870.0" yCoordinate="2121.0"/>
-      <ConstantNode constantValue="0.00034" id="CN0103" name="Labor_Rate_Pros_S0" xCoordinate="919.0" yCoordinate="103.0"/>
+      <ConstantNode constantValue="0.006" id="CN0100" name="TSFC_Increase_Factor" xCoordinate="828.0" yCoordinate="2171.0"/>
+      <ConstantNode constantValue="1.0025" id="CN0101" name="Budgeted_Cost_Rate_S2" xCoordinate="1609.0" yCoordinate="583.0"/>
+      <ConstantNode constantValue="0.003" id="CN0102" name="TSFC_Decrease_Factor" xCoordinate="1061.0" yCoordinate="2271.0"/>
+      <ConstantNode constantValue="0.00032" id="CN0103" name="Labor_Rate_Pros_S0" xCoordinate="919.0" yCoordinate="103.0"/>
       <ConstantNode constantValue="0.0041" id="CN0104" name="Avg_Tasks_Per_Person_S1" xCoordinate="3784.0" yCoordinate="1308.0"/>
       <ConstantNode constantValue="0.0111" id="CN0105" name="Design_Review_Freq_S3" xCoordinate="2058.0" yCoordinate="2191.0"/>
-      <ConstantNode constantValue="0.0" id="CN0106" name="Hiring_Rate_Pro_Staff_Gen_S2" xCoordinate="2326.0" yCoordinate="259.0"/>
+      <ConstantNode constantValue="0.011" id="CN0106" name="Hiring_Rate_Pro_Staff_Gen_S2" xCoordinate="2326.0" yCoordinate="259.0"/>
       <ConstantNode constantValue="0.0" id="CN0107" name="Hiring_Rate_Pro_Staff_QA_S3" xCoordinate="2287.0" yCoordinate="2147.0"/>
       <ConstantNode constantValue="0.0" id="CN0108" name="Attrition_Rate_Pro_Staff_S2" xCoordinate="2323.0" yCoordinate="377.0"/>
-      <ConstantNode constantValue="0.1" id="CN0109" name="Training_Overhead_S2" xCoordinate="1967.0" yCoordinate="412.0"/>
+      <ConstantNode constantValue="0.3" id="CN0109" name="Training_Overhead_S2" xCoordinate="1967.0" yCoordinate="412.0"/>
       <ConstantNode constantValue="0.0036" id="CN0110" name="Test_P2_Effectiveness_S2" xCoordinate="2124.0" yCoordinate="1014.0"/>
-      <ConstantNode constantValue="6.0E-4" id="CN0111" name="Labor_Cost_Pros_S1" xCoordinate="3934.0" yCoordinate="1076.0"/>
+      <ConstantNode constantValue="5.5E-4" id="CN0111" name="Labor_Cost_Pros_S1" xCoordinate="3934.0" yCoordinate="1076.0"/>
       <ConstantNode constantValue="0.001" id="CN0112" name="QA_Prod_S1" xCoordinate="3972.0" yCoordinate="1740.0"/>
       <ConstantNode constantValue="0.0008" id="CN0113" name="Communication_Overhead_Multiplier_S3" xCoordinate="2204.0" yCoordinate="1859.0"/>
       <ConstantNode constantValue="0.0111" id="CN0114" name="Design_Review_Freq_S0" xCoordinate="854.0" yCoordinate="1073.0"/>
-      <ConstantNode constantValue="0.49" id="CN0115" name="CDR_SSDV_S2_Constant" xCoordinate="1824.0" yCoordinate="766.0"/>
+      <ConstantNode constantValue="0.61" id="CN0115" name="CDR_SSDV_S2_Constant" xCoordinate="1824.0" yCoordinate="766.0"/>
       <ConstantNode constantValue="1.0" id="CN0116" name="Nominal_Potential_Prod_Pros_S1" xCoordinate="3948.0" yCoordinate="1256.0"/>
       <ConstantNode constantValue="1.0" id="CN0117" name="Nominal_Potential_Prod_Pros_S3" xCoordinate="1671.0" yCoordinate="1699.0"/>
       <ConstantNode constantValue="0.0" id="CN0118" name="Attrition_Rate_Pro_Staff_S3" xCoordinate="2274.0" yCoordinate="1573.0"/>
-      <ConstantNode constantValue="0.0" id="CN0119" name="Hiring_Rate_Pro_Staff_QA_S2" xCoordinate="2428.0" yCoordinate="1080.0"/>
+      <ConstantNode constantValue="0.011" id="CN0119" name="Hiring_Rate_Pro_Staff_QA_S2" xCoordinate="2428.0" yCoordinate="1080.0"/>
       <ConstantNode constantValue="1.0" id="CN0120" name="Current_Time_Rate" xCoordinate="219.0" yCoordinate="341.0"/>
       <ConstantNode constantValue="2.5" id="CN0121" name="Design_Review_P2_Effectiveness_S0" xCoordinate="770.0" yCoordinate="1072.0"/>
       <ConstantNode constantValue="1.0" id="CN0122" name="Communication_Intercept_S3" xCoordinate="1819.0" yCoordinate="1726.0"/>
       <ConstantNode constantValue="1.0" id="CN0123" name="Communication_Intercept_S1" xCoordinate="3864.0" yCoordinate="1231.0"/>
       <ConstantNode constantValue="1.0" id="CN0124" name="C1" xCoordinate="583.0" yCoordinate="1958.0"/>
-      <ConstantNode constantValue="0.216" id="CN0125" name="SW_Error_P2_Rate_S2" xCoordinate="2000.0" yCoordinate="795.0"/>
+      <ConstantNode constantValue="0.77" id="CN0125" name="SW_Error_P2_Rate_S2" xCoordinate="2000.0" yCoordinate="795.0"/>
       <ConstantNode constantValue="0.00015" id="CN0126" name="Training_Rate_Gen_S1" xCoordinate="3821.0" yCoordinate="919.0"/>
-      <ConstantNode constantValue="0.33" id="CN0127" name="Prod_Avg_Factor_S0" xCoordinate="1094.0" yCoordinate="543.0"/>
-      <ConstantNode constantValue="3.0E-4" id="CN0128" name="Labor_Cost_Rookies_S1" xCoordinate="3788.0" yCoordinate="1075.0"/>
+      <ConstantNode constantValue="0.6287" id="CN0127" name="Prod_Avg_Factor_S0" xCoordinate="1094.0" yCoordinate="543.0"/>
+      <ConstantNode constantValue="2.5E-4" id="CN0128" name="Labor_Cost_Rookies_S1" xCoordinate="3788.0" yCoordinate="1075.0"/>
       <ConstantNode constantValue="0.85" id="CN0129" name="Nominal_Potential_Prod_Rookies_S0" xCoordinate="918.0" yCoordinate="642.0"/>
-      <ConstantNode constantValue="4.0E-4" id="CN0130" name="Labor_Rate_Pros_Gen_S2" xCoordinate="2499.0" yCoordinate="457.0"/>
+      <ConstantNode constantValue="2.9E-4" id="CN0130" name="Labor_Rate_Pros_Gen_S2" xCoordinate="2499.0" yCoordinate="457.0"/>
       <ConstantNode constantValue="0.023" id="CN0131" name="Round_Scale_Factor_For_Reported_Range" xCoordinate="863.0" yCoordinate="1832.0"/>
       <ConstantNode constantValue="0.25" id="CN0132" name="Weight_S2_SDD" xCoordinate="1486.0" yCoordinate="584.0"/>
-      <ConstantNode constantValue="0.02" id="CN0133" name="Training_Rate_QA_S1" xCoordinate="3938.0" yCoordinate="1908.0"/>
+      <ConstantNode constantValue="0.00015" id="CN0133" name="Training_Rate_QA_S1" xCoordinate="3938.0" yCoordinate="1908.0"/>
       <ConstantNode constantValue="0.6" id="CN0134" name="Weight_S1_SSDV" xCoordinate="3158.0" yCoordinate="628.0"/>
       <ConstantNode constantValue="1.0" id="CN0135" name="Weight_S0_VVSIL" xCoordinate="290.0" yCoordinate="562.0"/>
       <ConstantNode constantValue="0.15" id="CN0136" name="Weight_S1_SL" xCoordinate="2978.0" yCoordinate="610.0"/>
@@ -2798,10 +3189,10 @@
       <ConstantNode constantValue="0.03" id="CN0138" name="SW_Errors_P2_S2_Weight_Detected" xCoordinate="1694.0" yCoordinate="1160.0"/>
       <ConstantNode constantValue="0.0" id="CN0139" name="Hiring_Rate_Rookie_Staff_QA_S1" xCoordinate="3732.0" yCoordinate="1756.0"/>
       <ConstantNode constantValue="0.29" id="CN0140" name="CDR_SSDV_S0_Constant" xCoordinate="630.0" yCoordinate="556.0"/>
-      <ConstantNode constantValue="0.00025" id="CN0141" name="Labor_Rate_Rookies_S0" xCoordinate="823.0" yCoordinate="102.0"/>
+      <ConstantNode constantValue="0.0002" id="CN0141" name="Labor_Rate_Rookies_S0" xCoordinate="823.0" yCoordinate="102.0"/>
       <ConstantNode constantValue="0.5" id="CN0142" name="C2" xCoordinate="644.0" yCoordinate="1957.0"/>
-      <ConstantNode constantValue="0.0" id="CN0143" name="Hiring_Rate_Rookie_Staff_S3" xCoordinate="1964.0" yCoordinate="1574.0"/>
-      <ConstantNode constantValue="0.0003" id="CN0144" name="Drag_Increase_Rate_Constant" xCoordinate="236.0" yCoordinate="1748.0"/>
+      <ConstantNode constantValue="0.016" id="CN0143" name="Hiring_Rate_Rookie_Staff_S3" xCoordinate="1964.0" yCoordinate="1574.0"/>
+      <ConstantNode constantValue="0.006" id="CN0144" name="Drag_Coefficient_Increase_Factor" xCoordinate="236.0" yCoordinate="1748.0"/>
       <ConstantNode constantValue="0.00015" id="CN0145" name="Training_Rate_Gen_S0" xCoordinate="897.0" yCoordinate="159.0"/>
       <ConstantNode constantValue="0.0" id="CN0146" name="Hiring_Rate_Rookie_Staff_QA_S3" xCoordinate="1912.0" yCoordinate="2186.0"/>
       <ConstantNode constantValue="0.5" id="CN0147" name="SW_Error_P1_Rate_S3" xCoordinate="1940.0" yCoordinate="2514.0"/>
@@ -2810,14 +3201,26 @@
       <ConstantNode constantValue="3.28E-4" id="CN0150" name="FRR_SST_Progress_Capacity_Factor" xCoordinate="2961.0" yCoordinate="373.0"/>
       <ConstantNode constantValue="0.05" id="CN0151" name="FRR_SST_WF_Constant" xCoordinate="2839.0" yCoordinate="349.0"/>
       <ConstantNode constantValue="22.4" id="CN0152" name="FRR_SST_S0_Boost" xCoordinate="2790.0" yCoordinate="416.0"/>
-      <ConstantNode constantValue="0.1" id="CN0153" name="FRR_SST_S1_WF_Constant" xCoordinate="2607.0" yCoordinate="353.0"/>
+      <ConstantNode constantValue="0.10" id="CN0153" name="FRR_SST_S1_WF_Constant" xCoordinate="2607.0" yCoordinate="353.0"/>
       <ConstantNode constantValue="10.15" id="CN0154" name="FRR_SST_S1_Boost" xCoordinate="2672.0" yCoordinate="324.0"/>
-      <ConstantNode constantValue="0.41" id="CN0155" name="Base_Increment_S1" xCoordinate="220.0" yCoordinate="2084.0"/>
+      <ConstantNode constantValue="0.60" id="CN0155" name="Base_Increment_S1" xCoordinate="220.0" yCoordinate="2084.0"/>
       <ConstantNode constantValue="-1" id="CN0156" name="Increment_Multiplier_S1" xCoordinate="210.0" yCoordinate="2084.0"/>
-      <ConstantNode constantValue="260" id="CN0157" name="C5" xCoordinate="220.0" yCoordinate="2104.0"/>
+      <ConstantNode constantValue="5200" id="CN0157" name="C5" xCoordinate="220.0" yCoordinate="2104.0"/>
       <ConstantNode constantValue="0.2" id="CN0158" name="C6" xCoordinate="220.0" yCoordinate="2104.0"/>
       <ConstantNode constantValue="0.4" id="CN0159" name="C7" xCoordinate="220.0" yCoordinate="2104.0"/>
       <ConstantNode constantValue="30.0" id="CN0160" name="DaysPerMonth" xCoordinate="5050.0" yCoordinate="350.0"/>
+      <ConstantNode constantValue="6.0" id="CN0161" name="Drag_Staff_Fixed" xCoordinate="130.0" yCoordinate="1730.0"/>
+      <ConstantNode constantValue="5000.0" id="CN0162" name="Drag_Staff_Marginal" xCoordinate="130.0" yCoordinate="1680.0"/>
+      <ConstantNode constantValue="3.0" id="CN0163" name="TSFC_Staff_Fixed" xCoordinate="756.0" yCoordinate="2271.0"/>
+      <ConstantNode constantValue="0.1" id="CN0164" name="TSFC_Staff_Marginal" xCoordinate="688.0" yCoordinate="2273.0"/>
+      <ConstantNode constantValue="10.0" id="CN0165" name="Weight_Staff_Approach_Max_S2" xCoordinate="1830.0" yCoordinate="180.0"/>
+      <ConstantNode constantValue="1.3" id="CN0166" name="Weight_Staff_Overage_Factor_S2" xCoordinate="1870.0" yCoordinate="180.0"/>
+      <ConstantNode constantValue="20.0" id="CN0167" name="Weight_Staff_Overage_Max_S2" xCoordinate="1910.0" yCoordinate="180.0"/>
+      <ConstantNode constantValue="10.0" id="CN0168" name="Weight_Staff_Approach_Max_S1" xCoordinate="36.0" yCoordinate="1830.0"/>
+      <ConstantNode constantValue="1.3" id="CN0169" name="Weight_Staff_Overage_Factor_S1" xCoordinate="36.0" yCoordinate="1880.0"/>
+      <ConstantNode constantValue="20.0" id="CN0170" name="Weight_Staff_Overage_Max_S1" xCoordinate="36.0" yCoordinate="1930.0"/>
+      <ConstantNode constantValue="0.06" id="CN0171" name="Weight_Reduction_Effect_S1" xCoordinate="36.0" yCoordinate="1980.0"/>
+      <ConstantNode constantValue="0.001" id="CN0172" name="Weight_Reduction_Effect_S2" xCoordinate="1950.0" yCoordinate="180.0"/>
     </ConstantNodes>
   </Nodes>
   <Flows>
@@ -2998,8 +3401,9 @@
     <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0151" toLevelNodeIdRef="LN0150"/>
     <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0152" toLevelNodeIdRef="LN0151"/>
     <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0153" toLevelNodeIdRef="LN0152"/>
-    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0154" toLevelNodeIdRef="LN0155"/>
-    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0155" toLevelNodeIdRef="LN0156"/>
+    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0154" toLevelNodeIdRef="LN0063"/>
+    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0155" toLevelNodeIdRef="LN0021"/>
+    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0156" toLevelNodeIdRef="LN0024"/>
     <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0117" toRateNodeIdRef="RN0141"/>
     <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0116" toRateNodeIdRef="RN0140"/>
     <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0115" toRateNodeIdRef="RN0139"/>
@@ -3131,6 +3535,7 @@
     <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0129" toRateNodeIdRef="RN0153"/>
     <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0130" toRateNodeIdRef="RN0154"/>
     <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0131" toRateNodeIdRef="RN0155"/>
+    <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SN0132" toRateNodeIdRef="RN0156"/>
   </Flows>
   <Dependencies>
     <LevelNode2AuxiliaryNodeDependency fromLevelNodeIdRef="LN0095" toAuxiliaryNodeIdRef="AN0066">
@@ -3748,11 +4153,6 @@
         <AdditionalControlPoint xCoordinate="289.3728309293872" yCoordinate="607.7015448867676"/>
       </AdditionalControlPoints>
     </LevelNode2AuxiliaryNodeDependency>
-    <ConstantNode2RateNodeDependency fromConstantNodeIdRef="CN0032" toRateNodeIdRef="RN0065">
-      <AdditionalControlPoints>
-        <AdditionalControlPoint xCoordinate="2165.609618972908" yCoordinate="1137.5931976137222"/>
-      </AdditionalControlPoints>
-    </ConstantNode2RateNodeDependency>
     <LevelNode2AuxiliaryNodeDependency fromLevelNodeIdRef="LN0065" toAuxiliaryNodeIdRef="AN0025">
       <AdditionalControlPoints>
         <AdditionalControlPoint xCoordinate="827.0020068984145" yCoordinate="320.1049699070918"/>
@@ -4208,11 +4608,6 @@
         <AdditionalControlPoint xCoordinate="3402.7425680646784" yCoordinate="1746.1910962806446"/>
       </AdditionalControlPoints>
     </LevelNode2AuxiliaryNodeDependency>
-    <ConstantNode2RateNodeDependency fromConstantNodeIdRef="CN0032" toRateNodeIdRef="RN0001">
-      <AdditionalControlPoints>
-        <AdditionalControlPoint xCoordinate="2204.9639474396986" yCoordinate="972.2797591445764"/>
-      </AdditionalControlPoints>
-    </ConstantNode2RateNodeDependency>
     <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0077" toRateNodeIdRef="RN0101">
       <AdditionalControlPoints>
         <AdditionalControlPoint xCoordinate="2325.6111111111113" yCoordinate="724.6666666666667"/>
@@ -5388,11 +5783,6 @@
         <AdditionalControlPoint xCoordinate="2316.6354166666665" yCoordinate="1295.3125"/>
       </AdditionalControlPoints>
     </LevelNode2RateNodeDependency>
-    <ConstantNode2RateNodeDependency fromConstantNodeIdRef="CN0032" toRateNodeIdRef="RN0125">
-      <AdditionalControlPoints>
-        <AdditionalControlPoint xCoordinate="2209.499281502387" yCoordinate="1211.496407511937"/>
-      </AdditionalControlPoints>
-    </ConstantNode2RateNodeDependency>
     <ConstantNode2RateNodeDependency fromConstantNodeIdRef="CN0099" toRateNodeIdRef="RN0125">
       <AdditionalControlPoints>
         <AdditionalControlPoint xCoordinate="2209.499281502387" yCoordinate="1211.496407511937"/>
