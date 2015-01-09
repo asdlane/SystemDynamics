@@ -169,50 +169,69 @@ public class DrawGraphs_Init {
 			max_xIntercept = 810;
 		
 		double initValue = 0.001;
-//		double PDR_DATE = 0.0;
-//		double PRR_DATE = 0.0;
-//		double ISR_DATE = 0.0;
-//		double CDR_DATE = 0.0;
-//		double FRR_DATE = 0.0;
+		double PDR_DATE = 0.0;
+		double PRR_DATE = 0.0;
+		double ISR_DATE = 0.0;
+		double CDR_DATE = 0.0;
+		double FRR_DATE = 0.0;
 
 		for (int i = -1; i < run; i++) {
 			String outputFile = getFileName(i, fname);
 			CsvReader products = new CsvReader(outputFile, ';');
 			products.skipLine();
 			products.readHeaders();
+			int iter = 0;
 			while (products.readRecord()) {
 				for (LevelNodeGraphInfo lnode : levelVector) {
+					if(iter == 0){
+					String records  = products.getRawRecord();
+					String[] recordEntries = records.split(";");
+
+					CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
+					PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
+					PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
+					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
+					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
+					
+					System.out.println(Double.valueOf(recordEntries[29]));//810 - CDR_DATE 
+					System.out.println(Double.valueOf(recordEntries[72]));//1530 - PRR_DATE 
+					System.out.println(Double.valueOf(recordEntries[71]));//0 - PDR_DATE
+					System.out.println(Double.valueOf(recordEntries[70]));//1890 - ISR_DATE
+					System.out.println(Double.valueOf(recordEntries[67])); //1170 - FRR_Date
+					
+					}
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 //					System.out.println(lnode.getNodeName());
-					if(lnode.getId().equalsIgnoreCase("LN0175")){
-						System.out.println(lnode.getNodeName());
-
-//						PDR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-//						System.out.println(PDR_DATE);
-					}
-					if(lnode.getId().equalsIgnoreCase("LN0176")){
-						System.out.println(lnode.getNodeName());
-
-//						CDR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-//						System.out.println(CDR_DATE);
-					}
-					if(lnode.getId().equalsIgnoreCase("LN0177")){
-						System.out.println(lnode.getNodeName());
-
-//						FRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-//						System.out.println(FRR_DATE);
-					}
-					if(lnode.getId().equalsIgnoreCase("LN0179")){
-						System.out.println(lnode.getNodeName());
-
-//						ISR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-//						System.out.println(ISR_DATE);
-					}
-					if(lnode.getId().equalsIgnoreCase("LN0178")){
-						System.out.println(lnode.getNodeName());
-//						PRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-//						System.out.println(PRR_DATE);
-					}
+//					if(lnode.getId().equalsIgnoreCase("LN0175")){
+//						System.out.println(lnode.getNodeName());
+//						
+//						
+////						PDR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
+////						System.out.println(PDR_DATE);
+//					}
+//					if(lnode.getId().equalsIgnoreCase("LN0176")){
+//						System.out.println(lnode.getNodeName());
+//
+////						CDR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
+////						System.out.println(CDR_DATE);
+//					}
+//					if(lnode.getId().equalsIgnoreCase("LN0177")){
+//						System.out.println(lnode.getNodeName());
+//
+////						FRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
+////						System.out.println(FRR_DATE);
+//					}
+//					if(lnode.getId().equalsIgnoreCase("LN0179")){
+//						System.out.println(lnode.getNodeName());
+//
+////						ISR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
+////						System.out.println(ISR_DATE);
+//					}
+//					if(lnode.getId().equalsIgnoreCase("LN0178")){
+//						System.out.println(lnode.getNodeName());
+////						PRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
+////						System.out.println(PRR_DATE);
+//					}
 
 					if(chartObj.getFStep() == 1)
 					{
@@ -374,7 +393,8 @@ public class DrawGraphs_Init {
 		// get a reference to the plot for further customisation...
 		final XYPlot plot = chart.getXYPlot();
 		plot.setBackgroundPaint(Color.white);
-		plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//		plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//		plot.getRenderer().setBaseStroke(new BasicStroke(8));
 //		XYTextAnnotation anno = new XYTextAnnotation("1", 30.0, 0);
   //      plot.addAnnotation(anno);
 		
@@ -393,45 +413,53 @@ public class DrawGraphs_Init {
 		plot.setDomainAxis(1, xAxis2 );
 		plot.mapDatasetToDomainAxis(2, 1);
 */		
+		/*
+		 * 		CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
+					PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
+					PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
+					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
+					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
+			
+		 */
 		if(chartObj.getGlobal() == 1)
 		{
-			Marker pdr = new ValueMarker(0);
+			Marker pdr = new ValueMarker(PDR_DATE);
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
 //			pdr.setPaint(Color.CYAN);
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			plot.addDomainMarker(pdr);
 	
-			Marker cdr = new ValueMarker(810);
+			Marker cdr = new ValueMarker(CDR_DATE);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
 //			cdr.setPaint(Color.CYAN);
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			plot.addDomainMarker(cdr);
 	
-			Marker frr = new ValueMarker(1170);
+			Marker frr = new ValueMarker(FRR_DATE);
 			frr.setLabel("FRR");
 			frr.setStroke(new BasicStroke(5));
 //			frr.setPaint(Color.CYAN);
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			frr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(frr);
 	
-			Marker prr = new ValueMarker(1530);
+			Marker prr = new ValueMarker(PRR_DATE);
 			prr.setLabel("PRR");
 			prr.setStroke(new BasicStroke(5));
 			//prr.setPaint(Color.CYAN);
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			prr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(prr);
 	
-			Marker isr = new ValueMarker(1890);
+			Marker isr = new ValueMarker(ISR_DATE);
 			isr.setLabel("ISR");
 			isr.setStroke(new BasicStroke(5));
 //			isr.setPaint(Color.CYAN);
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			isr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(isr);
 		}
@@ -441,7 +469,7 @@ public class DrawGraphs_Init {
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
 //			pdr.setPaint(Color.CYAN);
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
 	
@@ -449,7 +477,7 @@ public class DrawGraphs_Init {
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
 //			cdr.setPaint(Color.CYAN);
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(cdr);			
 		}
@@ -509,10 +537,12 @@ public class DrawGraphs_Init {
 		renderer.setBaseLinesVisible(true);
 		renderer.setBaseShapesVisible(false);
 		renderer.setBaseStroke(new BasicStroke(8));
-		if(isPlan == 1)
+		if(isPlan == 1){
 			//renderer.setSeriesPaint(seriesNumber, Color.black);
-			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
-			//renderer.getSeri
+//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			plot.getRenderer().setBaseStroke(new BasicStroke(8));	
+		//renderer.getSeri
+		}
 		plot.setRenderer(renderer);
 		
 		if(stepSet == 1)
@@ -656,5 +686,16 @@ public class DrawGraphs_Init {
 		writer.newLine();
 		writer.write("phase4,");
 		writer.close();
+	}
+	
+	public static void main(String args[]){
+		String s="3.761544897;2.977654751;4.613953705;1.02729857;12.166007768;4.289040639;2.807540296;4.727047629;0.808643686;12.37476289;2;1.733211111;4.333027778;0.650062222;8.524461605;5;40;40;100;15;200;195;1.428545459;1.442570181;3.012900561;0.549308422;6.433324622;6.393408924;6;810;15.673594611;16;6.872562312;7;6.436577364;6;5.305139034;5;5.537779984;5;4.29861313;4;5.683798882;6;11.020643744;11;1.137315929;0.939373657;1.022117579;0.778545165;1.013862435;0.509981298;-0.17760906;0.099828218;-0.223445335;0.165677852;37.01;0.03;0.02869867;0.028630417;0;0.0315;0.0302;0;4;0.000090319;0.015318606;1170";
+		int semicolon = 0;
+		for (int i=0;i<s.length();i++){
+			if(s.charAt(i) == ';'){
+				semicolon++;
+			}
+		}
+			System.out.println(semicolon);
 	}
 }
