@@ -136,6 +136,12 @@ public class DrawGraphs {
 		Vector<ChartLevelNode> levelNodesVector = chartObj.getChartLevelNodes();
 		Vector<LevelNodeGraphInfo> levelVector = new Vector<LevelNodeGraphInfo>();
 
+		double PDR_DATE = 0.0;
+		double PRR_DATE = 0.0;
+		double ISR_DATE = 0.0;
+		double CDR_DATE = 0.0;
+		double FRR_DATE = 0.0;
+		
 		String prNodeName = null;
 		for (ChartLevelNode lNode : levelNodesVector) {
 			LevelNodeGraphInfo levelNodeInfo = new LevelNodeGraphInfo();
@@ -204,14 +210,28 @@ public class DrawGraphs {
 				if(prevPh.equals(((String)pairs.getKey())))
 					prevPhRun = Integer.parseInt((String)pairs.getValue());
 			} 			
-
+		
 			for (int j = -1; j < prevPhRun; j++) {
 				String outputFile = getExtFileName(j, prevPh);
 				CsvReader products = new CsvReader(outputFile, ';');
 				products.skipLine();
 				products.readHeaders();
+				int iter = 0;
+
 				while (products.readRecord()) {
 					for (LevelNodeGraphInfo lnode : levelVector) {
+						if(iter == 0){
+							String records  = products.getRawRecord();
+							String[] recordEntries = records.split(";");
+
+							CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
+							PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
+							PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
+							ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
+							FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
+							
+						
+							}
 						double value = Double.parseDouble(products.get(lnode.getNodeName()));
 
 						if(chartObj.getFStep() == 1)
@@ -585,8 +605,22 @@ public class DrawGraphs {
 			CsvReader products = new CsvReader(outputFile, ';');
 			products.skipLine();
 			products.readHeaders();
+			int iter = 0;
 			while (products.readRecord()) {
 				for (LevelNodeGraphInfo lnode : levelVector) {
+					if(iter == 0){
+						String records  = products.getRawRecord();
+						String[] recordEntries = records.split(";");
+
+						CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
+						PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
+						PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
+						ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
+						FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
+						
+					
+						}
+
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 					if(chartObj.getFStep() == 1)
 					{
@@ -751,59 +785,59 @@ public class DrawGraphs {
 
 		// get a reference to the plot for further customisation...
 		final XYPlot plot = chart.getXYPlot();
-		plot.setBackgroundPaint(Color.lightGray);
+		plot.setBackgroundPaint(Color.white);
 		
 		if(chartObj.getGlobal() == 1)
 		{
 			// Creating the vertical bars indicating different phases: PDR, CDR, FRR, PRR, ISR
-			Marker pdr = new ValueMarker(0);
+			Marker pdr = new ValueMarker(PDR_DATE);
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
-			pdr.setPaint(Color.CYAN);
+//			pdr.setPaint(Color.GRAY);
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
 	
-			Marker cdr = new ValueMarker(810);
+			Marker cdr = new ValueMarker(CDR_DATE);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
-			cdr.setPaint(Color.CYAN);
+//			cdr.setPaint(Color.GRAY);
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(cdr);
 	
-			Marker frr = new ValueMarker(1170);
+			Marker frr = new ValueMarker(FRR_DATE);
 			frr.setLabel("FRR");
 			frr.setStroke(new BasicStroke(5));
-			frr.setPaint(Color.CYAN);
+//			frr.setPaint(Color.GRAY);
 			frr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(frr);
 	
-			Marker prr = new ValueMarker(1530);
+			Marker prr = new ValueMarker(PRR_DATE);
 			prr.setLabel("PRR");
 			prr.setStroke(new BasicStroke(5));
-			prr.setPaint(Color.CYAN);
+//			prr.setPaint(Color.GRAY);
 			prr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(prr);
 	
-			Marker isr = new ValueMarker(1890);
+			Marker isr = new ValueMarker(ISR_DATE);
 			isr.setLabel("ISR");
 			isr.setStroke(new BasicStroke(5));
-			isr.setPaint(Color.CYAN);
+//			isr.setPaint(Color.GRAY);
 			isr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(isr);
 		}
 		else if(folder.equals("phase2"))
 		{
-			Marker pdr = new ValueMarker(0);
+			Marker pdr = new ValueMarker(PDR_DATE);
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
-			pdr.setPaint(Color.CYAN);
+//			pdr.setPaint(Color.GRAY);
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
 	
-			Marker cdr = new ValueMarker(810);
+			Marker cdr = new ValueMarker(CDR_DATE);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
-			cdr.setPaint(Color.CYAN);
+//			cdr.setPaint(Color.GRAY);
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(cdr);			
 		}
@@ -812,14 +846,14 @@ public class DrawGraphs {
 			Marker cdr = new ValueMarker(0);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
-			cdr.setPaint(Color.CYAN);
+			cdr.setPaint(Color.GRAY);
 			cdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(cdr);
 	
 			Marker frr = new ValueMarker(360);
 			frr.setLabel("FRR");
 			frr.setStroke(new BasicStroke(5));
-			frr.setPaint(Color.CYAN);
+			frr.setPaint(Color.GRAY);
 			frr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(frr);			
 		}
@@ -828,14 +862,14 @@ public class DrawGraphs {
 			Marker frr = new ValueMarker(0);
 			frr.setLabel("FRR");
 			frr.setStroke(new BasicStroke(5));
-			frr.setPaint(Color.CYAN);
+//			frr.setPaint(Color.CYAN);
 			frr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(frr);
 	
 			Marker prr = new ValueMarker(360);
 			prr.setLabel("PRR");
 			prr.setStroke(new BasicStroke(5));
-			prr.setPaint(Color.CYAN);
+//			prr.setPaint(Color.CYAN);
 			prr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(prr);			
 		}
@@ -844,14 +878,14 @@ public class DrawGraphs {
 			Marker prr = new ValueMarker(0);
 			prr.setLabel("PRR");
 			prr.setStroke(new BasicStroke(5));
-			prr.setPaint(Color.CYAN);
+//			prr.setPaint(Color.CYAN);
 			prr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(prr);
 	
 			Marker isr = new ValueMarker(360);
 			isr.setLabel("ISR");
 			isr.setStroke(new BasicStroke(5));
-			isr.setPaint(Color.CYAN);
+//			isr.setPaint(Color.CYAN);
 			isr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(isr);			
 		}

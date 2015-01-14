@@ -115,22 +115,6 @@ public class DrawGraphs_Init {
 		for (ChartLevelNode lNode : levelNodesVector) {
 			LevelNodeGraphInfo levelNodeInfo = new LevelNodeGraphInfo();
 			levelNodeInfo.setId(lNode.getLevelIdRef());
-//			if(lNode.getLevelIdRef().equalsIgnoreCase("LN0178")){
-//				System.out.println("PRR_DATE");
-//			}
-//			else if(lNode.getLevelIdRef().equalsIgnoreCase("LN0175")){
-//				System.out.println("PDR_DATE");
-//			}
-//			else if(lNode.getLevelIdRef().equalsIgnoreCase("LN0177")){
-//				System.out.println("FRR_DATE");
-//			}
-//			else if(lNode.getLevelIdRef().equalsIgnoreCase("LN0179")){
-//				System.out.println("ISR_DATE");
-//			}
-//			else if(lNode.getLevelIdRef().equalsIgnoreCase("LN0176")){
-//				System.out.println("CDR_DATE");
-//			}
-
 			levelNodeInfo.setNodeName(levelNodes.get(lNode.getLevelIdRef()));
 			if(lNode.getLevelIdRef().equals(chartObj.getpr()))
 				prNodeName = levelNodeInfo.getNodeName();
@@ -193,45 +177,9 @@ public class DrawGraphs_Init {
 					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
 					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
 					
-					System.out.println(Double.valueOf(recordEntries[29]));//810 - CDR_DATE 
-					System.out.println(Double.valueOf(recordEntries[72]));//1530 - PRR_DATE 
-					System.out.println(Double.valueOf(recordEntries[71]));//0 - PDR_DATE
-					System.out.println(Double.valueOf(recordEntries[70]));//1890 - ISR_DATE
-					System.out.println(Double.valueOf(recordEntries[67])); //1170 - FRR_Date
-					
+				
 					}
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
-//					System.out.println(lnode.getNodeName());
-//					if(lnode.getId().equalsIgnoreCase("LN0175")){
-//						System.out.println(lnode.getNodeName());
-//						
-//						
-////						PDR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-////						System.out.println(PDR_DATE);
-//					}
-//					if(lnode.getId().equalsIgnoreCase("LN0176")){
-//						System.out.println(lnode.getNodeName());
-//
-////						CDR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-////						System.out.println(CDR_DATE);
-//					}
-//					if(lnode.getId().equalsIgnoreCase("LN0177")){
-//						System.out.println(lnode.getNodeName());
-//
-////						FRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-////						System.out.println(FRR_DATE);
-//					}
-//					if(lnode.getId().equalsIgnoreCase("LN0179")){
-//						System.out.println(lnode.getNodeName());
-//
-////						ISR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-////						System.out.println(ISR_DATE);
-//					}
-//					if(lnode.getId().equalsIgnoreCase("LN0178")){
-//						System.out.println(lnode.getNodeName());
-////						PRR_DATE = Double.parseDouble(products.get(lnode.getNodeName()));
-////						System.out.println(PRR_DATE);
-//					}
 
 					if(chartObj.getFStep() == 1)
 					{
@@ -413,14 +361,6 @@ public class DrawGraphs_Init {
 		plot.setDomainAxis(1, xAxis2 );
 		plot.mapDatasetToDomainAxis(2, 1);
 */		
-		/*
-		 * 		CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
-					PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
-					PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
-					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
-					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
-			
-		 */
 		if(chartObj.getGlobal() == 1)
 		{
 			Marker pdr = new ValueMarker(PDR_DATE);
@@ -465,7 +405,7 @@ public class DrawGraphs_Init {
 		}
 		else if(folder.equals("phase2"))
 		{
-			Marker pdr = new ValueMarker(0);
+			Marker pdr = new ValueMarker(PDR_DATE);
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
 //			pdr.setPaint(Color.CYAN);
@@ -473,7 +413,7 @@ public class DrawGraphs_Init {
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
 	
-			Marker cdr = new ValueMarker(810);
+			Marker cdr = new ValueMarker(CDR_DATE);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
 //			cdr.setPaint(Color.CYAN);
