@@ -123,7 +123,8 @@ WindowListener {
 
 	private ResourceBundle messages;
 
-	private SystemDynamicsGraph graph;
+	private ArrayList<SystemDynamicsGraph> graph;
+	private SystemDynamicsGraph graphNew;
 	private boolean graphModified;
 
 	private JPanel contentPanel;
@@ -170,6 +171,7 @@ WindowListener {
 	 * @param start {@link de.uka.aifb.com.systemDynamics.SystemDynamics} instance
 	 */
 	public MainFrame(SystemDynamics start) {
+		graph = new ArrayList<SystemDynamicsGraph>();
 		if (start == null) {
 			throw new IllegalArgumentException("'start' must not be null.");
 		}
@@ -693,7 +695,7 @@ WindowListener {
 		title.append(messages.getString("MainFrame.Title"));
 
 		if (modelName != null) {
-			String zoomString = ((int)(graph.getScale() * 100)) + "%";
+			String zoomString = ((int)(graph.get(0).getScale() * 100)) + "%";
 			title.append(" - ");
 			title.append(modelName);
 			title.append(" (" + messages.getString("MainFrame.Title.Zoom") + " " + zoomString + ") - ");
@@ -783,7 +785,7 @@ WindowListener {
 		if (!graphModified) {
 			graphModified = true;
 
-			setTitle(createTitle(graph.getModelName(), graphModified));
+			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 
 			saveAction.setEnabled(true);
 			saveAsAction.setEnabled(true);
@@ -869,7 +871,8 @@ WindowListener {
 								messages.getString("MainFrame.MenuBar.File.NewModelName"),
 								"");
 
-				graph = new SystemDynamicsGraph(start, MainFrame.this);
+				graphNew = new SystemDynamicsGraph(start, MainFrame.this);
+				graph.add(graphNew);
 
 				if (modelName != null) {
 					DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
@@ -877,15 +880,16 @@ WindowListener {
 					String modelDate = df.format(today);
 					modelName += " ";
 					modelName += modelDate;
-					graph.setModelName(modelName);
-					graph.addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
-					scrollPane = new JScrollPane(graph);
+					graph.get(0).setModelName(modelName);
+					graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+					scrollPane = new JScrollPane(graph.get(0));
+					scrollPane.setPreferredSize(new Dimension(400,400));
 					contentPanel.removeAll();
-					contentPanel.add(scrollPane, BorderLayout.CENTER);
+					contentPanel.add(scrollPane,null);
 					getContentPane().validate();
 
 					fileName = messages.getString("MainFrame.NewDocument");
-					setTitle(createTitle(graph.getModelName(), false));
+					setTitle(createTitle(graph.get(0).getModelName(), false));
 
 					newAction.setEnabled(true);
 					openAction.setEnabled(true);
@@ -938,8 +942,10 @@ WindowListener {
 					// file was selected and 'OK' was pressed
 					File file = fileChooser.getSelectedFile();
 					try {
-						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
-						graph.addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+						graphNew = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
+						graph.removeAll(graph);
+						graph.add(graphNew);
+						graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 						
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
@@ -981,13 +987,13 @@ WindowListener {
 					// opening successful
 					xmlFile = file;
 
-					scrollPane = new JScrollPane(graph);
+					scrollPane = new JScrollPane(graph.get(0));
 					contentPanel.removeAll();
 					contentPanel.add(scrollPane, BorderLayout.CENTER);
 					getContentPane().validate();
 
 					fileName = xmlFile.getAbsolutePath();
-					setTitle(createTitle(graph.getModelName(), false));
+					setTitle(createTitle(graph.get(0).getModelName(), false));
 
 					newAction.setEnabled(true);
 					closeAction.setEnabled(true);
@@ -1011,7 +1017,7 @@ WindowListener {
 					pasteAction.setEnabled(true);
 					
 					try {
-						graph.validateModel();
+						graph.get(0).validateModel();
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
 								messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1102,7 +1108,7 @@ WindowListener {
 			fileName = null;
 			setTitle(createTitle(null, false));
 
-			graph = null;
+			graph.removeAll(graph);
 			graphModified = false;
 			xmlFile = null;
 			scrollPane = null;
@@ -1186,7 +1192,8 @@ WindowListener {
 			}
 
 			try {
-				graph.storeToXML(file.getAbsolutePath());
+//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
+				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1246,9 +1253,9 @@ WindowListener {
 			saveAction.setEnabled(false);
 
 			fileName = xmlFile.getAbsolutePath();
-			setTitle(createTitle(graph.getModelName(), graphModified));
+			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 			try {
-				graph.validateModel();
+				graph.get(0).validateModel();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1341,7 +1348,8 @@ WindowListener {
 			}
 
 			try {
-				graph.storeToXML(file.getAbsolutePath());
+				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
+				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1403,7 +1411,7 @@ WindowListener {
 			graphModified = false;
 			saveAction.setEnabled(false);
 			try {
-				graph.validateModel();
+				graph.get(0).validateModel();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1449,7 +1457,7 @@ WindowListener {
 				return;
 			}
 			fileName = xmlFile.getAbsolutePath();
-			setTitle(createTitle(graph.getModelName(), graphModified));
+			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
 
@@ -1470,7 +1478,7 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
 
 			if (nodeName != null) {
-				graph.createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 			}
 		}
 	}
@@ -1494,7 +1502,7 @@ WindowListener {
 							ConstantNode.MIN_CONSTANT,
 							ConstantNode.MAX_CONSTANT);
 			if (newNodeNameParameter != null) {
-				graph.createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+				graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
 						newNodeNameParameter.getNodeParameter(),
 						MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 			}
@@ -1525,7 +1533,7 @@ WindowListener {
 							LevelNode.MIN_START_VALUE,
 							LevelNode.MAX_START_VALUE);
 			if (newNodeNameParameter != null) {
-				graph.createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+				graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
 						newNodeNameParameter.getNodeParameter(),
 						newNodeNameParameter.getMinParameter(),
 						newNodeNameParameter.getMaxParameter(),
@@ -1552,7 +1560,7 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
 
 			if (nodeName != null) {
-				graph.createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 			}
 		}
 	}
@@ -1568,7 +1576,7 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);         
+			graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);         
 		}
 	}
 
@@ -1592,7 +1600,7 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			// toggle ports visibility
-			graph.setPortsVisible(!graph.isPortsVisible());
+			graph.get(0).setPortsVisible(!graph.get(0).isPortsVisible());
 			inAddFlowMode = !inAddFlowMode;
 			if (inAddFlowMode) {
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_LEAVE_ADD_FLOW_MODE_ICON)));
@@ -1624,7 +1632,7 @@ WindowListener {
 					ModelNameDialog.showModelNameDialog(start, MainFrame.this,
 							messages.getString("MainFrame.MenuBar.Edit.ChangeModelName"),
 							messages.getString("MainFrame.MenuBar.Edit.NewModelName"),
-							graph.getModelName());
+							graph.get(0).getModelName());
 
 			if (newModelName != null) {
 				DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
@@ -1632,9 +1640,9 @@ WindowListener {
 				String modelDate = df.format(today);
 				newModelName += " ";
 				newModelName += modelDate;
-				graph.setModelName(newModelName);
+				graph.get(0).setModelName(newModelName);
 
-				setTitle(createTitle(graph.getModelName(), graphModified));
+				setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 			}
 		}
 	}
@@ -1651,7 +1659,7 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			try {
-				graph.validateModelAndSetUnchangeable();
+				graph.get(0).validateModelAndSetUnchangeable();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1708,9 +1716,9 @@ WindowListener {
 
 			tabbedPane = new JTabbedPane();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Model"), scrollPane);
-			ModelExecutionChartPanel chartPanel = graph.getChartPanel();
+			ModelExecutionChartPanel chartPanel = graph.get(0).getChartPanel();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart"), chartPanel);
-			ExportPanel exportPanel = graph.getExportPanel();
+			ExportPanel exportPanel = graph.get(0).getExportPanel();
 
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Export"), exportPanel);
 			tabbedPane.addChangeListener(MainFrame.this);
@@ -1768,9 +1776,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.setScale(1.0);
+			graph.get(0).setScale(1.0);
 
-			setTitle(createTitle(graph.getModelName(), graphModified));
+			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
 
@@ -1785,9 +1793,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.setScale(1.3 * graph.getScale());
+			graph.get(0).setScale(1.3 * graph.get(0).getScale());
 
-			setTitle(createTitle(graph.getModelName(), graphModified));
+			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
 
@@ -1802,9 +1810,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.setScale(graph.getScale() / 1.3);
+			graph.get(0).setScale(graph.get(0).getScale() / 1.3);
 
-			setTitle(createTitle(graph.getModelName(), graphModified));
+			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
 	private class CutAction extends AbstractAction {
@@ -1817,9 +1825,9 @@ WindowListener {
 		}
 		public void actionPerformed(ActionEvent e){
 
-			Object[] cells = graph.getSelectionCells();
+			Object[] cells = graph.get(0).getSelectionCells();
 	
-			graph.getModel().remove(cells);		
+			graph.get(0).getModel().remove(cells);		
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -1871,19 +1879,19 @@ WindowListener {
 				}
 				else if(cells[i] instanceof FlowEdge){
 					FlowEdge edge = (FlowEdge)cells[i];
-					 final Object edgeSource = graph.getModel().getParent(graph.getModel().getSource(edge));
-					 final Object edgeTarget = graph.getModel().getParent(graph.getModel().getTarget(edge));
+					 final Object edgeSource = graph.get(0).getModel().getParent(graph.get(0).getModel().getSource(edge));
+					 final Object edgeTarget = graph.get(0).getModel().getParent(graph.get(0).getModel().getTarget(edge));
 					 if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		                 graph.removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		                 graph.get(0).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
-		            	  graph.removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+		            	  graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		            	  graph.removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		            	  graph.get(0).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
-		            	  graph.removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+		            	  graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
 		              }
 				}
 			}
@@ -1911,7 +1919,7 @@ WindowListener {
 		}
 		//same code as CutAction, but doesn't remove any graph cells.
 		public void actionPerformed(ActionEvent e){
-			Object[] cells = graph.getSelectionCells();
+			Object[] cells = graph.get(0).getSelectionCells();
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -2001,26 +2009,26 @@ WindowListener {
 				if (pasteCells.get(i).contains("Auxiliary")) {
 					String[] attributes = pasteCells.get(i).split(",");
 					
-					graph.createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(0).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 					
 				}
 				else if (pasteCells.get(i).contains("Level")){
 					String[] attributes = pasteCells.get(i).split(",");
 							
-					graph.createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(0).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				else if(pasteCells.get(i).contains("SourceSink")){
-					graph.createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				
 				else if(pasteCells.get(i).contains("Constant")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(0).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 				else if(pasteCells.get(i).contains("Rate")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(0).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 			}
