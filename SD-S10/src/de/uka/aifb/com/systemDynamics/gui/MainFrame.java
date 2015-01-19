@@ -130,6 +130,7 @@ WindowListener {
 	private JPanel contentPanel;
 	private JTabbedPane tabbedPane;
 	private JScrollPane scrollPane;
+	private JPanel modelPanel;
 
 	private File xmlFile;
 	private String fileName;
@@ -157,6 +158,7 @@ WindowListener {
 	private Action cutActionFunction = javax.swing.TransferHandler.getCutAction();
 	private Action copyActionFunction = javax.swing.TransferHandler.getCopyAction();
 	private Action pasteActionFunction = javax.swing.TransferHandler.getPasteAction();
+	private Action newSubmodelAction;
 	private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
@@ -207,6 +209,7 @@ WindowListener {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
 		contentPanel = new JPanel(new BorderLayout());
+		modelPanel = new JPanel(new GridLayout(1,4));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		registerDelAction();
 
@@ -308,8 +311,9 @@ WindowListener {
 		cutAction.setEnabled(false);
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
-
-
+		
+		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Create New Submodel");
+		newSubmodelAction.setEnabled(false);
 		if (start.getLocale() == Locale.GERMANY) {
 			newAuxiliaryNodeAction = new NewAuxiliaryNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewAuxiliaryNode"),
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_AN_de_DE_ICON)),
@@ -663,6 +667,7 @@ WindowListener {
 		toolBar.add(newLevelNodeAction);
 		toolBar.add(newRateNodeAction);
 		toolBar.add(newSourceSinkNodeAction);
+		toolBar.add(newSubmodelAction);
 		toolBar.add(toggleAddFlowAction);
 		toolBar.add(changeModelNameAction);
 
@@ -679,7 +684,7 @@ WindowListener {
 		toolBar.add(cutAction);
 		toolBar.add(copyAction);
 		toolBar.add(pasteAction);      
-
+		
 		return toolBar;
 	}
 
@@ -883,9 +888,16 @@ WindowListener {
 					graph.get(0).setModelName(modelName);
 					graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 					scrollPane = new JScrollPane(graph.get(0));
+					
+					graph.get(0).setBackground(Color.red);
+					graph.get(0).setSize(400,400);
 					scrollPane.setPreferredSize(new Dimension(400,400));
+					
 					contentPanel.removeAll();
-					contentPanel.add(scrollPane,null);
+					modelPanel.add(scrollPane);
+					
+					contentPanel.add(modelPanel,BorderLayout.CENTER);
+					
 					getContentPane().validate();
 
 					fileName = messages.getString("MainFrame.NewDocument");
@@ -896,7 +908,8 @@ WindowListener {
 					closeAction.setEnabled(true);
 					saveAction.setEnabled(false);
 					saveAsAction.setEnabled(false);
-
+					newSubmodelAction.setEnabled(true);
+					
 					newAuxiliaryNodeAction.setEnabled(true);
 					newConstantNodeAction.setEnabled(true);
 					newLevelNodeAction.setEnabled(true);
@@ -918,7 +931,32 @@ WindowListener {
 		}
 
 	}
+	private class NewSubmodelAction extends AbstractAction {
 
+		private static final long serialVersionUID = 1L;
+
+		public NewSubmodelAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
+
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			graph.add(newSubmodel);
+			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
+			graph.get(graph.size()-1).setBackground(Color.yellow);
+			graph.get(graph.size()-1).setSize(400,400);
+			modelPanel.add(submodelScroll);
+			System.out.println(graph.size());
+			contentPanel.removeAll();
+			contentPanel.repaint();
+			contentPanel.add(modelPanel);
+			
+		}
+
+	}
 	private class OpenAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
