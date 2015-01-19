@@ -943,16 +943,23 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			//create a new submodel graph
 			SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			//add it to the model
 			graph.add(newSubmodel);
+			//create scroll pane for the new submodel
 			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
 			graph.get(graph.size()-1).setBackground(Color.yellow);
 			graph.get(graph.size()-1).setSize(400,400);
+			//add it to the model panel 
 			modelPanel.add(submodelScroll);
-			System.out.println(graph.size());
-			contentPanel.removeAll();
-			contentPanel.repaint();
-			contentPanel.add(modelPanel);
+			//reconfigure layout for 4 or more submodels
+			if(graph.size()>=4){
+				modelPanel.setLayout(new GridLayout(2,4));
+			}
+			//force layout to recalculate now that a new component has been added.
+			modelPanel.revalidate();
+			
 			
 		}
 
