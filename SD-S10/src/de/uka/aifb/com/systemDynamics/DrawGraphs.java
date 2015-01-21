@@ -1050,7 +1050,7 @@ public class DrawGraphs {
 		{
 			ValueAxis xAxisPrimary = plot.getDomainAxis(0);
 //			xAxisPrimary.setTickLabelsVisible(false);
-			xAxisPrimary.setVisible(false);
+//			xAxisPrimary.setVisible(false);
 			NumberAxis Axis2 = new NumberAxis(chartObj.getXLabel());
 			plot.setDomainAxis(1, Axis2);
 			plot.setDomainAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);

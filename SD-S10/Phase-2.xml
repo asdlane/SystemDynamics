@@ -177,7 +177,7 @@
       <LevelNode id="LN0173" name="True_Air_Speed" startValue="400.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="660.0" yCoordinate="1509.0" />
       <LevelNode id="LN0174" name="Weight_Payload" startValue="2500.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="366.0" yCoordinate="1912.0" />
       <LevelNode id="LN0175" name="PDR_Date" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
-      <LevelNode id="LN0176" name="CDR_Date" startValue="810.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
+      <LevelNode id="LN0176" name="CDR_Date" startValue="1400.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
       <LevelNode id="LN0177" name="FRR_Date" startValue="1170.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
       <LevelNode id="LN0178" name="PRR_Date" startValue="1530.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
       <LevelNode id="LN0179" name="ISR_Date" startValue="2400.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
