@@ -229,8 +229,7 @@ public class DrawGraphs {
 							PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
 							ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
 							FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
-							
-						
+													
 							}
 						double value = Double.parseDouble(products.get(lnode.getNodeName()));
 
@@ -618,8 +617,16 @@ public class DrawGraphs {
 						ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
 						FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
 						
-					
+						if(chartObj.getGlobal() == 1)
+							max_xIntercept = (int)ISR_DATE;
+						else
+						{
+							if(folder.equals("phase2"))
+								max_xIntercept = (int)CDR_DATE;
+							else
+								max_xIntercept = 360;//does this constant need updation as well?
 						}
+						iter += 1;						}
 
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 					if(chartObj.getFStep() == 1)
@@ -700,7 +707,7 @@ public class DrawGraphs {
 		double y1, y2;
 		Vector<XYTextAnnotation> xytextannotationList = new Vector<XYTextAnnotation>();
 		for (PlannedVariableExt plannedExt : planVector) {
-			double [] planValues = new double[1891];
+			double [] planValues = new double[(int) ISR_DATE+1];
 			int planValueIndex = 0;
 			if (x2 >= max_xIntercept)
 				break;
@@ -974,7 +981,7 @@ public class DrawGraphs {
 		renderer.setBaseShapesVisible(false);
 		renderer.setBaseStroke(new BasicStroke(8));
 		if(isPlan == 1)
-			renderer.setSeriesPaint(seriesNumber, Color.black);
+//			renderer.setSeriesPaint(seriesNumber, Color.black);
 		plot.setRenderer(renderer);
 
 		if(stepSet == 1)
@@ -1007,7 +1014,7 @@ public class DrawGraphs {
 		{
 			ValueAxis xAxisPrimary = plot.getDomainAxis(0);
 //			xAxisPrimary.setTickLabelsVisible(false);
-			xAxisPrimary.setVisible(false);
+//			xAxisPrimary.setVisible(false);
 			NumberAxis Axis2 = new NumberAxis(chartObj.getXLabel());
 			plot.setDomainAxis(1, Axis2);
 			plot.setDomainAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);

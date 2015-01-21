@@ -177,7 +177,11 @@ public class DrawGraphs_Init {
 					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
 					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
 					
-				
+					if(chartObj.getGlobal() == 1)
+						max_xIntercept = (int)ISR_DATE ;
+					else
+						max_xIntercept = (int)CDR_DATE;
+					iter += 1;
 					}
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 
@@ -254,7 +258,7 @@ public class DrawGraphs_Init {
 		double y1, y2;
 		Vector<XYTextAnnotation> xytextannotationList = new Vector<XYTextAnnotation>();
 		for (PlannedVariableExt plannedExt : planVector) {
-			double [] planValues = new double[1891];
+			double [] planValues = new double[(int) ISR_DATE+1];
 			int planValueIndex = 0;
 			if (x2 >= max_xIntercept)
 				break;
@@ -515,7 +519,8 @@ public class DrawGraphs_Init {
 		{
 			ValueAxis xAxisPrimary = plot.getDomainAxis(0);
 //			xAxisPrimary.setTickLabelsVisible(false);
-			xAxisPrimary.setVisible(false);
+//			xAxisPrimary.setVisible(false);
+//			System.out.println();
 			NumberAxis Axis2 = new NumberAxis(chartObj.getXLabel());
 			plot.setDomainAxis(1, Axis2);
 			plot.setDomainAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
@@ -524,11 +529,15 @@ public class DrawGraphs_Init {
 			if(chartObj.getGlobal() == 0 && isPlan == 0)
 			{
 				double maxRange = ((xIntercept-1)*.10)+(xIntercept-1);
+//				xAxisPrimary.setRange(0, maxRange);
+//				double finalValue = (maxRange/30)+6; //40 ==> 1200/30=40
 				xAxis2.setRange(0+6, (maxRange/30)+6);
 			}
 			else
 			{
 				double maxRange = ((max_xIntercept)*.10)+(max_xIntercept);
+//				xAxisPrimary.setRange(0, maxRange);
+//				double finalValue = (maxRange/30)+6;
 				xAxis2.setRange(0+6, (maxRange/30)+6);
 			}
 			NumberAxis numberaxis = (NumberAxis) plot.getDomainAxis(1);
@@ -626,16 +635,5 @@ public class DrawGraphs_Init {
 		writer.newLine();
 		writer.write("phase4,");
 		writer.close();
-	}
-	
-	public static void main(String args[]){
-		String s="3.761544897;2.977654751;4.613953705;1.02729857;12.166007768;4.289040639;2.807540296;4.727047629;0.808643686;12.37476289;2;1.733211111;4.333027778;0.650062222;8.524461605;5;40;40;100;15;200;195;1.428545459;1.442570181;3.012900561;0.549308422;6.433324622;6.393408924;6;810;15.673594611;16;6.872562312;7;6.436577364;6;5.305139034;5;5.537779984;5;4.29861313;4;5.683798882;6;11.020643744;11;1.137315929;0.939373657;1.022117579;0.778545165;1.013862435;0.509981298;-0.17760906;0.099828218;-0.223445335;0.165677852;37.01;0.03;0.02869867;0.028630417;0;0.0315;0.0302;0;4;0.000090319;0.015318606;1170";
-		int semicolon = 0;
-		for (int i=0;i<s.length();i++){
-			if(s.charAt(i) == ';'){
-				semicolon++;
-			}
-		}
-			System.out.println(semicolon);
 	}
 }
