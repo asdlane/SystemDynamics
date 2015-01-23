@@ -519,7 +519,7 @@ public class DrawGraphs_Init {
 		{
 			ValueAxis xAxisPrimary = plot.getDomainAxis(0);
 //			xAxisPrimary.setTickLabelsVisible(false);
-//			xAxisPrimary.setVisible(false);
+			xAxisPrimary.setVisible(false);
 //			System.out.println();
 			NumberAxis Axis2 = new NumberAxis(chartObj.getXLabel());
 			plot.setDomainAxis(1, Axis2);
