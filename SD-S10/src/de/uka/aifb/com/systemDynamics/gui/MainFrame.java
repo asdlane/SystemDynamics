@@ -45,6 +45,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
@@ -52,6 +53,8 @@ import org.jgraph.*;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferable;
+
+import java.util.Random;
 
 /*
  * Changes:
@@ -165,6 +168,8 @@ WindowListener {
 	private JRadioButtonMenuItem rbMenuItemSpanish;
 
 	private JFileChooser fileChooser;
+	private Random rand = new Random();
+	private ArrayList<Color> SubmodelColors= new ArrayList<Color>();
 	//File[] selectedFiles;
 	File selectedFiles;
 	/**
@@ -889,7 +894,16 @@ WindowListener {
 					graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 					scrollPane = new JScrollPane(graph.get(0));
 					
-					graph.get(0).setBackground(Color.red);
+					//random submodel color is created for the working session and then added to an overall list to be referenced later.
+					int red = rand.nextInt(256);
+					int green = rand.nextInt(256);
+					int blue = rand.nextInt(256);
+					Color randomColor = new Color(red, green, blue);
+					SubmodelColors.add(randomColor);
+					
+					Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
+					
+					graph.get(graph.size()-1).setBorder(SubmodelColor);
 					graph.get(0).setSize(400,400);
 					scrollPane.setPreferredSize(new Dimension(400,400));
 					
@@ -949,7 +963,18 @@ WindowListener {
 			graph.add(newSubmodel);
 			//create scroll pane for the new submodel
 			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
-			graph.get(graph.size()-1).setBackground(Color.yellow);
+			
+			//random submodel color is created for the working session and then added to an overall list to be referenced later.
+			int red = rand.nextInt(256);
+			int green = rand.nextInt(256);
+			int blue = rand.nextInt(256);
+			Color randomColor = new Color(red, green, blue);
+			SubmodelColors.add(randomColor);
+			
+
+			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
+			
+			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
 			//add it to the model panel 
 			modelPanel.add(submodelScroll);
@@ -1239,6 +1264,8 @@ WindowListener {
 			try {
 //***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
 				graph.get(0).storeToXML(file.getAbsolutePath());
+				
+				
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
