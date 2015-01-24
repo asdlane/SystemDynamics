@@ -170,6 +170,7 @@ WindowListener {
 	private JFileChooser fileChooser;
 	private Random rand = new Random();
 	private ArrayList<Color> SubmodelColors= new ArrayList<Color>();
+	
 	//File[] selectedFiles;
 	File selectedFiles;
 	/**
@@ -633,7 +634,9 @@ WindowListener {
 
 				subPanel.add(tabbedPane, BorderLayout.CENTER);
 				subPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+				
 
+				
 				JPanel helpPanel = new JPanel();
 				helpPanel.add(subPanel);
 				helpPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -971,8 +974,8 @@ WindowListener {
 			Color randomColor = new Color(red, green, blue);
 			SubmodelColors.add(randomColor);
 			
-
 			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
+			
 			
 			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
@@ -1648,7 +1651,26 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);         
+			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			
+			if(graph.size()==1){
+				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);	
+			}
+			else{
+				//accounts for if user cancels the insert
+				try{
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = SubmodelNumbers.toArray();
+					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}catch(Exception ex){
+					
+				}
+			}
 		}
 	}
 
