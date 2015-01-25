@@ -878,6 +878,14 @@ WindowListener {
 				reply = JOptionPane.showConfirmDialog(null, "Creating a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create a new document?", "Create", JOptionPane.YES_NO_OPTION);
 			}
 			if(reply==JOptionPane.YES_OPTION){
+				modelPanel.setLayout(new GridLayout(1,4));
+				modelPanel.removeAll();
+				contentPanel.remove(modelPanel);
+				SubmodelColors.removeAll(SubmodelColors);
+				graph.removeAll(graph);
+				System.out.println(graph.size());
+				System.out.println(SubmodelColors.size());
+				contentPanel.revalidate();
 				String modelName =
 						ModelNameDialog.showModelNameDialog(start, MainFrame.this,
 								messages.getString("MainFrame.MenuBar.File.NewModel"),
@@ -979,6 +987,7 @@ WindowListener {
 			
 			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
+			graph.get(graph.size()-1).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 			//add it to the model panel 
 			modelPanel.add(submodelScroll);
 			//reconfigure layout for 4 or more submodels
@@ -1870,7 +1879,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).setScale(1.0);
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).setScale(1.0);
+			}
 
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
@@ -1887,8 +1898,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).setScale(1.3 * graph.get(0).getScale());
-
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).setScale(1.3 * graph.get(i).getScale());
+			}
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
@@ -1904,8 +1916,11 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).setScale(graph.get(0).getScale() / 1.3);
-
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).setScale(graph.get(i).getScale() / 1.3);	
+			}
+			
+			
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
