@@ -107,6 +107,7 @@ WindowListener {
 	private static final String FILE_NEW_RN_de_DE_ICON = "resources/new_rate_node_de_DE.png";
 	private static final String FILE_NEW_SSN_ICON = "resources/new_source_sink_node_en_US.png";
 	private static final String FILE_NEW_SSN_de_DE_ICON = "resources/new_source_sink_node_de_DE.png";
+	private static final String SUBMODEL_icon = "resources/submodel.png";
 
 	private static final String FILE_ENTER_ADD_FLOW_MODE_ICON = "resources/disconnect.png";
 	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/connect.png";
@@ -318,7 +319,7 @@ WindowListener {
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
 		
-		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Create New Submodel");
+		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		if (start.getLocale() == Locale.GERMANY) {
 			newAuxiliaryNodeAction = new NewAuxiliaryNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewAuxiliaryNode"),
@@ -1562,8 +1563,29 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
 
 			if (nodeName != null) {
-				graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				if(graph.size()==1){
+					graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
 			}
+			
 		}
 	}
 
@@ -1585,10 +1607,35 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeParameter.ConstantNode"),
 							ConstantNode.MIN_CONSTANT,
 							ConstantNode.MAX_CONSTANT);
+
 			if (newNodeNameParameter != null) {
-				graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
-						newNodeNameParameter.getNodeParameter(),
-						MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				
+				//lets you insert nodes into a single model that doesn't have submodels.
+				if(graph.size()==1){
+					graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+							newNodeNameParameter.getNodeParameter(),
+							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
 			}
 		}
 	}
@@ -1617,12 +1664,40 @@ WindowListener {
 							LevelNode.MIN_START_VALUE,
 							LevelNode.MAX_START_VALUE);
 			if (newNodeNameParameter != null) {
-				graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
-						newNodeNameParameter.getNodeParameter(),
-						newNodeNameParameter.getMinParameter(),
-						newNodeNameParameter.getMaxParameter(),
-						newNodeNameParameter.getCurveParameter(),
-						MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				
+				//lets you insert nodes into a single model that doesn't have submodels.
+				if(graph.size()==1){
+					graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+							newNodeNameParameter.getNodeParameter(),
+							newNodeNameParameter.getMinParameter(),
+							newNodeNameParameter.getMaxParameter(),
+							newNodeNameParameter.getCurveParameter(),
+							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								newNodeNameParameter.getMinParameter(),
+								newNodeNameParameter.getMaxParameter(),
+								newNodeNameParameter.getCurveParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
+				
 			}
 		}
 	}
@@ -1644,7 +1719,29 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
 
 			if (nodeName != null) {
-				graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				
+				//lets you insert nodes into a single model that doesn't have submodels.
+				if(graph.size()==1){
+					graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
 			}
 		}
 	}
