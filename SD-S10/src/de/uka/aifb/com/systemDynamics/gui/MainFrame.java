@@ -172,6 +172,7 @@ WindowListener {
 	private Random rand = new Random();
 	private ArrayList<Color> SubmodelColors= new ArrayList<Color>();
 	
+	
 	//File[] selectedFiles;
 	File selectedFiles;
 	/**
@@ -211,7 +212,7 @@ WindowListener {
 
 		// create menu
 		setJMenuBar(createMenuBar());
-
+		
 		// create tool bar
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
@@ -906,10 +907,20 @@ WindowListener {
 					graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 					scrollPane = new JScrollPane(graph.get(0));
 					
-					//random submodel color is created for the working session and then added to an overall list to be referenced later.
 					int red = rand.nextInt(256);
 					int green = rand.nextInt(256);
 					int blue = rand.nextInt(256);
+					for(int i=0;i<SubmodelColors.size();i++){
+						if(Math.abs(SubmodelColors.get(i).getRed()-red) < 40){
+							red = rand.nextInt(256);
+						}
+						if(Math.abs(SubmodelColors.get(i).getBlue()-blue) < 30){
+							blue = rand.nextInt(256);
+						}
+						if(Math.abs(SubmodelColors.get(i).getGreen()-green) < 20){
+							green = rand.nextInt(256);
+						}
+					}
 					Color randomColor = new Color(red, green, blue);
 					SubmodelColors.add(randomColor);
 					
@@ -977,10 +988,24 @@ WindowListener {
 			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
 			
 			//random submodel color is created for the working session and then added to an overall list to be referenced later.
+
+									
 			int red = rand.nextInt(256);
 			int green = rand.nextInt(256);
 			int blue = rand.nextInt(256);
+			for(int i=0;i<SubmodelColors.size();i++){
+				if(Math.abs(SubmodelColors.get(i).getRed()-red) < 40){
+					red = rand.nextInt(256);
+				}
+				if(Math.abs(SubmodelColors.get(i).getBlue()-blue) < 30){
+					blue = rand.nextInt(256);
+				}
+				if(Math.abs(SubmodelColors.get(i).getGreen()-green) < 20){
+					green = rand.nextInt(256);
+				}
+			}
 			Color randomColor = new Color(red, green, blue);
+			//NON-REPEATING
 			SubmodelColors.add(randomColor);
 			
 			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
