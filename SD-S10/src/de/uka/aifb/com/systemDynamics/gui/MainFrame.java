@@ -1810,6 +1810,7 @@ WindowListener {
 		private static final long serialVersionUID = 1L;
 
 		private boolean inAddFlowMode;
+		private int subModelIndex = 0;
 
 		public ToggleAddFlowAction(String name, Icon icon, String toolTipText) {
 			super(name, icon);
@@ -1825,7 +1826,18 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			// toggle ports visibility
-			graph.get(0).setPortsVisible(!graph.get(0).isPortsVisible());
+			
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			if (subModelIndex == 0){
+				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel (number in left corner)?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			}
+			
+			graph.get(subModelIndex - 1).setPortsVisible(!graph.get(subModelIndex - 1).isPortsVisible());
 			inAddFlowMode = !inAddFlowMode;
 			if (inAddFlowMode) {
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_LEAVE_ADD_FLOW_MODE_ICON)));
@@ -1834,6 +1846,8 @@ WindowListener {
 				addFlowModeCheckBoxMenuItem.setToolTipText(null);
 			} else {
 				// not in "add flow modus"
+				subModelIndex = 0;
+				modelPanel.revalidate();
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_ENTER_ADD_FLOW_MODE_ICON)));
 				putValue(Action.NAME, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
 				putValue(Action.SHORT_DESCRIPTION, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
@@ -1865,6 +1879,7 @@ WindowListener {
 				String modelDate = df.format(today);
 				newModelName += " ";
 				newModelName += modelDate;
+				
 				graph.get(0).setModelName(newModelName);
 
 				setTitle(createTitle(graph.get(0).getModelName(), graphModified));
@@ -2056,9 +2071,21 @@ WindowListener {
 		}
 		public void actionPerformed(ActionEvent e){
 
-			Object[] cells = graph.get(0).getSelectionCells();
-	
-			graph.get(0).getModel().remove(cells);		
+			Object[] cells = {};
+			int breakVal = 0;
+			for(int j=0;j<graph.size();j++){
+				if(cells.length == 0){
+					cells = graph.get(j).getSelectionCells();
+					breakVal = j;
+					
+				}
+				
+				
+			}
+			System.out.println(breakVal);
+			graph.get(breakVal).getModel().remove(cells);
+			
+			
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -2113,16 +2140,16 @@ WindowListener {
 					 final Object edgeSource = graph.get(0).getModel().getParent(graph.get(0).getModel().getSource(edge));
 					 final Object edgeTarget = graph.get(0).getModel().getParent(graph.get(0).getModel().getTarget(edge));
 					 if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		                 graph.get(0).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		                 graph.get(breakVal).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
-		            	  graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+		            	  graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		            	  graph.get(0).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		            	  graph.get(breakVal).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
-		            	  graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+		            	  graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
 		              }
 				}
 			}
@@ -2150,7 +2177,16 @@ WindowListener {
 		}
 		//same code as CutAction, but doesn't remove any graph cells.
 		public void actionPerformed(ActionEvent e){
-			Object[] cells = graph.get(0).getSelectionCells();
+			Object[] cells = {};
+			
+			for(int j=0;j<graph.size();j++){
+				if(cells.length == 0){
+					cells = graph.get(j).getSelectionCells();
+					
+				}
+				
+				
+			}
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -2235,31 +2271,38 @@ WindowListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Paste into which submodel (number in left corner)?","Paste",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			//reads in from copyClipboard.txt and, based on which indicator is read in, creates the right node.
 			for(int i=0; i<pasteCells.size();i++){
 				if (pasteCells.get(i).contains("Auxiliary")) {
 					String[] attributes = pasteCells.get(i).split(",");
 					
-					graph.get(0).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 					
 				}
 				else if (pasteCells.get(i).contains("Level")){
 					String[] attributes = pasteCells.get(i).split(",");
 							
-					graph.get(0).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				else if(pasteCells.get(i).contains("SourceSink")){
-					graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				
 				else if(pasteCells.get(i).contains("Constant")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.get(0).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 				else if(pasteCells.get(i).contains("Rate")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.get(0).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 			}
