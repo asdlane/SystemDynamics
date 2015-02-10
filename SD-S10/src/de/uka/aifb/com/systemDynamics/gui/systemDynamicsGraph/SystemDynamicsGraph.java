@@ -27,6 +27,7 @@ import de.uka.aifb.com.systemDynamics.gui.*;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
 
+import java.awt.Color;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.text.*;
@@ -372,6 +373,13 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       return sourceSinkNodeGraphCell;
    }
    
+   //CODE FOR COLORED SOURCE SINK NODE HERE!!!!!!
+   public ColoredSourceSinkNodeGraphCell createColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor){
+	
+	   
+	   return null;
+	   
+   }
    /**
     * Removes the specified graph vertex and the corresponding node in the System Dynamics model.
     * 

@@ -1007,6 +1007,7 @@ WindowListener {
 			Color randomColor = new Color(red, green, blue);
 			//NON-REPEATING
 			SubmodelColors.add(randomColor);
+			SubmodelColors.get(0).getRed();
 			
 			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
 			
@@ -1015,7 +1016,9 @@ WindowListener {
 			graph.get(graph.size()-1).setSize(400,400);
 			graph.get(graph.size()-1).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 			//add it to the model panel 
+			
 			modelPanel.add(submodelScroll);
+			
 			//reconfigure layout for 4 or more submodels
 			if(graph.size()>=4){
 				modelPanel.setLayout(new GridLayout(2,4));
