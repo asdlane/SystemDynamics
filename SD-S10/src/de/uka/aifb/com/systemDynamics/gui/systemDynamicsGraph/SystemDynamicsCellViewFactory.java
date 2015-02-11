@@ -80,6 +80,13 @@ protected VertexView createVertexView(Object v) {
          return view;
       }
       
+      //Colored Source Sink Node
+      if(v instanceof ColoredSourceSinkNodeGraphCell){
+    	 VertexView view = new ColoredSourceSinkNodeVertexView(v);
+    	 return view;
+      }
+      
+      
       return super.createVertexView(v);
    }
 }

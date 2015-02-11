@@ -34,7 +34,7 @@ public class ColoredSourceSinkNodeVertexView extends VertexView {
    
    private static final long serialVersionUID = 1L;
    
-   private static SourceSinkNodeVertexRenderer renderer = SourceSinkNodeVertexRenderer.getInstance();
+   private static ColoredSourceSinkNodeVertexRenderer renderer = ColoredSourceSinkNodeVertexRenderer.getInstance();
 
    /**
     * Constructor.
