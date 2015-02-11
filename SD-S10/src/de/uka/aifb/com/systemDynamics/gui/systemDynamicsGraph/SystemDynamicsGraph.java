@@ -373,11 +373,24 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       return sourceSinkNodeGraphCell;
    }
    
-   //CODE FOR COLORED SOURCE SINK NODE HERE!!!!!!
    public ColoredSourceSinkNodeGraphCell createColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor){
-	
-	   
-	   return null;
+	   // create node
+	      ColoredSourceSinkNode ColoredsourceSinkNode = model.createColoredSourceSinkNode();
+	      ColoredSourceSinkNodeGraphCell ColoredsourceSinkNodeGraphCell = new ColoredSourceSinkNodeGraphCell(x, y, nodeColor);
+	      
+	      // insert vertex to graph
+	      getGraphLayoutCache().insert(ColoredsourceSinkNodeGraphCell);
+	      
+	      // insert mappings
+	      modelNode2graphNode.put(ColoredsourceSinkNode, ColoredsourceSinkNodeGraphCell);
+	      graphNode2modelNode.put(ColoredsourceSinkNodeGraphCell, ColoredsourceSinkNode);
+	      
+	      // inform listeners
+	      for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+	         listener.performGraphModifiedEvent();
+	      }
+	      
+	      return ColoredsourceSinkNodeGraphCell;
 	   
    }
    /**

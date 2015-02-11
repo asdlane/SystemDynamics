@@ -1792,7 +1792,8 @@ WindowListener {
 			}
 			
 			if(graph.size()==1){
-				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);	
+				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				graph.get(0).createColoredSourceSinkNodeGraphCell(0, 0, Color.red);
 			}
 			else{
 				//accounts for if user cancels the insert

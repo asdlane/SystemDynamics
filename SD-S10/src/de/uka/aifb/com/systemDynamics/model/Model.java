@@ -38,6 +38,7 @@ public class Model {
    protected HashSet<ConstantNode> constantNodes;
    protected HashSet<AuxiliaryNode> auxiliaryNodes;
    protected HashSet<SourceSinkNode> sourceSinkNodes;
+   protected HashSet<ColoredSourceSinkNode> ColoredsourceSinkNodes;
    
    protected boolean isChangeable;
    
@@ -55,6 +56,7 @@ public class Model {
       constantNodes = new HashSet<ConstantNode>();
       auxiliaryNodes = new HashSet<AuxiliaryNode>();
       sourceSinkNodes = new HashSet<SourceSinkNode>();
+      ColoredsourceSinkNodes = new HashSet<ColoredSourceSinkNode>();
       
       isChangeable = true;
    }
@@ -169,6 +171,15 @@ public class Model {
       SourceSinkNode sourceSinkNode = new SourceSinkNode();
       sourceSinkNodes.add(sourceSinkNode);
       return sourceSinkNode;
+   }
+   public ColoredSourceSinkNode createColoredSourceSinkNode() {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      
+	      ColoredSourceSinkNode ColoredsourceSinkNode = new ColoredSourceSinkNode();
+	      ColoredsourceSinkNodes.add(ColoredsourceSinkNode);
+	      return ColoredsourceSinkNode;
    }
    
    /////////////////////////////////////////////////////////////////////////////////////////////////
