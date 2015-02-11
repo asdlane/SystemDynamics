@@ -112,6 +112,7 @@ WindowListener {
 	private static final String FILE_ENTER_ADD_FLOW_MODE_ICON = "resources/disconnect.png";
 	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/connect.png";
 	private static final String FILE_CHANGE_MODEL_NAME_ICON = "resources/page_white_edit.png";
+	private static final String Colored_SourceSink_Icon = "resources/cloud-icon.gif";
 	private static final String FILE_EXECUTE_MODEL_ICON = "resources/page_white_gear.png";
 	private static final String FILE_CANCEL_EXEUTE_MODEL_ICON = "resources/cancel.png";
 
@@ -344,7 +345,7 @@ WindowListener {
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
 					messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"));
 			newColoredSourceSinkNodeAction = new NewColoredSourceSinkNodeAction("Colored SourceSinkNode",
-					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
+					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(Colored_SourceSink_Icon)),
 					messages.getString("Colored SourceSinkNode"));
 			newColoredSourceSinkNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
@@ -371,7 +372,7 @@ WindowListener {
 					messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"));
 			newSourceSinkNodeAction.setEnabled(false);
 			newColoredSourceSinkNodeAction = new NewColoredSourceSinkNodeAction("Colored SourceSinkNode",
-					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
+					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(Colored_SourceSink_Icon)),
 					"Colored SourceSinkNode");
 			newColoredSourceSinkNodeAction.setEnabled(false);
 		}
