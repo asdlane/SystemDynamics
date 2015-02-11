@@ -152,6 +152,7 @@ WindowListener {
 	private Action newLevelNodeAction;
 	private Action newRateNodeAction;
 	private Action newSourceSinkNodeAction;
+	private Action newColoredSourceSinkNodeAction;
 	private Action toggleAddFlowAction;
 	private Action changeModelNameAction;
 	private Action executeModelAction;
@@ -342,6 +343,10 @@ WindowListener {
 			newSourceSinkNodeAction = new NewSourceSinkNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"),
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
 					messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"));
+			newColoredSourceSinkNodeAction = new NewColoredSourceSinkNodeAction("Colored SourceSinkNode",
+					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
+					messages.getString("Colored SourceSinkNode"));
+			newColoredSourceSinkNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
 		} else {
 			// english
@@ -365,6 +370,10 @@ WindowListener {
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_ICON)),
 					messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"));
 			newSourceSinkNodeAction.setEnabled(false);
+			newColoredSourceSinkNodeAction = new NewColoredSourceSinkNodeAction("Colored SourceSinkNode",
+					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
+					"Colored SourceSinkNode");
+			newColoredSourceSinkNodeAction.setEnabled(false);
 		}
 
 		toggleAddFlowAction = new ToggleAddFlowAction(messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"),
@@ -677,6 +686,7 @@ WindowListener {
 		toolBar.add(newLevelNodeAction);
 		toolBar.add(newRateNodeAction);
 		toolBar.add(newSourceSinkNodeAction);
+		toolBar.add(newColoredSourceSinkNodeAction);
 		toolBar.add(newSubmodelAction);
 		toolBar.add(toggleAddFlowAction);
 		toolBar.add(changeModelNameAction);
@@ -952,6 +962,7 @@ WindowListener {
 					newLevelNodeAction.setEnabled(true);
 					newRateNodeAction.setEnabled(true);
 					newSourceSinkNodeAction.setEnabled(true);
+					newColoredSourceSinkNodeAction.setEnabled(true);
 					toggleAddFlowAction.setEnabled(true);
 					changeModelNameAction.setEnabled(true);
 					executeModelAction.setEnabled(true);
@@ -1116,6 +1127,7 @@ WindowListener {
 					newLevelNodeAction.setEnabled(true);
 					newRateNodeAction.setEnabled(true);
 					newSourceSinkNodeAction.setEnabled(true);
+					newColoredSourceSinkNodeAction.setEnabled(true);
 					toggleAddFlowAction.setEnabled(true);
 					changeModelNameAction.setEnabled(true);
 					executeModelAction.setEnabled(true);
@@ -1242,6 +1254,7 @@ WindowListener {
 			newLevelNodeAction.setEnabled(false);
 			newRateNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
+			newColoredSourceSinkNodeAction.setEnabled(false);
 			toggleAddFlowAction.setEnabled(false);
 			addFlowModeCheckBoxMenuItem.setState(false);
 			changeModelNameAction.setEnabled(false);
@@ -1808,6 +1821,40 @@ WindowListener {
 			}
 		}
 	}
+	private class NewColoredSourceSinkNodeAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public NewColoredSourceSinkNodeAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
+
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			
+			if(graph.size()==1){
+				JOptionPane.showMessageDialog(null, "Colored SourceSink Nodes can only be added with two or more Submodels");
+			}
+			else{
+				//accounts for if user cancels the insert
+				try{
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = SubmodelNumbers.toArray();
+					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					int colorIndex = (Integer)JOptionPane.showInputDialog(frame,"Link the current submodel to which Submodel?","Link to A Submodel",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1));
+				}catch(Exception ex){
+					
+				}
+			}
+		}
+	}
 
 	private class ToggleAddFlowAction extends AbstractAction {
 
@@ -1954,6 +2001,7 @@ WindowListener {
 			newLevelNodeAction.setEnabled(false);
 			newRateNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
+			newColoredSourceSinkNodeAction.setEnabled(false);
 			toggleAddFlowAction.setEnabled(false);
 			changeModelNameAction.setEnabled(false);
 			executeModelAction.setEnabled(false);
@@ -1996,6 +2044,7 @@ WindowListener {
 			newLevelNodeAction.setEnabled(true);
 			newRateNodeAction.setEnabled(true);
 			newSourceSinkNodeAction.setEnabled(true);
+			newColoredSourceSinkNodeAction.setEnabled(true);
 			toggleAddFlowAction.setEnabled(true);
 			changeModelNameAction.setEnabled(true);
 			executeModelAction.setEnabled(true);
