@@ -45,6 +45,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
@@ -52,6 +53,8 @@ import org.jgraph.*;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferable;
+
+import java.util.Random;
 
 /*
  * Changes:
@@ -104,10 +107,12 @@ WindowListener {
 	private static final String FILE_NEW_RN_de_DE_ICON = "resources/new_rate_node_de_DE.png";
 	private static final String FILE_NEW_SSN_ICON = "resources/new_source_sink_node_en_US.png";
 	private static final String FILE_NEW_SSN_de_DE_ICON = "resources/new_source_sink_node_de_DE.png";
+	private static final String SUBMODEL_icon = "resources/submodel.png";
 
 	private static final String FILE_ENTER_ADD_FLOW_MODE_ICON = "resources/disconnect.png";
 	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/connect.png";
 	private static final String FILE_CHANGE_MODEL_NAME_ICON = "resources/page_white_edit.png";
+	private static final String Colored_SourceSink_Icon = "resources/cloud-icon.gif";
 	private static final String FILE_EXECUTE_MODEL_ICON = "resources/page_white_gear.png";
 	private static final String FILE_CANCEL_EXEUTE_MODEL_ICON = "resources/cancel.png";
 
@@ -148,6 +153,7 @@ WindowListener {
 	private Action newLevelNodeAction;
 	private Action newRateNodeAction;
 	private Action newSourceSinkNodeAction;
+	private Action newColoredSourceSinkNodeAction;
 	private Action toggleAddFlowAction;
 	private Action changeModelNameAction;
 	private Action executeModelAction;
@@ -163,8 +169,13 @@ WindowListener {
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
 	private JRadioButtonMenuItem rbMenuItemSpanish;
+	private JLabel GraphNumber = new JLabel("");
 
 	private JFileChooser fileChooser;
+	private Random rand = new Random();
+	private ArrayList<Color> SubmodelColors= new ArrayList<Color>();
+	
+	
 	//File[] selectedFiles;
 	File selectedFiles;
 	/**
@@ -204,7 +215,7 @@ WindowListener {
 
 		// create menu
 		setJMenuBar(createMenuBar());
-
+		
 		// create tool bar
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
@@ -312,7 +323,7 @@ WindowListener {
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
 		
-		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Create New Submodel");
+		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		if (start.getLocale() == Locale.GERMANY) {
 			newAuxiliaryNodeAction = new NewAuxiliaryNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewAuxiliaryNode"),
@@ -334,6 +345,10 @@ WindowListener {
 			newSourceSinkNodeAction = new NewSourceSinkNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"),
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_de_DE_ICON)),
 					messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"));
+			newColoredSourceSinkNodeAction = new NewColoredSourceSinkNodeAction("Colored SourceSinkNode",
+					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(Colored_SourceSink_Icon)),
+					messages.getString("Colored SourceSinkNode"));
+			newColoredSourceSinkNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
 		} else {
 			// english
@@ -357,6 +372,10 @@ WindowListener {
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_SSN_ICON)),
 					messages.getString("MainFrame.MenuBar.Edit.NewSourceSinkNode"));
 			newSourceSinkNodeAction.setEnabled(false);
+			newColoredSourceSinkNodeAction = new NewColoredSourceSinkNodeAction("Colored SourceSinkNode",
+					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(Colored_SourceSink_Icon)),
+					"Colored SourceSinkNode");
+			newColoredSourceSinkNodeAction.setEnabled(false);
 		}
 
 		toggleAddFlowAction = new ToggleAddFlowAction(messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"),
@@ -628,7 +647,9 @@ WindowListener {
 
 				subPanel.add(tabbedPane, BorderLayout.CENTER);
 				subPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+				
 
+				
 				JPanel helpPanel = new JPanel();
 				helpPanel.add(subPanel);
 				helpPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -667,6 +688,7 @@ WindowListener {
 		toolBar.add(newLevelNodeAction);
 		toolBar.add(newRateNodeAction);
 		toolBar.add(newSourceSinkNodeAction);
+		toolBar.add(newColoredSourceSinkNodeAction);
 		toolBar.add(newSubmodelAction);
 		toolBar.add(toggleAddFlowAction);
 		toolBar.add(changeModelNameAction);
@@ -683,9 +705,13 @@ WindowListener {
 		toolBar.add(zoomOutAction);
 		toolBar.add(cutAction);
 		toolBar.add(copyAction);
-		toolBar.add(pasteAction);      
+		toolBar.add(pasteAction);
+		toolBar.addSeparator();
+		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
+		toolBar.add(GraphNumber);
 		
 		return toolBar;
+		
 	}
 
 	/**
@@ -870,6 +896,14 @@ WindowListener {
 				reply = JOptionPane.showConfirmDialog(null, "Creating a new document will cause any unsaved changes to be lost. \n Are you sure you would like to create a new document?", "Create", JOptionPane.YES_NO_OPTION);
 			}
 			if(reply==JOptionPane.YES_OPTION){
+				modelPanel.setLayout(new GridLayout(1,4));
+				modelPanel.removeAll();
+				contentPanel.remove(modelPanel);
+				SubmodelColors.removeAll(SubmodelColors);
+				graph.removeAll(graph);
+				System.out.println(graph.size());
+				System.out.println(SubmodelColors.size());
+				contentPanel.revalidate();
 				String modelName =
 						ModelNameDialog.showModelNameDialog(start, MainFrame.this,
 								messages.getString("MainFrame.MenuBar.File.NewModel"),
@@ -878,7 +912,7 @@ WindowListener {
 
 				graphNew = new SystemDynamicsGraph(start, MainFrame.this);
 				graph.add(graphNew);
-
+				GraphNumber.setText("1");
 				if (modelName != null) {
 					DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
 					Date today = Calendar.getInstance().getTime();
@@ -889,10 +923,50 @@ WindowListener {
 					graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 					scrollPane = new JScrollPane(graph.get(0));
 					
-					graph.get(0).setBackground(Color.red);
+					int red = rand.nextInt(256);
+					int green = rand.nextInt(256);
+					int blue = rand.nextInt(256);
+					for(int i=0;i<SubmodelColors.size();i++){
+						if(Math.abs(SubmodelColors.get(i).getRed()-red) < 40){
+							red = rand.nextInt(256);
+						}
+						if(Math.abs(SubmodelColors.get(i).getBlue()-blue) < 30){
+							blue = rand.nextInt(256);
+						}
+						if(Math.abs(SubmodelColors.get(i).getGreen()-green) < 20){
+							green = rand.nextInt(256);
+						}
+					}
+					Color randomColor = new Color(red, green, blue);
+					SubmodelColors.add(randomColor);
+					
+					Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
+					
+					graph.get(graph.size()-1).setBorder(SubmodelColor);
 					graph.get(0).setSize(400,400);
 					scrollPane.setPreferredSize(new Dimension(400,400));
-					
+					graph.get(0).addMouseListener(new MouseListener(){
+
+						@Override
+						public void mouseClicked(MouseEvent e) {}
+
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							//change label whenever mouse enters graph
+							GraphNumber.setText(Integer.toString(1));
+							
+						}
+
+						@Override
+						public void mouseExited(MouseEvent e) {}
+						
+						@Override
+						public void mousePressed(MouseEvent e) {}
+
+						@Override
+						public void mouseReleased(MouseEvent e) {}
+						
+					});
 					contentPanel.removeAll();
 					modelPanel.add(scrollPane);
 					
@@ -915,6 +989,7 @@ WindowListener {
 					newLevelNodeAction.setEnabled(true);
 					newRateNodeAction.setEnabled(true);
 					newSourceSinkNodeAction.setEnabled(true);
+					newColoredSourceSinkNodeAction.setEnabled(true);
 					toggleAddFlowAction.setEnabled(true);
 					changeModelNameAction.setEnabled(true);
 					executeModelAction.setEnabled(true);
@@ -944,15 +1019,74 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			//create a new submodel graph
-			SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			final SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			
+			newSubmodel.addMouseListener(new MouseListener(){
+
+				@Override
+				public void mouseClicked(MouseEvent e) {}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					//Change label on toolbar to show graph number
+					for(int i=0;i<graph.size();i++){
+						if(graph.get(i).equals(newSubmodel)){
+						
+							GraphNumber.setText(Integer.toString(i+1));
+						}
+					}
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {}
+
+				@Override
+				public void mousePressed(MouseEvent e) {}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {}
+				
+			});
 			//add it to the model
 			graph.add(newSubmodel);
 			//create scroll pane for the new submodel
+			
 			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
-			graph.get(graph.size()-1).setBackground(Color.yellow);
+						
+			//random submodel color is created for the working session and then added to an overall list to be referenced later.
+
+									
+			int red = rand.nextInt(256);
+			int green = rand.nextInt(256);
+			int blue = rand.nextInt(256);
+			for(int i=0;i<SubmodelColors.size();i++){
+				if(Math.abs(SubmodelColors.get(i).getRed()-red) < 40){
+					red = rand.nextInt(256);
+				}
+				if(Math.abs(SubmodelColors.get(i).getBlue()-blue) < 30){
+					blue = rand.nextInt(256);
+				}
+				if(Math.abs(SubmodelColors.get(i).getGreen()-green) < 20){
+					green = rand.nextInt(256);
+				}
+			}
+			Color randomColor = new Color(red, green, blue);
+			//NON-REPEATING
+			SubmodelColors.add(randomColor);
+			GraphNumber.setText(Integer.toString(graph.size()));
+			
+			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
+			
+			
+			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
+			graph.get(graph.size()-1).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+			
 			//add it to the model panel 
+			
 			modelPanel.add(submodelScroll);
+			
 			//reconfigure layout for 4 or more submodels
 			if(graph.size()>=4){
 				modelPanel.setLayout(new GridLayout(2,4));
@@ -1050,6 +1184,7 @@ WindowListener {
 					newLevelNodeAction.setEnabled(true);
 					newRateNodeAction.setEnabled(true);
 					newSourceSinkNodeAction.setEnabled(true);
+					newColoredSourceSinkNodeAction.setEnabled(true);
 					toggleAddFlowAction.setEnabled(true);
 					changeModelNameAction.setEnabled(true);
 					executeModelAction.setEnabled(true);
@@ -1176,6 +1311,7 @@ WindowListener {
 			newLevelNodeAction.setEnabled(false);
 			newRateNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
+			newColoredSourceSinkNodeAction.setEnabled(false);
 			toggleAddFlowAction.setEnabled(false);
 			addFlowModeCheckBoxMenuItem.setState(false);
 			changeModelNameAction.setEnabled(false);
@@ -1239,6 +1375,8 @@ WindowListener {
 			try {
 //***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
 				graph.get(0).storeToXML(file.getAbsolutePath());
+				
+				
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1523,8 +1661,29 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
 
 			if (nodeName != null) {
-				graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				if(graph.size()==1){
+					graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
 			}
+			
 		}
 	}
 
@@ -1546,10 +1705,35 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeParameter.ConstantNode"),
 							ConstantNode.MIN_CONSTANT,
 							ConstantNode.MAX_CONSTANT);
+
 			if (newNodeNameParameter != null) {
-				graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
-						newNodeNameParameter.getNodeParameter(),
-						MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				
+				//lets you insert nodes into a single model that doesn't have submodels.
+				if(graph.size()==1){
+					graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+							newNodeNameParameter.getNodeParameter(),
+							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
 			}
 		}
 	}
@@ -1578,12 +1762,40 @@ WindowListener {
 							LevelNode.MIN_START_VALUE,
 							LevelNode.MAX_START_VALUE);
 			if (newNodeNameParameter != null) {
-				graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
-						newNodeNameParameter.getNodeParameter(),
-						newNodeNameParameter.getMinParameter(),
-						newNodeNameParameter.getMaxParameter(),
-						newNodeNameParameter.getCurveParameter(),
-						MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				
+				//lets you insert nodes into a single model that doesn't have submodels.
+				if(graph.size()==1){
+					graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+							newNodeNameParameter.getNodeParameter(),
+							newNodeNameParameter.getMinParameter(),
+							newNodeNameParameter.getMaxParameter(),
+							newNodeNameParameter.getCurveParameter(),
+							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								newNodeNameParameter.getMinParameter(),
+								newNodeNameParameter.getMaxParameter(),
+								newNodeNameParameter.getCurveParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
+				
 			}
 		}
 	}
@@ -1605,7 +1817,29 @@ WindowListener {
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
 
 			if (nodeName != null) {
-				graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+				ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+				for(int i=1;i<=graph.size();i++){
+					SubmodelNumbers.add(i);
+				}
+				
+				//lets you insert nodes into a single model that doesn't have submodels.
+				if(graph.size()==1){
+					graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}
+				else{
+					//accounts for if user cancels the insert
+					try{
+						JFrame frame = new JFrame("InputDialog");
+						Object[] choices = SubmodelNumbers.toArray();
+						
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					}catch(Exception ex){
+						
+					}
+				}
+				
 			}
 		}
 	}
@@ -1620,8 +1854,62 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 		}
 
+		 public void actionPerformed(ActionEvent e) {
+			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			
+			if(graph.size()==1){
+				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+			}
+			else{
+				//accounts for if user cancels the insert
+				try{
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = SubmodelNumbers.toArray();
+					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+				}catch(Exception ex){
+					
+				}
+			}
+		}
+	}
+	private class NewColoredSourceSinkNodeAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public NewColoredSourceSinkNodeAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
+
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);         
+			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			
+			if(graph.size()==1){
+				JOptionPane.showMessageDialog(null, "Colored SourceSink Nodes can only be added with two or more Submodels");
+			}
+			else{
+				//accounts for if user cancels the insert
+				try{
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = SubmodelNumbers.toArray();
+					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					int colorIndex = (Integer)JOptionPane.showInputDialog(frame,"Link the current submodel to which Submodel?","Link to A Submodel",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					//create colored sourcesink, passing the color and the index of the graph it will link to
+					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1), colorIndex);
+				}catch(Exception ex){
+					
+				}
+			}
 		}
 	}
 
@@ -1630,6 +1918,7 @@ WindowListener {
 		private static final long serialVersionUID = 1L;
 
 		private boolean inAddFlowMode;
+		private int subModelIndex = 0;
 
 		public ToggleAddFlowAction(String name, Icon icon, String toolTipText) {
 			super(name, icon);
@@ -1645,7 +1934,18 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			// toggle ports visibility
-			graph.get(0).setPortsVisible(!graph.get(0).isPortsVisible());
+			
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			if (subModelIndex == 0){
+				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel (number in left corner)?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			}
+			
+			graph.get(subModelIndex - 1).setPortsVisible(!graph.get(subModelIndex - 1).isPortsVisible());
 			inAddFlowMode = !inAddFlowMode;
 			if (inAddFlowMode) {
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_LEAVE_ADD_FLOW_MODE_ICON)));
@@ -1654,6 +1954,8 @@ WindowListener {
 				addFlowModeCheckBoxMenuItem.setToolTipText(null);
 			} else {
 				// not in "add flow modus"
+				subModelIndex = 0;
+				modelPanel.revalidate();
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_ENTER_ADD_FLOW_MODE_ICON)));
 				putValue(Action.NAME, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
 				putValue(Action.SHORT_DESCRIPTION, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
@@ -1685,6 +1987,7 @@ WindowListener {
 				String modelDate = df.format(today);
 				newModelName += " ";
 				newModelName += modelDate;
+				
 				graph.get(0).setModelName(newModelName);
 
 				setTitle(createTitle(graph.get(0).getModelName(), graphModified));
@@ -1755,6 +2058,7 @@ WindowListener {
 			newLevelNodeAction.setEnabled(false);
 			newRateNodeAction.setEnabled(false);
 			newSourceSinkNodeAction.setEnabled(false);
+			newColoredSourceSinkNodeAction.setEnabled(false);
 			toggleAddFlowAction.setEnabled(false);
 			changeModelNameAction.setEnabled(false);
 			executeModelAction.setEnabled(false);
@@ -1797,6 +2101,7 @@ WindowListener {
 			newLevelNodeAction.setEnabled(true);
 			newRateNodeAction.setEnabled(true);
 			newSourceSinkNodeAction.setEnabled(true);
+			newColoredSourceSinkNodeAction.setEnabled(true);
 			toggleAddFlowAction.setEnabled(true);
 			changeModelNameAction.setEnabled(true);
 			executeModelAction.setEnabled(true);
@@ -1821,7 +2126,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).setScale(1.0);
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).setScale(1.0);
+			}
 
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
@@ -1838,8 +2145,9 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).setScale(1.3 * graph.get(0).getScale());
-
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).setScale(1.3 * graph.get(i).getScale());
+			}
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
@@ -1855,8 +2163,11 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			graph.get(0).setScale(graph.get(0).getScale() / 1.3);
-
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).setScale(graph.get(i).getScale() / 1.3);	
+			}
+			
+			
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
@@ -1870,9 +2181,21 @@ WindowListener {
 		}
 		public void actionPerformed(ActionEvent e){
 
-			Object[] cells = graph.get(0).getSelectionCells();
-	
-			graph.get(0).getModel().remove(cells);		
+			Object[] cells = {};
+			int breakVal = 0;
+			for(int j=0;j<graph.size();j++){
+				if(cells.length == 0){
+					cells = graph.get(j).getSelectionCells();
+					breakVal = j;
+					
+				}
+				
+				
+			}
+			System.out.println(breakVal);
+			graph.get(breakVal).getModel().remove(cells);
+			
+			
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -1927,16 +2250,16 @@ WindowListener {
 					 final Object edgeSource = graph.get(0).getModel().getParent(graph.get(0).getModel().getSource(edge));
 					 final Object edgeTarget = graph.get(0).getModel().getParent(graph.get(0).getModel().getTarget(edge));
 					 if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		                 graph.get(0).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		                 graph.get(breakVal).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
-		            	  graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+		            	  graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		            	  graph.get(0).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+		            	  graph.get(breakVal).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
 		              }
 		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
-		            	  graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+		            	  graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
 		              }
 				}
 			}
@@ -1964,7 +2287,16 @@ WindowListener {
 		}
 		//same code as CutAction, but doesn't remove any graph cells.
 		public void actionPerformed(ActionEvent e){
-			Object[] cells = graph.get(0).getSelectionCells();
+			Object[] cells = {};
+			
+			for(int j=0;j<graph.size();j++){
+				if(cells.length == 0){
+					cells = graph.get(j).getSelectionCells();
+					
+				}
+				
+				
+			}
 			
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
@@ -2049,31 +2381,38 @@ WindowListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Paste into which submodel (number in left corner)?","Paste",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			//reads in from copyClipboard.txt and, based on which indicator is read in, creates the right node.
 			for(int i=0; i<pasteCells.size();i++){
 				if (pasteCells.get(i).contains("Auxiliary")) {
 					String[] attributes = pasteCells.get(i).split(",");
 					
-					graph.get(0).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 					
 				}
 				else if (pasteCells.get(i).contains("Level")){
 					String[] attributes = pasteCells.get(i).split(",");
 							
-					graph.get(0).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				else if(pasteCells.get(i).contains("SourceSink")){
-					graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				
 				else if(pasteCells.get(i).contains("Constant")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.get(0).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 				else if(pasteCells.get(i).contains("Rate")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.get(0).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
 			}

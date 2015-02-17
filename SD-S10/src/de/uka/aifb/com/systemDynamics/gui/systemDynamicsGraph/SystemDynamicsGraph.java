@@ -27,6 +27,8 @@ import de.uka.aifb.com.systemDynamics.gui.*;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.text.*;
@@ -87,6 +89,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       locale = start.getLocale();
       
       this.frame = frame;
+      
       
       listeners = new LinkedList<SystemDynamicsGraphModifiedEventListener>();
       
@@ -372,6 +375,26 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       return sourceSinkNodeGraphCell;
    }
    
+   public ColoredSourceSinkNodeGraphCell createColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor, int colorIndex){
+	   // create node
+	      ColoredSourceSinkNode ColoredsourceSinkNode = model.createColoredSourceSinkNode();
+	      ColoredSourceSinkNodeGraphCell ColoredsourceSinkNodeGraphCell = new ColoredSourceSinkNodeGraphCell(x, y, nodeColor, colorIndex);
+	      
+	      // insert vertex to graph
+	      getGraphLayoutCache().insert(ColoredsourceSinkNodeGraphCell);
+	      
+	      // insert mappings
+	      modelNode2graphNode.put(ColoredsourceSinkNode, ColoredsourceSinkNodeGraphCell);
+	      graphNode2modelNode.put(ColoredsourceSinkNodeGraphCell, ColoredsourceSinkNode);
+	      
+	      // inform listeners
+	      for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+	         listener.performGraphModifiedEvent();
+	      }
+	      
+	      return ColoredsourceSinkNodeGraphCell;
+	   
+   }
    /**
     * Removes the specified graph vertex and the corresponding node in the System Dynamics model.
     * 
