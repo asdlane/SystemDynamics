@@ -50,9 +50,11 @@ public class ColoredSourceSinkNodeGraphCell extends DefaultGraphCell {
    public ColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor, int colorIndex) {
 	   
 	   super(Integer.toString(colorIndex)+ "  \n" );
+	   //trying to change to white when the color gets dark enough.
 	   if(nodeColor.getRed()<=150 && nodeColor.getGreen()<=150 && nodeColor.getBlue() <=150){
 		   GraphConstants.setForeground(getAttributes(), Color.white);
 	   }
+	   //set font size.
 	   GraphConstants.setFont(getAttributes(), GraphConstants.DEFAULTFONT.deriveFont(Font.BOLD,30));
 	   // add one standard port
       addPort();

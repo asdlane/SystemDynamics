@@ -169,6 +169,7 @@ WindowListener {
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
 	private JRadioButtonMenuItem rbMenuItemSpanish;
+	private JLabel GraphNumber = new JLabel("");
 
 	private JFileChooser fileChooser;
 	private Random rand = new Random();
@@ -704,9 +705,13 @@ WindowListener {
 		toolBar.add(zoomOutAction);
 		toolBar.add(cutAction);
 		toolBar.add(copyAction);
-		toolBar.add(pasteAction);      
+		toolBar.add(pasteAction);
+		toolBar.addSeparator();
+		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
+		toolBar.add(GraphNumber);
 		
 		return toolBar;
+		
 	}
 
 	/**
@@ -907,7 +912,7 @@ WindowListener {
 
 				graphNew = new SystemDynamicsGraph(start, MainFrame.this);
 				graph.add(graphNew);
-
+				GraphNumber.setText("1");
 				if (modelName != null) {
 					DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
 					Date today = Calendar.getInstance().getTime();
@@ -940,7 +945,28 @@ WindowListener {
 					graph.get(graph.size()-1).setBorder(SubmodelColor);
 					graph.get(0).setSize(400,400);
 					scrollPane.setPreferredSize(new Dimension(400,400));
-					
+					graph.get(0).addMouseListener(new MouseListener(){
+
+						@Override
+						public void mouseClicked(MouseEvent e) {}
+
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							//change label whenever mouse enters graph
+							GraphNumber.setText(Integer.toString(1));
+							
+						}
+
+						@Override
+						public void mouseExited(MouseEvent e) {}
+						
+						@Override
+						public void mousePressed(MouseEvent e) {}
+
+						@Override
+						public void mouseReleased(MouseEvent e) {}
+						
+					});
 					contentPanel.removeAll();
 					modelPanel.add(scrollPane);
 					
@@ -993,12 +1019,41 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			//create a new submodel graph
-			SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			final SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			
+			newSubmodel.addMouseListener(new MouseListener(){
+
+				@Override
+				public void mouseClicked(MouseEvent e) {}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					//Change label on toolbar to show graph number
+					for(int i=0;i<graph.size();i++){
+						if(graph.get(i).equals(newSubmodel)){
+						
+							GraphNumber.setText(Integer.toString(i+1));
+						}
+					}
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {}
+
+				@Override
+				public void mousePressed(MouseEvent e) {}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {}
+				
+			});
 			//add it to the model
 			graph.add(newSubmodel);
 			//create scroll pane for the new submodel
-			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
 			
+			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
+						
 			//random submodel color is created for the working session and then added to an overall list to be referenced later.
 
 									
@@ -1019,7 +1074,7 @@ WindowListener {
 			Color randomColor = new Color(red, green, blue);
 			//NON-REPEATING
 			SubmodelColors.add(randomColor);
-			SubmodelColors.get(0).getRed();
+			GraphNumber.setText(Integer.toString(graph.size()));
 			
 			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
 			
@@ -1027,6 +1082,7 @@ WindowListener {
 			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
 			graph.get(graph.size()-1).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+			
 			//add it to the model panel 
 			
 			modelPanel.add(submodelScroll);
@@ -1848,6 +1904,7 @@ WindowListener {
 					Object[] choices = SubmodelNumbers.toArray();
 					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 					int colorIndex = (Integer)JOptionPane.showInputDialog(frame,"Link the current submodel to which Submodel?","Link to A Submodel",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					//create colored sourcesink, passing the color and the index of the graph it will link to
 					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1), colorIndex);
 				}catch(Exception ex){
 					

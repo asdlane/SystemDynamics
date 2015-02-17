@@ -28,6 +28,7 @@ import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.text.*;
@@ -88,6 +89,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       locale = start.getLocale();
       
       this.frame = frame;
+      
       
       listeners = new LinkedList<SystemDynamicsGraphModifiedEventListener>();
       
