@@ -68,11 +68,11 @@ public class DrawGraphs_Init {
 		Iterator it = chartMap.entrySet().iterator();
 		while (it.hasNext()) {			
 			Map.Entry pairs = (Map.Entry) it.next();
-//			System.out.println(pairs.getKey());
+			//			System.out.println(pairs.getKey());
 			SysDynChart chartObj = (SysDynChart) pairs.getValue();
 			this.createGraph(chartObj, fname, run, folder);
 		}
-		
+
 		String planFile = folder + "/plan_" + (run-1) + ".txt";
 		File planOutputFile = new File(planFile);
 		BufferedWriter writer= new BufferedWriter(new FileWriter(planFile));
@@ -126,8 +126,7 @@ public class DrawGraphs_Init {
 		bounds.add(0.0);
 		int ib = 1;
 		if(chartObj.getFStep() == 1)
-		{
-			//System.out.println(bounds.elementAt(0) + "\n");														
+		{														
 			Vector<PlannedRef> planNodesVector = chartObj.getPlannedNodes();
 			for (PlannedRef planRef : planNodesVector) {
 				PlannedVariable plan = plannedMap.get(planRef.getId());
@@ -136,7 +135,6 @@ public class DrawGraphs_Init {
 					{
 						bounds.add(bounds.elementAt(ib-1)+inc.getSlope());
 						ib++;
-						//System.out.println(bounds.elementAt(ib-1) + "\n");														
 					}
 				}
 			}
@@ -151,37 +149,76 @@ public class DrawGraphs_Init {
 			max_xIntercept = 1890;
 		else
 			max_xIntercept = 810;
-		
+
+
+		//Initialization of the new values required to store the configurable dates
 		double initValue = 0.001;
-		double PDR_DATE = 0.0;
-		double PRR_DATE = 0.0;
-		double ISR_DATE = 0.0;
-		double CDR_DATE = 0.0;
-		double FRR_DATE = 0.0;
+		double pdr_date = 0.0;
+		double prr_date = 0.0;
+		double isr_date = 0.0;
+		double cdr_date = 0.0;
+		double frr_date = 0.0;
+
+		int pdr_date_index = 0;
+		int prr_date_index = 0;
+		int isr_date_index = 0;
+		int cdr_date_index = 0;
+		int frr_date_index = 0;
 
 		for (int i = -1; i < run; i++) {
 			String outputFile = getFileName(i, fname);
 			CsvReader products = new CsvReader(outputFile, ';');
 			products.skipLine();
 			products.readHeaders();
+
+			//Extract indices of the various configurable parameters like PDR_DATE, PRR_DATE, ISR_DATE, CDR_DATE and FRR_DATE  
+			String[] productHeaders = products.getHeaders();
 			int iter = 0;
+
+			if(iter ==0){
+				for (int j=0;j<productHeaders.length;j++) {
+					if(productHeaders[j].equalsIgnoreCase("pdr_date")){
+						pdr_date_index = j;
+					}
+					else if(productHeaders[j].equalsIgnoreCase("prr_date")){
+						prr_date_index = j;
+					}
+
+					else if(productHeaders[j].equalsIgnoreCase("isr_date")){
+						isr_date_index = j;
+					}
+
+					else if(productHeaders[j].equalsIgnoreCase("cdr_date")){
+						cdr_date_index = j;
+					}
+
+					else if(productHeaders[j].equalsIgnoreCase("frr_date")){
+						frr_date_index = j;
+					}
+
+				}
+			}
+
 			while (products.readRecord()) {
+
 				for (LevelNodeGraphInfo lnode : levelVector) {
 					if(iter == 0){
-					String records  = products.getRawRecord();
-					String[] recordEntries = records.split(";");
+						String records  = products.getRawRecord();
+						String[] recordEntries = records.split(";");
 
-					CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
-					PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
-					PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
-					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
-					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
-					
-					if(chartObj.getGlobal() == 1)
-						max_xIntercept = (int)ISR_DATE ;
-					else
-						max_xIntercept = (int)CDR_DATE;
-					iter += 1;
+						cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 
+						prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE 
+						pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
+						isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
+						frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+
+						if(chartObj.getGlobal() == 1)
+							max_xIntercept = (int)isr_date;
+						else
+							max_xIntercept = (int)cdr_date;
+
+
+						iter +=1;
 					}
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 
@@ -210,7 +247,7 @@ public class DrawGraphs_Init {
 							initValue = value;
 							prSet++;
 						}
-						
+
 					}
 
 					if(set == 0)
@@ -258,7 +295,7 @@ public class DrawGraphs_Init {
 		double y1, y2;
 		Vector<XYTextAnnotation> xytextannotationList = new Vector<XYTextAnnotation>();
 		for (PlannedVariableExt plannedExt : planVector) {
-			double [] planValues = new double[(int) ISR_DATE+1];
+			double [] planValues = new double[1891];
 			int planValueIndex = 0;
 			if (x2 >= max_xIntercept)
 				break;
@@ -298,7 +335,7 @@ public class DrawGraphs_Init {
 							initValue = y2;
 							prSet++;
 						}
-						
+
 					}
 					if(set == 0)
 					{
@@ -323,8 +360,8 @@ public class DrawGraphs_Init {
 			seriesNumber++;
 			isPlan = 1;
 			planOutput.put(plannedExt.getName(), planValues);
-			
-			
+
+
 		}
 		final JFreeChart chart = ChartFactory.createXYLineChart(chartObj
 				.getName(), // chart title
@@ -345,12 +382,12 @@ public class DrawGraphs_Init {
 		// get a reference to the plot for further customisation...
 		final XYPlot plot = chart.getXYPlot();
 		plot.setBackgroundPaint(Color.white);
-//		plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
-//		plot.getRenderer().setBaseStroke(new BasicStroke(8));
-//		XYTextAnnotation anno = new XYTextAnnotation("1", 30.0, 0);
-  //      plot.addAnnotation(anno);
-		
-/*		XYSeries data = new XYSeries("DummyData");
+		//		plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+		//		plot.getRenderer().setBaseStroke(new BasicStroke(8));
+		//		XYTextAnnotation anno = new XYTextAnnotation("1", 30.0, 0);
+		//      plot.addAnnotation(anno);
+
+		/*		XYSeries data = new XYSeries("DummyData");
 		double sampling = 1/30;
 		for(int i = 0; i < xIntercept; i++)
 		{
@@ -360,72 +397,80 @@ public class DrawGraphs_Init {
 		XYSeriesCollection d2 = new XYSeriesCollection();
 		d2.addSeries(data);
 		plot.setDataset(2, d2);
-		
+
 		NumberAxis xAxis2 = new NumberAxis("Months");
 		plot.setDomainAxis(1, xAxis2 );
 		plot.mapDatasetToDomainAxis(2, 1);
-*/		
+		 */		
+		/*
+		 * 		CDR_DATE = Double.valueOf(recordEntries[29]);//810 - CDR_DATE 
+					PRR_DATE = Double.valueOf(recordEntries[72]);//1530 - PRR_DATE 
+					PDR_DATE = Double.valueOf(recordEntries[71]);//0 - PDR_DATE
+					ISR_DATE = Double.valueOf(recordEntries[70]);//1890 - ISR_DATE
+					FRR_DATE = Double.valueOf(recordEntries[67]); //1170 - FRR_Date
+
+		 */
 		if(chartObj.getGlobal() == 1)
 		{
-			Marker pdr = new ValueMarker(PDR_DATE);
+			Marker pdr = new ValueMarker(pdr_date);
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
-//			pdr.setPaint(Color.CYAN);
+			//			pdr.setPaint(Color.CYAN);
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			plot.addDomainMarker(pdr);
-	
-			Marker cdr = new ValueMarker(CDR_DATE);
+
+			Marker cdr = new ValueMarker(cdr_date);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
-//			cdr.setPaint(Color.CYAN);
+			//			cdr.setPaint(Color.CYAN);
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			plot.addDomainMarker(cdr);
-	
-			Marker frr = new ValueMarker(FRR_DATE);
+
+			Marker frr = new ValueMarker(frr_date);
 			frr.setLabel("FRR");
 			frr.setStroke(new BasicStroke(5));
-//			frr.setPaint(Color.CYAN);
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			frr.setPaint(Color.CYAN);
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			frr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(frr);
-	
-			Marker prr = new ValueMarker(PRR_DATE);
+
+			Marker prr = new ValueMarker(prr_date);
 			prr.setLabel("PRR");
 			prr.setStroke(new BasicStroke(5));
 			//prr.setPaint(Color.CYAN);
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			prr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(prr);
-	
-			Marker isr = new ValueMarker(ISR_DATE);
+
+			Marker isr = new ValueMarker(isr_date);
 			isr.setLabel("ISR");
 			isr.setStroke(new BasicStroke(5));
-//			isr.setPaint(Color.CYAN);
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			isr.setPaint(Color.CYAN);
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			isr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(isr);
 		}
 		else if(folder.equals("phase2"))
 		{
-			Marker pdr = new ValueMarker(PDR_DATE);
+			Marker pdr = new ValueMarker(0);
 			pdr.setLabel("PDR");
 			pdr.setStroke(new BasicStroke(5));
-//			pdr.setPaint(Color.CYAN);
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			pdr.setPaint(Color.CYAN);
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			pdr.setLabelOffset(new RectangleInsets(15,-15,15,-15));
 			plot.addDomainMarker(pdr);
-	
-			Marker cdr = new ValueMarker(CDR_DATE);
+
+			Marker cdr = new ValueMarker(810);
 			cdr.setLabel("CDR");
 			cdr.setStroke(new BasicStroke(5));
-//			cdr.setPaint(Color.CYAN);
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			cdr.setPaint(Color.CYAN);
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			cdr.setLabelOffset(new RectangleInsets(15,15,15,15));
 			plot.addDomainMarker(cdr);			
 		}
-		
+
 		ValueAxis yAxis = plot.getRangeAxis();
 		double extend;
 		if (max == 0)
@@ -452,7 +497,7 @@ public class DrawGraphs_Init {
 			double maxRange = ((max_xIntercept)*.10)+(max_xIntercept);
 			xAxis.setRange(0, maxRange);
 		}
-		
+
 		// plot.setAxisOffset(new Spacer(Spacer.ABSOLUTE, 5.0, 5.0, 5.0, 5.0));
 		// plot.setDomainGridlinePaint(Color.white);
 		// plot.setRangeGridlinePaint(Color.white);
@@ -476,19 +521,27 @@ public class DrawGraphs_Init {
 			legendText.setFont(chart.getLegend().getItemFont());
 			chart.addSubtitle(legendText);
 		}
-		
+
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setBaseLinesVisible(true);
 		renderer.setBaseShapesVisible(false);
 		renderer.setBaseStroke(new BasicStroke(8));
+		//Commented the code to render the dotted lines
+//		renderer.setSeriesStroke(
+//			    0, 
+//			    new BasicStroke(
+//			        2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+//			        1.0f, new float[] {6.0f, 6.0f}, 0.0f
+//			    ));
+//		renderer.setDrawSeriesLineAsPath(true);
 		if(isPlan == 1){
 			//renderer.setSeriesPaint(seriesNumber, Color.black);
-//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
+			//			plot.getRenderer().setSeriesPaint(0, new Color(83,81,84));
 			plot.getRenderer().setBaseStroke(new BasicStroke(8));	
-		//renderer.getSeri
+			//renderer.getSeri
 		}
 		plot.setRenderer(renderer);
-		
+
 		if(stepSet == 1)
 		{
 			final XYStepRenderer stepRenderer = new XYStepRenderer();
@@ -501,48 +554,43 @@ public class DrawGraphs_Init {
 			NumberAxis axis2 = new NumberAxis("Percentage");
 			plot.setRangeAxis(1, axis2);
 			plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
-//			plot.setDataset(1, dataset);
-//			plot.mapDatasetToRangeAxis(1, 1);
+			//			plot.setDataset(1, dataset);
+			//			plot.mapDatasetToRangeAxis(1, 1);
 			ValueAxis yaxis2 = plot.getRangeAxis(1);
 			yaxis2.setRange(((min*100)/initValue), ((max*100)/initValue));
 			XYItemRenderer renderer2 = new StandardXYItemRenderer();
 			renderer2.setBaseSeriesVisible(false);
 			renderer2.setBaseSeriesVisibleInLegend(false);
 			renderer2.setBaseStroke(new BasicStroke(8));
-//			renderer2.setSeriesVisibleInLegend(0, false);
-//			renderer2.setSeriesVisibleInLegend(1, false);
-//			renderer2.setSeriesVisibleInLegend(2, false);
+			//			renderer2.setSeriesVisibleInLegend(0, false);
+			//			renderer2.setSeriesVisibleInLegend(1, false);
+			//			renderer2.setSeriesVisibleInLegend(2, false);
 			plot.setRenderer(1, renderer2);
 		}
-		
+
 		if(chartObj.getXLabel().contains("Months"))
 		{
 			ValueAxis xAxisPrimary = plot.getDomainAxis(0);
-//			xAxisPrimary.setTickLabelsVisible(false);
+			//			xAxisPrimary.setTickLabelsVisible(false);
 			xAxisPrimary.setVisible(false);
-//			System.out.println();
 			NumberAxis Axis2 = new NumberAxis(chartObj.getXLabel());
 			plot.setDomainAxis(1, Axis2);
 			plot.setDomainAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
 			ValueAxis xAxis2 = plot.getDomainAxis(1);
-//			xAxis2.setRange(0, ((xIntercept-1)/30));
+			//			xAxis2.setRange(0, ((xIntercept-1)/30));
 			if(chartObj.getGlobal() == 0 && isPlan == 0)
 			{
 				double maxRange = ((xIntercept-1)*.10)+(xIntercept-1);
-//				xAxisPrimary.setRange(0, maxRange);
-//				double finalValue = (maxRange/30)+6; //40 ==> 1200/30=40
 				xAxis2.setRange(0+6, (maxRange/30)+6);
 			}
 			else
 			{
 				double maxRange = ((max_xIntercept)*.10)+(max_xIntercept);
-//				xAxisPrimary.setRange(0, maxRange);
-//				double finalValue = (maxRange/30)+6;
 				xAxis2.setRange(0+6, (maxRange/30)+6);
 			}
 			NumberAxis numberaxis = (NumberAxis) plot.getDomainAxis(1);
 			numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-//			xAxis2.setRange(0, (max_xIntercept/30));
+			//			xAxis2.setRange(0, (max_xIntercept/30));
 			XYItemRenderer renderer3 = new StandardXYItemRenderer();
 			renderer3.setBaseSeriesVisible(false);
 			renderer3.setBaseSeriesVisibleInLegend(false);
@@ -552,19 +600,19 @@ public class DrawGraphs_Init {
 		else if(chartObj.getXLabel().contains("Quarters"))
 		{
 			ValueAxis xAxisPrimary = plot.getDomainAxis(0);
-//			xAxisPrimary.setTickLabelsVisible(false);
-//			xAxisPrimary.setVisible(false);
+			//			xAxisPrimary.setTickLabelsVisible(false);
+			xAxisPrimary.setVisible(false);
 			NumberAxis Axis2 = new NumberAxis(chartObj.getXLabel());
 			plot.setDomainAxis(1, Axis2);
 			plot.setDomainAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
 			ValueAxis xAxis2 = plot.getDomainAxis(1);
-//			xAxis2.setRange(0, ((xIntercept-1)/30));
+			//			xAxis2.setRange(0, ((xIntercept-1)/30));
 			if(chartObj.getGlobal() == 0 && isPlan == 0)
 			{
 				double maxRange = ((xIntercept-1)*.10)+(xIntercept-1);
 				xAxis2.setRange(0+6, (maxRange/90)+6);
 			}
-//			xAxis2.setRange(0, ((xIntercept-1)/7));
+			//			xAxis2.setRange(0, ((xIntercept-1)/7));
 			else
 			{
 				double maxRange = ((max_xIntercept)*.10)+(max_xIntercept);
@@ -572,7 +620,7 @@ public class DrawGraphs_Init {
 			}
 			NumberAxis numberaxis = (NumberAxis) plot.getDomainAxis(1);
 			numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-//			xAxis2.setRange(0, (max_xIntercept/7));
+			//			xAxis2.setRange(0, (max_xIntercept/7));
 			XYItemRenderer renderer3 = new StandardXYItemRenderer();
 			renderer3.setBaseSeriesVisible(false);
 			renderer3.setBaseStroke(new BasicStroke(8));
@@ -589,7 +637,7 @@ public class DrawGraphs_Init {
 
 		int width = 1000;
 		int height = 727;
-		
+
 		String resWidthString = properties.getProperty("width");
 		String resHeightString = properties.getProperty("height");
 		if(resWidthString != null){

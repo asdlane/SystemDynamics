@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Model name="Phase-2-Init/Phase-2 2013/06/23" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
+<Model name="Phase-2-Init/Phase-2 2014/11/18" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
   <Nodes>
     <LevelNodes>
       <LevelNode id="LN0001" name="SW_Errors_P2_Detected_S1" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3951.0" yCoordinate="1637.0" />
@@ -62,7 +62,7 @@
       <LevelNode id="LN0058" name="SW_Errors_P2_Resolved_S0" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="1062.0" yCoordinate="942.0" />
       <LevelNode id="LN0059" name="SW_Errors_S1_Target" startValue="6.88" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="4220.0" yCoordinate="1806.0" />
       <LevelNode id="LN0060" name="Schedule _State_S0" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="405.0" yCoordinate="423.0" />
-      <LevelNode id="LN0061" name="Weight_S2" startValue="2450.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="232.0" yCoordinate="2165.0" />
+      <LevelNode id="LN0061" name="Weight_S2" startValue="2450.0" minValue="0.0" maxValue="10000.0" curve="3.0" xCoordinate="232.0" yCoordinate="2165.0" />
       <LevelNode id="LN0062" name="Pro_Staff_S3" startValue="75.0" minValue="0.0" maxValue="120.0" curve="3.0" xCoordinate="2189.0" yCoordinate="1658.0" />
       <LevelNode id="LN0063" name="Budget_Total_No_MR" startValue="195.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="4084.0" yCoordinate="2145.0" />
       <LevelNode id="LN0064" name="Sched_Var_S2" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="1644.0" yCoordinate="1404.0" />
@@ -70,10 +70,10 @@
       <LevelNode id="LN0066" name="SW_Errors_P1_Resolved_S3" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2285.0" yCoordinate="2424.0" />
       <LevelNode id="LN0067" name="Weight_Spike_S2" startValue="2800.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="442.0" yCoordinate="2168.0" />
       <LevelNode id="LN0068" name="BCWS_Total" startValue="4.7" minValue="0.0" maxValue="0.0" curve="1.0" xCoordinate="3782.0" yCoordinate="2140.0" />
-      <LevelNode id="LN0069" name="Weight" startValue="9600.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="366.0" yCoordinate="1972.0" />
+      <LevelNode id="LN0069" name="Weight" startValue="9600.0" minValue="0.0" maxValue="20000.0" curve="3.0" xCoordinate="366.0" yCoordinate="1972.0" />
       <LevelNode id="LN0070" name="CDR_SL" startValue="2.0" minValue="0.0" maxValue="100" curve="1.0" xCoordinate="3426.0" yCoordinate="688.0" />
       <LevelNode id="LN0071" name="CPI_S3" startValue="1.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3116.0" yCoordinate="1730.0" />
-      <LevelNode id="LN0072" name="Weight_S1" startValue="7150.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="230.0" yCoordinate="2074.0" />
+      <LevelNode id="LN0072" name="Weight_S1" startValue="7150.0" minValue="0.0" maxValue="10000.0" curve="3.0" xCoordinate="230.0" yCoordinate="2074.0" />
       <LevelNode id="LN0073" name="BCWP_S3" startValue="0.5" minValue="0.0" maxValue="0.0" curve="1.0" xCoordinate="2701.0" yCoordinate="2063.0" />
       <LevelNode id="LN0074" name="SW_Errors_P2_Undetected_S1" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3788.0" yCoordinate="1632.0" />
       <LevelNode id="LN0075" name="Budget_S0" startValue="40.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="631.0" yCoordinate="331.0" />
@@ -116,7 +116,7 @@
       <LevelNode id="LN0112" name="SW_Errors_P2_Detected_S3" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2109.0" yCoordinate="2077.0" />
       <LevelNode id="LN0113" name="CPI_S1" startValue="1.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3740.0" yCoordinate="260.0" />
       <LevelNode id="LN0114" name="SPI_S3" startValue="1.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3138.0" yCoordinate="2196.0" />
-      <LevelNode id="LN0115" name="Weight_Allocation_S1" startValue="7500.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="444.0" yCoordinate="2071.0" />
+      <LevelNode id="LN0115" name="Weight_Allocation_S1" startValue="7500.0" minValue="0.0" maxValue="10000.0" curve="3.0" xCoordinate="444.0" yCoordinate="2071.0" />
       <LevelNode id="LN0116" name="CDR_VVSIL" startValue="5.0" minValue="0.0" maxValue="100" curve="1.0" xCoordinate="305.0" yCoordinate="629.0" />
       <LevelNode id="LN0117" name="SPI_S2" startValue="1.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="1646.0" yCoordinate="1252.0" />
       <LevelNode id="LN0118" name="SW_Errors_P2_Undetected_S0" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="760.0" yCoordinate="940.0" />
@@ -141,7 +141,7 @@
       <LevelNode id="LN0137" name="Weight_Spike_S1" startValue="7500.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="230.0" yCoordinate="2084.0" />
       <LevelNode id="LN0138" name="Weight_S1_Reported" startValue="7150.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="232.0" yCoordinate="2185.0" />
       <LevelNode id="LN0139" name="Weight_S2_Reported" startValue="2450.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="232.0" yCoordinate="2205.0" />
-      <LevelNode id="LN0140" name="Weight_Allocation_S2" startValue="2500.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="442.0" yCoordinate="2168.0" />
+      <LevelNode id="LN0140" name="Weight_Allocation_S2" startValue="2500.0" minValue="0.0" maxValue="10000.0" curve="3.0" xCoordinate="442.0" yCoordinate="2168.0" />
       <LevelNode id="LN0141" name="Sched_Var_Total" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="4470.0" yCoordinate="2330.0" />
       <LevelNode id="LN0142" name="SPI_Total" startValue="1.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="4470.0" yCoordinate="2130.0" />
       <LevelNode id="LN0143" name="Burn_Rate_S0" startValue="1.428" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="4200.0" yCoordinate="50.0" />
@@ -155,32 +155,32 @@
       <LevelNode id="LN0151" name="SW_Errors_P2_Resolved_S2_Reported" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3200.0" yCoordinate="2550.0" />
       <LevelNode id="LN0152" name="SW_Errors_P2_Total_S2_Reported" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2900.0" yCoordinate="2600.0" />
       <LevelNode id="LN0153" name="Budget_MR" startValue="5.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3939.0" yCoordinate="2075.0" />
-      <LevelNode id="LN0154" name="Rookie_Staff_S0_Target" startValue="30.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="848.0" yCoordinate="267.0" />
-      <LevelNode id="LN0155" name="Pro_Staff_S0_Target" startValue="130.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="999.0" yCoordinate="267.0" />
-      <LevelNode id="LN0156" name="Rookie_Staff_S1_Target" startValue="60.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3923.0" yCoordinate="1016.0" />
-      <LevelNode id="LN0157" name="Pro_Staff_S1_Target" startValue="60.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3766.0" yCoordinate="1016.0" />
-      <LevelNode id="LN0158" name="Rookie_Staff_S2_Target" startValue="160.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2088.0" yCoordinate="340.0" />
-      <LevelNode id="LN0159" name="Pro_Staff_S2_Target" startValue="240.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2239.0" yCoordinate="340.0" />
-      <LevelNode id="LN0160" name="Rookie_Staff_S3_Target" startValue="18.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2007.0" yCoordinate="1688.0" />
-      <LevelNode id="LN0161" name="Pro_Staff_S3_Target" startValue="75.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2189.0" yCoordinate="1688.0" />
-      <LevelNode id="LN0162" name="Drag_Coefficient_Target" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="36.0" yCoordinate="1780.0" />
+      <LevelNode id="LN0154" name="Rookie_Staff_S0_Target" startValue="30.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="848.0" yCoordinate="267.0" />
+      <LevelNode id="LN0155" name="Pro_Staff_S0_Target" startValue="130.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="999.0" yCoordinate="267.0" />
+      <LevelNode id="LN0156" name="Rookie_Staff_S1_Target" startValue="60.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="3923.0" yCoordinate="1016.0" />
+      <LevelNode id="LN0157" name="Pro_Staff_S1_Target" startValue="60.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="3766.0" yCoordinate="1016.0" />
+      <LevelNode id="LN0158" name="Rookie_Staff_S2_Target" startValue="160.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="2088.0" yCoordinate="340.0" />
+      <LevelNode id="LN0159" name="Pro_Staff_S2_Target" startValue="240.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="2239.0" yCoordinate="340.0" />
+      <LevelNode id="LN0160" name="Rookie_Staff_S3_Target" startValue="18.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="2007.0" yCoordinate="1688.0" />
+      <LevelNode id="LN0161" name="Pro_Staff_S3_Target" startValue="75.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="2189.0" yCoordinate="1688.0" />
+      <LevelNode id="LN0162" name="Drag_Coefficient_Target" startValue="0.0" minValue="0.0" maxValue="0.04" curve="3.0" xCoordinate="36.0" yCoordinate="1780.0" />
       <LevelNode id="LN0163" name="Drag_Coefficient_Target_Natural" startValue="0.0315" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="36.0" yCoordinate="1730.0" />
       <LevelNode id="LN0164" name="Drag_Reduction_On" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="36.0" yCoordinate="1680.0" />
-      <LevelNode id="LN0165" name="TSFC_Target" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="869.0" yCoordinate="2206.0" />
+      <LevelNode id="LN0165" name="TSFC_Target" startValue="0.0" minValue="0.0" maxValue="0.4" curve="3.0" xCoordinate="869.0" yCoordinate="2206.0" />
       <LevelNode id="LN0166" name="TSFC_Target_Natural" startValue="0.3328" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="1144.0" yCoordinate="2226.0" />
       <LevelNode id="LN0167" name="TSFC_Improvement_On" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="972.0" yCoordinate="2282.0" />
-      <LevelNode id="LN0168" name="Rookie_Staff_QA_S2_Target" startValue="2.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2150.0" yCoordinate="1140.0" />
-      <LevelNode id="LN0169" name="Pro_Staff_QA_S2_Target" startValue="20.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2288.0" yCoordinate="1140.0" />
+      <LevelNode id="LN0168" name="Rookie_Staff_QA_S2_Target" startValue="2.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="2150.0" yCoordinate="1140.0" />
+      <LevelNode id="LN0169" name="Pro_Staff_QA_S2_Target" startValue="20.0" minValue="0.0" maxValue="1000.0" curve="3.0" xCoordinate="2288.0" yCoordinate="1140.0" />
       <LevelNode id="LN0170" name="Range_Objective" startValue="5200.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="831.0" yCoordinate="1578.0" />
       <LevelNode id="LN0171" name="Design_Review_Freq_S2" startValue="0.03" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="2208.0" yCoordinate="1015.0" />
       <LevelNode id="LN0172" name="Endurance" startValue="4.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="660.0" yCoordinate="1569.0" />
       <LevelNode id="LN0173" name="True_Air_Speed" startValue="400.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="660.0" yCoordinate="1509.0" />
       <LevelNode id="LN0174" name="Weight_Payload" startValue="2500.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="366.0" yCoordinate="1912.0" />
       <LevelNode id="LN0175" name="PDR_Date" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
-      <LevelNode id="LN0176" name="CDR_Date" startValue="810.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
+      <LevelNode id="LN0176" name="CDR_Date" startValue="1200.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
       <LevelNode id="LN0177" name="FRR_Date" startValue="1170.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
       <LevelNode id="LN0178" name="PRR_Date" startValue="1530.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
-      <LevelNode id="LN0179" name="ISR_Date" startValue="1890.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
+      <LevelNode id="LN0179" name="ISR_Date" startValue="2400.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="0.0" yCoordinate="0.0" />
     </LevelNodes>
     <SourceSinkNodes>
       <SourceSinkNode id="SN0001" xCoordinate="2725.0" yCoordinate="322.0" />
