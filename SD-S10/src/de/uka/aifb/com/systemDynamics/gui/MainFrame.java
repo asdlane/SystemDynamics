@@ -1798,7 +1798,7 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 		}
 
-		public void actionPerformed(ActionEvent e) {
+		 public void actionPerformed(ActionEvent e) {
 			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
 			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
 			for(int i=1;i<=graph.size();i++){
@@ -1807,7 +1807,6 @@ WindowListener {
 			
 			if(graph.size()==1){
 				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
-				graph.get(0).createColoredSourceSinkNodeGraphCell(0, 0, Color.red);
 			}
 			else{
 				//accounts for if user cancels the insert
@@ -1849,7 +1848,7 @@ WindowListener {
 					Object[] choices = SubmodelNumbers.toArray();
 					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 					int colorIndex = (Integer)JOptionPane.showInputDialog(frame,"Link the current submodel to which Submodel?","Link to A Submodel",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1));
+					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1), colorIndex);
 				}catch(Exception ex){
 					
 				}

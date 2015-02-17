@@ -22,7 +22,9 @@
 package de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.geom.Rectangle2D;
+
 import org.jgraph.graph.*;
 
 /**
@@ -45,8 +47,14 @@ public class ColoredSourceSinkNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public ColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor) {
-      // add one standard port
+   public ColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor, int colorIndex) {
+	   
+	   super(Integer.toString(colorIndex)+ "  \n" );
+	   if(nodeColor.getRed()<=150 && nodeColor.getGreen()<=150 && nodeColor.getBlue() <=150){
+		   GraphConstants.setForeground(getAttributes(), Color.white);
+	   }
+	   GraphConstants.setFont(getAttributes(), GraphConstants.DEFAULTFONT.deriveFont(Font.BOLD,30));
+	   // add one standard port
       addPort();
       
       // layout
