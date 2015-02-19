@@ -684,7 +684,7 @@ public class DrawGraphs {
 						else
 						{
 							if(folder.equals("phase2"))
-								max_xIntercept = 810;
+								max_xIntercept = (int)cdr_date;
 							else
 								max_xIntercept = 360;
 						}
