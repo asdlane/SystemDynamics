@@ -901,8 +901,8 @@ WindowListener {
 				contentPanel.remove(modelPanel);
 				SubmodelColors.removeAll(SubmodelColors);
 				graph.removeAll(graph);
-				System.out.println(graph.size());
-				System.out.println(SubmodelColors.size());
+				
+				
 				contentPanel.revalidate();
 				String modelName =
 						ModelNameDialog.showModelNameDialog(start, MainFrame.this,
@@ -1121,6 +1121,10 @@ WindowListener {
 					// file was selected and 'OK' was pressed
 					File file = fileChooser.getSelectedFile();
 					try {
+						//TODO
+						//graph = XMLModelReader.readSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
+						//graph.get(0).addSystemDynamicsGraphModifiedEventLIstener(MainFrame.this);
+						//DELETE FOLLOWING 4 LINES
 						graphNew = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						graph.removeAll(graph);
 						graph.add(graphNew);
@@ -1165,7 +1169,10 @@ WindowListener {
 					
 					// opening successful
 					xmlFile = file;
-
+					
+//***************************TODO: CREATE A ROUTINE HERE THAT DOES EVERYTHING IN ADDNEWSUBMODELACTION (BORDERS, GRAPH NUMBER ON TOOLBAR, ETC) FOR 
+//***************************EACH SUBGRAPH IN THE GRAPH ARRAYLIST.
+					
 					scrollPane = new JScrollPane(graph.get(0));
 					contentPanel.removeAll();
 					contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1197,6 +1204,7 @@ WindowListener {
 					pasteAction.setEnabled(true);
 					
 					try {
+						//TODO: graph.get(0).validateModel(graph)
 						graph.get(0).validateModel();
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
@@ -1323,6 +1331,8 @@ WindowListener {
 			cutAction.setEnabled(false);
 			copyAction.setEnabled(false);
 			pasteAction.setEnabled(false);
+			//reset graph number indicator
+			GraphNumber.setText("");
 		}
 	}
 
@@ -1374,8 +1384,9 @@ WindowListener {
 
 			try {
 //***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
-				graph.get(0).storeToXML(file.getAbsolutePath());
-				
+				//TODO: 
+				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
+				graph.get(0).storeToXML(file.getAbsolutePath());				
 				
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
@@ -1438,6 +1449,8 @@ WindowListener {
 			fileName = xmlFile.getAbsolutePath();
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 			try {
+				//TODO:
+				//graph.get(0).validateModel(graph);
 				graph.get(0).validateModel();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
@@ -1532,6 +1545,8 @@ WindowListener {
 
 			try {
 				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
+				//TODO: 
+				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
 				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
@@ -1594,6 +1609,8 @@ WindowListener {
 			graphModified = false;
 			saveAction.setEnabled(false);
 			try {
+				//todo:
+				//graph.get(0).validateModel(graph);
 				graph.get(0).validateModel();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
@@ -2007,6 +2024,8 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			try {
+//**********************************************************TODO:***********************************************************
+				//graph.get(0).validateModelAndSetUnchangeable(graph);
 				graph.get(0).validateModelAndSetUnchangeable();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
@@ -2192,7 +2211,7 @@ WindowListener {
 				
 				
 			}
-			System.out.println(breakVal);
+			
 			graph.get(breakVal).getModel().remove(cells);
 			
 			
