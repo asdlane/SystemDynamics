@@ -1052,12 +1052,27 @@ public class DrawGraphs {
 		renderer.setBaseStroke(new BasicStroke(8));
 		if(isPlan == 1)
 			//			renderer.setSeriesPaint(seriesNumber, Color.black);
-			plot.setRenderer(renderer);
+
+		plot.getRenderer().setSeriesPaint(0, new Color(57,106,177));
+		plot.getRenderer().setSeriesPaint(1, new Color(218,124,48));
+		plot.getRenderer().setSeriesPaint(2, new Color(107,76,154));
+		plot.getRenderer().setSeriesPaint(3, new Color(204,37,41));
+		plot.getRenderer().setSeriesPaint(4, new Color(148,139,61));
+		plot.getRenderer().setSeriesPaint(5, new Color(62,150,81));
+		plot.getRenderer().setSeriesPaint(6, new Color(204,37,41));
+		plot.setRenderer(renderer);
 
 		if(stepSet == 1)
 		{
 			final XYStepRenderer stepRenderer = new XYStepRenderer();
 			stepRenderer.setBaseStroke(new BasicStroke(8));
+			plot.getRenderer().setSeriesPaint(0, new Color(57,106,177));
+			plot.getRenderer().setSeriesPaint(1, new Color(218,124,48));
+			plot.getRenderer().setSeriesPaint(2, new Color(107,76,154));
+			plot.getRenderer().setSeriesPaint(3, new Color(204,37,41));
+			plot.getRenderer().setSeriesPaint(4, new Color(148,139,61));
+			plot.getRenderer().setSeriesPaint(5, new Color(62,150,81));
+			plot.getRenderer().setSeriesPaint(6, new Color(204,37,41));
 			plot.setRenderer(stepRenderer);
 		}
 
@@ -1077,6 +1092,13 @@ public class DrawGraphs {
 			//			renderer2.setSeriesVisibleInLegend(0, false);
 			//			renderer2.setSeriesVisibleInLegend(1, false);
 			//			renderer2.setSeriesVisibleInLegend(2, false);
+			plot.getRenderer().setSeriesPaint(0, new Color(57,106,177));
+			plot.getRenderer().setSeriesPaint(1, new Color(218,124,48));
+			plot.getRenderer().setSeriesPaint(2, new Color(107,76,154));
+			plot.getRenderer().setSeriesPaint(3, new Color(204,37,41));
+			plot.getRenderer().setSeriesPaint(4, new Color(148,139,61));
+			plot.getRenderer().setSeriesPaint(5, new Color(62,150,81));
+			plot.getRenderer().setSeriesPaint(6, new Color(204,37,41));
 			plot.setRenderer(1, renderer2);
 		}		
 
@@ -1114,6 +1136,13 @@ public class DrawGraphs {
 			renderer3.setBaseSeriesVisible(false);
 			renderer3.setBaseSeriesVisibleInLegend(false);
 			renderer3.setBaseStroke(new BasicStroke(8));
+			plot.getRenderer().setSeriesPaint(0, new Color(57,106,177));
+			plot.getRenderer().setSeriesPaint(1, new Color(218,124,48));
+			plot.getRenderer().setSeriesPaint(2, new Color(107,76,154));
+			plot.getRenderer().setSeriesPaint(3, new Color(204,37,41));
+			plot.getRenderer().setSeriesPaint(4, new Color(148,139,61));
+			plot.getRenderer().setSeriesPaint(5, new Color(62,150,81));
+			plot.getRenderer().setSeriesPaint(6, new Color(204,37,41));
 			plot.setRenderer(2, renderer3);
 		}
 		else if(chartObj.getXLabel().contains("Quarters"))
@@ -1150,6 +1179,13 @@ public class DrawGraphs {
 			renderer3.setBaseSeriesVisible(false);
 			renderer3.setBaseStroke(new BasicStroke(8));
 			renderer3.setBaseSeriesVisibleInLegend(false);
+			plot.getRenderer().setSeriesPaint(0, new Color(57,106,177));
+			plot.getRenderer().setSeriesPaint(1, new Color(218,124,48));
+			plot.getRenderer().setSeriesPaint(2, new Color(107,76,154));
+			plot.getRenderer().setSeriesPaint(3, new Color(204,37,41));
+			plot.getRenderer().setSeriesPaint(4, new Color(148,139,61));
+			plot.getRenderer().setSeriesPaint(5, new Color(62,150,81));
+			plot.getRenderer().setSeriesPaint(6, new Color(204,37,41));
 			plot.setRenderer(2, renderer3);
 		}
 
