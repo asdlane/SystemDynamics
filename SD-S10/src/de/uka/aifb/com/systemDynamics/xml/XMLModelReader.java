@@ -774,7 +774,7 @@ public class XMLModelReader {
             
             AuxiliaryNodeGraphCell auxiliaryNode = graph.createAuxiliaryNodeGraphCell(nodeName,
                                                                                       xCoordinate,
-                                                                                      yCoordinate);
+                                                                                      yCoordinate, true);
             id2auxiliaryNodeGraphCell.put(id, auxiliaryNode);
             AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
             graphCell2Vertex.put(auxiliaryNode, vertex);

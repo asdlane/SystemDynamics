@@ -24,6 +24,9 @@ package de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+
 import org.jgraph.graph.*;
 
 /**
@@ -37,7 +40,7 @@ public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
    private static final long serialVersionUID = 1L;
    
    private static final double RADIUS = 20;
-   private static final Color BORDER_COLOR = Color.BLACK;
+   private static Color BORDER_COLOR = Color.BLACK;
    
    /**
     * Constructor.
@@ -46,13 +49,18 @@ public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public AuxiliaryNodeGraphCell(String name, double x, double y, AttributeMap vals) {
+   public AuxiliaryNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean LearnerChangeable) {
       super(name, vals);
       
       if (name == null) {
          throw new IllegalArgumentException("'name' must not be null.");
       }
-      
+      if(LearnerChangeable){
+    	 BORDER_COLOR = Color.red;
+      }
+      else{
+    	 BORDER_COLOR = Color.black;
+      }
       // add one standard port
       addPort();
       
@@ -60,6 +68,7 @@ public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
       GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(x, y, 2 * RADIUS, 2 * RADIUS));
       GraphConstants.setSizeable(getAttributes(), false);
       GraphConstants.setBorderColor(getAttributes(), BORDER_COLOR);
+      
       GraphConstants.setOpaque(getAttributes(), true);
    }
 }
