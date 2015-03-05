@@ -1204,8 +1204,9 @@ WindowListener {
 					pasteAction.setEnabled(true);
 					
 					try {
-						//TODO: graph.get(0).validateModel(graph)
-						graph.get(0).validateModel();
+						for (SystemDynamicsGraph subGraph : graph) {
+							subGraph.validateModel();
+						}
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
 								messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1449,9 +1450,9 @@ WindowListener {
 			fileName = xmlFile.getAbsolutePath();
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 			try {
-				//TODO:
-				//graph.get(0).validateModel(graph);
-				graph.get(0).validateModel();
+				for (SystemDynamicsGraph subGraph : graph) {
+					subGraph.validateModel();
+				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1609,9 +1610,9 @@ WindowListener {
 			graphModified = false;
 			saveAction.setEnabled(false);
 			try {
-				//todo:
-				//graph.get(0).validateModel(graph);
-				graph.get(0).validateModel();
+				for (SystemDynamicsGraph subGraph : graph) {
+					subGraph.validateModel();
+				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
