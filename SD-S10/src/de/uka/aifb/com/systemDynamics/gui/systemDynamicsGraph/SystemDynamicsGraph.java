@@ -318,7 +318,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param y y coordinate of node's origin
     * @return created graph vertex
     */
-   public AuxiliaryNodeGraphCell createAuxiliaryNodeGraphCell(String nodeName, double x, double y) {
+   public AuxiliaryNodeGraphCell createAuxiliaryNodeGraphCell(String nodeName, double x, double y, boolean LearnerChangeable) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
@@ -326,11 +326,12 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
       AttributeMap vals = new AttributeMap();
 	  vals.put("name", nodeName);
+	  vals.put("LearnerChangeable", LearnerChangeable);
 	        
       
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode(nodeName);
   	  //create graph cell with the attribute map attached to it.
-      AuxiliaryNodeGraphCell auxiliaryNodeGraphCell = new AuxiliaryNodeGraphCell(nodeName, x, y, vals);
+      AuxiliaryNodeGraphCell auxiliaryNodeGraphCell = new AuxiliaryNodeGraphCell(nodeName, x, y, vals, LearnerChangeable);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(auxiliaryNodeGraphCell);

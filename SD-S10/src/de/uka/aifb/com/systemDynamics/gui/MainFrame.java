@@ -115,6 +115,7 @@ WindowListener {
 	private static final String Colored_SourceSink_Icon = "resources/cloud-icon.gif";
 	private static final String FILE_EXECUTE_MODEL_ICON = "resources/page_white_gear.png";
 	private static final String FILE_CANCEL_EXEUTE_MODEL_ICON = "resources/cancel.png";
+	private static final String ARCHIVE_ICON = "resources/archive.png";
 
 	private static final String FILE_ZOOM_STANDARD_ICON = "resources/zoom.png";
 	private static final String FILE_ZOOM_IN_ICON = "resources/zoom_in.png";
@@ -161,6 +162,7 @@ WindowListener {
 	private Action zoomStandardAction;
 	private Action zoomInAction;
 	private Action zoomOutAction;
+	private Action ArchiveSubmodelAction;
 	private Action cutActionFunction = javax.swing.TransferHandler.getCutAction();
 	private Action copyActionFunction = javax.swing.TransferHandler.getCopyAction();
 	private Action pasteActionFunction = javax.swing.TransferHandler.getPasteAction();
@@ -325,6 +327,8 @@ WindowListener {
 		
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
+		ArchiveSubmodelAction = new ArchiveSubmodelAction("Archive Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ARCHIVE_ICON)),"Archive Submodel");
+		ArchiveSubmodelAction.setEnabled(false);
 		if (start.getLocale() == Locale.GERMANY) {
 			newAuxiliaryNodeAction = new NewAuxiliaryNodeAction(messages.getString("MainFrame.MenuBar.Edit.NewAuxiliaryNode"),
 					new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_AN_de_DE_ICON)),
@@ -680,7 +684,7 @@ WindowListener {
 		toolBar.add(newAction);
 		toolBar.add(openAction);
 		toolBar.add(saveAction);
-
+		toolBar.add(ArchiveSubmodelAction);
 		toolBar.addSeparator();
 
 		toolBar.add(newAuxiliaryNodeAction);
@@ -820,6 +824,7 @@ WindowListener {
 
 			saveAction.setEnabled(true);
 			saveAsAction.setEnabled(true);
+			ArchiveSubmodelAction.setEnabled(true);
 		}
 	}
 
@@ -983,7 +988,7 @@ WindowListener {
 					saveAction.setEnabled(false);
 					saveAsAction.setEnabled(false);
 					newSubmodelAction.setEnabled(true);
-					
+					ArchiveSubmodelAction.setEnabled(false);
 					newAuxiliaryNodeAction.setEnabled(true);
 					newConstantNodeAction.setEnabled(true);
 					newLevelNodeAction.setEnabled(true);
@@ -1336,7 +1341,17 @@ WindowListener {
 			GraphNumber.setText("");
 		}
 	}
+	public class ArchiveSubmodelAction extends AbstractAction{
+		private static final long serialVersionUID = 1L;
+		public ArchiveSubmodelAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
 
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+		public void actionPerformed(ActionEvent e){
+			
+		}
+	}
 	private class SaveAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -1684,8 +1699,19 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
+				JFrame LearnerDecidableframe = new JFrame("InputDialog");
+				Object[] LeanerDecidablechoices = {"yes","no"};
+				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
 				if(graph.size()==1){
-					graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					//if the node is learner decidable, send true.  else, send false.
+					if(LearnerDecidable.equals("yes")){
+						graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+						
+					}
+					else{
+						graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+						
+					}
 				}
 				else{
 					//accounts for if user cancels the insert
@@ -1694,7 +1720,13 @@ WindowListener {
 						Object[] choices = SubmodelNumbers.toArray();
 						
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-						graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+						//Whether the learner can change the node or not is sent
+						if(LearnerDecidable.equals("yes")){
+							graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+						}
+						else{
+							graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+						}
 					}catch(Exception ex){
 						
 					}
@@ -2413,7 +2445,7 @@ WindowListener {
 				if (pasteCells.get(i).contains("Auxiliary")) {
 					String[] attributes = pasteCells.get(i).split(",");
 					
-					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), true);
 					
 				}
 				else if (pasteCells.get(i).contains("Level")){
