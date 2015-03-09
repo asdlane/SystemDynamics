@@ -38,7 +38,7 @@ import org.jgraph.graph.*;
 public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
    
    private static final long serialVersionUID = 1L;
-   
+   private Color purple = new Color(171,0,255); 
    private static final double RADIUS = 20;
    private static Color BORDER_COLOR = Color.BLACK;
    
@@ -56,7 +56,7 @@ public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
          throw new IllegalArgumentException("'name' must not be null.");
       }
       if(LearnerChangeable){
-    	 BORDER_COLOR = Color.red;
+    	 BORDER_COLOR = purple;
       }
       else{
     	 BORDER_COLOR = Color.black;
