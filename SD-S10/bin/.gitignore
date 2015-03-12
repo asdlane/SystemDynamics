@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /en
 /messages.properties
 /messages_de_DE.properties
@@ -5,3 +6,6 @@
 /messages_es_ES.properties
 /xsd
 /de
+=======
+/de/
+>>>>>>> c6c663eecd2b8419cb0456181b82cbfd55e16052
