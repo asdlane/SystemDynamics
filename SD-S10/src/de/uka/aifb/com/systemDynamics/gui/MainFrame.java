@@ -1401,7 +1401,8 @@ WindowListener {
 			try {
 //***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
 				//TODO: 
-				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
+				//graph.get(0).storeToXML(file.getAbsolutePath, graph,SubmodelColors.get(0).red, SubmodelColors.get(0).green, SubmodelColors.get(0).blue);
+				
 				graph.get(0).storeToXML(file.getAbsolutePath());				
 				
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
