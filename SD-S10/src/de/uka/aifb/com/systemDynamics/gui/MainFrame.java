@@ -1402,7 +1402,10 @@ WindowListener {
 //***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
-				graph.get(0).storeToXML(file.getAbsolutePath());				
+				for (SystemDynamicsGraph subGraph : graph) {
+					subGraph.storeToXML(file.getAbsolutePath());
+				}
+//				graph.get(0).storeToXML(file.getAbsolutePath());				
 				
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
@@ -1563,7 +1566,11 @@ WindowListener {
 				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
-				graph.get(0).storeToXML(file.getAbsolutePath());
+				for (SystemDynamicsGraph subGraph : graph) {
+					subGraph.storeToXML(file.getAbsolutePath());
+				}
+
+//				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
