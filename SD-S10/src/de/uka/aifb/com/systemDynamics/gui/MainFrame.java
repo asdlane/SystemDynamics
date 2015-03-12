@@ -1401,17 +1401,14 @@ WindowListener {
 			try {
 //***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
 				//TODO: 
-<<<<<<< HEAD
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
 				for (SystemDynamicsGraph subGraph : graph) {
 					subGraph.storeToXML(file.getAbsolutePath());
 				}
 //				graph.get(0).storeToXML(file.getAbsolutePath());				
-=======
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph,SubmodelColors.get(0).red, SubmodelColors.get(0).green, SubmodelColors.get(0).blue);
 				
 				graph.get(0).storeToXML(file.getAbsolutePath());				
->>>>>>> c6c663eecd2b8419cb0456181b82cbfd55e16052
 				
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
