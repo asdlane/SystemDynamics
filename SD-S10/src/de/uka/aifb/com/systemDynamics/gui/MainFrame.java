@@ -176,8 +176,8 @@ WindowListener {
 	private JFileChooser fileChooser;
 	private Random rand = new Random();
 	private ArrayList<Color> SubmodelColors= new ArrayList<Color>();
-	
-	
+
+
 	//File[] selectedFiles;
 	File selectedFiles;
 	/**
@@ -217,7 +217,7 @@ WindowListener {
 
 		// create menu
 		setJMenuBar(createMenuBar());
-		
+
 		// create tool bar
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
@@ -269,7 +269,7 @@ WindowListener {
 
 							File f = new File(selectedFiles.getPath().toString());
 							f.delete();
-							
+
 
 							// Rescan the directory after deletion
 							jf.rescanCurrentDirectory();
@@ -324,7 +324,7 @@ WindowListener {
 		cutAction.setEnabled(false);
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
-		
+
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		ArchiveSubmodelAction = new ArchiveSubmodelAction("Archive Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ARCHIVE_ICON)),"Archive Submodel");
@@ -651,9 +651,9 @@ WindowListener {
 
 				subPanel.add(tabbedPane, BorderLayout.CENTER);
 				subPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				
 
-				
+
+
 				JPanel helpPanel = new JPanel();
 				helpPanel.add(subPanel);
 				helpPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -713,9 +713,9 @@ WindowListener {
 		toolBar.addSeparator();
 		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
 		toolBar.add(GraphNumber);
-		
+
 		return toolBar;
-		
+
 	}
 
 	/**
@@ -906,8 +906,8 @@ WindowListener {
 				contentPanel.remove(modelPanel);
 				SubmodelColors.removeAll(SubmodelColors);
 				graph.removeAll(graph);
-				
-				
+
+
 				contentPanel.revalidate();
 				String modelName =
 						ModelNameDialog.showModelNameDialog(start, MainFrame.this,
@@ -927,7 +927,7 @@ WindowListener {
 					graph.get(0).setModelName(modelName);
 					graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 					scrollPane = new JScrollPane(graph.get(0));
-					
+
 					int red = rand.nextInt(256);
 					int green = rand.nextInt(256);
 					int blue = rand.nextInt(256);
@@ -944,9 +944,9 @@ WindowListener {
 					}
 					Color randomColor = new Color(red, green, blue);
 					SubmodelColors.add(randomColor);
-					
+
 					Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
-					
+
 					graph.get(graph.size()-1).setBorder(SubmodelColor);
 					graph.get(0).setSize(400,400);
 					scrollPane.setPreferredSize(new Dimension(400,400));
@@ -959,24 +959,24 @@ WindowListener {
 						public void mouseEntered(MouseEvent e) {
 							//change label whenever mouse enters graph
 							GraphNumber.setText(Integer.toString(1));
-							
+
 						}
 
 						@Override
 						public void mouseExited(MouseEvent e) {}
-						
+
 						@Override
 						public void mousePressed(MouseEvent e) {}
 
 						@Override
 						public void mouseReleased(MouseEvent e) {}
-						
+
 					});
 					contentPanel.removeAll();
 					modelPanel.add(scrollPane);
-					
+
 					contentPanel.add(modelPanel,BorderLayout.CENTER);
-					
+
 					getContentPane().validate();
 
 					fileName = messages.getString("MainFrame.NewDocument");
@@ -1025,7 +1025,7 @@ WindowListener {
 		public void actionPerformed(ActionEvent e) {
 			//create a new submodel graph
 			final SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
-			
+
 			newSubmodel.addMouseListener(new MouseListener(){
 
 				@Override
@@ -1036,7 +1036,7 @@ WindowListener {
 					//Change label on toolbar to show graph number
 					for(int i=0;i<graph.size();i++){
 						if(graph.get(i).equals(newSubmodel)){
-						
+
 							GraphNumber.setText(Integer.toString(i+1));
 						}
 					}
@@ -1051,17 +1051,17 @@ WindowListener {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {}
-				
+
 			});
 			//add it to the model
 			graph.add(newSubmodel);
 			//create scroll pane for the new submodel
-			
+
 			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
-						
+
 			//random submodel color is created for the working session and then added to an overall list to be referenced later.
 
-									
+
 			int red = rand.nextInt(256);
 			int green = rand.nextInt(256);
 			int blue = rand.nextInt(256);
@@ -1080,26 +1080,26 @@ WindowListener {
 			//NON-REPEATING
 			SubmodelColors.add(randomColor);
 			GraphNumber.setText(Integer.toString(graph.size()));
-			
+
 			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
-			
-			
+
+
 			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
 			graph.get(graph.size()-1).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
-			
+
 			//add it to the model panel 
-			
+
 			modelPanel.add(submodelScroll);
-			
+
 			//reconfigure layout for 4 or more submodels
 			if(graph.size()>=4){
 				modelPanel.setLayout(new GridLayout(2,4));
 			}
 			//force layout to recalculate now that a new component has been added.
 			modelPanel.revalidate();
-			
-			
+
+
 		}
 
 	}
@@ -1134,7 +1134,7 @@ WindowListener {
 						graph.removeAll(graph);
 						graph.add(graphNew);
 						graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
-						
+
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
 								messages.getString("MainFrame.OpenFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1171,13 +1171,13 @@ WindowListener {
 
 						return;
 					}
-					
+
 					// opening successful
 					xmlFile = file;
-					
-//***************************TODO: CREATE A ROUTINE HERE THAT DOES EVERYTHING IN ADDNEWSUBMODELACTION (BORDERS, GRAPH NUMBER ON TOOLBAR, ETC) FOR 
-//***************************EACH SUBGRAPH IN THE GRAPH ARRAYLIST.
-					
+
+					//***************************TODO: CREATE A ROUTINE HERE THAT DOES EVERYTHING IN ADDNEWSUBMODELACTION (BORDERS, GRAPH NUMBER ON TOOLBAR, ETC) FOR 
+					//***************************EACH SUBGRAPH IN THE GRAPH ARRAYLIST.
+
 					scrollPane = new JScrollPane(graph.get(0));
 					contentPanel.removeAll();
 					contentPanel.add(scrollPane, BorderLayout.CENTER);
@@ -1207,7 +1207,7 @@ WindowListener {
 					cutAction.setEnabled(true);
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
-					
+
 					try {
 						for (SystemDynamicsGraph subGraph : graph) {
 							subGraph.validateModel();
@@ -1258,7 +1258,7 @@ WindowListener {
 						}			
 					}
 
-					
+
 				}
 			}
 		}
@@ -1349,7 +1349,7 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 		}
 		public void actionPerformed(ActionEvent e){
-			
+
 		}
 	}
 	private class SaveAction extends AbstractAction {
@@ -1399,17 +1399,19 @@ WindowListener {
 			}
 
 			try {
-//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
+				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
+				
 				for (SystemDynamicsGraph subGraph : graph) {
 					subGraph.storeToXML(file.getAbsolutePath());
 				}
-//				graph.get(0).storeToXML(file.getAbsolutePath());				
+				
+				//				graph.get(0).storeToXML(file.getAbsolutePath());				
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph,SubmodelColors.get(0).red, SubmodelColors.get(0).green, SubmodelColors.get(0).blue);
-				
+
 				graph.get(0).storeToXML(file.getAbsolutePath());				
-				
+
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1503,18 +1505,18 @@ WindowListener {
 
 				return;
 			} catch (UselessNodeException excep ) {
-				
+
 				if (excep.getUselessNode() instanceof SourceSinkNode){
 					JOptionPane.showMessageDialog(MainFrame.this,
 							"Useless node exception caused by a SourceSinkNode",
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
-					
+
 				}else{
-				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
-						messages.getString("MainFrame.SaveFile.Error"),
-						JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
 				}
 				return;
 			}
@@ -1573,7 +1575,7 @@ WindowListener {
 					subGraph.storeToXML(file.getAbsolutePath());
 				}
 
-//				graph.get(0).storeToXML(file.getAbsolutePath());
+				//				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
 						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
@@ -1667,18 +1669,18 @@ WindowListener {
 
 				return;
 			} catch (UselessNodeException excep ) {
-				
+
 				if (excep.getUselessNode() instanceof SourceSinkNode){
 					JOptionPane.showMessageDialog(MainFrame.this,
 							"Useless node exception caused by a SourceSinkNode",
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
-					
+
 				}else{
-				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
-						messages.getString("MainFrame.SaveFile.Error"),
-						JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
 				}
 				return;
 			}
@@ -1716,11 +1718,11 @@ WindowListener {
 					//if the node is learner decidable, send true.  else, send false.
 					if(LearnerDecidable.equals("yes")){
 						graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
-						
+
 					}
 					else{
 						graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
-						
+
 					}
 				}
 				else{
@@ -1728,7 +1730,7 @@ WindowListener {
 					try{
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
-						
+
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						//Whether the learner can change the node or not is sent
 						if(LearnerDecidable.equals("yes")){
@@ -1738,12 +1740,12 @@ WindowListener {
 							graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
 						}
 					}catch(Exception ex){
-						
+
 					}
 				}
-				
+
 			}
-			
+
 		}
 	}
 
@@ -1772,7 +1774,7 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-				
+
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
 					graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
@@ -1784,16 +1786,16 @@ WindowListener {
 					try{
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
-						
+
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
 								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 					}catch(Exception ex){
-						
+
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -1827,7 +1829,7 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-				
+
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
 					graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
@@ -1842,7 +1844,7 @@ WindowListener {
 					try{
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
-						
+
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
@@ -1851,11 +1853,11 @@ WindowListener {
 								newNodeNameParameter.getCurveParameter(),
 								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 					}catch(Exception ex){
-						
+
 					}
 				}
-				
-				
+
+
 			}
 		}
 	}
@@ -1882,7 +1884,7 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-				
+
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
 					graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
@@ -1892,14 +1894,14 @@ WindowListener {
 					try{
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
-						
+
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 					}catch(Exception ex){
-						
+
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -1914,13 +1916,13 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 		}
 
-		 public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
 			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
 			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
 			for(int i=1;i<=graph.size();i++){
 				SubmodelNumbers.add(i);
 			}
-			
+
 			if(graph.size()==1){
 				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 			}
@@ -1932,7 +1934,7 @@ WindowListener {
 					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 				}catch(Exception ex){
-					
+
 				}
 			}
 		}
@@ -1953,7 +1955,7 @@ WindowListener {
 			for(int i=1;i<=graph.size();i++){
 				SubmodelNumbers.add(i);
 			}
-			
+
 			if(graph.size()==1){
 				JOptionPane.showMessageDialog(null, "Colored SourceSink Nodes can only be added with two or more Submodels");
 			}
@@ -1967,7 +1969,7 @@ WindowListener {
 					//create colored sourcesink, passing the color and the index of the graph it will link to
 					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1), colorIndex);
 				}catch(Exception ex){
-					
+
 				}
 			}
 		}
@@ -1994,7 +1996,7 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			// toggle ports visibility
-			
+
 			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
 			for(int i=1;i<=graph.size();i++){
 				SubmodelNumbers.add(i);
@@ -2004,7 +2006,7 @@ WindowListener {
 			if (subModelIndex == 0){
 				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel (number in left corner)?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			}
-			
+
 			graph.get(subModelIndex - 1).setPortsVisible(!graph.get(subModelIndex - 1).isPortsVisible());
 			inAddFlowMode = !inAddFlowMode;
 			if (inAddFlowMode) {
@@ -2047,7 +2049,7 @@ WindowListener {
 				String modelDate = df.format(today);
 				newModelName += " ";
 				newModelName += modelDate;
-				
+
 				graph.get(0).setModelName(newModelName);
 
 				setTitle(createTitle(graph.get(0).getModelName(), graphModified));
@@ -2067,7 +2069,7 @@ WindowListener {
 
 		public void actionPerformed(ActionEvent e) {
 			try {
-//**********************************************************TODO:***********************************************************
+				//**********************************************************TODO:***********************************************************
 				//graph.get(0).validateModelAndSetUnchangeable(graph);
 				graph.get(0).validateModelAndSetUnchangeable();
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -2228,8 +2230,8 @@ WindowListener {
 			for(int i=0;i<graph.size();i++){
 				graph.get(i).setScale(graph.get(i).getScale() / 1.3);	
 			}
-			
-			
+
+
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 		}
 	}
@@ -2249,16 +2251,16 @@ WindowListener {
 				if(cells.length == 0){
 					cells = graph.get(j).getSelectionCells();
 					breakVal = j;
-					
+
 				}
-				
-				
+
+
 			}
-			
+
 			graph.get(breakVal).getModel().remove(cells);
-			
-			
-			
+
+
+
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
 			try {
@@ -2267,66 +2269,66 @@ WindowListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		 
+
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 			try{
-			for(int i=0; i<cells.length;i++){
-				//for each graph cell, get the appropriate attributes from that cell's attribute map.  then, write all the attributes
-				//to the clipboard as one line with each attribute delimited by a comma (helps when pasteAction reads the values in from the 
-				//clipboard).
-				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
-					
-					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();					
-					
-					bw.write("Auxiliary," + name);
-					bw.newLine();
+				for(int i=0; i<cells.length;i++){
+					//for each graph cell, get the appropriate attributes from that cell's attribute map.  then, write all the attributes
+					//to the clipboard as one line with each attribute delimited by a comma (helps when pasteAction reads the values in from the 
+					//clipboard).
+					if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+
+						String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();					
+
+						bw.write("Auxiliary," + name);
+						bw.newLine();
+					}
+					else if (cells[i] instanceof LevelNodeGraphCell){
+						String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
+						String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
+						String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
+						String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
+
+						bw.write("Level," + name + "," + startVal + "," + minVal + "," + maxVal + "," + curve);
+						bw.newLine();
+
+					}
+					else if(cells[i] instanceof SourceSinkNodeGraphCell){					
+						bw.write("SourceSink");
+						bw.newLine();
+					}
+
+					else if(cells[i] instanceof ConstantNodeGraphCell){
+						String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
+						bw.write("Constant,"+name+","+values);
+						bw.newLine();
+					}
+					else if(cells[i] instanceof RateNodeGraphCell){
+						String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						bw.write("Rate,"+name);
+					}
+					else if(cells[i] instanceof FlowEdge){
+						FlowEdge edge = (FlowEdge)cells[i];
+						final Object edgeSource = graph.get(0).getModel().getParent(graph.get(0).getModel().getSource(edge));
+						final Object edgeTarget = graph.get(0).getModel().getParent(graph.get(0).getModel().getTarget(edge));
+						if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+							graph.get(breakVal).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+						}
+						if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+							graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+						}
+						if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+							graph.get(breakVal).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+						}
+						if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+							graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+						}
+					}
 				}
-				else if (cells[i] instanceof LevelNodeGraphCell){
-					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
-					String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
-					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
-					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
-					
-					bw.write("Level," + name + "," + startVal + "," + minVal + "," + maxVal + "," + curve);
-					bw.newLine();
-					  
-				}
-				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
-					bw.write("SourceSink");
-					bw.newLine();
-				}
-				
-				else if(cells[i] instanceof ConstantNodeGraphCell){
-					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
-					bw.write("Constant,"+name+","+values);
-					bw.newLine();
-				}
-				else if(cells[i] instanceof RateNodeGraphCell){
-					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					bw.write("Rate,"+name);
-				}
-				else if(cells[i] instanceof FlowEdge){
-					FlowEdge edge = (FlowEdge)cells[i];
-					 final Object edgeSource = graph.get(0).getModel().getParent(graph.get(0).getModel().getSource(edge));
-					 final Object edgeTarget = graph.get(0).getModel().getParent(graph.get(0).getModel().getTarget(edge));
-					 if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		                 graph.get(breakVal).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
-		              }
-		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
-		            	  graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
-		              }
-		              if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-		            	  graph.get(breakVal).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
-		              }
-		              if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
-		            	  graph.get(breakVal).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
-		              }
-				}
-			}
 			}catch(IOException e1){
-				
+
 			}
 			try {
 				bw.close();
@@ -2334,7 +2336,7 @@ WindowListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 
 		}
 
@@ -2350,16 +2352,16 @@ WindowListener {
 		//same code as CutAction, but doesn't remove any graph cells.
 		public void actionPerformed(ActionEvent e){
 			Object[] cells = {};
-			
+
 			for(int j=0;j<graph.size();j++){
 				if(cells.length == 0){
 					cells = graph.get(j).getSelectionCells();
-					
+
 				}
-				
-				
+
+
 			}
-			
+
 			File fout = new File("Clipboard.txt");
 			FileOutputStream fos = null;
 			try {
@@ -2368,45 +2370,45 @@ WindowListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		 
+
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 			try{
-			for(int i=0; i<cells.length;i++){
-				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
-					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();					
-					
-					bw.write("Auxiliary," + name);
-					bw.newLine();
+				for(int i=0; i<cells.length;i++){
+					if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+						String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();					
+
+						bw.write("Auxiliary," + name);
+						bw.newLine();
+					}
+					else if (cells[i] instanceof LevelNodeGraphCell){
+						String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
+						String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
+						String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
+						String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
+
+						bw.write("Level," + name + "," + startVal + "," + minVal + "," + maxVal + "," + curve);
+						bw.newLine();
+
+					}
+					else if(cells[i] instanceof SourceSinkNodeGraphCell){					
+						bw.write("SourceSink");
+						bw.newLine();
+					}
+
+					else if(cells[i] instanceof ConstantNodeGraphCell){
+						String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
+						bw.write("Constant,"+name+","+values);
+						bw.newLine();
+					}
+					else if(cells[i] instanceof RateNodeGraphCell){
+						String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						bw.write("Rate,"+name);
+					}
 				}
-				else if (cells[i] instanceof LevelNodeGraphCell){
-					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
-					String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
-					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
-					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
-					
-					bw.write("Level," + name + "," + startVal + "," + minVal + "," + maxVal + "," + curve);
-					bw.newLine();
-					  
-				}
-				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
-					bw.write("SourceSink");
-					bw.newLine();
-				}
-				
-				else if(cells[i] instanceof ConstantNodeGraphCell){
-					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
-					bw.write("Constant,"+name+","+values);
-					bw.newLine();
-				}
-				else if(cells[i] instanceof RateNodeGraphCell){
-					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					bw.write("Rate,"+name);
-				}
-			}
 			}catch(IOException e1){
-				
+
 			}
 			try {
 				bw.close();
@@ -2454,19 +2456,19 @@ WindowListener {
 			for(int i=0; i<pasteCells.size();i++){
 				if (pasteCells.get(i).contains("Auxiliary")) {
 					String[] attributes = pasteCells.get(i).split(",");
-					
+
 					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), true);
-					
+
 				}
 				else if (pasteCells.get(i).contains("Level")){
 					String[] attributes = pasteCells.get(i).split(",");
-							
+
 					graph.get(subModelIndex-1).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
 				else if(pasteCells.get(i).contains("SourceSink")){
 					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
-				
+
 				else if(pasteCells.get(i).contains("Constant")){
 					String[] attributes = pasteCells.get(i).split(",");
 					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
