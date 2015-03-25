@@ -116,6 +116,7 @@ WindowListener {
 	private static final String FILE_EXECUTE_MODEL_ICON = "resources/page_white_gear.png";
 	private static final String FILE_CANCEL_EXEUTE_MODEL_ICON = "resources/cancel.png";
 	private static final String ARCHIVE_ICON = "resources/archive.png";
+	private static final String IMPORT_ICON = "resources/import.png";
 
 	private static final String FILE_ZOOM_STANDARD_ICON = "resources/zoom.png";
 	private static final String FILE_ZOOM_IN_ICON = "resources/zoom_in.png";
@@ -167,6 +168,7 @@ WindowListener {
 	private Action copyActionFunction = javax.swing.TransferHandler.getCopyAction();
 	private Action pasteActionFunction = javax.swing.TransferHandler.getPasteAction();
 	private Action newSubmodelAction;
+	private Action importAction;
 	private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
@@ -327,6 +329,7 @@ WindowListener {
 
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
+		importAction = new importAction("Import", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(IMPORT_ICON)), "Import Submodel");
 		ArchiveSubmodelAction = new ArchiveSubmodelAction("Archive Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ARCHIVE_ICON)),"Archive Submodel");
 		ArchiveSubmodelAction.setEnabled(false);
 		if (start.getLocale() == Locale.GERMANY) {
@@ -683,8 +686,10 @@ WindowListener {
 
 		toolBar.add(newAction);
 		toolBar.add(openAction);
+		toolBar.add(importAction);
 		toolBar.add(saveAction);
 		toolBar.add(ArchiveSubmodelAction);
+		
 		toolBar.addSeparator();
 
 		toolBar.add(newAuxiliaryNodeAction);
@@ -1100,6 +1105,22 @@ WindowListener {
 			modelPanel.revalidate();
 
 
+		}
+
+	}
+	private class importAction extends AbstractAction {
+
+		private static final long serialVersionUID = 1L;
+
+		public importAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
+
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 
 	}
