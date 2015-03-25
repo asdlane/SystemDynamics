@@ -47,8 +47,8 @@ public class UselessNodeException extends Exception {
     * 
     * @param node useless node (must be a constant, an auxiliary or a source/sink node)
     */
-   public UselessNodeException(AbstractNode node) {
-      super(MESSAGE);
+   public UselessNodeException(AbstractNode node, int modelNumber) {
+      super(MESSAGE + "Submodel Number: " + modelNumber);
       if (node == null) {
          throw new IllegalArgumentException("'node' must not be null.");
       }

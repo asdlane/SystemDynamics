@@ -108,7 +108,7 @@ public class SystemDynamicsCommandLine {
       
       // (3) validate model and set unchangeable
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          // There should be no exceptions here because the model was already validated while
          // reading from XML file.

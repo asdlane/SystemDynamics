@@ -209,7 +209,7 @@ public class ExportPanel extends JPanel implements ActionListener,
       try {
          XMLModelWriter.writeXMLModel(model, TEMP_MODEL_FILE_NAME);
          clonedModel = XMLModelReader.readXMLModel(TEMP_MODEL_FILE_NAME);
-         clonedModel.validateModelAndSetUnchangeable();
+         clonedModel.validateModelAndSetUnchangeable(0);
       } catch (Exception excep) {
          JOptionPane.showMessageDialog(this,
                                        messages.getString("ExportPanel.ExportError.Message"),

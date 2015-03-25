@@ -524,7 +524,7 @@ public class XMLModelReader {
       
       // is model valide? (check for errors that cannot be expressed in the XML Schema)
       try {
-         model.validateModel();
+         model.validateModel(0);
       } catch (RateNodeFlowException e) {
          // search problematic rate node ID
          RateNode problematicRateNode = e.getProblematicRateNode();

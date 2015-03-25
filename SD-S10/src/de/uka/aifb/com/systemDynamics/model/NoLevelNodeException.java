@@ -35,7 +35,7 @@ public class NoLevelNodeException extends Exception {
    /**
     * Constructor.
     */
-   public NoLevelNodeException() {
-      super(MESSAGE);
+   public NoLevelNodeException(int modelNumber) {
+      super(MESSAGE + "Submodel Number: " + modelNumber);
    }
 }

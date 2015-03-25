@@ -33,7 +33,7 @@ public class AuxiliaryNodesCycleDependencyException extends Exception {
    private static final long serialVersionUID = 1L;
    private static final String MESSAGE = "The model's auxiliary nodes have a cycle dependency.";
    
-   public AuxiliaryNodesCycleDependencyException() {
-      super(MESSAGE);
+   public AuxiliaryNodesCycleDependencyException(int modelNumber) {
+      super(MESSAGE + "Submodel Number: " + modelNumber);
    }
 }

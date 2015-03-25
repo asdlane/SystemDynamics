@@ -39,8 +39,8 @@ public class RateNodeFlowException extends Exception {
     * 
     * @param rateNode problematic rate node
     */
-   public RateNodeFlowException(RateNode rateNode) {
-      super(MESSAGE);
+   public RateNodeFlowException(RateNode rateNode, int modelNumber) {
+      super(MESSAGE + "Submodel Number: " + modelNumber);
       if (rateNode == null) {
          throw new IllegalArgumentException("'rateNode' must not be null.");
       }

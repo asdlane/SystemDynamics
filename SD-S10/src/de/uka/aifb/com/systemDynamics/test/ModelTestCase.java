@@ -70,7 +70,7 @@ public class ModelTestCase extends TestCase {
       // (3) set model name while model is unchangeable -> WRONG
       model.createLevelNode("Level node", 0, 0, 0, 3);
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          fail();
       }
@@ -1325,7 +1325,7 @@ public class ModelTestCase extends TestCase {
    public void testValidateModel1() {
       // no level nodes -> WRONG
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
@@ -1353,7 +1353,7 @@ public class ModelTestCase extends TestCase {
       RateNode rateNode1 = model.createRateNode("Rate node 1");
       
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
@@ -1372,7 +1372,7 @@ public class ModelTestCase extends TestCase {
       model.setFormula(rateNode1, constantNode);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
       } catch (NoFormulaException e) {
@@ -1389,7 +1389,7 @@ public class ModelTestCase extends TestCase {
       model.addFlowFromRateNode2SourceSinkNode(rateNode1, sourceSinkNode);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
       } catch (NoFormulaException e) {
@@ -1408,7 +1408,7 @@ public class ModelTestCase extends TestCase {
       model.setFormula(rateNode2, constantNode);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
       } catch (NoFormulaException e) {
@@ -1425,7 +1425,7 @@ public class ModelTestCase extends TestCase {
       model.addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode2);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
       } catch (NoFormulaException e) {
@@ -1453,7 +1453,7 @@ public class ModelTestCase extends TestCase {
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
@@ -1474,7 +1474,7 @@ public class ModelTestCase extends TestCase {
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode("Auxiliary node");
       
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
@@ -1502,7 +1502,7 @@ public class ModelTestCase extends TestCase {
       model.setFormula(auxiliaryNode2, auxiliaryNode1);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          assertEquals("The model's auxiliary nodes have a cycle dependency.", e.getMessage());
@@ -1528,7 +1528,7 @@ public class ModelTestCase extends TestCase {
       constantNode = model.createConstantNode("Constant node", 0);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
@@ -1555,7 +1555,7 @@ public class ModelTestCase extends TestCase {
       model.setFormula(auxiliaryNode, levelNode);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
@@ -1594,7 +1594,7 @@ public class ModelTestCase extends TestCase {
       model.setFormula(auxiliaryNode3, constantNode2);
       
       try {
-         model.validateModel();
+         model.validateModel(0);
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
       } catch (NoFormulaException e) {
@@ -1632,7 +1632,7 @@ public class ModelTestCase extends TestCase {
       model.setFormula(auxiliaryNode3, constantNode2);
       
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (AuxiliaryNodesCycleDependencyException e) {
          fail();
       } catch (NoFormulaException e) {
@@ -1684,7 +1684,7 @@ public class ModelTestCase extends TestCase {
       
       // validate model and set unchangeable
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          fail();
       }
@@ -1726,7 +1726,7 @@ public class ModelTestCase extends TestCase {
       
       // validate model and set unchangeable
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          fail();
       }
@@ -1768,7 +1768,7 @@ public class ModelTestCase extends TestCase {
       
       // validate model and set unchangeable
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          fail();
       }
@@ -1818,7 +1818,7 @@ public class ModelTestCase extends TestCase {
       
       // validate model and set unchangeable
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          fail();
       }
@@ -1895,7 +1895,7 @@ public class ModelTestCase extends TestCase {
             
       // validate model and set unchangeable
       try {
-         model.validateModelAndSetUnchangeable();
+         model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
          fail();
       }

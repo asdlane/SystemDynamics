@@ -1561,12 +1561,12 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @throws RateNodeFlowException if a rate node has no incoming or no outgoing flow
     * @throws UselessNodeException if a node has no influence on a level node
     */
-   public void validateModel() throws AuxiliaryNodesCycleDependencyException,
+   public void validateModel(int modelNumber) throws AuxiliaryNodesCycleDependencyException,
                                       NoFormulaException,
                                       NoLevelNodeException,
                                       RateNodeFlowException,
                                       UselessNodeException {
-      model.validateModel();
+      model.validateModel(modelNumber);
    }
    
    /**
@@ -1580,12 +1580,12 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @throws RateNodeFlowException if a rate node has no incoming or no outgoing flow
     * @throws UselessNodeException if a node has no influence on a level node
     */
-   public void validateModelAndSetUnchangeable() throws AuxiliaryNodesCycleDependencyException,
+   public void validateModelAndSetUnchangeable(int modelNumber) throws AuxiliaryNodesCycleDependencyException,
                                                         NoFormulaException,
                                                         NoLevelNodeException,
                                                         RateNodeFlowException,
                                                         UselessNodeException {
-      model.validateModelAndSetUnchangeable();
+      model.validateModelAndSetUnchangeable(modelNumber);
    }
    
    /**

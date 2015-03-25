@@ -742,12 +742,12 @@ public class Model {
     * @throws RateNodeFlowException if a rate node has no incoming and no outgoing flow
     * @throws UselessNodeException if a node has no influence on a level node
     */
-   public void validateModelAndSetUnchangeable() throws AuxiliaryNodesCycleDependencyException,
+   public void validateModelAndSetUnchangeable(int modelNumber) throws AuxiliaryNodesCycleDependencyException,
                                                         NoFormulaException,
                                                         NoLevelNodeException,
                                                         RateNodeFlowException,
                                                         UselessNodeException {
-      validateModel();
+      validateModel(modelNumber);
       isChangeable = false;
    }
    
@@ -762,7 +762,7 @@ public class Model {
     * @throws RateNodeFlowException if a rate node has no incoming or no outgoing flow
     * @throws UselessNodeException if a node has no influence on a level node
     */
-   public void validateModel() throws AuxiliaryNodesCycleDependencyException,
+   public void validateModel(int modelNumber) throws AuxiliaryNodesCycleDependencyException,
                                       NoFormulaException,
                                       NoLevelNodeException,
                                       RateNodeFlowException,
@@ -771,33 +771,33 @@ public class Model {
       
       // (i) a) at least one level node
       if (levelNodes.isEmpty()) {
-         throw new NoLevelNodeException();
+         throw new NoLevelNodeException(modelNumber+1);
       }
       
       // (i) b) each rate node must have an incoming and an outgoing flow
       for (RateNode rateNode : rateNodes) {
          // rate node must have flow source and flow sink
          if (rateNode.getFlowSource() == null || rateNode.getFlowSink() == null) {
-            throw new RateNodeFlowException(rateNode);
+            throw new RateNodeFlowException(rateNode, modelNumber+1);
          }
       }
       
       // (i) c) rate nodes and auxiliary nodes must have formulas
       for (RateNode rateNode : rateNodes) {
          if (!rateNode.hasFormula()) {
-            throw new NoFormulaException(rateNode);
+            throw new NoFormulaException(rateNode, modelNumber+1);
          }
       }
       
       for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
          if (!auxiliaryNode.hasFormula()) {
-            throw new NoFormulaException(auxiliaryNode);
+            throw new NoFormulaException(auxiliaryNode, modelNumber+1);
          }
       }
       
       // (i) d) no cycles within auxiliary nodes dependencies
       if (haveAuxiliaryNodesCycleDependency()) {
-         throw new AuxiliaryNodesCycleDependencyException();
+         throw new AuxiliaryNodesCycleDependencyException(modelNumber+1);
       }
       
       // (ii) CAN conditions (optinal, but I decided to make them compulsory)
@@ -807,21 +807,21 @@ public class Model {
       // (ii) a) all constant nodes must be useful (influence at least one level node)
       for (ConstantNode constantNode : constantNodes) {
          if (!nodesLevelNodesDependOn.contains(constantNode)) {
-            throw new UselessNodeException(constantNode);
+            throw new UselessNodeException(constantNode, modelNumber+1);
          }
       }
       
       // (ii) b) all auxiliary nodes must be useful (influence at least one leve node)
       for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
          if (!nodesLevelNodesDependOn.contains(auxiliaryNode)) {
-            throw new UselessNodeException(auxiliaryNode);
+            throw new UselessNodeException(auxiliaryNode, modelNumber+1);
          }
       }
       
       // (ii) c) all source/sink nodes must be useful (influence at least one leve node)
       for (SourceSinkNode sourceSinkNode : sourceSinkNodes) {
          if (!nodesLevelNodesDependOn.contains(sourceSinkNode)) {
-            throw new UselessNodeException(sourceSinkNode);
+            throw new UselessNodeException(sourceSinkNode, modelNumber+1);
          }
       }
    }

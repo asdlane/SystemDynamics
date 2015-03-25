@@ -1175,8 +1175,6 @@ WindowListener {
 					// opening successful
 					xmlFile = file;
 
-					//***************************TODO: CREATE A ROUTINE HERE THAT DOES EVERYTHING IN ADDNEWSUBMODELACTION (BORDERS, GRAPH NUMBER ON TOOLBAR, ETC) FOR 
-					//***************************EACH SUBGRAPH IN THE GRAPH ARRAYLIST.
 
 					scrollPane = new JScrollPane(graph.get(0));
 					contentPanel.removeAll();
@@ -1209,8 +1207,10 @@ WindowListener {
 					pasteAction.setEnabled(true);
 
 					try {
+						int i=0;
 						for (SystemDynamicsGraph subGraph : graph) {
-							subGraph.validateModel();
+							subGraph.validateModel(i);
+							i++;
 						}
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
@@ -1472,34 +1472,36 @@ WindowListener {
 
 			fileName = xmlFile.getAbsolutePath();
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
+			int i=0;
 			try {
 				for (SystemDynamicsGraph subGraph : graph) {
-					subGraph.validateModel();
+					subGraph.validateModel(i);
+					i++;
 				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
+						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (NoFormulaException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2"),
+						messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2")   + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (NoLevelNodeException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text"),
+						messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text")   + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (RateNodeFlowException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2"),
+						messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2")   + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
@@ -1508,13 +1510,13 @@ WindowListener {
 
 				if (excep.getUselessNode() instanceof SourceSinkNode){
 					JOptionPane.showMessageDialog(MainFrame.this,
-							"Useless node exception caused by a SourceSinkNode",
+							"Useless node exception caused by a SourceSinkNode. "  + "Submodel Number: " + Integer.toString(i+1),
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
 
 				}else{
 					JOptionPane.showMessageDialog(MainFrame.this,
-							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2")   + "Submodel Number: " + Integer.toString(i+1),
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
 				}
@@ -1636,34 +1638,37 @@ WindowListener {
 			xmlFile = file;
 			graphModified = false;
 			saveAction.setEnabled(false);
+			int i=0;
 			try {
+				
 				for (SystemDynamicsGraph subGraph : graph) {
-					subGraph.validateModel();
+					subGraph.validateModel(i);
+					i++;
 				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
+						messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text")   + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (NoFormulaException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2"),
+						messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (NoLevelNodeException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text"),
+						messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (RateNodeFlowException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2"),
+						messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.SaveFile.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
@@ -1672,13 +1677,13 @@ WindowListener {
 
 				if (excep.getUselessNode() instanceof SourceSinkNode){
 					JOptionPane.showMessageDialog(MainFrame.this,
-							"Useless node exception caused by a SourceSinkNode",
+							"Useless node exception caused by a SourceSinkNode. "   + "Submodel Number: " + Integer.toString(i+1),
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
 
 				}else{
 					JOptionPane.showMessageDialog(MainFrame.this,
-							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2")  + "Submodel Number: " + Integer.toString(i+1),
 							messages.getString("MainFrame.SaveFile.Error"),
 							JOptionPane.ERROR_MESSAGE);
 				}
@@ -2068,34 +2073,40 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			int i=0;
 			try {
 				//**********************************************************TODO:***********************************************************
 				//graph.get(0).validateModelAndSetUnchangeable(graph);
-				graph.get(0).validateModelAndSetUnchangeable();
+				//graph.get(0).validateModelAndSetUnchangeable();
+			
+				for (SystemDynamicsGraph subGraph : graph) {
+					subGraph.validateModelAndSetUnchangeable(i);
+					i++;
+				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.AuxiliaryNodesCycleDependencyException.Text"),
+						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.AuxiliaryNodesCycleDependencyException.Text")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (NoFormulaException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2"),
+						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (NoLevelNodeException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.NoLevelNodeException.Text"),
+						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.NoLevelNodeException.Text")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
 				return;
 			} catch (RateNodeFlowException excep) {
 				JOptionPane.showMessageDialog(MainFrame.this,
-						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2"),
+						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2")  + "Submodel Number: " + Integer.toString(i+1),
 						messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.Error"),
 						JOptionPane.ERROR_MESSAGE);
 
@@ -2103,12 +2114,12 @@ WindowListener {
 			} catch (UselessNodeException excep ) {
 				if (excep.getUselessNode() instanceof SourceSinkNode) {
 					JOptionPane.showMessageDialog(MainFrame.this,
-							messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.UselessNodeException.SourceSinkNodeText"),
+							messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.UselessNodeException.SourceSinkNodeText")  + "Submodel Number: " + Integer.toString(i+1),
 							messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.Error"),
 							JOptionPane.ERROR_MESSAGE);
 				} else { 
 					JOptionPane.showMessageDialog(MainFrame.this,
-							messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2")  + "Submodel Number: " + Integer.toString(i+1),
 							messages.getString("MainFrame.MenuBar.Edit.ExecuteModel.Error"),
 							JOptionPane.ERROR_MESSAGE);
 				}

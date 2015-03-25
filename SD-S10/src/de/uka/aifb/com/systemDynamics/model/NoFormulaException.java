@@ -39,8 +39,8 @@ public class NoFormulaException extends Exception {
     * 
     * @param node node without formula (must be a rate node or an auxiliary node)
     */
-   public NoFormulaException(AbstractNode node) {
-      super(MESSAGE);
+   public NoFormulaException(AbstractNode node, int modelNumber) {
+      super(MESSAGE + "Submodel Number: " + modelNumber);
       if (node == null) {
          throw new IllegalArgumentException("'node' must not be null.");
       }
