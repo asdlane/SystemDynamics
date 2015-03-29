@@ -51,7 +51,7 @@ public class ColoredSourceSinkNodeGraphCell extends DefaultGraphCell {
 	   
 	   super(Integer.toString(colorIndex)+ "  \n" );
 	   //trying to change to white when the color gets dark enough.
-	   if(nodeColor.getRed()<=150 && nodeColor.getGreen()<=150 && nodeColor.getBlue() <=150){
+	   if(nodeColor.getRed()<100 || nodeColor.getGreen()< 100 || nodeColor.getBlue() < 100){
 		   GraphConstants.setForeground(getAttributes(), Color.white);
 	   }
 	   //set font size.
