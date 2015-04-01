@@ -47,9 +47,9 @@ public class ColoredSourceSinkNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public ColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor, int colorIndex) {
+   public ColoredSourceSinkNodeGraphCell(double x, double y, AttributeMap vals, Color nodeColor, int colorIndex) {
 	   
-	   super(Integer.toString(colorIndex)+ "  \n" );
+	   super(Integer.toString(colorIndex)+ "  \n", vals);
 	   //trying to change to white when the color gets dark enough.
 	   if(nodeColor.getRed()<100 || nodeColor.getGreen()< 100 || nodeColor.getBlue() < 100){
 		   GraphConstants.setForeground(getAttributes(), Color.white);

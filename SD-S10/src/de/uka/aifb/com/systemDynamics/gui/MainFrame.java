@@ -24,6 +24,7 @@ package de.uka.aifb.com.systemDynamics.gui;
 import de.uka.aifb.com.systemDynamics.SystemDynamics;
 import de.uka.aifb.com.systemDynamics.event.SystemDynamicsGraphModifiedEventListener;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.AuxiliaryNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.ColoredSourceSinkNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.ConstantNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.FlowEdge;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.LevelNodeGraphCell;
@@ -1082,7 +1083,7 @@ WindowListener {
 				}
 			}
 			Color randomColor = new Color(red, green, blue);
-			//NON-REPEATING
+			
 			SubmodelColors.add(randomColor);
 			GraphNumber.setText(Integer.toString(graph.size()));
 
@@ -1104,7 +1105,8 @@ WindowListener {
 			//force layout to recalculate now that a new component has been added.
 			modelPanel.revalidate();
 
-
+			saveAction.setEnabled(true);
+			ArchiveSubmodelAction.setEnabled(true);
 		}
 
 	}
@@ -2330,7 +2332,14 @@ WindowListener {
 						bw.write("SourceSink");
 						bw.newLine();
 					}
-
+					else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
+						
+						String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
+						String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
+						
+						bw.write("coloredSourceSink," + colorIndex + "," + color[0] + "," + color[1] + "," + color[2]);
+						bw.newLine();
+					}
 					else if(cells[i] instanceof ConstantNodeGraphCell){
 						String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 						String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
@@ -2427,7 +2436,14 @@ WindowListener {
 						bw.write("SourceSink");
 						bw.newLine();
 					}
-
+					else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
+						
+						String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
+						String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
+						
+						bw.write("coloredSourceSink," + colorIndex + "," + color[0] + "," + color[1] + "," + color[2]);
+						bw.newLine();
+					}
 					else if(cells[i] instanceof ConstantNodeGraphCell){
 						String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 						String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
@@ -2497,6 +2513,12 @@ WindowListener {
 
 					graph.get(subModelIndex-1).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
+				else if(pasteCells.get(i).contains("coloredSourceSink")){					
+					String[] attributes = pasteCells.get(i).split(",");
+					Color nodeColor = new Color(Integer.parseInt(attributes[2]),Integer.parseInt(attributes[3]),Integer.parseInt(attributes[4]));
+					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), nodeColor, Integer.parseInt(attributes[1]));
+					
+				}
 				else if(pasteCells.get(i).contains("SourceSink")){
 					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 				}
@@ -2506,6 +2528,7 @@ WindowListener {
 					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
 
 				}
+				
 				else if(pasteCells.get(i).contains("Rate")){
 					String[] attributes = pasteCells.get(i).split(",");
 					graph.get(subModelIndex-1).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));

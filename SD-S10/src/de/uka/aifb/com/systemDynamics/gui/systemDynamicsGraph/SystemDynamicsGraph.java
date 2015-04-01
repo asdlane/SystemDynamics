@@ -378,9 +378,13 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
    
    public ColoredSourceSinkNodeGraphCell createColoredSourceSinkNodeGraphCell(double x, double y, Color nodeColor, int colorIndex){
 	   // create node
+	      AttributeMap vals = new AttributeMap();
+		  vals.put("color", nodeColor.getRed() + ", " + nodeColor.getGreen() + ", " + nodeColor.getBlue());
+		  vals.put("colorIndex", colorIndex);
 	      ColoredSourceSinkNode ColoredsourceSinkNode = model.createColoredSourceSinkNode();
-	      ColoredSourceSinkNodeGraphCell ColoredsourceSinkNodeGraphCell = new ColoredSourceSinkNodeGraphCell(x, y, nodeColor, colorIndex);
-	      
+	      ColoredSourceSinkNodeGraphCell ColoredsourceSinkNodeGraphCell = new ColoredSourceSinkNodeGraphCell(x, y, vals, nodeColor, colorIndex);
+
+		  
 	      // insert vertex to graph
 	      getGraphLayoutCache().insert(ColoredsourceSinkNodeGraphCell);
 	      
@@ -394,7 +398,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	      }
 	      
 	      return ColoredsourceSinkNodeGraphCell;
-	   
+	      
    }
    /**
     * Removes the specified graph vertex and the corresponding node in the System Dynamics model.
