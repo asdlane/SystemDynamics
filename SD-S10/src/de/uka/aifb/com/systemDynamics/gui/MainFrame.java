@@ -2059,10 +2059,9 @@ WindowListener {
 			} else {
 				// not in "add flow modus"
 				subModelIndex = 0;
-				modelPanel.revalidate();
-				modelPanel.repaint();
+				contentPanel.remove(modelPanel);
+				contentPanel.add(modelPanel);
 				contentPanel.revalidate();
-				contentPanel.repaint();
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_ENTER_ADD_FLOW_MODE_ICON)));
 				putValue(Action.NAME, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
 				putValue(Action.SHORT_DESCRIPTION, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
