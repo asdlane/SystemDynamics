@@ -1013,7 +1013,7 @@ WindowListener {
 					pasteAction.setEnabled(true);
 				}
 			}
-
+			modelPanel.add(scrollPane);
 		}
 
 	}
@@ -1232,7 +1232,10 @@ WindowListener {
 					try {
 						int i=0;
 						for (SystemDynamicsGraph subGraph : graph) {
-							subGraph.validateModel(i);
+							
+							if(subGraph.getModel().getRootCount() != 0){
+								subGraph.validateModel(i);
+								}
 							i++;
 						}
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1494,11 +1497,15 @@ WindowListener {
 			saveAction.setEnabled(false);
 
 			fileName = xmlFile.getAbsolutePath();
+			JOptionPane.showMessageDialog(MainFrame.this, "Save successful.", "Save Successful", JOptionPane.INFORMATION_MESSAGE);
 			setTitle(createTitle(graph.get(0).getModelName(), graphModified));
 			int i=0;
 			try {
 				for (SystemDynamicsGraph subGraph : graph) {
+					
+					if(subGraph.getModel().getRootCount() != 0){
 					subGraph.validateModel(i);
+					}
 					i++;
 				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1665,7 +1672,10 @@ WindowListener {
 			try {
 				
 				for (SystemDynamicsGraph subGraph : graph) {
-					subGraph.validateModel(i);
+					
+					if(subGraph.getModel().getRootCount() != 0){
+						subGraph.validateModel(i);
+					}
 					i++;
 				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1992,7 +2002,7 @@ WindowListener {
 				try{
 					JFrame frame = new JFrame("InputDialog");
 					Object[] choices = SubmodelNumbers.toArray();
-					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 					int colorIndex = (Integer)JOptionPane.showInputDialog(frame,"Link the current submodel to which Submodel?","Link to A Submodel",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 					//create colored sourcesink, passing the color and the index of the graph it will link to
 					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, SubmodelColors.get(colorIndex-1), colorIndex);
@@ -2034,7 +2044,7 @@ WindowListener {
 			if (subModelIndex == 0){
 				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel (number in left corner)?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			}
-
+			
 			graph.get(subModelIndex - 1).setPortsVisible(!graph.get(subModelIndex - 1).isPortsVisible());
 			inAddFlowMode = !inAddFlowMode;
 			if (inAddFlowMode) {
@@ -2042,15 +2052,27 @@ WindowListener {
 				putValue(Action.NAME, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.LeaveAddFlowMode"));
 				putValue(Action.SHORT_DESCRIPTION, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.LeaveAddFlowMode"));
 				addFlowModeCheckBoxMenuItem.setToolTipText(null);
+				contentPanel.revalidate();
+				contentPanel.repaint();
+				modelPanel.revalidate();
+				modelPanel.repaint();
 			} else {
 				// not in "add flow modus"
 				subModelIndex = 0;
 				modelPanel.revalidate();
+				modelPanel.repaint();
+				contentPanel.revalidate();
+				contentPanel.repaint();
 				putValue(Action.SMALL_ICON, new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_ENTER_ADD_FLOW_MODE_ICON)));
 				putValue(Action.NAME, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
 				putValue(Action.SHORT_DESCRIPTION, messages.getString("MainFrame.MenuBar.Edit.ToggleAddFlowMode.EnterAddFlowMode"));
 				addFlowModeCheckBoxMenuItem.setToolTipText(null);
 			}
+			modelPanel.revalidate();
+			modelPanel.repaint();
+			contentPanel.revalidate();
+			contentPanel.repaint();
+			
 		}
 	}
 
@@ -2103,7 +2125,9 @@ WindowListener {
 				//graph.get(0).validateModelAndSetUnchangeable();
 			
 				for (SystemDynamicsGraph subGraph : graph) {
-					subGraph.validateModelAndSetUnchangeable(i);
+					if(subGraph.getModel().getRootCount() != 0){
+						subGraph.validateModelAndSetUnchangeable(i);
+					}
 					i++;
 				}
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -2162,7 +2186,7 @@ WindowListener {
 			executeModelAction.setEnabled(false);
 
 			tabbedPane = new JTabbedPane();
-			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Model"), scrollPane);
+			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Model"), modelPanel);
 			ModelExecutionChartPanel chartPanel = graph.get(0).getChartPanel();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart"), chartPanel);
 			ExportPanel exportPanel = graph.get(0).getExportPanel();
@@ -2205,7 +2229,7 @@ WindowListener {
 			executeModelAction.setEnabled(true);
 
 			contentPanel.remove(tabbedPane);
-			contentPanel.add(scrollPane);
+			contentPanel.add(modelPanel);
 			contentPanel.repaint();
 			exitExecuteModelAction.setEnabled(false);
 
