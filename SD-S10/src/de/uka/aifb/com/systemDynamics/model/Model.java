@@ -575,6 +575,26 @@ public class Model {
       rateNode.setFlowSource(sourceSinkNode);
       return true;
    }
+   public boolean addFlowFromColoredSourceSinkNode2RateNode(ColoredSourceSinkNode ColoredsourceSinkNode, RateNode rateNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      
+	      if (rateNode.getFlowSource() != null) {
+	         // there is already another flow to this rate node
+	         return false;
+	      }
+	      
+	      ColoredsourceSinkNode.addOutgoingFlow(rateNode);
+	      rateNode.setFlowSource(ColoredsourceSinkNode);
+	      return true;
+	   }
    
    /**
     * Removes the flow from the specified source/sink node to the specified rate node.
@@ -609,7 +629,32 @@ public class Model {
       
       throw new Error("Flow to remove not stored consistently.");
    }
-   
+   public boolean removeFlowFromColoredSourceSinkNode2RateNode(ColoredSourceSinkNode ColoredsourceSinkNode, RateNode rateNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      
+	      boolean rateNodeCorrect = rateNode.getFlowSource().equals(ColoredsourceSinkNode);
+	      boolean sourceSinkNodeCorrect = ColoredsourceSinkNode.getOutgoingFlows().contains(rateNode);
+	      
+	      if (rateNodeCorrect && sourceSinkNodeCorrect) {
+	         rateNode.removeFlowSource();
+	         return ColoredsourceSinkNode.removeOutgoingFlow(rateNode);
+	      }
+	      
+	      if (!rateNodeCorrect && !sourceSinkNodeCorrect) {
+	         // no such flow -> nothing to remove
+	         return false;
+	      }
+	      
+	      throw new Error("Flow to remove not stored consistently.");
+	   }   
    /**
     * Adds a flow from the specified rate node to the specified source/sink node. If there is
     * already another flow from this rate node, the addition of this flow is not possible.
@@ -638,6 +683,26 @@ public class Model {
       sourceSinkNode.addIncomingFlow(rateNode);
       return true;
    }
+   public boolean addFlowFromRateNode2ColoredSourceSinkNode(RateNode rateNode, ColoredSourceSinkNode ColoredsourceSinkNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      
+	      if (rateNode.getFlowSink() != null) {
+	         // there is already another flow from this rate node 
+	         return false;
+	      }
+	      
+	      rateNode.setFlowSink(ColoredsourceSinkNode);
+	      ColoredsourceSinkNode.addIncomingFlow(rateNode);
+	      return true;
+	   }
    
    /**
     * Removes the flow from the specified rate node to the specified level node.
@@ -672,7 +737,32 @@ public class Model {
       
       throw new Error("Flow to remove not stored consistently.");
    }
-
+   public boolean removeFlowFromRateNode2ColoredSourceSinkNode(RateNode rateNode, ColoredSourceSinkNode ColoredsourceSinkNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      
+	      boolean rateNodeCorrect = rateNode.getFlowSink().equals(ColoredsourceSinkNode);
+	      boolean sourceSinkNodeCorrect = ColoredsourceSinkNode.getIncomingFlows().contains(rateNode);
+	      
+	      if (rateNodeCorrect && sourceSinkNodeCorrect) {
+	         rateNode.removeFlowSink();
+	         return ColoredsourceSinkNode.removeIncomingFlow(rateNode);
+	      }
+	      
+	      if (!rateNodeCorrect && !sourceSinkNodeCorrect) {
+	         // no such flow -> nothing to remove
+	         return false;
+	      }
+	      
+	      throw new Error("Flow to remove not stored consistently.");
+	   }
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods for getting existing nodes
    /////////////////////////////////////////////////////////////////////////////////////////////////

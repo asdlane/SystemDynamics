@@ -2084,7 +2084,6 @@ WindowListener {
 
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 		}
-
 		public void actionPerformed(ActionEvent e) {
 			String newModelName =
 					ModelNameDialog.showModelNameDialog(start, MainFrame.this,
