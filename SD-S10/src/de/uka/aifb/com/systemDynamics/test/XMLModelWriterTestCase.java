@@ -406,7 +406,7 @@ public class XMLModelWriterTestCase extends TestCase {
       
       // store graph into XML file
       try {
-         graph.storeToXML(FILE_NAME);
+         graph.storeToXML(FILE_NAME,0);
       } catch (Exception e) {
          fail();
       }

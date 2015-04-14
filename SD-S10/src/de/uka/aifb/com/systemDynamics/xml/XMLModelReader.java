@@ -675,7 +675,7 @@ public class XMLModelReader {
       // (1a) create level nodes
       try {
          NodeList levelNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/LevelNodes/LevelNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/LevelNodes/LevelNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < levelNodeElements.getLength(); i++) {
             Element levelNodeElement = (Element)levelNodeElements.item(i);
@@ -710,7 +710,7 @@ public class XMLModelReader {
       // (1b) create source/sink nodes
       try {
          NodeList sourceSinkNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/SourceSinkNodes/SourceSinkNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/SourceSinkNodes/SourceSinkNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
             Element sourceSinkNodeElement = (Element)sourceSinkNodeElements.item(i);
@@ -736,7 +736,7 @@ public class XMLModelReader {
       // (1c) create rate nodes
       try {
          NodeList rateNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/RateNodes/RateNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/RateNodes/RateNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < rateNodeElements.getLength(); i++) {
             Element rateNodeElement = (Element)rateNodeElements.item(i);
@@ -763,7 +763,7 @@ public class XMLModelReader {
       // (1d) create auxiliary nodes
       try {
          NodeList auxiliaryNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < auxiliaryNodeElements.getLength(); i++) {
             Element auxiliaryNodeElement = (Element)auxiliaryNodeElements.item(i);
@@ -791,7 +791,7 @@ public class XMLModelReader {
       // (1e) create constant nodes
       try {
          NodeList constantNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/ConstantNodes/ConstantNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/ConstantNodes/ConstantNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < constantNodeElements.getLength(); i++) {
             Element constantNodeElement = (Element)constantNodeElements.item(i);
@@ -847,7 +847,7 @@ public class XMLModelReader {
       // (2a) set formulas of auxiliary nodes
       try {
          NodeList auxiliaryNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < auxiliaryNodeElements.getLength(); i++) {
             Element auxiliaryNodeElement = (Element)auxiliaryNodeElements.item(i);
@@ -869,7 +869,7 @@ public class XMLModelReader {
       // (2b) set formulas of rate nodes
       try {
          NodeList rateNodeElements =
-            (NodeList)xpath.evaluate("/Model/Nodes/RateNodes/RateNode", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Nodes/RateNodes/RateNode", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < rateNodeElements.getLength(); i++) {
             Element rateNodeElement = (Element)rateNodeElements.item(i);
@@ -892,7 +892,7 @@ public class XMLModelReader {
       // (3a) incoming flows of level nodes
       try {
          NodeList incomingFlowElements =
-            (NodeList)xpath.evaluate("/Model/Flows/RateNode2LevelNodeFlow", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Flows/RateNode2LevelNodeFlow", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < incomingFlowElements.getLength(); i++) {
             Element incomingFlowElement = (Element)incomingFlowElements.item(i);
@@ -930,7 +930,7 @@ public class XMLModelReader {
       // (3b) outgoing flows of level nodes
       try {
          NodeList outgoingFlowElements =
-            (NodeList)xpath.evaluate("/Model/Flows/LevelNode2RateNodeFlow", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Flows/LevelNode2RateNodeFlow", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < outgoingFlowElements.getLength(); i++) {
             Element outgoingFlowElement = (Element)outgoingFlowElements.item(i);
@@ -968,7 +968,7 @@ public class XMLModelReader {
       // (3c) incoming flows of source/sink nodes
       try {
          NodeList incomingFlowElements =
-            (NodeList)xpath.evaluate("/Model/Flows/RateNode2SourceSinkNodeFlow", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Flows/RateNode2SourceSinkNodeFlow", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < incomingFlowElements.getLength(); i++) {
             Element incomingFlowElement = (Element)incomingFlowElements.item(i);
@@ -1006,7 +1006,7 @@ public class XMLModelReader {
       // (3d) outgoing flows of source/sink
       try {
          NodeList outgoingFlowElements =
-            (NodeList)xpath.evaluate("/Model/Flows/SourceSinkNode2RateNodeFlow", document,
+            (NodeList)xpath.evaluate("/Model/SubModel/Flows/SourceSinkNode2RateNodeFlow", document,
                                      XPathConstants.NODESET);
          for (int i = 0; i < outgoingFlowElements.getLength(); i++) {
             Element outgoingFlowElement = (Element)outgoingFlowElements.item(i);
@@ -1060,7 +1060,7 @@ public class XMLModelReader {
       // (4a) auxiliary node 2 auxiliay node dependency edges
       try {
          NodeList auxiliaryNode2auxiliaryNodeDependencyElements =
-            (NodeList)xpath.evaluate("/Model/Dependencies/AuxiliaryNode2AuxiliaryNodeDependency",
+            (NodeList)xpath.evaluate("/Model/SubModel/Dependencies/AuxiliaryNode2AuxiliaryNodeDependency",
                                      document, XPathConstants.NODESET);
          for (int i = 0; i < auxiliaryNode2auxiliaryNodeDependencyElements.getLength(); i++) {
             Element auxiliaryNode2auxiliaryNodeDependencyElement =
@@ -1100,7 +1100,7 @@ public class XMLModelReader {
       // (4b) auxiliary node 2 rate node dependency edges
       try {
          NodeList auxiliaryNode2rateNodeDependencyElements =
-            (NodeList)xpath.evaluate("/Model/Dependencies/AuxiliaryNode2RateNodeDependency",
+            (NodeList)xpath.evaluate("/Model/SubModel/Dependencies/AuxiliaryNode2RateNodeDependency",
                                      document, XPathConstants.NODESET);
          for (int i = 0; i < auxiliaryNode2rateNodeDependencyElements.getLength(); i++) {
             Element auxiliaryNode2rateNodeDependencyElement =
@@ -1140,7 +1140,7 @@ public class XMLModelReader {
       // (4c) constant node 2 auxiliary node dependency edges
       try {
          NodeList constantNode2auxiliaryNodeDependencyElements =
-            (NodeList)xpath.evaluate("/Model/Dependencies/ConstantNode2AuxiliaryNodeDependency",
+            (NodeList)xpath.evaluate("/Model/SubModel/Dependencies/ConstantNode2AuxiliaryNodeDependency",
                                      document, XPathConstants.NODESET);
          for (int i = 0; i < constantNode2auxiliaryNodeDependencyElements.getLength(); i++) {
             Element constantNode2auxiliaryNodeDependencyElement =
@@ -1180,7 +1180,7 @@ public class XMLModelReader {
       // (4d) constant node 2 rate node dependency edges
       try {
          NodeList constantNode2rateNodeDependencyElements =
-            (NodeList)xpath.evaluate("/Model/Dependencies/ConstantNode2RateNodeDependency",
+            (NodeList)xpath.evaluate("/Model/SubModel/Dependencies/ConstantNode2RateNodeDependency",
                                      document, XPathConstants.NODESET);
          for (int i = 0; i < constantNode2rateNodeDependencyElements.getLength(); i++) {
             Element constantNode2rateNodeDependencyElement =
@@ -1220,7 +1220,7 @@ public class XMLModelReader {
       // (4e) level node 2 auxiliary node dependency edges
       try {
          NodeList levelNode2auxiliaryNodeDependencyElements =
-            (NodeList)xpath.evaluate("/Model/Dependencies/LevelNode2AuxiliaryNodeDependency",
+            (NodeList)xpath.evaluate("/Model/SubModel/Dependencies/LevelNode2AuxiliaryNodeDependency",
                                      document, XPathConstants.NODESET);
          for (int i = 0; i < levelNode2auxiliaryNodeDependencyElements.getLength(); i++) {
             Element levelNode2auxiliaryNodeDependencyElement =
@@ -1260,7 +1260,7 @@ public class XMLModelReader {
       // (4f) level node 2 rate node dependency edges
       try {
          NodeList levelNode2rateNodeDependencyElements =
-            (NodeList)xpath.evaluate("/Model/Dependencies/LevelNode2RateNodeDependency",
+            (NodeList)xpath.evaluate("/Model/SubModel/Dependencies/LevelNode2RateNodeDependency",
                                      document, XPathConstants.NODESET);
          for (int i = 0; i < levelNode2rateNodeDependencyElements.getLength(); i++) {
             Element levelNode2rateNodeDependencyElement =

@@ -21,6 +21,9 @@
   <xsd:element name="Model">
     <xsd:complexType>
       <xsd:sequence>
+      <xsd:element name ="SubModel">
+      <xsd:complexType>
+      <xsd:sequence>
         <xsd:element name="Nodes">
           <xsd:complexType>
             <xsd:sequence>
@@ -300,12 +303,8 @@
           </xsd:complexType>
         </xsd:element>
       </xsd:sequence>
-      <xsd:attribute name="name"          type="xsd:string"             use="required"/>
-      <xsd:attribute name="schema"        type="xsd:string" fixed="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" use="required"/>
-      <xsd:attribute name="schemaVersion" type="xsd:string" fixed="1.0" use="required"/>
-    </xsd:complexType>
-
-    <!-- unique Ids -->
+      </xsd:complexType>
+      <!-- unique Ids -->
     <xsd:key name="lnId">
       <xsd:selector xpath="./Nodes/LevelNodes/LevelNode"/>
       <xsd:field xpath="@id"/>
@@ -326,7 +325,7 @@
       <xsd:selector xpath="./Nodes/ConstantNodes/ConstantNode"/>
       <xsd:field xpath="@id"/>
     </xsd:key>
-
+ 
     <!-- references for flows -->
     <xsd:keyref name="F-R2LfromRnIdRef" refer="rnId">
       <xsd:selector xpath="./Flows/RateNode2LevelNodeFlow"/>
@@ -410,8 +409,7 @@
       <xsd:selector xpath="./Dependencies/LevelNode2RateNodeDependency"/>
       <xsd:field xpath="@toRateNodeIdRef"/>
     </xsd:keyref>
-
-    <!-- references for formulas -->
+ <!-- references for formulas -->
     <xsd:keyref name="auxiliaryNodeIdRef" refer="anId">
       <xsd:selector xpath=".//ASTAuxiliaryNode"/>
       <xsd:field xpath="@auxiliaryNodeIdRef"/>
@@ -424,7 +422,12 @@
       <xsd:selector xpath=".//ASTLevelNode"/>
       <xsd:field xpath="@levelNodeIdRef"/>
     </xsd:keyref>
-
+      </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="name"          type="xsd:string"             use="required"/>
+      <xsd:attribute name="schema"        type="xsd:string" fixed="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" use="required"/>
+      <xsd:attribute name="schemaVersion" type="xsd:string" fixed="1.0" use="required"/>
+    </xsd:complexType>
   </xsd:element>
 
   <!-- definition of formulas -->
