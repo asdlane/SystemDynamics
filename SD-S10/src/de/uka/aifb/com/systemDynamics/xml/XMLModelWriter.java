@@ -204,7 +204,8 @@ public class XMLModelWriter {
       }
 
       Document document = builder.newDocument();
-      Element modelElement = document.createElement("Model");
+
+      Element modelElement = document.createElement("SubModel");
       modelElement.setAttribute("name", model.getModelName());
       modelElement.setAttribute("schema", SCHEMA);
       modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
@@ -710,7 +711,7 @@ public class XMLModelWriter {
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            fileOutputStream = new FileOutputStream(new File(fileName));
+            fileOutputStream = new FileOutputStream(new File(fileName), true);
             outputStreamWriter = new OutputStreamWriter(fileOutputStream, "utf-8");
 
             Result result = new StreamResult(outputStreamWriter);
