@@ -1744,7 +1744,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       }
       
       XMLModelWriter.writeXMLSystemDynamicsGraph(this, model, graphNodes, flowEdges, dependencyEdges,
-                                                 fileName, setVariable);
+                                                 fileName);
    }
    
    /**
