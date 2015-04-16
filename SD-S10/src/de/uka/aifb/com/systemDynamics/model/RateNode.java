@@ -76,7 +76,7 @@ public class RateNode extends AbstractNode {
       if (sourceNode == null) {
          throw new IllegalArgumentException("'sourceNode' must not be null.");
       }
-      if (!(sourceNode instanceof LevelNode) && !(sourceNode instanceof SourceSinkNode)) {
+      if (!(sourceNode instanceof LevelNode) && !(sourceNode instanceof SourceSinkNode) && !(sourceNode instanceof ColoredSourceSinkNode)) {
          throw new IllegalArgumentException("'sourceNode' must be a level or a source/sink node.");
       }
       
@@ -108,7 +108,7 @@ public class RateNode extends AbstractNode {
       if (sinkNode == null) {
          throw new IllegalArgumentException("'sinkNode' must not be null.");
       }
-      if (!(sinkNode instanceof LevelNode) && !(sinkNode instanceof SourceSinkNode)) {
+      if (!(sinkNode instanceof LevelNode) && !(sinkNode instanceof SourceSinkNode) && !(sinkNode instanceof ColoredSourceSinkNode)) {
          throw new IllegalArgumentException("'sinkNode' must be a level or a source/sink node.");
       }
       

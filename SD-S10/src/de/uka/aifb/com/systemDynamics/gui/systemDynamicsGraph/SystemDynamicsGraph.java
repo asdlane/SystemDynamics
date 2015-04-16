@@ -763,6 +763,61 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       return successful;
    }
    
+   public boolean addFlow(ColoredSourceSinkNodeGraphCell ColoredsourceSinkNode, RateNodeGraphCell rateNode) {
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      
+	      boolean successful =
+	         model.addFlowFromColoredSourceSinkNode2RateNode((ColoredSourceSinkNode)graphNode2modelNode.get(ColoredsourceSinkNode),
+	                                                  (RateNode)graphNode2modelNode.get(rateNode));
+	      
+	      if (successful) {
+	         this.insertFlowEdge(ColoredsourceSinkNode, rateNode);
+	         
+	         // inform listeners
+	         for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+	            listener.performGraphModifiedEvent();
+	         }
+	      }
+	      
+	      return successful;
+	   }
+	   
+	   /**
+	    * Adds a flow between the specified vertices and in the System Dynamics model.
+	    *
+	    * @param rateNode rate node
+	    * @param sourceSinkNode source/sink node
+	    * @return <code>true</code> iff the flow could be added
+	    */
+	   public boolean addFlow(RateNodeGraphCell rateNode, ColoredSourceSinkNodeGraphCell ColoredsourceSinkNode) {
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      
+	      boolean successful =
+	         model.addFlowFromRateNode2ColoredSourceSinkNode((RateNode)graphNode2modelNode.get(rateNode),
+	                                                  (ColoredSourceSinkNode)graphNode2modelNode.get(ColoredsourceSinkNode));
+	      
+	      if (successful) {
+	         this.insertFlowEdge(rateNode, ColoredsourceSinkNode);
+	         
+	         // inform listeners
+	         for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+	            listener.performGraphModifiedEvent();
+	         }
+	      }
+	      
+	      return successful;
+	   }
+   
    /**
     * Inserts a flow edge. This method does not insert the flow into the internal System Dynamics
     * model.
@@ -1156,6 +1211,29 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       return successful;
    }
+   public boolean removeFlow(ColoredSourceSinkNodeGraphCell ColoredsourceSinkNode, RateNodeGraphCell rateNode) {
+	      if (ColoredsourceSinkNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      
+	      boolean successful =
+	         model.removeFlowFromColoredSourceSinkNode2RateNode((ColoredSourceSinkNode)graphNode2modelNode.get(ColoredsourceSinkNode),
+	                                                     (RateNode)graphNode2modelNode.get(rateNode));
+	      
+	      if (successful) {
+	         this.removeFlowEdge(ColoredsourceSinkNode, rateNode);
+	         
+	         // inform listeners
+	         for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+	            listener.performGraphModifiedEvent();
+	         }
+	      }
+	      
+	      return successful;
+	   }
    
    /**
     * Removes the flow between the specified vertices and in the System Dynamics model.
@@ -1188,6 +1266,30 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       return successful;
    }
+   public boolean removeFlow(RateNodeGraphCell rateNode, ColoredSourceSinkNodeGraphCell ColoredsourceSinkNode) {
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      if (ColoredsourceSinkNode == null) {
+
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      
+	      boolean successful =
+	         model.removeFlowFromRateNode2ColoredSourceSinkNode((RateNode)graphNode2modelNode.get(rateNode),
+	                                                     (ColoredSourceSinkNode)graphNode2modelNode.get(ColoredsourceSinkNode));
+	      
+	      if (successful) {
+	         this.removeFlowEdge(rateNode, ColoredsourceSinkNode);
+	         
+	         // inform listeners
+	         for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+	            listener.performGraphModifiedEvent();
+	         }
+	      }
+	      
+	      return successful;
+	   }
    
    /**
     * Removes a flow edge. This method does not remove the flow from the internal System Dynamics
@@ -1490,6 +1592,9 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
                      if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
                         removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
                      }
+                     if (edgeSource instanceof ColoredSourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+                         removeFlow((ColoredSourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+                      }
                      if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
                         removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
                      }
@@ -1499,6 +1604,9 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
                      if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
                         removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
                      }
+                     if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof ColoredSourceSinkNodeGraphCell) {
+                         removeFlow((RateNodeGraphCell)edgeSource, (ColoredSourceSinkNodeGraphCell)edgeTarget);
+                      }
                   }
                });
                menu.add(removeFlowMenuItem);

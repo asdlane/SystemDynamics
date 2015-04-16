@@ -180,7 +180,7 @@ public void mouseDragged(MouseEvent e) {
          if (tempResult != null) {
             // check node type
             Object cell = tempResult.getParentView().getCell();
-            if (cell instanceof LevelNodeGraphCell || cell instanceof RateNodeGraphCell || cell instanceof SourceSinkNodeGraphCell) {
+            if (cell instanceof LevelNodeGraphCell || cell instanceof RateNodeGraphCell || cell instanceof SourceSinkNodeGraphCell || cell instanceof ColoredSourceSinkNodeGraphCell) {
                result = tempResult;
             }
          }
@@ -202,14 +202,14 @@ public void mouseDragged(MouseEvent e) {
       if (tempResult != null) {
          // check node type
          Object cell = tempResult.getParentView().getCell();
-         if (flowSource instanceof LevelNodeGraphCell || flowSource instanceof SourceSinkNodeGraphCell) {
+         if (flowSource instanceof LevelNodeGraphCell || flowSource instanceof SourceSinkNodeGraphCell || flowSource instanceof ColoredSourceSinkNodeGraphCell) {
             if (cell instanceof RateNodeGraphCell) {
                // level node OR source/sink node -> rate node
                return tempResult;
             }
          } else {
             // flowSource instanceof RateNodeGraphCell
-            if (cell instanceof LevelNodeGraphCell || cell instanceof SourceSinkNodeGraphCell) {
+            if (cell instanceof LevelNodeGraphCell || cell instanceof SourceSinkNodeGraphCell || cell instanceof ColoredSourceSinkNodeGraphCell) {
                // rate node -> level node OR source/sink node
                return tempResult;
             }
@@ -239,12 +239,18 @@ public void mouseReleased(MouseEvent e) {
          if (flowSource instanceof SourceSinkNodeGraphCell && flowTarget instanceof RateNodeGraphCell) {
             successful = graph.addFlow((SourceSinkNodeGraphCell)flowSource, (RateNodeGraphCell)flowTarget);
          }
+         if (flowSource instanceof ColoredSourceSinkNodeGraphCell && flowTarget instanceof RateNodeGraphCell) {
+             successful = graph.addFlow((ColoredSourceSinkNodeGraphCell)flowSource, (RateNodeGraphCell)flowTarget);
+          }
          if (flowSource instanceof RateNodeGraphCell && flowTarget instanceof LevelNodeGraphCell) {
             successful = graph.addFlow((RateNodeGraphCell)flowSource, (LevelNodeGraphCell)flowTarget);
          }
          if (flowSource instanceof RateNodeGraphCell && flowTarget instanceof SourceSinkNodeGraphCell) {
             successful = graph.addFlow((RateNodeGraphCell)flowSource, (SourceSinkNodeGraphCell)flowTarget);
          }
+         if (flowSource instanceof RateNodeGraphCell && flowTarget instanceof ColoredSourceSinkNodeGraphCell) {
+             successful = graph.addFlow((RateNodeGraphCell)flowSource, (ColoredSourceSinkNodeGraphCell)flowTarget);
+          }
          
          if (!successful) {
             // flow could not be added

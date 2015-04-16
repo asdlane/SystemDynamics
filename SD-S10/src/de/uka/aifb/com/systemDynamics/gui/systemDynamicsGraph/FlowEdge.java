@@ -49,6 +49,7 @@ public class FlowEdge extends DefaultEdge {
       if (!(edgeSource instanceof LevelNodeGraphCell)
             && !(edgeSource instanceof RateNodeGraphCell)
             && !(edgeSource instanceof SourceSinkNodeGraphCell)
+            && !(edgeSource instanceof ColoredSourceSinkNodeGraphCell)
             && !(edgeSource instanceof AuxiliaryNodeGraphCell)
             && !(edgeSource instanceof ConstantNodeGraphCell)) {
          throw new IllegalArgumentException("'edgeSource' must have a correct type.");
@@ -57,6 +58,7 @@ public class FlowEdge extends DefaultEdge {
             && !(edgeTarget instanceof RateNodeGraphCell)
             && !(edgeTarget instanceof SourceSinkNodeGraphCell)
             && !(edgeTarget instanceof AuxiliaryNodeGraphCell)
+            && !(edgeTarget instanceof ColoredSourceSinkNodeGraphCell)
             && !(edgeTarget instanceof ConstantNodeGraphCell)) {
          throw new IllegalArgumentException("'edgeTarget' must have a correct type.");
       }
