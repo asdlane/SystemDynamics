@@ -21,7 +21,7 @@
   <xsd:element name="Model">
     <xsd:complexType>
       <xsd:sequence>
-      <xsd:element name ="SubModel">
+      <xsd:element name ="SubModel" maxOccurs="unbounded">
       <xsd:complexType>
       <xsd:sequence>
         <xsd:element name="Nodes">
