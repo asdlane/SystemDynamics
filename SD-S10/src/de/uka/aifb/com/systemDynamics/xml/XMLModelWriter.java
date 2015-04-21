@@ -246,12 +246,13 @@ public class XMLModelWriter {
       DocumentBuilder builder = null;
       try {
          builder = factory.newDocumentBuilder();
+         
       } catch (ParserConfigurationException e) {
          throw new XMLModelReaderWriterException(e);
       }
 
       Document document = builder.newDocument();
-
+     
       Element modelElement = document.createElement("SubModel");
       modelElement.setAttribute("name", model.getModelName());
       modelElement.setAttribute("schema", SCHEMA);
