@@ -1314,9 +1314,11 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       if (outgoingEdges.size() != 1) {
          JOptionPane.showMessageDialog(getParent(), "No unique flow edge to remove.");
+        
       }
-      
-      getGraphLayoutCache().remove(outgoingEdges.toArray());
+      else{
+    	  getGraphLayoutCache().remove(outgoingEdges.toArray());
+      }
    }
    
    /**
