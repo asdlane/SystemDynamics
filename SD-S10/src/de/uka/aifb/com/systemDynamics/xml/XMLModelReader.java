@@ -690,7 +690,7 @@ public class XMLModelReader {
             
             LevelNodeGraphCell levelNode = null;
             try {
-               levelNode = graph.createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate);
+               levelNode = graph.createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, false);
             } catch (NodeParameterOutOfRangeException e) {
                throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
             }
@@ -746,7 +746,7 @@ public class XMLModelReader {
             double yCoordinate = new Double(rateNodeElement.getAttribute("yCoordinate"));
             
             RateNodeGraphCell rateNode = graph.createRateNodeGraphCell(nodeName, xCoordinate,
-                                                                       yCoordinate);
+                                                                       yCoordinate, false);
             id2rateNodeGraphCell.put(id, rateNode);
             AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
             graphCell2Vertex.put(rateNode, vertex);
@@ -805,7 +805,7 @@ public class XMLModelReader {
             try {
             	//need to modify this to include round node -pradeep
                constantNode = graph.createConstantNodeGraphCell(nodeName, constantValue,
-                                                                xCoordinate, yCoordinate);
+                                                                xCoordinate, yCoordinate, false);
             } catch (NodeParameterOutOfRangeException e) {
                throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
             }

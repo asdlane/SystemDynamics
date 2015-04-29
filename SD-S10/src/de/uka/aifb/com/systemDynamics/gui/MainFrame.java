@@ -1817,23 +1817,39 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-
+				JFrame LearnerDecidableframe = new JFrame("InputDialog");
+				Object[] LeanerDecidablechoices = {"yes","no"};
+				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
+					if(LearnerDecidable.equals("yes")){
 					graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
 							newNodeNameParameter.getNodeParameter(),
-							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+					}else{
+						graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+					}
 				}
 				else{
 					//accounts for if user cancels the insert
 					try{
+						
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
 
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-						graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+						if(LearnerDecidable.equals("yes")){
+							graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
-								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+						}
+						else{
+							graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+									newNodeNameParameter.getNodeParameter(),
+									MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+						}
 					}catch(Exception ex){
 
 					}
@@ -1872,15 +1888,28 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-
+				JFrame LearnerDecidableframe = new JFrame("InputDialog");
+				Object[] LeanerDecidablechoices = {"yes","no"};
+				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
+				
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
-					graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+					if(LearnerDecidable.equals("yes")){
+						graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
 							newNodeNameParameter.getNodeParameter(),
 							newNodeNameParameter.getMinParameter(),
 							newNodeNameParameter.getMaxParameter(),
 							newNodeNameParameter.getCurveParameter(),
-							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+					}
+					else{
+						graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								newNodeNameParameter.getMinParameter(),
+								newNodeNameParameter.getMaxParameter(),
+								newNodeNameParameter.getCurveParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+					}
 				}
 				else{
 					//accounts for if user cancels the insert
@@ -1889,12 +1918,23 @@ WindowListener {
 						Object[] choices = SubmodelNumbers.toArray();
 
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-						graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+						if(LearnerDecidable.equals("yes")){
+							graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
 								newNodeNameParameter.getMinParameter(),
 								newNodeNameParameter.getMaxParameter(),
 								newNodeNameParameter.getCurveParameter(),
-								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+						}
+						else{
+							graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
+									newNodeNameParameter.getNodeParameter(),
+									newNodeNameParameter.getMinParameter(),
+									newNodeNameParameter.getMaxParameter(),
+									newNodeNameParameter.getCurveParameter(),
+									MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+						}
+						
 					}catch(Exception ex){
 
 					}
@@ -1927,10 +1967,19 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-
+				JFrame LearnerDecidableframe = new JFrame("InputDialog");
+				Object[] LeanerDecidablechoices = {"yes","no"};
+				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
+				
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
-					graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+					if(LearnerDecidable=="yes"){
+						graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);	
+					}
+					else{
+						graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+					}
+					
 				}
 				else{
 					//accounts for if user cancels the insert
@@ -1939,7 +1988,13 @@ WindowListener {
 						Object[] choices = SubmodelNumbers.toArray();
 
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-						graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
+						if(LearnerDecidable=="yes"){
+							graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+						}
+						else{
+							graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+						}
+						
 					}catch(Exception ex){
 
 					}
@@ -2532,13 +2587,13 @@ WindowListener {
 				if (pasteCells.get(i).contains("Auxiliary")) {
 					String[] attributes = pasteCells.get(i).split(",");
 
-					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), true);
+					graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
 
 				}
 				else if (pasteCells.get(i).contains("Level")){
 					String[] attributes = pasteCells.get(i).split(",");
 
-					graph.get(subModelIndex-1).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createLevelNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]),Double.parseDouble(attributes[3]), Double.parseDouble(attributes[4]), Double.parseDouble(attributes[5]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
 				}
 				else if(pasteCells.get(i).contains("coloredSourceSink")){					
 					String[] attributes = pasteCells.get(i).split(",");
@@ -2552,13 +2607,13 @@ WindowListener {
 
 				else if(pasteCells.get(i).contains("Constant")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
 
 				}
 				
 				else if(pasteCells.get(i).contains("Rate")){
 					String[] attributes = pasteCells.get(i).split(",");
-					graph.get(subModelIndex-1).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
+					graph.get(subModelIndex-1).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
 
 				}
 			}

@@ -24,6 +24,8 @@ package de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.border.Border;
+
 import org.jgraph.graph.*;
 
 /**
@@ -39,15 +41,17 @@ public class LevelNodeGraphCell extends DefaultGraphCell {
    private static final double WIDTH = 80;
    private static final double HEIGHT = 40;
    private static final Color COLOR = Color.ORANGE;
-   
+   private static Color BORDER_COLOR = Color.BLACK;
+   private Color purple = new Color(171,0,255); 
    /**
     * Constructor.
     * 
     * @param name node's name
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param learnerChangeable 
     */
-   public LevelNodeGraphCell(String name, double x, double y, AttributeMap vals) {
+   public LevelNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable) {
       super(name, vals);
       
       if (name == null) {
@@ -56,10 +60,18 @@ public class LevelNodeGraphCell extends DefaultGraphCell {
       
       // add one standard port
       addPort();
-      
+      if (learnerChangeable){
+    	  BORDER_COLOR = purple;
+      }
+      else{
+    	  BORDER_COLOR = Color.black;
+      }
+     
       // layout
       GraphConstants.setBounds(getAttributes(), new  Rectangle2D.Double(x, y, WIDTH, HEIGHT));
       GraphConstants.setSizeable(getAttributes(), false);
+      GraphConstants.setBorderColor(getAttributes(), BORDER_COLOR);
+      
       GraphConstants.setGradientColor(getAttributes(), COLOR);
       GraphConstants.setOpaque(getAttributes(), true);
    }

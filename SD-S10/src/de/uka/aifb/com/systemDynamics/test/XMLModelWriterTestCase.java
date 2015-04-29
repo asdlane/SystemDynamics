@@ -391,10 +391,10 @@ public class XMLModelWriterTestCase extends TestCase {
       
       SourceSinkNodeGraphCell sourceSinkNode1 = graph.createSourceSinkNodeGraphCell(20, 20);
       SourceSinkNodeGraphCell sourceSinkNode2 = graph.createSourceSinkNodeGraphCell(500, 20);
-      LevelNodeGraphCell levelNode = graph.createLevelNodeGraphCell("LevelNode", 0, 260, 40, 0, 0, 3);
-      RateNodeGraphCell rateNode1 = graph.createRateNodeGraphCell("Rate node 1", 170, 40);
-      RateNodeGraphCell rateNode2 = graph.createRateNodeGraphCell("Rate node 2", 400, 40);
-      ConstantNodeGraphCell constantNode = graph.createConstantNodeGraphCell("ConstantNode", 0, 275, 200);
+      LevelNodeGraphCell levelNode = graph.createLevelNodeGraphCell("LevelNode", 0, 260, 40, 0, 0, 3, false);
+      RateNodeGraphCell rateNode1 = graph.createRateNodeGraphCell("Rate node 1", 170, 40, false);
+      RateNodeGraphCell rateNode2 = graph.createRateNodeGraphCell("Rate node 2", 400, 40, false);
+      ConstantNodeGraphCell constantNode = graph.createConstantNodeGraphCell("ConstantNode", 0, 275, 200, false);
       
       graph.setFormula(rateNode1, (ConstantNode)graph.getModelNode(constantNode), false);
       graph.setFormula(rateNode2, (ConstantNode)graph.getModelNode(constantNode), false);

@@ -37,22 +37,28 @@ public class RateNodeGraphCell extends DefaultGraphCell {
    private static final long serialVersionUID = 1L;
    
    private static final double LENGTH = 40;
-   private static final Color BORDER_COLOR = Color.BLACK;
-   
+   private static Color BORDER_COLOR = Color.BLACK;
+   private Color purple = new Color(171,0,255); 
    /**
     * Constructor.
     * 
     * @param name node's name
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param learnerChangeable 
     */
-   public RateNodeGraphCell(String name, double x, double y, AttributeMap vals) {
+   public RateNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable) {
       super(name, vals);
       
       if (name == null) {
          throw new IllegalArgumentException("'name' must not be null.");
       }
-      
+      if(learnerChangeable){
+    	  BORDER_COLOR = purple;
+      }
+      else{
+    	  BORDER_COLOR = Color.black;
+      }
       // add one standard port
       addPort();
       

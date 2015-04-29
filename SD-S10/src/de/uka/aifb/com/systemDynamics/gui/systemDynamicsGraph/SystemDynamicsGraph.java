@@ -194,10 +194,11 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param curve characteristic behaviour of this LevelNode
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param  learnerChangeable 
     * @return created graph vertex
     */
    public LevelNodeGraphCell createLevelNodeGraphCell(String nodeName, double startValue, double minValue, double maxValue, double curve,
-                                                      double x, double y) {
+                                                      double x, double y, boolean learnerChangeable) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
@@ -208,12 +209,12 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	  vals.put("minVal", minValue);
 	  vals.put("maxVal", maxValue);
 	  vals.put("curve", curve);
-	  
+	  vals.put("LearnerChangeable", learnerChangeable);
       // create node
       LevelNode levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve);
       
       //create graph cell with the attribute map attached to it.
-      LevelNodeGraphCell levelNodeGraphCell = new LevelNodeGraphCell(nodeName, x, y, vals);
+      LevelNodeGraphCell levelNodeGraphCell = new LevelNodeGraphCell(nodeName, x, y, vals, learnerChangeable);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(levelNodeGraphCell);
@@ -237,20 +238,22 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param nodeName node name
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param learnerDecidable 
     * @return created graph vertex
     */
-   public RateNodeGraphCell createRateNodeGraphCell(String nodeName, double x, double y) {
+   public RateNodeGraphCell createRateNodeGraphCell(String nodeName, double x, double y, boolean learnerChangeable) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
       //create a new attribute map to store all the values that pertain to the node trying to be created.
       AttributeMap vals = new AttributeMap();
 	  vals.put("name", nodeName);
+	  vals.put("LearnerChangeable", learnerChangeable);
       // create node
       RateNode rateNode = model.createRateNode(nodeName);
       
       //create graph cell with the attribute map attached to it.
-      RateNodeGraphCell rateNodeGraphCell = new RateNodeGraphCell(nodeName, x, y, vals);
+      RateNodeGraphCell rateNodeGraphCell = new RateNodeGraphCell(nodeName, x, y, vals, learnerChangeable);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(rateNodeGraphCell);
@@ -275,10 +278,11 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @param constantValue constant value
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param b 
     * @return created graph vertex
     */
    public ConstantNodeGraphCell createConstantNodeGraphCell(String nodeName, double constantValue,
-                                                            double x, double y) {
+                                                            double x, double y, boolean LearnerChangeable) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
@@ -290,9 +294,9 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       AttributeMap vals = new AttributeMap();
 	  vals.put("name", nodeName);
 	  vals.put("constval", constantValue);
-	  
+	  vals.put("LearnerChangeable", LearnerChangeable);
   	  //create graph cell with the attribute map attached to it.
-      ConstantNodeGraphCell constantNodeGraphCell = new ConstantNodeGraphCell(nodeName, x, y,vals);
+      ConstantNodeGraphCell constantNodeGraphCell = new ConstantNodeGraphCell(nodeName, x, y,vals, LearnerChangeable);
       
       // insert vertex to graph
       getGraphLayoutCache().insert(constantNodeGraphCell);
@@ -354,11 +358,13 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * 
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param leaernerChangeable 
     * @return created graph vertex
     */
    public SourceSinkNodeGraphCell createSourceSinkNodeGraphCell(double x, double y) {
       // create node
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
+	   
+	   SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       SourceSinkNodeGraphCell sourceSinkNodeGraphCell = new SourceSinkNodeGraphCell(x, y);
       
       // insert vertex to graph

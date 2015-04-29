@@ -35,7 +35,7 @@ public class ConstantNodeGraphCell extends DefaultGraphCell {
    
    private static final long serialVersionUID = 1L;
    
-   private static final Color BORDER_COLOR = Color.BLACK;
+   private static Color BORDER_COLOR = Color.BLACK;
    
    /** radius of circle (bounding rectangle is larger) */
    private static final double RADIUS = 20;
@@ -46,11 +46,19 @@ public class ConstantNodeGraphCell extends DefaultGraphCell {
     * @param name node's name
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
+ * @param learnerChangeable 
     */
-   public ConstantNodeGraphCell(String name, double x, double y, AttributeMap vals) {
+   private Color purple = new Color(171,0,255); 
+   
+   public ConstantNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable) {
 	   super(name,vals);
 	   
-      
+	   if(learnerChangeable){
+	    	 BORDER_COLOR = purple;
+	      }
+	      else{
+	    	 BORDER_COLOR = Color.black;
+	  }
       
       
       if (name == null) {
