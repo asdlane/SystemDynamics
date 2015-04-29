@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -140,7 +141,15 @@ public class XMLModelWriter {
       // XML output
       writeDocumentToXMLFile(document, fileName);
    }
-
+   public static void WriteGraph(
+           Model model,
+           LinkedList<DefaultGraphCell> graphNodes,
+           LinkedList<FlowEdge> flowEdges,
+           LinkedList<DefaultEdge> dependencyEdges,
+           String fileName, ArrayList<SystemDynamicsGraph> graph){
+	   System.out.println(graph.size());
+	   
+   }
    /**
     * Writes a System Dynamics graph into an XML file.
     *
@@ -252,12 +261,14 @@ public class XMLModelWriter {
       }
 
       Document document = builder.newDocument();
-     
-      Element modelElement = document.createElement("SubModel");
+      Element modelElement = document.createElement("Model");
+      
       modelElement.setAttribute("name", model.getModelName());
       modelElement.setAttribute("schema", SCHEMA);
       modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
       document.appendChild(modelElement);
+      Element submodelElement = document.createElement("SubModel");
+      modelElement.appendChild(submodelElement);
 
       int nextLevelNodeId = 1;
       int nextSourceSinkNodeId = 1;

@@ -388,7 +388,8 @@ public class XMLModelWriterTestCase extends TestCase {
       
       // create graph
       SystemDynamicsGraph graph = new SystemDynamicsGraph(start, new JFrame());
-      
+      ArrayList<SystemDynamicsGraph> graphList = new ArrayList<SystemDynamicsGraph>();
+      graphList.add(graph);
       SourceSinkNodeGraphCell sourceSinkNode1 = graph.createSourceSinkNodeGraphCell(20, 20);
       SourceSinkNodeGraphCell sourceSinkNode2 = graph.createSourceSinkNodeGraphCell(500, 20);
       LevelNodeGraphCell levelNode = graph.createLevelNodeGraphCell("LevelNode", 0, 260, 40, 0, 0, 3, false);
@@ -406,7 +407,7 @@ public class XMLModelWriterTestCase extends TestCase {
       
       // store graph into XML file
       try {
-         graph.storeToXML(FILE_NAME,0);
+         graph.storeToXML(FILE_NAME, graphList);
       } catch (Exception e) {
          fail();
       }
