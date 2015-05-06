@@ -1,4 +1,5 @@
 /* ======================================================================================================
+
  * SystemDynamics: Java application for modeling, visualization and execution of System Dynamics models
  * ======================================================================================================
  *
@@ -98,7 +99,6 @@ import de.uka.aifb.com.systemDynamics.model.UselessNodeException;
  * 2007-06-20: writeDocumentToXMLFile(Document, String) was rewritten: root element is search for
  *                (tag name is not important any longer)
  */
-
 /**
  * This class implements an XML output for System Dynamics models to store it in an XML file.
  *
@@ -146,9 +146,48 @@ public class XMLModelWriter {
            LinkedList<DefaultGraphCell> graphNodes,
            LinkedList<FlowEdge> flowEdges,
            LinkedList<DefaultEdge> dependencyEdges,
-           String fileName, ArrayList<SystemDynamicsGraph> graph){
-	   System.out.println(graph.size());
-	   
+           String fileName, ArrayList<SystemDynamicsGraph> graph)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
+           RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException{
+	  
+	   if (graph == null) {
+	         throw new IllegalArgumentException("'graph' must not be null.");
+	      }
+	      if (model == null) {
+	         throw new IllegalArgumentException("'model' must not be null.");
+	      }
+	      if (graphNodes == null) {
+	         throw new IllegalArgumentException("'graphNodes' must not be null.");
+	      }
+	      if (flowEdges == null) {
+	         throw new IllegalArgumentException("'flowEdges' must not be null.");
+	      }
+	      if (dependencyEdges == null) {
+	         throw new IllegalArgumentException("'dependencyEdges' must not be null.");
+	      }
+	      if (fileName == null) {
+	         throw new IllegalArgumentException("'fileName' must not be null.");
+	      }
+
+	      HashMap<AbstractNode, String> node2Id = createNode2IdMap();
+
+	      // create DOM document for model
+	      ArrayList<Document> document = new ArrayList<Document>();
+	      try{
+	    	  for(int i=0;i<graph.size();i++){
+	    		  //SOMETHING IS CAUSING INFINITE LOOPING HERE.......
+	    		  document.add(createDocumentForModel((Model)graph.get(i).getModel(), node2Id));
+	    		  // add position information of nodes and additional control points to DOC document
+	    		 
+	    	  }
+	    	  System.out.println(document.size());
+	    	  addPositionInformationToDocument(document.get(1), graph.get(1), graphNodes, flowEdges, dependencyEdges,
+                     	node2Id);
+// XML output
+	    	  writeDocumentToXMLFile(document.get(1), fileName);
+	      }catch(Exception e){
+	    	  JOptionPane.showMessageDialog(null, "Rate nodes must have a formula","missing formula on rate node", JOptionPane.ERROR_MESSAGE);
+	    	  
+	      }
    }
    /**
     * Writes a System Dynamics graph into an XML file.
@@ -770,7 +809,7 @@ public class XMLModelWriter {
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            fileOutputStream = new FileOutputStream(new File(fileName), true);
+            fileOutputStream = new FileOutputStream(new File(fileName), false);
             outputStreamWriter = new OutputStreamWriter(fileOutputStream, "utf-8");
 
             Result result = new StreamResult(outputStreamWriter);
