@@ -24,7 +24,9 @@ package de.uka.aifb.com.systemDynamics.xml;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -146,7 +148,7 @@ public class XMLModelWriter {
            LinkedList<DefaultGraphCell> graphNodes,
            LinkedList<FlowEdge> flowEdges,
            LinkedList<DefaultEdge> dependencyEdges,
-           String fileName, ArrayList<SystemDynamicsGraph> graph)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
+           String fileName, ArrayList<SystemDynamicsGraph> graph, boolean clearFile)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
            RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException{
 	  
 	   if (graph == null) {
@@ -172,22 +174,59 @@ public class XMLModelWriter {
 
 	      // create DOM document for model
 	      ArrayList<Document> document = new ArrayList<Document>();
+	      if(clearFile){
+	    	  File output = new File(fileName);
+	    	  output.delete();
+	      }
+          FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(new File(fileName), true);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+	        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+	        bw.newLine();
+	        bw.write("<model>");
+	        bw.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+          
+          
 	      try{
 	    	  for(int i=0;i<graph.size();i++){
-	    		  //SOMETHING IS CAUSING INFINITE LOOPING HERE.......
-	    		  document.add(createDocumentForModel((Model)graph.get(i).getModel(), node2Id));
+	    		  document.add(createDocumentForModel(graph.get(i).model, node2Id));
 	    		  // add position information of nodes and additional control points to DOC document
-	    		 
-	    	  }
-	    	  System.out.println(document.size());
-	    	  addPositionInformationToDocument(document.get(1), graph.get(1), graphNodes, flowEdges, dependencyEdges,
+	    		 	    	  	   
+	    		  try{
+	    		  addPositionInformationToDocument(document.get(i), graph.get(i), graphNodes, flowEdges, dependencyEdges,
                      	node2Id);
+	    		  }
+	    		  catch(Exception e){
+	    			  
+	    			  
+	    		  }
 // XML output
-	    	  writeDocumentToXMLFile(document.get(1), fileName);
+	    		  writeDocumentToXMLFile(document.get(i), fileName);
+	    	  }
 	      }catch(Exception e){
-	    	  JOptionPane.showMessageDialog(null, "Rate nodes must have a formula","missing formula on rate node", JOptionPane.ERROR_MESSAGE);
+	    	  e.printStackTrace();
 	    	  
 	      }
+	      try {
+				fos = new FileOutputStream(new File(fileName), true);
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		        bw.write("</model>");
+		        bw.close();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
    }
    /**
     * Writes a System Dynamics graph into an XML file.
@@ -300,14 +339,13 @@ public class XMLModelWriter {
       }
 
       Document document = builder.newDocument();
-      Element modelElement = document.createElement("Model");
+      Element modelElement = document.createElement("SubModel");
       
       modelElement.setAttribute("name", model.getModelName());
       modelElement.setAttribute("schema", SCHEMA);
       modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
       document.appendChild(modelElement);
-      Element submodelElement = document.createElement("SubModel");
-      modelElement.appendChild(submodelElement);
+      
 
       int nextLevelNodeId = 1;
       int nextSourceSinkNodeId = 1;
@@ -803,13 +841,18 @@ public class XMLModelWriter {
       try {
          try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            // work around for indentation (maybe XML parser implementation dependent!)
+            // work around for indentation (m"aybe XML parser implementation dependent!)
             transformerFactory.setAttribute("indent-number", new Integer(2));
 
             Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-            fileOutputStream = new FileOutputStream(new File(fileName), false);
+            
+            
+            
+            
+            fileOutputStream = new FileOutputStream(new File(fileName), true);                    
+            
             outputStreamWriter = new OutputStreamWriter(fileOutputStream, "utf-8");
 
             Result result = new StreamResult(outputStreamWriter);

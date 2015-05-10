@@ -61,7 +61,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
    
    private JFrame frame;
    
-   private Model model;
+   public Model model;
    private HashMap<AbstractNode, DefaultGraphCell> modelNode2graphNode;
    private HashMap<DefaultGraphCell, AbstractNode> graphNode2modelNode;
    
@@ -1720,7 +1720,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @throws UselessNodeException if a node has no influence on a level node
     * @throws XMLModelReaderWriterException if there is any exception (wrapper for inner exception)
     */
-   public void storeToXML(String fileName, ArrayList<SystemDynamicsGraph> graph) throws AuxiliaryNodesCycleDependencyException,
+   public void storeToXML(String fileName, ArrayList<SystemDynamicsGraph> graph, boolean clearFile) throws AuxiliaryNodesCycleDependencyException,
                                                   NoFormulaException,
                                                   NoLevelNodeException,
                                                   RateNodeFlowException,
@@ -1753,7 +1753,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       //XMLModelWriter.writeXMLSystemDynamicsGraph(this, model, graphNodes, flowEdges, dependencyEdges,
                          //                        fileName);
-      XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph);
+      XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, clearFile);
       
    }
    
