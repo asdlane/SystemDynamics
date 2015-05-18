@@ -25,9 +25,13 @@ import de.uka.aifb.com.systemDynamics.SystemDynamics;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.*;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
+
+import java.awt.Color;
 import java.io.*;
 import java.util.*;
+
 import javax.swing.JFrame;
+
 import junit.framework.*;
 
 /**
@@ -79,9 +83,9 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with auxiliary nodes cycle dependency -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-      RateNode rateNode = model.createRateNode("Rate node");
+      RateNode rateNode = model.createRateNode("Rate node", false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
       AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
       
@@ -128,9 +132,9 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with rate node without formula -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-      RateNode rateNode = model.createRateNode("Rate node");
+      RateNode rateNode = model.createRateNode("Rate node", false);
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       
@@ -153,8 +157,8 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with rate node without flow -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       model.setFormula(rateNode, levelNode);
       
       try {
@@ -176,7 +180,7 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with useless nodes -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      model.createLevelNode("Level node", 0, 0, 0, 3);
+      model.createLevelNode("Level node", 0, 0, 0, 3, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0);
             
       try {
@@ -197,7 +201,7 @@ public class XMLModelWriterTestCase extends TestCase {
    public void testWriteXMLModel7() {
       Model model = new Model();
       model.setModelName("Model name");
-      model.createLevelNode("Level node", 0, 0, 0, 3);
+      model.createLevelNode("Level node", 0, 0, 0, 3, false);
       
       try {
          XMLModelWriter.writeXMLModel(model, FILE_NAME);
@@ -233,11 +237,11 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       
-      LevelNode levelNodeA = model.createLevelNode("Level node A", 1, 0, 0, 3);
-      LevelNode levelNodeB = model.createLevelNode("Level node B", -1.234, 0, 0, 3);
+      LevelNode levelNodeA = model.createLevelNode("Level node A", 1, 0, 0, 3, false);
+      LevelNode levelNodeB = model.createLevelNode("Level node B", -1.234, 0, 0, 3, false);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-      RateNode rateNode1 = model.createRateNode("Rate node 1");
-      RateNode rateNode2 = model.createRateNode("Rate node 2");
+      RateNode rateNode1 = model.createRateNode("Rate node 1", false);
+      RateNode rateNode2 = model.createRateNode("Rate node 2", false);
       AuxiliaryNode auxiliaryNodeA = model.createAuxiliaryNode("Auxiliary node A");
       AuxiliaryNode auxiliaryNodeB = model.createAuxiliaryNode("Auxiliary node B");
       AuxiliaryNode auxiliaryNodeC = model.createAuxiliaryNode("Auxiliary node C");
@@ -406,8 +410,10 @@ public class XMLModelWriterTestCase extends TestCase {
       graph.addFlow(rateNode2, sourceSinkNode2);
       
       // store graph into XML file
+      ArrayList<Color> colors = new ArrayList<Color>();
+      colors.add(new Color(20,30,40));
       try {
-         graph.storeToXML(FILE_NAME, graphList, false);
+         graph.storeToXML(FILE_NAME, graphList, colors, false);
       } catch (Exception e) {
          fail();
       }

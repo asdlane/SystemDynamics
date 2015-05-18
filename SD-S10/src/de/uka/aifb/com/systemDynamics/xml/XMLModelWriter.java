@@ -22,6 +22,7 @@
 
 package de.uka.aifb.com.systemDynamics.xml;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
@@ -138,7 +139,7 @@ public class XMLModelWriter {
       HashMap<AbstractNode, String> node2Id = createNode2IdMap();
 
       // create DOM document for model
-      Document document = createDocumentForModel(model, node2Id);
+      Document document = createDocumentForModel(model, Color.red, node2Id);
 
       // XML output
       writeDocumentToXMLFile(document, fileName);
@@ -148,7 +149,7 @@ public class XMLModelWriter {
            LinkedList<DefaultGraphCell> graphNodes,
            LinkedList<FlowEdge> flowEdges,
            LinkedList<DefaultEdge> dependencyEdges,
-           String fileName, ArrayList<SystemDynamicsGraph> graph, boolean clearFile)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
+           String fileName, ArrayList<SystemDynamicsGraph> graph, ArrayList<Color> submodelColors, boolean clearFile)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
            RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException{
 	  
 	   if (graph == null) {
@@ -197,7 +198,7 @@ public class XMLModelWriter {
           
 	      try{
 	    	  for(int i=0;i<graph.size();i++){
-	    		  document.add(createDocumentForModel(graph.get(i).model, node2Id));
+	    		  document.add(createDocumentForModel(graph.get(i).model, submodelColors.get(i), node2Id));
 	    		  // add position information of nodes and additional control points to DOC document
 	    		 	    	  	   
 	    		  try{
@@ -277,7 +278,7 @@ public class XMLModelWriter {
       // create DOM document for model
       Document document = null;
       try{
-    	  document = createDocumentForModel(model, node2Id);
+    	  document = createDocumentForModel(model, Color.red, node2Id);
     	  // add position information of nodes and additional control points to DOC document
           addPositionInformationToDocument(document, graph, graphNodes, flowEdges, dependencyEdges,
                                            node2Id);
@@ -315,7 +316,7 @@ public class XMLModelWriter {
     * @throws UselessNodeException if a node has no influence on a level node
     * @throws XMLModelReaderWriterException if there is any exception (wrapper for inner exception)
     */
-   protected static Document createDocumentForModel(Model model, HashMap<AbstractNode, String> node2Id)
+   protected static Document createDocumentForModel(Model model, Color submodelColor, HashMap<AbstractNode, String> node2Id)
          throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
                 RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException {
       if (model == null) {
@@ -344,6 +345,7 @@ public class XMLModelWriter {
       modelElement.setAttribute("name", model.getModelName());
       modelElement.setAttribute("schema", SCHEMA);
       modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
+      modelElement.setAttribute("color", submodelColor.getRed() + ", " + submodelColor.getGreen() + ", " + submodelColor.getBlue());
       document.appendChild(modelElement);
       
 
@@ -358,6 +360,7 @@ public class XMLModelWriter {
       modelElement.appendChild(nodesElement);
       // (1a) level nodes
       Element levelNodesElement = document.createElement("LevelNodes");
+      
       nodesElement.appendChild(levelNodesElement);
       for (LevelNode levelNode : model.getLevelNodes()) {
          String id = createId("LN", nextLevelNodeId++);
@@ -371,6 +374,8 @@ public class XMLModelWriter {
          levelNodeElement.setAttribute("minValue", String.valueOf(levelNode.getMinValue()));
          levelNodeElement.setAttribute("maxValue", String.valueOf(levelNode.getMaxValue()));
          levelNodeElement.setAttribute("curve", String.valueOf(levelNode.getCurveValue()));
+         levelNodeElement.setAttribute("learnerChangeable", String.valueOf(levelNode.getLearnerChangeable()));
+         
       }
       // (1b) source/sink nodes
       if (!model.getSourceSinkNodes().isEmpty()) {
@@ -397,6 +402,7 @@ public class XMLModelWriter {
             rateNodesElement.appendChild(rateNodeElement);
             rateNodeElement.setAttribute("id", id);
             rateNodeElement.setAttribute("name", rateNode.getNodeName());
+            rateNodeElement.setAttribute("learnerChangeable", String.valueOf(rateNode.getLearnerChangeable()));
          }
       }
       // (1d) auxiliary nodes
@@ -458,8 +464,14 @@ public class XMLModelWriter {
                (Element)xpath.evaluate("/Model/Nodes/RateNodes/RateNode[@id='" + id + "']",
                                        document, XPathConstants.NODE);
             Element formulaElement = document.createElement("Formula");
-            formulaElement.appendChild(createXMLForFormula(document, rateNode.getFormula(), node2Id));
-            rateNodeElement.appendChild(formulaElement);
+            
+            try{
+            	formulaElement.appendChild(createXMLForFormula(document, rateNode.getFormula(), node2Id));
+            	 rateNodeElement.appendChild(formulaElement);
+            }catch(Exception e){
+            	
+            }
+                                
          } catch (XPathExpressionException e) {
             // correct xpath expression -> no exception
             throw new XMLModelReaderWriterException(e);

@@ -67,8 +67,8 @@ public class ModelTestCase extends TestCase {
       // (2) correct parameter -> CORRECT
       model.setModelName("Model name");
       
-      // (3) set model name while model is unchangeable -> WRONG
-      model.createLevelNode("Level node", 0, 0, 0, 3);
+      // (3) set model name while model is unchangeable -,> WRONG
+      model.createLevelNode("Level node", 0, 0, 0, 3, false);
       try {
          model.validateModelAndSetUnchangeable(0);
       } catch (Exception e) {
@@ -101,7 +101,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(model.getLevelNodes().isEmpty());
       
       // (2) create first level node
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
       
       // (3) check that first level node is in set of level nodes
       assertTrue(model.getLevelNodes().size() == 1);
@@ -121,7 +121,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(model.getLevelNodes().size() == 1);
       
       // (5) create second level node
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
       
       // (6) check that first and second level nodes are in set of level nodes
       assertTrue(model.getLevelNodes().size() == 2);
@@ -136,7 +136,7 @@ public class ModelTestCase extends TestCase {
       }
       
       try {
-         model.createLevelNode("Level node 3", 0, 0, 0, 3);
+         model.createLevelNode("Level node 3", 0, 0, 0, 3, false);
          fail();
       } catch (ModelNotChangeableException e) {
          // do nothing
@@ -153,7 +153,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(model.getRateNodes().isEmpty());
       
       // (2) create first rate node
-      RateNode rateNode1 = model.createRateNode("Rate node 1");
+      RateNode rateNode1 = model.createRateNode("Rate node 1", false);
       
       // (3) check that first rate node is in set of rate nodes
       assertTrue(model.getRateNodes().size() == 1);
@@ -173,7 +173,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(model.getRateNodes().size() == 1);
       
       // (5) create second rate node
-      RateNode rateNode2 = model.createRateNode("Rate node 2");
+      RateNode rateNode2 = model.createRateNode("Rate node 2", false);
       
       // (6) check that first and second rate nodes are in set of rate nodes
       assertTrue(model.getRateNodes().size() == 2);
@@ -188,7 +188,7 @@ public class ModelTestCase extends TestCase {
       }
       
       try {
-         model.createRateNode("Rate node 3");
+         model.createRateNode("Rate node 3", false);
          fail();
       } catch (ModelNotChangeableException e) {
          // do nothing
@@ -368,7 +368,7 @@ public class ModelTestCase extends TestCase {
       }
       
       // (2) check that no node can be removed after model was set unchangeable
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
       
       try {
          PrivateAccessor.setField(model, "isChangeable", Boolean.FALSE);
@@ -392,10 +392,10 @@ public class ModelTestCase extends TestCase {
     */
    public void testRemoveNode2() {
       // create model
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode1 = model.createRateNode("Rate node 1");
-      RateNode rateNode2 = model.createRateNode("Rate node 2");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode1 = model.createRateNode("Rate node 1", false);
+      RateNode rateNode2 = model.createRateNode("Rate node 2", false);
       ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
       ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
@@ -470,9 +470,9 @@ public class ModelTestCase extends TestCase {
     */
    public void testRemoveNode3() {
       // create model
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode1 = model.createRateNode("Rate node 1");
-      RateNode rateNode2 = model.createRateNode("Rate node 2");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode1 = model.createRateNode("Rate node 1", false);
+      RateNode rateNode2 = model.createRateNode("Rate node 2", false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0);
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode("Auxiliary node");
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
@@ -509,8 +509,8 @@ public class ModelTestCase extends TestCase {
     * {@link de.uka.aifb.com.systemDynamics.model.Model#setNodeName(AbstractNode, String)}.
     */
    public void testSetNodeName() {
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0);
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode("Auxiliary node");
       
@@ -575,7 +575,7 @@ public class ModelTestCase extends TestCase {
     * {@link de.uka.aifb.com.systemDynamics.model.Model#setStartValue(LevelNode, double)}.
     */
    public void testSetStartValue() {
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
       
       // (1) node 'null' -> WRONG
       try {
@@ -645,8 +645,8 @@ public class ModelTestCase extends TestCase {
     * {@link de.uka.aifb.com.systemDynamics.model.Model#setFormula(AbstractNode, ASTElement)}.
     */
    public void testSetFormula()  {
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0);
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode("Auxiliary node");
       
@@ -713,10 +713,10 @@ public class ModelTestCase extends TestCase {
     *
     */
    public void testFlowFromLevelNode2RateNode() {
-      LevelNode levelNodeA = model.createLevelNode("Level node A", 0, 0, 0, 3); 
-      LevelNode levelNodeB = model.createLevelNode("Level node B", 0, 0, 0, 3);
-      RateNode rateNodeA = model.createRateNode("Rate node A");
-      RateNode rateNodeB = model.createRateNode("Rate node B");
+      LevelNode levelNodeA = model.createLevelNode("Level node A", 0, 0, 0, 3, false); 
+      LevelNode levelNodeB = model.createLevelNode("Level node B", 0, 0, 0, 3, false);
+      RateNode rateNodeA = model.createRateNode("Rate node A", false);
+      RateNode rateNodeB = model.createRateNode("Rate node B", false);
       
       assertTrue(levelNodeA.getOutgoingFlows().isEmpty());
       assertTrue(levelNodeB.getOutgoingFlows().isEmpty());
@@ -869,10 +869,10 @@ public class ModelTestCase extends TestCase {
     * {@link de.uka.aifb.com.systemDynamics.model.Model#removeFlowFromRateNode2LevelNode(RateNode, LevelNode)}.
     */
    public void testFlowFromRateNode2LevelNode() {
-      RateNode rateNodeA = model.createRateNode("Rate node A");
-      RateNode rateNodeB = model.createRateNode("Rate node B");
-      LevelNode levelNodeA = model.createLevelNode("Level node A", 0, 0, 0, 3);
-      LevelNode levelNodeB = model.createLevelNode("Level node B", 0, 0, 0, 3);
+      RateNode rateNodeA = model.createRateNode("Rate node A", false);
+      RateNode rateNodeB = model.createRateNode("Rate node B", false);
+      LevelNode levelNodeA = model.createLevelNode("Level node A", 0, 0, 0, 3, false);
+      LevelNode levelNodeB = model.createLevelNode("Level node B", 0, 0, 0, 3, false);
       
       assertTrue(rateNodeA.getFlowSink() == null);
       assertTrue(rateNodeB.getFlowSink() == null);
@@ -1022,8 +1022,8 @@ public class ModelTestCase extends TestCase {
    public void testFlowFromSourceSinkNode2RateNode() {
       SourceSinkNode sourceSinkNodeA = model.createSourceSinkNode(); 
       SourceSinkNode sourceSinkNodeB = model.createSourceSinkNode();
-      RateNode rateNodeA = model.createRateNode("Rate node A");
-      RateNode rateNodeB = model.createRateNode("Rate node B");
+      RateNode rateNodeA = model.createRateNode("Rate node A", false);
+      RateNode rateNodeB = model.createRateNode("Rate node B", false);
       
       assertTrue(sourceSinkNodeA.getOutgoingFlows().isEmpty());
       assertTrue(sourceSinkNodeB.getOutgoingFlows().isEmpty());
@@ -1176,8 +1176,8 @@ public class ModelTestCase extends TestCase {
     * {@link de.uka.aifb.com.systemDynamics.model.Model#removeFlowFromRateNode2SourceSinkNode(RateNode, SourceSinkNode)}.
     */
    public void testFlowFromRateNode2SourceSinkNode() {
-      RateNode rateNodeA = model.createRateNode("Rate node A");
-      RateNode rateNodeB = model.createRateNode("Rate node B");
+      RateNode rateNodeA = model.createRateNode("Rate node A", false);
+      RateNode rateNodeB = model.createRateNode("Rate node B", false);
       SourceSinkNode sourceSinkNodeA = model.createSourceSinkNode();
       SourceSinkNode sourceSinkNodeB = model.createSourceSinkNode();
       
@@ -1344,13 +1344,13 @@ public class ModelTestCase extends TestCase {
     * Tests the method {@link de.uka.aifb.com.systemDynamics.model.Model#validateModel()}.
     */
    public void testValidateModel2() {
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       
       // 'rateNode1' without any flow -> WRONG
-      RateNode rateNode1 = model.createRateNode("Rate node 1");
+      RateNode rateNode1 = model.createRateNode("Rate node 1", false);
       
       try {
          model.validateModel(0);
@@ -1403,7 +1403,7 @@ public class ModelTestCase extends TestCase {
       }
       
       // 'rateNode2' has outgoing flow -> WRONG
-      RateNode rateNode2 = model.createRateNode("Rate node 2");
+      RateNode rateNode2 = model.createRateNode("Rate node 2", false);
       model.addFlowFromRateNode2LevelNode(rateNode2, levelNode2);
       model.setFormula(rateNode2, constantNode);
       
@@ -1443,12 +1443,12 @@ public class ModelTestCase extends TestCase {
     * Tests the method {@link de.uka.aifb.com.systemDynamics.model.Model#validateModel()}.
     */
    public void testValidateModel3() {
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
       ConstantNode constantNode = model.createConstantNode("ConstantNode", 0);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       
       // (1) rate node without formula -> WRONG
-      RateNode rateNode = model.createRateNode("Rate node");
+      RateNode rateNode = model.createRateNode("Rate node", false);
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       
@@ -1495,7 +1495,7 @@ public class ModelTestCase extends TestCase {
     */
    public void testValidateModel4() {
       // auxiliary nodes with cycle dependency -> WRONG
-      model.createLevelNode("Level node", 0, 0, 0, 3);
+      model.createLevelNode("Level node", 0, 0, 0, 3, false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
       AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
       model.setFormula(auxiliaryNode1, auxiliaryNode2);
@@ -1521,7 +1521,7 @@ public class ModelTestCase extends TestCase {
     * Tests the method {@link de.uka.aifb.com.systemDynamics.model.Model#validateModel()}.
     */
    public void testValidateModel5() {
-      model.createLevelNode("Level node", 0, 0, 0, 3);
+      model.createLevelNode("Level node", 0, 0, 0, 3, false);
       
       // uselss constant node -> WRONG
       ConstantNode constantNode = null;
@@ -1548,7 +1548,7 @@ public class ModelTestCase extends TestCase {
     * Tests the method {@link de.uka.aifb.com.systemDynamics.model.Model#validateModel()}.
     */
    public void testValidateModel6() {
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
       
       // uselss auxiliary node -> WRONG
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode("Auxiliary node");
@@ -1577,9 +1577,9 @@ public class ModelTestCase extends TestCase {
    public void testValidateModel7() {
       // valid model -> CORRECT
       
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
       AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
       AuxiliaryNode auxiliaryNode3 = model.createAuxiliaryNode("Auxiliary node 3");
@@ -1615,9 +1615,9 @@ public class ModelTestCase extends TestCase {
    public void testValidateModelAndSetUnchangeable() {
       // test with valid model
       
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
       AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
       AuxiliaryNode auxiliaryNode3 = model.createAuxiliaryNode("Auxiliary node 3");
@@ -1674,8 +1674,8 @@ public class ModelTestCase extends TestCase {
    public void testComputeNextValues2() {
       // model with one level node and only one incoming flow
       
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 1);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       model.addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode);
@@ -1716,8 +1716,8 @@ public class ModelTestCase extends TestCase {
    public void testComputeNextValues3() {
       // model with one level one and only one outgoing flow
       
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 1);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
@@ -1758,8 +1758,8 @@ public class ModelTestCase extends TestCase {
    public void testComputeNextValues4() {
       // model with one level one and only one outgoing flow
       
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 1);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
@@ -1800,9 +1800,9 @@ public class ModelTestCase extends TestCase {
    public void testComputeNextValues5() {
       // more "complex" model
       
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 10, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 10, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
       AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
       AuxiliaryNode auxiliaryNode3 = model.createAuxiliaryNode("Auxiliary node 3");
@@ -1855,15 +1855,15 @@ public class ModelTestCase extends TestCase {
    public void testComputeNextValues6() {
       // population dynamics model
       
-      LevelNode levelNodeChildren = model.createLevelNode("Children", 10, 0, 0, 3);
-      LevelNode levelNodeParents = model.createLevelNode("Parents", 10, 0, 0, 3);
-      LevelNode levelNodeSeniors = model.createLevelNode("Seniors", 10, 0, 0, 3);
-      RateNode rateNodeBirths = model.createRateNode("Births");
-      RateNode rateNodeChildrenParents = model.createRateNode("Children -> Parents");
-      RateNode rateNodeParentsSeniors = model.createRateNode("Parents -> Seniors");
-      RateNode rateNodeDeathChildren = model.createRateNode("Death children");
-      RateNode rateNodeDeathParents = model.createRateNode("Death parents");
-      RateNode rateNodeDeathSeniors = model.createRateNode("Death seniors");
+      LevelNode levelNodeChildren = model.createLevelNode("Children", 10, 0, 0, 3, false);
+      LevelNode levelNodeParents = model.createLevelNode("Parents", 10, 0, 0, 3, false);
+      LevelNode levelNodeSeniors = model.createLevelNode("Seniors", 10, 0, 0, 3, false);
+      RateNode rateNodeBirths = model.createRateNode("Births", false);
+      RateNode rateNodeChildrenParents = model.createRateNode("Children -> Parents", false);
+      RateNode rateNodeParentsSeniors = model.createRateNode("Parents -> Seniors", false);
+      RateNode rateNodeDeathChildren = model.createRateNode("Death children", false);
+      RateNode rateNodeDeathParents = model.createRateNode("Death parents", false);
+      RateNode rateNodeDeathSeniors = model.createRateNode("Death seniors", false);
       ConstantNode constantNodeDeathRateChildren = model.createConstantNode("Death rate children", 0.004);
       ConstantNode constantNodeDeathRateParents = model.createConstantNode("Death rate parents", 0.005);
       ConstantNode constantNodeDeathRateSeniors = model.createConstantNode("Death rate seniors", 0.025);
@@ -1978,9 +1978,9 @@ public class ModelTestCase extends TestCase {
       model.setFormula(auxiliaryNodeA, null);  // remove cycle
       model.setFormula(auxiliaryNodeB, null);  // remove cycle
       
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
       ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
@@ -2020,7 +2020,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(nodes.isEmpty());
       
       // (2) model with nodes, but no level nodes -> empty set
-      RateNode rateNode = model.createRateNode("Rate node");
+      RateNode rateNode = model.createRateNode("Rate node", false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
       ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
       ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
@@ -2036,7 +2036,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(nodes.isEmpty());
       
       // (3) auxiliary node depends on level node (but not vice versa)
-      LevelNode levelNodeA = model.createLevelNode("Level node A", 0, 0, 0, 3);
+      LevelNode levelNodeA = model.createLevelNode("Level node A", 0, 0, 0, 3, false);
       AuxiliaryNode auxiliaryNodeA = model.createAuxiliaryNode("Auxiliary node A");
       model.setFormula(auxiliaryNodeA, levelNodeA);
       
@@ -2049,8 +2049,8 @@ public class ModelTestCase extends TestCase {
       assertTrue(nodes.isEmpty());
       
       // (4) "normal" model with level nodes
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
       model.addFlowFromLevelNode2RateNode(levelNode1, rateNode);
       model.addFlowFromRateNode2LevelNode(rateNode, levelNode2);
       
@@ -2138,9 +2138,9 @@ public class ModelTestCase extends TestCase {
       
       
       // (4) "normel" model
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
       ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
@@ -2226,9 +2226,9 @@ public class ModelTestCase extends TestCase {
       assertTrue(mapping.get(auxiliaryNodeB) == 1);
       
       // (4) "normel" model
-      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
-      RateNode rateNode = model.createRateNode("Rate node");
+      LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+      LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
+      RateNode rateNode = model.createRateNode("Rate node", false);
       ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
       ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");

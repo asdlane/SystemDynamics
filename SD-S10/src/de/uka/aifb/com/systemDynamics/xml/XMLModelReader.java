@@ -318,7 +318,7 @@ public class XMLModelReader {
             
             LevelNode levelNode = null;
             try {
-               levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve);
+               levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, false);
             } catch (NodeParameterOutOfRangeException e) {
                throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
             }
@@ -356,7 +356,7 @@ public class XMLModelReader {
             String id = rateNodeElement.getAttribute("id");
             String nodeName = rateNodeElement.getAttribute("name");
             
-            RateNode rateNode = model.createRateNode(nodeName);
+            RateNode rateNode = model.createRateNode(nodeName, false);
             id2rateNode.put(id, rateNode);
          }
       } catch (XPathExpressionException e) {

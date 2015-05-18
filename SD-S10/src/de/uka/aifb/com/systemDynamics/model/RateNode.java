@@ -43,28 +43,34 @@ public class RateNode extends AbstractNode {
    private AbstractNode flowSink;
    
    private ASTElement formula;
-   
+   private boolean learnerDecidable;
    /**
     * Constructor.
     * 
     * @param nodeName node name
     */
-   protected RateNode(String nodeName) {
+   protected RateNode(String nodeName, boolean learnerChangeable) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
       
       setNodeName(nodeName);
+      setlearnerDecidable(learnerChangeable);
    }
    
-   /**
+   private void setlearnerDecidable(boolean learnerChangeable) {
+	// TODO Auto-generated method stub
+	   this.learnerDecidable = learnerChangeable;
+   }
+
+/**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 
     * @param nodeName node name
     * @return created new instance
     */
-   private static RateNode createRateNode(String nodeName) {
-      return new RateNode(nodeName);
+   private static RateNode createRateNode(String nodeName, boolean learnerChangeable) {
+      return new RateNode(nodeName, learnerChangeable);
    }
    
    /**
@@ -98,7 +104,10 @@ public class RateNode extends AbstractNode {
    public AbstractNode getFlowSource() {
       return flowSource;
    }
-   
+   public boolean getLearnerChangeable(){
+	   return learnerDecidable;
+	   
+   }
    /**
     * Sets the sink of this flow.
     * 

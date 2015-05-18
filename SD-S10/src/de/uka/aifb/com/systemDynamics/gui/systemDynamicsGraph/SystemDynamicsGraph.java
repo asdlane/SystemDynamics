@@ -211,7 +211,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	  vals.put("curve", curve);
 	  vals.put("LearnerChangeable", learnerChangeable);
       // create node
-      LevelNode levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve);
+      LevelNode levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable);
       
       //create graph cell with the attribute map attached to it.
       LevelNodeGraphCell levelNodeGraphCell = new LevelNodeGraphCell(nodeName, x, y, vals, learnerChangeable);
@@ -250,7 +250,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	  vals.put("name", nodeName);
 	  vals.put("LearnerChangeable", learnerChangeable);
       // create node
-      RateNode rateNode = model.createRateNode(nodeName);
+      RateNode rateNode = model.createRateNode(nodeName, learnerChangeable);
       
       //create graph cell with the attribute map attached to it.
       RateNodeGraphCell rateNodeGraphCell = new RateNodeGraphCell(nodeName, x, y, vals, learnerChangeable);
@@ -1720,7 +1720,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
     * @throws UselessNodeException if a node has no influence on a level node
     * @throws XMLModelReaderWriterException if there is any exception (wrapper for inner exception)
     */
-   public void storeToXML(String fileName, ArrayList<SystemDynamicsGraph> graph, boolean clearFile) throws AuxiliaryNodesCycleDependencyException,
+   public void storeToXML(String fileName, ArrayList<SystemDynamicsGraph> graph, ArrayList<Color> submodelColors, boolean clearFile) throws AuxiliaryNodesCycleDependencyException,
                                                   NoFormulaException,
                                                   NoLevelNodeException,
                                                   RateNodeFlowException,
@@ -1753,7 +1753,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
       
       //XMLModelWriter.writeXMLSystemDynamicsGraph(this, model, graphNodes, flowEdges, dependencyEdges,
                          //                        fileName);
-      XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, clearFile);
+      XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, submodelColors, clearFile);
       
    }
    

@@ -50,7 +50,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    private double curve;
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
-
+   private boolean learnerChangeable;
    /**
     * Constructor.
     * 
@@ -60,7 +60,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
     * @param maxValue max value allowed across the entire simulation
     * @param curve characteristic behaviour of this LevelNode
     */
-   protected LevelNode(String nodeName, double startValue, double min, double max, double curve) {
+   protected LevelNode(String nodeName, double startValue, double min, double max, double curve, boolean learnerChangeable) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
@@ -83,6 +83,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
       setMinValue(min);
       setMaxValue(max);
       setCurveValue(curve);
+      setLearnerChangeable(learnerChangeable);
       
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();
@@ -95,8 +96,8 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
     * @param startValue start value
     * @return created new instance
     */
-   private static LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve) {
-      return new LevelNode(nodeName, startValue, minValue, maxValue, curve);
+   private static LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerDecidable) {
+      return new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable);
    }
    
    /**
@@ -130,6 +131,10 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    void setMaxValue(double maxValue) {
       this.maxValue = maxValue;
    }
+   void setLearnerChangeable(boolean learnerChangeable){
+	   this.learnerChangeable = learnerChangeable;
+	   
+   }
 
    /**
     * Sets the level node's characteristic behaviour
@@ -148,7 +153,10 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    public double getStartValue() {
       return startValue;
    }
-   
+   public boolean getLearnerChangeable(){
+	   return learnerChangeable;
+	   
+   }
    /**
     * Gets the level node's min value.
     * 

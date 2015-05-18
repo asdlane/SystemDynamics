@@ -41,7 +41,7 @@ public class RateNodeMockObject extends RateNode {
     * @param currentValue "current" value that will always be returned by 'getCurrentValue()'
     */
    RateNodeMockObject(String nodeName, double currentValue) {
-      super(nodeName);
+      super(nodeName, false);
       this.currentValue = currentValue;
    }
    

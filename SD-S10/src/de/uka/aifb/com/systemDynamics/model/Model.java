@@ -99,12 +99,12 @@ public class Model {
     * @param maxValue max value allowed across the entire simulation
     * @return created level node
     */
-   public LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve) {
+   public LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerChangeable) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve);
+      LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable);
       levelNodes.add(levelNode);
       return levelNode;
    }
@@ -115,12 +115,12 @@ public class Model {
     * @param nodeName node name
     * @return created rate node
     */
-   public RateNode createRateNode(String nodeName) {
+   public RateNode createRateNode(String nodeName, boolean learnerChangeable) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      RateNode rateNode = new RateNode(nodeName);
+      RateNode rateNode = new RateNode(nodeName, learnerChangeable);
       rateNodes.add(rateNode);
       return rateNode;
    }

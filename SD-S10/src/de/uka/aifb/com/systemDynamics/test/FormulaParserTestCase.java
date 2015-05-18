@@ -44,8 +44,8 @@ public class FormulaParserTestCase extends TestCase {
    private AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
    private ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
    private ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
-   private LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3);
-   private LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3);
+   private LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false);
+   private LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false);
    
    public static Test suite() {  
       return new TestSuite(FormulaParserTestCase.class);

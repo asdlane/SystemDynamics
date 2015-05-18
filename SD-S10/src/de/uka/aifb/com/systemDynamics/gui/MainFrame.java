@@ -1431,7 +1431,7 @@ WindowListener {
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
 				//open file and write model tag in here itself
 				
-				graph.get(0).storeToXML(file.getAbsolutePath(), graph, true);
+				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, true);
 				
 				
 				//				graph.get(0).storeToXML(file.getAbsolutePath());				
@@ -1604,7 +1604,7 @@ WindowListener {
 				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
-				graph.get(0).storeToXML(file.getAbsolutePath(), graph, false);
+				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false);
 
 				//				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
