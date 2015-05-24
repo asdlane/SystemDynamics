@@ -21,6 +21,7 @@
 
 package de.uka.aifb.com.systemDynamics.model;
 
+import java.awt.Color;
 import java.util.HashSet;
 
 /**
@@ -39,13 +40,17 @@ public class ColoredSourceSinkNode extends AbstractNode {
    
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
-   
+   private static Color color;
+   private static int linksTo;
    /**
     * Constructor.
+ * @param nodeColor 
     */
-   protected ColoredSourceSinkNode() {
+   protected ColoredSourceSinkNode(Color nodeColor, int linksToNode) {
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();
+      color = new Color(nodeColor.getRed(), nodeColor.getGreen(), nodeColor.getBlue());
+      linksTo = linksToNode;
    }
    
    /**
@@ -53,8 +58,8 @@ public class ColoredSourceSinkNode extends AbstractNode {
     * 
     * @return created new instance
     */
-   private static ColoredSourceSinkNode createColoredSourceSinkNode() {
-      return new ColoredSourceSinkNode();
+   private static ColoredSourceSinkNode createColoredSourceSinkNode(Color nodeColor, int linksToNode) {
+      return new ColoredSourceSinkNode(nodeColor, linksToNode);
    }
    
    /**
@@ -94,7 +99,12 @@ public class ColoredSourceSinkNode extends AbstractNode {
    public HashSet<RateNode> getIncomingFlows() {
       return (HashSet<RateNode>)incomingFlows.clone();
    }
-   
+   public static Color getColor(){
+	   return color;
+   }
+   public static int getLinksTo(){
+	   return linksTo;
+   }
    /**
     * Adds the specified outgoing flow.
     * 

@@ -387,7 +387,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	      AttributeMap vals = new AttributeMap();
 		  vals.put("color", nodeColor.getRed() + ", " + nodeColor.getGreen() + ", " + nodeColor.getBlue());
 		  vals.put("colorIndex", colorIndex);
-	      ColoredSourceSinkNode ColoredsourceSinkNode = model.createColoredSourceSinkNode();
+	      ColoredSourceSinkNode ColoredsourceSinkNode = model.createColoredSourceSinkNode(nodeColor, colorIndex);
 	      ColoredSourceSinkNodeGraphCell ColoredsourceSinkNodeGraphCell = new ColoredSourceSinkNodeGraphCell(x, y, vals, nodeColor, colorIndex);
 
 		  

@@ -81,6 +81,7 @@ import de.uka.aifb.com.systemDynamics.model.ASTRound;
 import de.uka.aifb.com.systemDynamics.model.AbstractNode;
 import de.uka.aifb.com.systemDynamics.model.AuxiliaryNode;
 import de.uka.aifb.com.systemDynamics.model.AuxiliaryNodesCycleDependencyException;
+import de.uka.aifb.com.systemDynamics.model.ColoredSourceSinkNode;
 import de.uka.aifb.com.systemDynamics.model.ConstantNode;
 import de.uka.aifb.com.systemDynamics.model.LevelNode;
 import de.uka.aifb.com.systemDynamics.model.Model;
@@ -433,6 +434,20 @@ public class XMLModelWriter {
             constantNodeElement.setAttribute("name", constantNode.getNodeName());
             constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
          }
+      }
+      if(!model.getColoredSourceSinkNodes().isEmpty()){
+    	  Element ColoredSourceSinkNodesElement = document.createElement("ColoredSourceSinkNodes");    	  
+          nodesElement.appendChild(ColoredSourceSinkNodesElement);
+          for (ColoredSourceSinkNode ColoredsourceSinkNode : model.getColoredSourceSinkNodes()) {
+             String id = createId("CSN", nextSourceSinkNodeId++);
+             node2Id.put(ColoredsourceSinkNode, id);
+
+             Element ColoredSourceSinkNodeElement = document.createElement("ColoredSourceSinkNode");
+             ColoredSourceSinkNodesElement.appendChild(ColoredSourceSinkNodeElement);
+             ColoredSourceSinkNodeElement.setAttribute("id", id);
+             ColoredSourceSinkNodeElement.setAttribute("color", ColoredsourceSinkNode.getColor().getRed() + ", " + ColoredSourceSinkNode.getColor().getGreen() + ", " + ColoredSourceSinkNode.getColor().getBlue());
+             ColoredSourceSinkNodeElement.setAttribute("linksTo", Integer.toString(ColoredSourceSinkNode.getLinksTo()));
+          }
       }
 
       // (2) formulas

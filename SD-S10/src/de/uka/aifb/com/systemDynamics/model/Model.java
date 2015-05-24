@@ -21,6 +21,7 @@
 
 package de.uka.aifb.com.systemDynamics.model;
 
+import java.awt.Color;
 import java.util.*;
 
 /**
@@ -172,12 +173,12 @@ public class Model {
       sourceSinkNodes.add(sourceSinkNode);
       return sourceSinkNode;
    }
-   public ColoredSourceSinkNode createColoredSourceSinkNode() {
+   public ColoredSourceSinkNode createColoredSourceSinkNode(Color nodeColor, int linksTo) {
 	      if (!isChangeable) {
 	         throw new ModelNotChangeableException();
 	      }
 	      
-	      ColoredSourceSinkNode ColoredsourceSinkNode = new ColoredSourceSinkNode();
+	      ColoredSourceSinkNode ColoredsourceSinkNode = new ColoredSourceSinkNode(nodeColor, linksTo);
 	      ColoredsourceSinkNodes.add(ColoredsourceSinkNode);
 	      return ColoredsourceSinkNode;
    }
@@ -792,6 +793,10 @@ public class Model {
     */
    public HashSet<ConstantNode> getConstantNodes() {
       return (HashSet<ConstantNode>)constantNodes.clone();
+   }
+   public HashSet<ColoredSourceSinkNode> getColoredSourceSinkNodes(){
+	  return (HashSet<ColoredSourceSinkNode>)  ColoredsourceSinkNodes.clone();
+	   
    }
    
    /**
