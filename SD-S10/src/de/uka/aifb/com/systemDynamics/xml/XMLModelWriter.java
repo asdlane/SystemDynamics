@@ -230,6 +230,75 @@ public class XMLModelWriter {
 				e.printStackTrace();
 			}
    }
+   
+   public static void WriteSubmodelGraph(
+           Model model,
+           LinkedList<DefaultGraphCell> graphNodes,
+           LinkedList<FlowEdge> flowEdges,
+           LinkedList<DefaultEdge> dependencyEdges,
+           String fileName, SystemDynamicsGraph graph, Color SubmodelColor)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
+           RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException{
+	  
+	   if (graph == null) {
+	         throw new IllegalArgumentException("'graph' must not be null.");
+	      }
+	      if (model == null) {
+	         throw new IllegalArgumentException("'model' must not be null.");
+	      }
+	      if (graphNodes == null) {
+	         throw new IllegalArgumentException("'graphNodes' must not be null.");
+	      }
+	      if (flowEdges == null) {
+	         throw new IllegalArgumentException("'flowEdges' must not be null.");
+	      }
+	      if (dependencyEdges == null) {
+	         throw new IllegalArgumentException("'dependencyEdges' must not be null.");
+	      }
+	      if (fileName == null) {
+	         throw new IllegalArgumentException("'fileName' must not be null.");
+	      }
+
+	      HashMap<AbstractNode, String> node2Id = createNode2IdMap();
+
+	      // create DOM document for model
+	      Document document = null;
+	      
+          FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(new File(fileName));
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+	        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+	        bw.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+          
+          
+	      try{
+	    	
+	    	document = createDocumentForModel(graph.model, SubmodelColor, node2Id);
+	    		  // add position information of nodes and additional control points to DOC document
+	    		 	    	  	   
+	    		  try{
+	    		  addPositionInformationToDocument(document, graph, graphNodes, flowEdges, dependencyEdges,
+                     	node2Id);
+	    		  }
+	    		  catch(Exception e){
+	    			  
+	    			  
+	    		  }
+// XML output
+	    		  writeDocumentToXMLFile(document, fileName); 
+	      }catch(Exception e){
+	    	  e.printStackTrace();
+	    	  
+	      }
+   }
+   
    /**
     * Writes a System Dynamics graph into an XML file.
     *

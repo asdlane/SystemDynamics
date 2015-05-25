@@ -1376,7 +1376,70 @@ WindowListener {
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
 		}
 		public void actionPerformed(ActionEvent e){
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
 
+			int archiveIndex = (Integer)JOptionPane.showInputDialog(frame,"Which submodel should be archived?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			File file = xmlFile;
+			if (file == null) {
+				int returnVal = fileChooser.showSaveDialog(MainFrame.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					// file was selected and 'OK' was pressed
+					file = fileChooser.getSelectedFile();
+
+					// file name should end with ".xml"
+					if (!file.getName().toLowerCase().endsWith(".xml")) {
+						file = new File(file.getAbsolutePath() + ".xml");
+					}
+
+					// check if existing file should be overwritten -> ask for confirmation!
+					if (file.exists()) {
+						Object[] options = { messages.getString("MainFrame.Yes"), messages.getString("MainFrame.No") };
+						int selectedOption = JOptionPane.showOptionDialog(MainFrame.this,
+								messages.getString("MainFrame.ConfirmOverwriting.Message"),
+								messages.getString("MainFrame.ConfirmOverwriting.Title"),
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE,
+								null, // don't use a custom Icon
+								options,
+								options[1]); // default button title
+
+						if (selectedOption == 1) {
+							// do not save
+							return;
+						}
+					}
+				} else {
+					// no file selected
+					return;
+				}
+			}
+			try {
+				graph.get(0).storeSubmodelToXML(file.getAbsolutePath(), graph.get(archiveIndex), SubmodelColors.get(archiveIndex));
+			} catch (AuxiliaryNodesCycleDependencyException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NoFormulaException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NoLevelNodeException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (RateNodeFlowException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (UselessNodeException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (XMLModelReaderWriterException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 	}
 	private class SaveAction extends AbstractAction {
@@ -1768,7 +1831,7 @@ WindowListener {
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
 
-						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						//Whether the learner can change the node or not is sent
 						if(LearnerDecidable.equals("yes")){
 							graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
@@ -1833,7 +1896,7 @@ WindowListener {
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
 
-						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						if(LearnerDecidable.equals("yes")){
 							graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
@@ -1911,7 +1974,7 @@ WindowListener {
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
 
-						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						if(LearnerDecidable.equals("yes")){
 							graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
@@ -1981,7 +2044,7 @@ WindowListener {
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
 
-						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						if(LearnerDecidable=="yes"){
 							graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
 						}
@@ -2023,7 +2086,7 @@ WindowListener {
 				try{
 					JFrame frame = new JFrame("InputDialog");
 					Object[] choices = SubmodelNumbers.toArray();
-					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel (number in left corner)?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE);
 				}catch(Exception ex){
 
@@ -2096,7 +2159,7 @@ WindowListener {
 			JFrame frame = new JFrame("InputDialog");
 			Object[] choices = SubmodelNumbers.toArray();
 			if (subModelIndex == 0){
-				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel (number in left corner)?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			}
 			
 			graph.get(subModelIndex - 1).setPortsVisible(!graph.get(subModelIndex - 1).isPortsVisible());
@@ -2575,7 +2638,7 @@ WindowListener {
 			}
 			JFrame frame = new JFrame("InputDialog");
 			Object[] choices = SubmodelNumbers.toArray();
-			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Paste into which submodel (number in left corner)?","Paste",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Paste into which submodel?","Paste",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			//reads in from copyClipboard.txt and, based on which indicator is read in, creates the right node.
 			for(int i=0; i<pasteCells.size();i++){
 				if (pasteCells.get(i).contains("Auxiliary")) {
