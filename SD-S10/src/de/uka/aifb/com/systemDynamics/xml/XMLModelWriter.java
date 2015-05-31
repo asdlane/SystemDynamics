@@ -230,13 +230,12 @@ public class XMLModelWriter {
 				e.printStackTrace();
 			}
    }
-   
    public static void WriteSubmodelGraph(
            Model model,
            LinkedList<DefaultGraphCell> graphNodes,
            LinkedList<FlowEdge> flowEdges,
            LinkedList<DefaultEdge> dependencyEdges,
-           String fileName, SystemDynamicsGraph graph, Color SubmodelColor)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
+           String fileName, SystemDynamicsGraph graph, Color submodelColor)throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
            RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException{
 	  
 	   if (graph == null) {
@@ -261,26 +260,15 @@ public class XMLModelWriter {
 	      HashMap<AbstractNode, String> node2Id = createNode2IdMap();
 
 	      // create DOM document for model
-	      Document document = null;
 	      
-          FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(new File(fileName));
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-	        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-	        bw.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	      Document document;
+        
           
           
 	      try{
-	    	
-	    	document = createDocumentForModel(graph.model, SubmodelColor, node2Id);
+	    	    
+	    	  	System.out.println(graph.model.getSourceSinkNodes().size());
+	    		  document = createDocumentForModel(graph.model, submodelColor, node2Id);
 	    		  // add position information of nodes and additional control points to DOC document
 	    		 	    	  	   
 	    		  try{
@@ -292,13 +280,14 @@ public class XMLModelWriter {
 	    			  
 	    		  }
 // XML output
-	    		  writeDocumentToXMLFile(document, fileName); 
-	      }catch(Exception e){
+	    		  writeDocumentToXMLFile(document, fileName);
+	    	  }
+	     catch(Exception e){
 	    	  e.printStackTrace();
 	    	  
 	      }
-   }
-   
+	      
+   }   
    /**
     * Writes a System Dynamics graph into an XML file.
     *
@@ -356,6 +345,7 @@ public class XMLModelWriter {
           // XML output
           writeDocumentToXMLFile(document, fileName);
       }catch(Exception e){
+    	  System.out.println(e);
     	  JOptionPane.showMessageDialog(null, "Rate nodes must have a formula","missing formula on rate node", JOptionPane.ERROR_MESSAGE);
     	  
       }

@@ -1419,7 +1419,8 @@ WindowListener {
 				}
 			}
 			try {
-				graph.get(0).storeSubmodelToXML(file.getAbsolutePath(), graph.get(archiveIndex), SubmodelColors.get(archiveIndex));
+				
+				graph.get(archiveIndex).storeSubmodelToXML(file.getAbsolutePath(), graph.get(archiveIndex-1), SubmodelColors.get(archiveIndex-1));
 			} catch (AuxiliaryNodesCycleDependencyException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
