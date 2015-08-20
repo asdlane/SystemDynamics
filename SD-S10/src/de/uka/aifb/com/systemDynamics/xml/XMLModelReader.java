@@ -163,7 +163,7 @@ public class XMLModelReader {
       if (frame == null) {
          throw new IllegalArgumentException("'frame' must not be null.");
       }
-      
+      //CHANGE THIS TO ARRAY LIST
       SystemDynamicsGraph graph = new SystemDynamicsGraph(start, frame);
       
       HashMap<String, AuxiliaryNodeGraphCell> id2auxiliaryNode =
@@ -177,6 +177,7 @@ public class XMLModelReader {
       HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNode =
          new HashMap<String, SourceSinkNodeGraphCell>();
       Thread.currentThread();
+      //PUT THIS IN A FOR LOOP AND CHANGE IT SO THAT For each submodel it sees, so this procedure.  have it return a graph and add that graph to the array list of type graph.
       createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
                          id2levelNode, id2rateNode, id2sourceSinkNode);
       
