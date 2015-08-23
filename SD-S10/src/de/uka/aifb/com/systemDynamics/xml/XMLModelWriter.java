@@ -186,7 +186,7 @@ public class XMLModelWriter {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 	        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 	        bw.newLine();
-	        bw.write("<model>");
+	        bw.write("<Model name=\"" + graph.get(0).model.getModelName() + "\" schema=\"http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema\" schemaVersion=\"1.0\">");
 	        bw.close();
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -220,7 +220,7 @@ public class XMLModelWriter {
 	      try {
 				fos = new FileOutputStream(new File(fileName), true);
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-		        bw.write("</model>");
+		        bw.write("</Model>");
 		        bw.close();
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
@@ -402,9 +402,9 @@ public class XMLModelWriter {
       Document document = builder.newDocument();
       Element modelElement = document.createElement("SubModel");
       
-      modelElement.setAttribute("name", model.getModelName());
-      modelElement.setAttribute("schema", SCHEMA);
-      modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
+      //modelElement.setAttribute("name", model.getModelName());
+      //modelElement.setAttribute("schema", SCHEMA);
+      //modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
       modelElement.setAttribute("color", submodelColor.getRed() + ", " + submodelColor.getGreen() + ", " + submodelColor.getBlue());
       document.appendChild(modelElement);
       

@@ -1154,9 +1154,8 @@ WindowListener {
 						//graph = XMLModelReader.readSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						//graph.get(0).addSystemDynamicsGraphModifiedEventLIstener(MainFrame.this);
 						//DELETE FOLLOWING 4 LINES
-						graphNew = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
-						graph.removeAll(graph);
-						graph.add(graphNew);
+						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
+						
 						graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 
 					} catch (AuxiliaryNodesCycleDependencyException excep) {

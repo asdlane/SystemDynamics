@@ -22,6 +22,7 @@
     <xsd:complexType>
       <xsd:sequence>
       <xsd:element name ="SubModel"  maxOccurs="unbounded">
+      
       <xsd:complexType>
       <xsd:sequence>
         <xsd:element name="Nodes">
@@ -44,6 +45,7 @@
                         <xsd:attribute name="minValue" type="xsd:double" use="required"/>
                         <xsd:attribute name="maxValue" type="xsd:double" use="required"/>
                         <xsd:attribute name="curve" type="xsd:double" use="required"/>
+                        <xsd:attribute name="learnerChangeable" type="xsd:string" use="required"/>
                         <xsd:attribute name="xCoordinate" default="10.0">
                           <xsd:simpleType>
                             <xsd:restriction base="xsd:double">
@@ -303,6 +305,7 @@
           </xsd:complexType>
         </xsd:element>
       </xsd:sequence>
+      <xsd:attribute name="color" type="xsd:string" use="required"/>
       </xsd:complexType>
       <!-- unique Ids -->
     <xsd:key name="lnId">
