@@ -25,11 +25,14 @@ import de.uka.aifb.com.systemDynamics.SystemDynamics;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.*;
 import de.uka.aifb.com.systemDynamics.model.*;
 
+import java.awt.Color;
 import java.awt.geom.*;
 import java.io.File;
 import java.util.*;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.border.Border;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
 import javax.xml.transform.stream.StreamSource;
@@ -166,7 +169,6 @@ public class XMLModelReader {
 		if (frame == null) {
 			throw new IllegalArgumentException("'frame' must not be null.");
 		}
-		//CHANGE THIS TO ARRAY LIST
 		ArrayList<SystemDynamicsGraph> graph = new ArrayList<SystemDynamicsGraph>();
 
 		HashMap<String, AuxiliaryNodeGraphCell> id2auxiliaryNode =
@@ -179,11 +181,14 @@ public class XMLModelReader {
 				new HashMap<String, RateNodeGraphCell>();
 		HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNode =
 				new HashMap<String, SourceSinkNodeGraphCell>();
+		
 		Thread.currentThread();
 		
-		createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
+		graph = createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
 				id2levelNode, id2rateNode, id2sourceSinkNode, start, frame);
-
+		
+		
+		
 		return graph;
 	}
 
@@ -583,7 +588,7 @@ public class XMLModelReader {
 	 * @throws XMLRateNodeFlowException if a rate node has no incoming or no outgoing flow
 	 * @throws XMLUselessNodeException if a node has no influence on a level node
 	 */
-	protected static void createGraphFromXML(String fileString, String xsdFileString,
+	protected static ArrayList<SystemDynamicsGraph> createGraphFromXML(String fileString, String xsdFileString,
 			ArrayList<SystemDynamicsGraph> graph,
 			HashMap<String, AuxiliaryNodeGraphCell> id2auxiliaryNodeGraphCell,
 			HashMap<String, ConstantNodeGraphCell> id2constantNodeGraphCell,
@@ -626,6 +631,7 @@ public class XMLModelReader {
 		HashMap<AbstractNode, AutomaticGraphLayout.Vertex> abstractNode2Vertex =
 				new HashMap<AbstractNode, AutomaticGraphLayout.Vertex>();
 		AutomaticGraphLayout graphLayout = new AutomaticGraphLayout(800, 500);
+		
 		boolean automaticGraphLayoutNecessary = true;
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
@@ -666,40 +672,52 @@ public class XMLModelReader {
 
 		// create XPath object
 		XPath xpath = XPathFactory.newInstance().newXPath();
-
+		String modelName = "";
 		// set model name
 		try {
 			Element modelElement = (Element)xpath.evaluate("/Model", document, XPathConstants.NODE);
-			String modelName = modelElement.getAttribute("name");
-			SystemDynamicsGraph graph0 = new SystemDynamicsGraph(start, frame);
-			graph.add(graph0);
-			graph.get(0).setModelName(modelName);
+			modelName = modelElement.getAttribute("name");
+			
 		} catch (XPathExpressionException e) {
 			// correct xpath expression -> no exception
 			throw new XMLModelReaderWriterException(e);
 		}
 		
 		NodeList Submodels = null;
+		
 		try {
 			Submodels = (NodeList)xpath.evaluate("/Model/SubModel", document, XPathConstants.NODESET);
+		
+			
+			
 		} catch (XPathExpressionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		for(int i=0;i<Submodels.getLength()-1;i++){
+			
+			String SubmodelColor = Submodels.item(i).getAttributes().getNamedItem("color").getNodeValue();
+			System.out.println(SubmodelColor);
+			String[] test = new String[3];
+			test = SubmodelColor.split(", ");
+			Color SubmodelBorder = new Color(Integer.parseInt(test[0]), Integer.parseInt(test[1]),Integer.parseInt(test[2]));
 			SystemDynamicsGraph SubmodelGraph = new SystemDynamicsGraph(start,frame);
+			Border SubmodelColorBorder = BorderFactory.createLineBorder(SubmodelBorder,15);
+			SubmodelGraph.setBorder(SubmodelColorBorder);
+			
+			SubmodelGraph.setSize(400,400);
+			if(i==0){
+			SubmodelGraph.setModelName(modelName);	
+			}
 			graph.add(SubmodelGraph);
+			
 		}
 		for(int k=0;k<graph.size();k++){// (1) create nodes
 			// (1a) create level nodes
 			try {
-				//MAKE IT SO THAT THESE ELEMENTS ONLY APPLY FOR THE FIRST SUBMODEL!!!!
-				System.out.println(Submodels.item(0).getChildNodes().item(0).getNamespaceURI());
 				
-				//THIS EXPRESSION GETS FIRST SET OF NODES!!
-				//Submodels.item(k).getChildNodes().item(1).getChildNodes().item(1);
 				NodeList levelNodeElements = 
-						(NodeList)xpath.evaluate("/Model/SubModel/Nodes/LevelNodes/LevelNode", document,
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/LevelNodes/LevelNode", document,
 								XPathConstants.NODESET);
 				
 				for (int i = 0; i < levelNodeElements.getLength(); i++) {
@@ -712,10 +730,11 @@ public class XMLModelReader {
 					double curve = new Double(levelNodeElement.getAttribute("curve"));
 					double xCoordinate = new Double(levelNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(levelNodeElement.getAttribute("yCoordinate"));
+					boolean learnerDecidable = new Boolean(levelNodeElement.getAttribute("learnerChangeable"));
 
 					LevelNodeGraphCell levelNode = null;
 					try {
-						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, false);
+						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
@@ -1322,6 +1341,8 @@ public class XMLModelReader {
 				throw new XMLModelReaderWriterException(e);
 			}
 		}
+		return graph;
+		
 	}
 	/**
 	 * Creates the formula according to the specified XML 'Formula' element tag.

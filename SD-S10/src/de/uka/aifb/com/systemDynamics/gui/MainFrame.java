@@ -1157,6 +1157,7 @@ WindowListener {
 						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						
 						graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+						
 
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
@@ -1198,7 +1199,7 @@ WindowListener {
 					// opening successful
 					xmlFile = file;
 
-
+					
 					scrollPane = new JScrollPane(graph.get(0));
 					contentPanel.removeAll();
 					contentPanel.add(scrollPane, BorderLayout.CENTER);

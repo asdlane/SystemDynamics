@@ -306,6 +306,7 @@
         </xsd:element>
       </xsd:sequence>
       <xsd:attribute name="color" type="xsd:string" use="required"/>
+      <xsd:attribute name="SubmodelId" type="xsd:string" use="required"/>
       </xsd:complexType>
       <!-- unique Ids -->
     <xsd:key name="lnId">

@@ -140,7 +140,7 @@ public class XMLModelWriter {
       HashMap<AbstractNode, String> node2Id = createNode2IdMap();
 
       // create DOM document for model
-      Document document = createDocumentForModel(model, Color.red, node2Id);
+      Document document = createDocumentForModel(model, Color.red, node2Id, 0);
 
       // XML output
       writeDocumentToXMLFile(document, fileName);
@@ -199,7 +199,7 @@ public class XMLModelWriter {
           
 	      try{
 	    	  for(int i=0;i<graph.size();i++){
-	    		  document.add(createDocumentForModel(graph.get(i).model, submodelColors.get(i), node2Id));
+	    		  document.add(createDocumentForModel(graph.get(i).model, submodelColors.get(i), node2Id, i));
 	    		  // add position information of nodes and additional control points to DOC document
 	    		 	    	  	   
 	    		  try{
@@ -268,7 +268,7 @@ public class XMLModelWriter {
 	      try{
 	    	    
 	    	  	System.out.println(graph.model.getSourceSinkNodes().size());
-	    		  document = createDocumentForModel(graph.model, submodelColor, node2Id);
+	    		  document = createDocumentForModel(graph.model, submodelColor, node2Id, 0);
 	    		  // add position information of nodes and additional control points to DOC document
 	    		 	    	  	   
 	    		  try{
@@ -310,7 +310,7 @@ public class XMLModelWriter {
                                                   LinkedList<DefaultGraphCell> graphNodes,
                                                   LinkedList<FlowEdge> flowEdges,
                                                   LinkedList<DefaultEdge> dependencyEdges,
-                                                  String fileName)
+                                                  String fileName, int id)
       throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
           RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException {
       if (graph == null) {
@@ -337,7 +337,7 @@ public class XMLModelWriter {
       // create DOM document for model
       Document document = null;
       try{
-    	  document = createDocumentForModel(model, Color.red, node2Id);
+    	  document = createDocumentForModel(model, Color.red, node2Id, id);
     	  // add position information of nodes and additional control points to DOC document
           addPositionInformationToDocument(document, graph, graphNodes, flowEdges, dependencyEdges,
                                            node2Id);
@@ -376,7 +376,7 @@ public class XMLModelWriter {
     * @throws UselessNodeException if a node has no influence on a level node
     * @throws XMLModelReaderWriterException if there is any exception (wrapper for inner exception)
     */
-   protected static Document createDocumentForModel(Model model, Color submodelColor, HashMap<AbstractNode, String> node2Id)
+   protected static Document createDocumentForModel(Model model, Color submodelColor, HashMap<AbstractNode, String> node2Id, int SubmodelID)
          throws AuxiliaryNodesCycleDependencyException, NoFormulaException, NoLevelNodeException,
                 RateNodeFlowException, UselessNodeException, XMLModelReaderWriterException {
       if (model == null) {
@@ -406,6 +406,7 @@ public class XMLModelWriter {
       //modelElement.setAttribute("schema", SCHEMA);
       //modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
       modelElement.setAttribute("color", submodelColor.getRed() + ", " + submodelColor.getGreen() + ", " + submodelColor.getBlue());
+      modelElement.setAttribute("SubmodelId", Integer.toString(SubmodelID));
       document.appendChild(modelElement);
       
 

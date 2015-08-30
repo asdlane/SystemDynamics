@@ -66,7 +66,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	private HashMap<DefaultGraphCell, AbstractNode> graphNode2modelNode;
 
 	private LinkedList<SystemDynamicsGraphModifiedEventListener> listeners;
-
+	
 	/**
 	 * Constructor.
 	 * 
