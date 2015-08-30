@@ -1155,8 +1155,10 @@ WindowListener {
 						//graph.get(0).addSystemDynamicsGraphModifiedEventLIstener(MainFrame.this);
 						//DELETE FOLLOWING 4 LINES
 						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
-						
-						graph.get(0).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+						System.out.println(graph.size());
+						for(int i=0;i<graph.size();i++){
+							graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+						}
 						
 
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1200,10 +1202,24 @@ WindowListener {
 					xmlFile = file;
 
 					
-					scrollPane = new JScrollPane(graph.get(0));
-					contentPanel.removeAll();
-					contentPanel.add(scrollPane, BorderLayout.CENTER);
+					JScrollPane submodelScroll = new JScrollPane(graph.get(0));
+					JScrollPane submodelScroll2 = new JScrollPane(graph.get(1));
+					modelPanel.add(submodelScroll);
+					modelPanel.add(submodelScroll2);
+
+					//reconfigure layout for 4 or more submodels
+					if(graph.size()>=4){
+						modelPanel.setLayout(new GridLayout(2,4));
+					}
+					contentPanel.add(modelPanel,BorderLayout.CENTER);
+
 					getContentPane().validate();
+
+					//force layout to recalculate now that a new component has been added.
+					modelPanel.revalidate();
+
+					saveAction.setEnabled(true);
+					ArchiveSubmodelAction.setEnabled(true);
 
 					fileName = xmlFile.getAbsolutePath();
 					setTitle(createTitle(graph.get(0).getModelName(), false));

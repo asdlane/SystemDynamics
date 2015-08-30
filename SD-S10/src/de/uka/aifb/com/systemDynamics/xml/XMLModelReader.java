@@ -687,17 +687,17 @@ public class XMLModelReader {
 		
 		try {
 			Submodels = (NodeList)xpath.evaluate("/Model/SubModel", document, XPathConstants.NODESET);
-		
+			
 			
 			
 		} catch (XPathExpressionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		for(int i=0;i<Submodels.getLength()-1;i++){
+		for(int i=0;i<Submodels.getLength();i++){
 			
 			String SubmodelColor = Submodels.item(i).getAttributes().getNamedItem("color").getNodeValue();
-			System.out.println(SubmodelColor);
+			
 			String[] test = new String[3];
 			test = SubmodelColor.split(", ");
 			Color SubmodelBorder = new Color(Integer.parseInt(test[0]), Integer.parseInt(test[1]),Integer.parseInt(test[2]));
@@ -712,6 +712,7 @@ public class XMLModelReader {
 			graph.add(SubmodelGraph);
 			
 		}
+		System.out.println(graph.size());
 		for(int k=0;k<graph.size();k++){// (1) create nodes
 			// (1a) create level nodes
 			try {
