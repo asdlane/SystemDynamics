@@ -1201,11 +1201,39 @@ WindowListener {
 					// opening successful
 					xmlFile = file;
 
-					
-					JScrollPane submodelScroll = new JScrollPane(graph.get(0));
-					JScrollPane submodelScroll2 = new JScrollPane(graph.get(1));
-					modelPanel.add(submodelScroll);
-					modelPanel.add(submodelScroll2);
+					for(int i=0;i<graph.size();i++){
+						JScrollPane submodelScroll = new JScrollPane(graph.get(i));
+					    final SystemDynamicsGraph Submodel = graph.get(i);
+						modelPanel.add(submodelScroll);
+						graph.get(i).addMouseListener(new MouseListener(){
+
+							@Override
+							public void mouseClicked(MouseEvent e) {}
+
+							@Override
+							public void mouseEntered(MouseEvent e) {
+								//Change label on toolbar to show graph number
+								for(int j=0;j<graph.size();j++){
+									
+									if(graph.get(j).equals(Submodel)){
+
+										GraphNumber.setText(Integer.toString(j+1));
+									}
+								}
+
+							}
+
+							@Override
+							public void mouseExited(MouseEvent e) {}
+
+							@Override
+							public void mousePressed(MouseEvent e) {}
+
+							@Override
+							public void mouseReleased(MouseEvent e) {}
+
+						});
+					}
 
 					//reconfigure layout for 4 or more submodels
 					if(graph.size()>=4){
