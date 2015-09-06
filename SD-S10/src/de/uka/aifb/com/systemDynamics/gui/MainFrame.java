@@ -1200,7 +1200,8 @@ WindowListener {
 
 					// opening successful
 					xmlFile = file;
-
+					modelPanel.removeAll();
+					modelPanel.revalidate();
 					for(int i=0;i<graph.size();i++){
 						JScrollPane submodelScroll = new JScrollPane(graph.get(i));
 					    final SystemDynamicsGraph Submodel = graph.get(i);
@@ -1236,6 +1237,9 @@ WindowListener {
 					}
 
 					//reconfigure layout for 4 or more submodels
+					contentPanel.removeAll();
+					contentPanel.revalidate();
+					
 					if(graph.size()>=4){
 						modelPanel.setLayout(new GridLayout(2,4));
 					}

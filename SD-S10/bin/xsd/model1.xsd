@@ -112,6 +112,7 @@
                           </xsd:simpleType>
                         </xsd:attribute>
                         <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        <xsd:attribute name="learnerChangeable" type="xsd:string" use="required"/>
                         <xsd:attribute name="xCoordinate" default="10.0">
                           <xsd:simpleType>
                             <xsd:restriction base="xsd:double">
@@ -154,6 +155,7 @@
                             </xsd:restriction>
                           </xsd:simpleType>
                         </xsd:attribute>
+                        <xsd:attribute name="learnerChangeable" type="xsd:string" use="required"/>
                         <xsd:attribute name="yCoordinate" default="10.0">
                           <xsd:simpleType>
                             <xsd:restriction base="xsd:double">
