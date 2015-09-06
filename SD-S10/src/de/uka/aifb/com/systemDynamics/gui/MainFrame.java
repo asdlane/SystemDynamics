@@ -690,7 +690,7 @@ WindowListener {
 		toolBar.add(importAction);
 		toolBar.add(saveAction);
 		toolBar.add(ArchiveSubmodelAction);
-		
+
 		toolBar.addSeparator();
 
 		toolBar.add(newAuxiliaryNodeAction);
@@ -1061,7 +1061,7 @@ WindowListener {
 			});
 			//add it to the model
 			graph.add(newSubmodel);
-			
+
 			//create scroll pane for the new submodel
 
 			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
@@ -1084,7 +1084,7 @@ WindowListener {
 				}
 			}
 			Color randomColor = new Color(red, green, blue);
-			
+
 			SubmodelColors.add(randomColor);
 			GraphNumber.setText(Integer.toString(graph.size()));
 
@@ -1123,7 +1123,201 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			
+
+			int returnVal = fileChooser.showOpenDialog(MainFrame.this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				// file was selected and 'OK' was pressed
+				File file = fileChooser.getSelectedFile();
+				try {
+					ArrayList<SystemDynamicsGraph> newGraphs = new ArrayList<SystemDynamicsGraph>();
+					newGraphs = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
+					modelPanel.removeAll();
+					modelPanel.revalidate();
+					for(int j=0;j<newGraphs.size();j++){
+						graph.add(newGraphs.get(j));
+					}
+					System.out.println(graph.size());
+					for(int i=0;i<graph.size();i++){
+						
+						graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+					}
+
+
+				} catch (AuxiliaryNodesCycleDependencyException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.OpenFile.AuxiliaryNodesCycleDependencyException.Text"),
+							messages.getString("MainFrame.OpenFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (XMLNodeParameterOutOfRangeException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.OpenFile.NodeParameterOutOfRangeException.Text1") + " '" + excep.getXMLNodeId() + "' " + messages.getString("MainFrame.OpenFile.NodeParameterOutOfRangeException.Text2"),
+							messages.getString("MainFrame.OpenFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (XMLRateNodeFlowException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.OpenFile.RateNodeFlowException.Text1") + " '" + excep.getXMLNodeId() + "' " + messages.getString("MainFrame.OpenFile.RateNodeFlowException.Text2"),
+							messages.getString("MainFrame.OpenFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (XMLUselessNodeException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.OpenFile.UselessNodeException.Text1") + " '" + excep.getXMLNodeId() + "' " + messages.getString("MainFrame.OpenFile.UselessNodeException.Text2"),
+							messages.getString("MainFrame.OpenFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (XMLModelReaderWriterException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.OpenFile.XMLModelReaderWriterException.Text") + " " + excep.getException().getMessage(),
+							messages.getString("MainFrame.OpenFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
+
+				// opening successful
+				xmlFile = file;
+
+
+				for(int i=0;i<graph.size();i++){
+					JScrollPane submodelScroll = new JScrollPane(graph.get(i));
+					final SystemDynamicsGraph Submodel = graph.get(i);
+					modelPanel.add(submodelScroll);
+					graph.get(i).addMouseListener(new MouseListener(){
+
+						@Override
+						public void mouseClicked(MouseEvent e) {}
+
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							//Change label on toolbar to show graph number
+							for(int j=0;j<graph.size();j++){
+
+								if(graph.get(j).equals(Submodel)){
+
+									GraphNumber.setText(Integer.toString(j+1));
+								}
+							}
+
+						}
+
+						@Override
+						public void mouseExited(MouseEvent e) {}
+
+						@Override
+						public void mousePressed(MouseEvent e) {}
+
+						@Override
+						public void mouseReleased(MouseEvent e) {}
+
+					});
+				}
+
+				//reconfigure layout for 4 or more submodels
+				contentPanel.removeAll();
+				contentPanel.revalidate();
+
+				if(graph.size()>=4){
+					modelPanel.setLayout(new GridLayout(2,4));
+				}
+				contentPanel.add(modelPanel,BorderLayout.CENTER);
+
+				getContentPane().validate();
+
+				//force layout to recalculate now that a new component has been added.
+				modelPanel.revalidate();
+
+				saveAction.setEnabled(true);
+				ArchiveSubmodelAction.setEnabled(true);
+
+				fileName = xmlFile.getAbsolutePath();
+				setTitle(createTitle(graph.get(0).getModelName(), false));
+
+				newAction.setEnabled(true);
+				closeAction.setEnabled(true);
+				saveAction.setEnabled(false);
+				saveAsAction.setEnabled(true);
+
+				newAuxiliaryNodeAction.setEnabled(true);
+				newConstantNodeAction.setEnabled(true);
+				newLevelNodeAction.setEnabled(true);
+				newRateNodeAction.setEnabled(true);
+				newSourceSinkNodeAction.setEnabled(true);
+				newColoredSourceSinkNodeAction.setEnabled(true);
+				toggleAddFlowAction.setEnabled(true);
+				changeModelNameAction.setEnabled(true);
+				executeModelAction.setEnabled(true);
+
+				zoomStandardAction.setEnabled(true);
+				zoomInAction.setEnabled(true);
+				zoomOutAction.setEnabled(true);
+				cutAction.setEnabled(true);
+				copyAction.setEnabled(true);
+				pasteAction.setEnabled(true);
+
+				try {
+					int i=0;
+					for (SystemDynamicsGraph subGraph : graph) {
+
+						if(subGraph.getModel().getRootCount() != 0){
+							subGraph.validateModel(i);
+						}
+						i++;
+					}
+				} catch (AuxiliaryNodesCycleDependencyException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.AuxiliaryNodesCycleDependencyException.Text"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (NoFormulaException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.NoFormulaException.Text1") + " '" + excep.getNodeWithourFormula().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.NoFormulaException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (NoLevelNodeException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.NoLevelNodeException.Text"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (RateNodeFlowException excep) {
+					JOptionPane.showMessageDialog(MainFrame.this,
+							messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text1") + " '" + excep.getProblematicRateNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.RateNodeFlowException.Text2"),
+							messages.getString("MainFrame.SaveFile.Error"),
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				} catch (UselessNodeException excep ) {
+					if(excep.getUselessNode().getClass().toString().equals("class de.uka.aifb.com.systemDynamics.model.SourceSinkNode")){
+						JOptionPane.showMessageDialog(MainFrame.this,
+								"Invalid model:" + " A Source/Sink node " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+								messages.getString("MainFrame.SaveFile.Error"),
+								JOptionPane.ERROR_MESSAGE);
+						return;
+
+					}else{
+						JOptionPane.showMessageDialog(MainFrame.this,
+								messages.getString("MainFrame.SaveFile.UselessNodeException.Text1") + " '" + excep.getUselessNode().getNodeName() + "' " + messages.getString("MainFrame.SaveFile.UselessNodeException.Text2"),
+								messages.getString("MainFrame.SaveFile.Error"),
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					}			
+				}
+
+
+			}
+
 		}
 
 	}
@@ -1159,7 +1353,7 @@ WindowListener {
 						for(int i=0;i<graph.size();i++){
 							graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 						}
-						
+
 
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
 						JOptionPane.showMessageDialog(MainFrame.this,
@@ -1204,7 +1398,7 @@ WindowListener {
 					modelPanel.revalidate();
 					for(int i=0;i<graph.size();i++){
 						JScrollPane submodelScroll = new JScrollPane(graph.get(i));
-					    final SystemDynamicsGraph Submodel = graph.get(i);
+						final SystemDynamicsGraph Submodel = graph.get(i);
 						modelPanel.add(submodelScroll);
 						graph.get(i).addMouseListener(new MouseListener(){
 
@@ -1215,7 +1409,7 @@ WindowListener {
 							public void mouseEntered(MouseEvent e) {
 								//Change label on toolbar to show graph number
 								for(int j=0;j<graph.size();j++){
-									
+
 									if(graph.get(j).equals(Submodel)){
 
 										GraphNumber.setText(Integer.toString(j+1));
@@ -1239,7 +1433,7 @@ WindowListener {
 					//reconfigure layout for 4 or more submodels
 					contentPanel.removeAll();
 					contentPanel.revalidate();
-					
+
 					if(graph.size()>=4){
 						modelPanel.setLayout(new GridLayout(2,4));
 					}
@@ -1281,10 +1475,10 @@ WindowListener {
 					try {
 						int i=0;
 						for (SystemDynamicsGraph subGraph : graph) {
-							
+
 							if(subGraph.getModel().getRootCount() != 0){
 								subGraph.validateModel(i);
-								}
+							}
 							i++;
 						}
 					} catch (AuxiliaryNodesCycleDependencyException excep) {
@@ -1467,7 +1661,7 @@ WindowListener {
 				}
 			}
 			try {
-				
+
 				graph.get(archiveIndex).storeSubmodelToXML(file.getAbsolutePath(), graph.get(archiveIndex-1), SubmodelColors.get(archiveIndex-1));
 			} catch (AuxiliaryNodesCycleDependencyException e1) {
 				// TODO Auto-generated catch block
@@ -1488,7 +1682,7 @@ WindowListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 		}
 	}
 	private class SaveAction extends AbstractAction {
@@ -1542,10 +1736,10 @@ WindowListener {
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
 				//open file and write model tag in here itself
-				
+
 				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, true);
-				
-				
+
+
 				//				graph.get(0).storeToXML(file.getAbsolutePath());				
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph,SubmodelColors.get(0).red, SubmodelColors.get(0).green, SubmodelColors.get(0).blue);
 
@@ -1615,9 +1809,9 @@ WindowListener {
 			int i=0;
 			try {
 				for (SystemDynamicsGraph subGraph : graph) {
-					
+
 					if(subGraph.getModel().getRootCount() != 0){
-					subGraph.validateModel(i);
+						subGraph.validateModel(i);
 					}
 					i++;
 				}
@@ -1692,6 +1886,15 @@ WindowListener {
 
 				// check if existing file should be overwritten -> ask for confirmation!
 				if (file.exists()) {
+					PrintWriter writer = null;
+					try {
+						writer = new PrintWriter(file);
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					writer.print("");
+					writer.close();
 					Object[] options = { messages.getString("MainFrame.Yes"), messages.getString("MainFrame.No") };
 					int selectedOption = JOptionPane.showOptionDialog(MainFrame.this,
 							messages.getString("MainFrame.ConfirmOverwriting.Message"),
@@ -1716,6 +1919,7 @@ WindowListener {
 				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
+				
 				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false);
 
 				//				graph.get(0).storeToXML(file.getAbsolutePath());
@@ -1781,9 +1985,9 @@ WindowListener {
 			saveAction.setEnabled(false);
 			int i=0;
 			try {
-				
+
 				for (SystemDynamicsGraph subGraph : graph) {
-					
+
 					if(subGraph.getModel().getRootCount() != 0){
 						subGraph.validateModel(i);
 					}
@@ -1929,9 +2133,9 @@ WindowListener {
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
 					if(LearnerDecidable.equals("yes")){
-					graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
-							newNodeNameParameter.getNodeParameter(),
-							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+						graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
+								newNodeNameParameter.getNodeParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
 					}else{
 						graph.get(0).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
 								newNodeNameParameter.getNodeParameter(),
@@ -1941,15 +2145,15 @@ WindowListener {
 				else{
 					//accounts for if user cancels the insert
 					try{
-						
+
 						JFrame frame = new JFrame("InputDialog");
 						Object[] choices = SubmodelNumbers.toArray();
 
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						if(LearnerDecidable.equals("yes")){
 							graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
-								newNodeNameParameter.getNodeParameter(),
-								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+									newNodeNameParameter.getNodeParameter(),
+									MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
 						}
 						else{
 							graph.get(subModelIndex-1).createConstantNodeGraphCell(newNodeNameParameter.getNodeName(),
@@ -1997,16 +2201,16 @@ WindowListener {
 				JFrame LearnerDecidableframe = new JFrame("InputDialog");
 				Object[] LeanerDecidablechoices = {"yes","no"};
 				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
-				
+
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
 					if(LearnerDecidable.equals("yes")){
 						graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
-							newNodeNameParameter.getNodeParameter(),
-							newNodeNameParameter.getMinParameter(),
-							newNodeNameParameter.getMaxParameter(),
-							newNodeNameParameter.getCurveParameter(),
-							MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+								newNodeNameParameter.getNodeParameter(),
+								newNodeNameParameter.getMinParameter(),
+								newNodeNameParameter.getMaxParameter(),
+								newNodeNameParameter.getCurveParameter(),
+								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
 					}
 					else{
 						graph.get(0).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
@@ -2026,11 +2230,11 @@ WindowListener {
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 						if(LearnerDecidable.equals("yes")){
 							graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
-								newNodeNameParameter.getNodeParameter(),
-								newNodeNameParameter.getMinParameter(),
-								newNodeNameParameter.getMaxParameter(),
-								newNodeNameParameter.getCurveParameter(),
-								MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
+									newNodeNameParameter.getNodeParameter(),
+									newNodeNameParameter.getMinParameter(),
+									newNodeNameParameter.getMaxParameter(),
+									newNodeNameParameter.getCurveParameter(),
+									MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true);
 						}
 						else{
 							graph.get(subModelIndex - 1).createLevelNodeGraphCell(newNodeNameParameter.getNodeName(),
@@ -2040,7 +2244,7 @@ WindowListener {
 									newNodeNameParameter.getCurveParameter(),
 									MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
 						}
-						
+
 					}catch(Exception ex){
 
 					}
@@ -2076,7 +2280,7 @@ WindowListener {
 				JFrame LearnerDecidableframe = new JFrame("InputDialog");
 				Object[] LeanerDecidablechoices = {"yes","no"};
 				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
-				
+
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
 					if(LearnerDecidable=="yes"){
@@ -2085,7 +2289,7 @@ WindowListener {
 					else{
 						graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
 					}
-					
+
 				}
 				else{
 					//accounts for if user cancels the insert
@@ -2100,7 +2304,7 @@ WindowListener {
 						else{
 							graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
 						}
-						
+
 					}catch(Exception ex){
 
 					}
@@ -2210,7 +2414,7 @@ WindowListener {
 			if (subModelIndex == 0){
 				subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Enter Add Flow mode for which submodel?","Enter Add Flow mode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			}
-			
+
 			graph.get(subModelIndex - 1).setPortsVisible(!graph.get(subModelIndex - 1).isPortsVisible());
 			inAddFlowMode = !inAddFlowMode;
 			if (inAddFlowMode) {
@@ -2237,7 +2441,7 @@ WindowListener {
 			modelPanel.repaint();
 			contentPanel.revalidate();
 			contentPanel.repaint();
-			
+
 		}
 	}
 
@@ -2287,7 +2491,7 @@ WindowListener {
 				//**********************************************************TODO:***********************************************************
 				//graph.get(0).validateModelAndSetUnchangeable(graph);
 				//graph.get(0).validateModelAndSetUnchangeable();
-			
+
 				for (SystemDynamicsGraph subGraph : graph) {
 					if(subGraph.getModel().getRootCount() != 0){
 						subGraph.validateModelAndSetUnchangeable(i);
@@ -2521,10 +2725,10 @@ WindowListener {
 						bw.newLine();
 					}
 					else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
-						
+
 						String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
 						String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
-						
+
 						bw.write("coloredSourceSink," + colorIndex + "," + color[0] + "," + color[1] + "," + color[2]);
 						bw.newLine();
 					}
@@ -2625,10 +2829,10 @@ WindowListener {
 						bw.newLine();
 					}
 					else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
-						
+
 						String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
 						String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
-						
+
 						bw.write("coloredSourceSink," + colorIndex + "," + color[0] + "," + color[1] + "," + color[2]);
 						bw.newLine();
 					}
@@ -2705,7 +2909,7 @@ WindowListener {
 					String[] attributes = pasteCells.get(i).split(",");
 					Color nodeColor = new Color(Integer.parseInt(attributes[2]),Integer.parseInt(attributes[3]),Integer.parseInt(attributes[4]));
 					graph.get(subModelIndex-1).createColoredSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE * (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), nodeColor, Integer.parseInt(attributes[1]));
-					
+
 				}
 				else if(pasteCells.get(i).contains("SourceSink")){
 					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i));
@@ -2716,7 +2920,7 @@ WindowListener {
 					graph.get(subModelIndex-1).createConstantNodeGraphCell(attributes[1], Double.parseDouble(attributes[2]), MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
 
 				}
-				
+
 				else if(pasteCells.get(i).contains("Rate")){
 					String[] attributes = pasteCells.get(i).split(",");
 					graph.get(subModelIndex-1).createRateNodeGraphCell(attributes[1], MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
