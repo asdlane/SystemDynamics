@@ -64,7 +64,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	public Model model;
 	private HashMap<AbstractNode, DefaultGraphCell> modelNode2graphNode;
 	private HashMap<DefaultGraphCell, AbstractNode> graphNode2modelNode;
-
+	public Color borderColor;
 	private LinkedList<SystemDynamicsGraphModifiedEventListener> listeners;
 	
 	/**
@@ -1753,6 +1753,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		//XMLModelWriter.writeXMLSystemDynamicsGraph(this, model, graphNodes, flowEdges, dependencyEdges,
 		//                        fileName);
+		System.out.println("GRAPH SIZE: " + graph.size());
 		XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, submodelColors, clearFile);
 
 	}

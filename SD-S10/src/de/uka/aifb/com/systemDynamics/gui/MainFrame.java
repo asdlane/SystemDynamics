@@ -1135,13 +1135,14 @@ WindowListener {
 					modelPanel.revalidate();
 					for(int j=0;j<newGraphs.size();j++){
 						graph.add(newGraphs.get(j));
+						SubmodelColors.add(newGraphs.get(j).borderColor);
 					}
 					System.out.println(graph.size());
 					for(int i=0;i<graph.size();i++){
 						
 						graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 					}
-
+						
 
 				} catch (AuxiliaryNodesCycleDependencyException excep) {
 					JOptionPane.showMessageDialog(MainFrame.this,

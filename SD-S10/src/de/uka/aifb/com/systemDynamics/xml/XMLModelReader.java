@@ -704,6 +704,7 @@ public class XMLModelReader {
 			SystemDynamicsGraph SubmodelGraph = new SystemDynamicsGraph(start,frame);
 			Border SubmodelColorBorder = BorderFactory.createLineBorder(SubmodelBorder,15);
 			SubmodelGraph.setBorder(SubmodelColorBorder);
+			SubmodelGraph.borderColor = SubmodelBorder;
 			
 			SubmodelGraph.setSize(400,400);
 			if(i==0){

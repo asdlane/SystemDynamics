@@ -199,6 +199,7 @@ public class XMLModelWriter {
           
 	      try{
 	    	  for(int i=0;i<graph.size();i++){
+	    		  
 	    		  document.add(createDocumentForModel(graph.get(i).model, submodelColors.get(i), node2Id, i));
 	    		  // add position information of nodes and additional control points to DOC document
 	    		 	    	  	   
