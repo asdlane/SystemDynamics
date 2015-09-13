@@ -1112,7 +1112,7 @@ WindowListener {
 
 	}
 	private class importAction extends AbstractAction {
-
+				
 		private static final long serialVersionUID = 1L;
 
 		public importAction(String name, Icon icon, String toolTipText) {
@@ -1123,7 +1123,7 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-
+			saveAction.setEnabled(false);
 			int returnVal = fileChooser.showOpenDialog(MainFrame.this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// file was selected and 'OK' was pressed
@@ -1243,7 +1243,7 @@ WindowListener {
 				closeAction.setEnabled(true);
 				saveAction.setEnabled(false);
 				saveAsAction.setEnabled(true);
-
+				
 				newAuxiliaryNodeAction.setEnabled(true);
 				newConstantNodeAction.setEnabled(true);
 				newLevelNodeAction.setEnabled(true);
@@ -1253,7 +1253,7 @@ WindowListener {
 				toggleAddFlowAction.setEnabled(true);
 				changeModelNameAction.setEnabled(true);
 				executeModelAction.setEnabled(true);
-
+				newSubmodelAction.setEnabled(true);
 				zoomStandardAction.setEnabled(true);
 				zoomInAction.setEnabled(true);
 				zoomOutAction.setEnabled(true);
@@ -1627,6 +1627,7 @@ WindowListener {
 			Object[] choices = SubmodelNumbers.toArray();
 
 			int archiveIndex = (Integer)JOptionPane.showInputDialog(frame,"Which submodel should be archived?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			archiveIndex = archiveIndex-1;
 			File file = xmlFile;
 			if (file == null) {
 				int returnVal = fileChooser.showSaveDialog(MainFrame.this);
@@ -1662,8 +1663,13 @@ WindowListener {
 				}
 			}
 			try {
-
-				graph.get(archiveIndex).storeSubmodelToXML(file.getAbsolutePath(), graph.get(archiveIndex-1), SubmodelColors.get(archiveIndex-1));
+				ArrayList<SystemDynamicsGraph> submodelGraph = new ArrayList<SystemDynamicsGraph>();
+				submodelGraph.add(graph.get(archiveIndex));
+				Color submodelColorsingle = SubmodelColors.get(archiveIndex);
+				ArrayList<Color> submodelColor = new ArrayList<Color>();
+				submodelColor.add(submodelColorsingle);
+				graph.get(archiveIndex).storeToXML(file.getAbsolutePath(), submodelGraph, submodelColor, false);
+				
 			} catch (AuxiliaryNodesCycleDependencyException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
