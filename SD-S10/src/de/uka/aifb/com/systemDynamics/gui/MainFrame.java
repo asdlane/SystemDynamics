@@ -1112,7 +1112,7 @@ WindowListener {
 
 	}
 	private class importAction extends AbstractAction {
-				
+
 		private static final long serialVersionUID = 1L;
 
 		public importAction(String name, Icon icon, String toolTipText) {
@@ -1139,10 +1139,11 @@ WindowListener {
 					}
 					System.out.println(graph.size());
 					for(int i=0;i<graph.size();i++){
-						
+
 						graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+
 					}
-						
+
 
 				} catch (AuxiliaryNodesCycleDependencyException excep) {
 					JOptionPane.showMessageDialog(MainFrame.this,
@@ -1243,7 +1244,7 @@ WindowListener {
 				closeAction.setEnabled(true);
 				saveAction.setEnabled(false);
 				saveAsAction.setEnabled(true);
-				
+
 				newAuxiliaryNodeAction.setEnabled(true);
 				newConstantNodeAction.setEnabled(true);
 				newLevelNodeAction.setEnabled(true);
@@ -1315,7 +1316,7 @@ WindowListener {
 						return;
 					}			
 				}
-
+				modelPanel.revalidate();
 
 			}
 
@@ -1669,7 +1670,7 @@ WindowListener {
 				ArrayList<Color> submodelColor = new ArrayList<Color>();
 				submodelColor.add(submodelColorsingle);
 				graph.get(archiveIndex).storeToXML(file.getAbsolutePath(), submodelGraph, submodelColor, false);
-				
+
 			} catch (AuxiliaryNodesCycleDependencyException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -1926,7 +1927,7 @@ WindowListener {
 				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
-				
+
 				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false);
 
 				//				graph.get(0).storeToXML(file.getAbsolutePath());
@@ -2938,6 +2939,73 @@ WindowListener {
 		}
 
 	}
+	private class ShareAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		protected Action action;
+		private ShareAction(String name, Icon icon, String toolTipText, Action a){
+			super(name, icon);
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+			this.action = a;
+		}
+
+		public void actionPerformed(ActionEvent e){
+			Object[] cells = {};
+
+			for(int j=0;j<graph.size();j++){
+				if(cells.length == 0){
+					cells = graph.get(j).getSelectionCells();
+
+				}
+
+
+			}
+
+			for(int i=0; i<cells.length;i++){
+				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					boolean learnerchange = Boolean.parseBoolean(((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString()); 
+					graph.get(0).createAuxiliaryNodeGraphCell(name, 0, 0, learnerchange);
+
+				}
+				else if (cells[i] instanceof LevelNodeGraphCell){
+					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
+					String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
+					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
+					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
+					boolean learnerchange = Boolean.parseBoolean(((LevelNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
+					graph.get(0).createLevelNodeGraphCell(name, Double.parseDouble(startVal), Double.parseDouble(minVal), Double.parseDouble(maxVal), Double.parseDouble(curve), 0, 0, learnerchange);
+
+
+				}
+				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
+					graph.get(0).createSourceSinkNodeGraphCell(0, 0);
+				}
+				else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
+
+					String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
+					String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
+					Color truecolor = new Color(Integer.parseInt(color[0]),Integer.parseInt(color[1]),Integer.parseInt(color[2]));
+					graph.get(0).createColoredSourceSinkNodeGraphCell(0, 0, truecolor, Integer.parseInt(colorIndex));
+
+				}
+				else if(cells[i] instanceof ConstantNodeGraphCell){
+					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
+					boolean learnerchange = Boolean.parseBoolean(((ConstantNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
+					graph.get(0).createConstantNodeGraphCell(name, Double.parseDouble(values), 0, 0, learnerchange);
+				}
+				else if(cells[i] instanceof RateNodeGraphCell){
+					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					boolean learnerchange = Boolean.parseBoolean(((RateNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
+					graph.get(0).createRateNodeGraphCell(name, 0, 0, learnerchange);
+				}
+			}
+
+		}
+
+	}
+
 	// This will change the source of the actionevent to graph.
 	public class EventRedirector extends AbstractAction {
 
