@@ -170,6 +170,7 @@ WindowListener {
 	private Action pasteActionFunction = javax.swing.TransferHandler.getPasteAction();
 	private Action newSubmodelAction;
 	private Action importAction;
+	private Action shareAction;
 	private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
@@ -317,7 +318,7 @@ WindowListener {
 		copyAction = new CopyAction("Copy", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON)), "Copy",copyActionFunction);
 		pasteAction = new PasteAction("Paste", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Paste",pasteActionFunction);
 		closeAction.setEnabled(false);
-
+		shareAction = new shareAction("Share", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Share");
 		saveAction = new SaveAction(messages.getString("MainFrame.MenuBar.File.Save"),
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_SAVE_ICON)),
 				messages.getString("MainFrame.MenuBar.File.Save"));
@@ -716,6 +717,7 @@ WindowListener {
 		toolBar.add(cutAction);
 		toolBar.add(copyAction);
 		toolBar.add(pasteAction);
+		toolBar.add(shareAction);
 		toolBar.addSeparator();
 		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
 		toolBar.add(GraphNumber);
@@ -2939,18 +2941,25 @@ WindowListener {
 		}
 
 	}
-	private class ShareAction extends AbstractAction {
+	private class shareAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
-		protected Action action;
-		private ShareAction(String name, Icon icon, String toolTipText, Action a){
+		
+		private shareAction(String name, Icon icon, String toolTipText){
 			super(name, icon);
 			putValue(Action.SHORT_DESCRIPTION, toolTipText);
-			this.action = a;
+			
 		}
 
 		public void actionPerformed(ActionEvent e){
 			Object[] cells = {};
-
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Share with which submodel?","Share",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			subModelIndex = subModelIndex-1;
 			for(int j=0;j<graph.size();j++){
 				if(cells.length == 0){
 					cells = graph.get(j).getSelectionCells();
@@ -2964,7 +2973,7 @@ WindowListener {
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
 					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					boolean learnerchange = Boolean.parseBoolean(((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString()); 
-					graph.get(0).createAuxiliaryNodeGraphCell(name, 0, 0, learnerchange);
+					graph.get(subModelIndex).createAuxiliaryNodeGraphCell(name, 0, 0, learnerchange);
 
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
@@ -2974,31 +2983,31 @@ WindowListener {
 					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
 					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
 					boolean learnerchange = Boolean.parseBoolean(((LevelNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(0).createLevelNodeGraphCell(name, Double.parseDouble(startVal), Double.parseDouble(minVal), Double.parseDouble(maxVal), Double.parseDouble(curve), 0, 0, learnerchange);
+					graph.get(subModelIndex).createLevelNodeGraphCell(name, Double.parseDouble(startVal), Double.parseDouble(minVal), Double.parseDouble(maxVal), Double.parseDouble(curve), 0, 0, learnerchange);
 
 
 				}
 				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
-					graph.get(0).createSourceSinkNodeGraphCell(0, 0);
+					graph.get(subModelIndex).createSourceSinkNodeGraphCell(0, 0);
 				}
 				else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
 
 					String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
 					String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
 					Color truecolor = new Color(Integer.parseInt(color[0]),Integer.parseInt(color[1]),Integer.parseInt(color[2]));
-					graph.get(0).createColoredSourceSinkNodeGraphCell(0, 0, truecolor, Integer.parseInt(colorIndex));
+					graph.get(subModelIndex).createColoredSourceSinkNodeGraphCell(0, 0, truecolor, Integer.parseInt(colorIndex));
 
 				}
 				else if(cells[i] instanceof ConstantNodeGraphCell){
 					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
 					boolean learnerchange = Boolean.parseBoolean(((ConstantNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(0).createConstantNodeGraphCell(name, Double.parseDouble(values), 0, 0, learnerchange);
+					graph.get(subModelIndex).createConstantNodeGraphCell(name, Double.parseDouble(values), 0, 0, learnerchange);
 				}
 				else if(cells[i] instanceof RateNodeGraphCell){
 					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					boolean learnerchange = Boolean.parseBoolean(((RateNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(0).createRateNodeGraphCell(name, 0, 0, learnerchange);
+					graph.get(subModelIndex).createRateNodeGraphCell(name, 0, 0, learnerchange);
 				}
 			}
 
