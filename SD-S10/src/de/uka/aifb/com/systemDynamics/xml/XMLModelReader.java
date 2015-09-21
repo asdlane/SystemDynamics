@@ -187,7 +187,7 @@ public class XMLModelReader {
 		graph = createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
 				id2levelNode, id2rateNode, id2sourceSinkNode, start, frame);
 		
-		
+		System.out.println("ID TO LEVEL SIZE" + id2levelNode.size());
 		
 		return graph;
 	}
@@ -722,6 +722,7 @@ public class XMLModelReader {
 						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/LevelNodes/LevelNode", document,
 								XPathConstants.NODESET);
 				
+				
 				for (int i = 0; i < levelNodeElements.getLength(); i++) {
 					Element levelNodeElement = (Element)levelNodeElements.item(i);
 					String id = levelNodeElement.getAttribute("id");
@@ -742,16 +743,21 @@ public class XMLModelReader {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
 					id2levelNodeGraphCell.put(id, levelNode);
+					System.out.println("ID TO LEVEL SIZE 1 LEVEL DEEPER: " + id2levelNodeGraphCell.size());
+					System.out.println("ID KEY: " + id);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(levelNode, vertex);
+					System.out.println("graphCell2Vertex SIZE: " + graphCell2Vertex.size());
+					
 					abstractNode2Vertex.put(graph.get(k).getModelNode(levelNode), vertex);
+					System.out.println("abstractNode22Vertex SIZE: " + abstractNode2Vertex.size());
 					if (xCoordinate != 10.0 && yCoordinate != 10.0) {
 						automaticGraphLayoutNecessary = false;
 					}
 				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
-				//throw new XMLModelReaderWriterException(e);
+				throw new XMLModelReaderWriterException(e);
 			}
 
 			// (1b) create source/sink nodes

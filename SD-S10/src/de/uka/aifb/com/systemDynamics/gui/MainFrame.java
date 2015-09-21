@@ -1406,8 +1406,11 @@ WindowListener {
 						JScrollPane submodelScroll = new JScrollPane(graph.get(i));
 						final SystemDynamicsGraph Submodel = graph.get(i);
 						modelPanel.add(submodelScroll);
+						graph.get(i).revalidate();
+						graph.get(i).repaint();
+						graph.get(i).enableInputMethods(true);
 						graph.get(i).addMouseListener(new MouseListener(){
-
+						
 							@Override
 							public void mouseClicked(MouseEvent e) {}
 
@@ -1439,17 +1442,18 @@ WindowListener {
 					//reconfigure layout for 4 or more submodels
 					contentPanel.removeAll();
 					contentPanel.revalidate();
-
+					
 					if(graph.size()>=4){
 						modelPanel.setLayout(new GridLayout(2,4));
 					}
 					contentPanel.add(modelPanel,BorderLayout.CENTER);
 
 					getContentPane().validate();
+					modelPanel.repaint();
 
 					//force layout to recalculate now that a new component has been added.
 					modelPanel.revalidate();
-
+					
 					saveAction.setEnabled(true);
 					ArchiveSubmodelAction.setEnabled(true);
 
@@ -1477,6 +1481,7 @@ WindowListener {
 					cutAction.setEnabled(true);
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
+					newSubmodelAction.setEnabled(true);
 
 					try {
 						int i=0;
