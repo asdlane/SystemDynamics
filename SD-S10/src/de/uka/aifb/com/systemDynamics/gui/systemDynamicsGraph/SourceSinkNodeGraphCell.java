@@ -45,10 +45,12 @@ public class SourceSinkNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public SourceSinkNodeGraphCell(double x, double y) {
+   public SourceSinkNodeGraphCell(double x, double y, boolean shared) {
       // add one standard port
       addPort();
-      
+      if(shared){
+    	  GraphConstants.setBackground(getAttributes(), Color.LIGHT_GRAY);
+      }
       // layout
       GraphConstants.setBounds(getAttributes(), new Rectangle2D.Double(x, y, WIDTH, HEIGHT));
       GraphConstants.setSizeable(getAttributes(), false);

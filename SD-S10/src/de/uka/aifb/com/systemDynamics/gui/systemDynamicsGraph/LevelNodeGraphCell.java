@@ -51,7 +51,7 @@ public class LevelNodeGraphCell extends DefaultGraphCell {
     * @param y y coordinate of node's origin
  * @param learnerChangeable 
     */
-   public LevelNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable) {
+   public LevelNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable, boolean shared) {
       super(name, vals);
       
       if (name == null) {
@@ -66,13 +66,17 @@ public class LevelNodeGraphCell extends DefaultGraphCell {
       else{
     	  BORDER_COLOR = Color.black;
       }
-     
+      if(shared){
+    	  GraphConstants.setBackground(getAttributes(), Color.LIGHT_GRAY);
+    	  
+      }
       // layout
       GraphConstants.setBounds(getAttributes(), new  Rectangle2D.Double(x, y, WIDTH, HEIGHT));
       GraphConstants.setSizeable(getAttributes(), false);
       GraphConstants.setBorderColor(getAttributes(), BORDER_COLOR);
-      
-      GraphConstants.setGradientColor(getAttributes(), COLOR);
+      if(!shared){
+    	  GraphConstants.setGradientColor(getAttributes(), COLOR);
+      }
       GraphConstants.setOpaque(getAttributes(), true);
    }
 }

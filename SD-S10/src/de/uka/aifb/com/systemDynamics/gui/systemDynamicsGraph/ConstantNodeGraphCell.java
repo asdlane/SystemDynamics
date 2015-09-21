@@ -50,7 +50,7 @@ public class ConstantNodeGraphCell extends DefaultGraphCell {
     */
    private Color purple = new Color(171,0,255); 
    
-   public ConstantNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable) {
+   public ConstantNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable, boolean shared) {
 	   super(name,vals);
 	   
 	   if(learnerChangeable){
@@ -59,6 +59,9 @@ public class ConstantNodeGraphCell extends DefaultGraphCell {
 	      else{
 	    	 BORDER_COLOR = Color.black;
 	  }
+	   if(shared){
+		   GraphConstants.setBackground(getAttributes(), Color.LIGHT_GRAY);
+	   }
       
       
       if (name == null) {

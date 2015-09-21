@@ -327,7 +327,7 @@ public class XMLModelReader {
 
 				LevelNode levelNode = null;
 				try {
-					levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, false);
+					levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, false, false);
 				} catch (NodeParameterOutOfRangeException e) {
 					throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 				}
@@ -736,7 +736,8 @@ public class XMLModelReader {
 
 					LevelNodeGraphCell levelNode = null;
 					try {
-						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable);
+						//CHANGE FALSE TO SHARED LATER!!!
+						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable, false);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
@@ -763,9 +764,9 @@ public class XMLModelReader {
 					String id = sourceSinkNodeElement.getAttribute("id");
 					double xCoordinate = new Double(sourceSinkNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(sourceSinkNodeElement.getAttribute("yCoordinate"));
-
+					//ADD IN SHARED ATTRIBUTE
 					SourceSinkNodeGraphCell sourceSinkNode = graph.get(k).createSourceSinkNodeGraphCell(xCoordinate,
-							yCoordinate);
+							yCoordinate, false);
 					id2sourceSinkNodeGraphCell.put(id, sourceSinkNode);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(sourceSinkNode, vertex);
@@ -791,8 +792,9 @@ public class XMLModelReader {
 					double xCoordinate = new Double(rateNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(rateNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(rateNodeElement.getAttribute("learnerChangeable"));
+					//ADD IN SHARED LATER
 					RateNodeGraphCell rateNode = graph.get(k).createRateNodeGraphCell(nodeName, xCoordinate,
-							yCoordinate, learnerDecidable);
+							yCoordinate, learnerDecidable, false);
 					id2rateNodeGraphCell.put(id, rateNode);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(rateNode, vertex);
@@ -818,9 +820,10 @@ public class XMLModelReader {
 					double xCoordinate = new Double(auxiliaryNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(auxiliaryNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(auxiliaryNodeElement.getAttribute("learnerChangeable"));
+					//ADD IN SHARED LATER
 					AuxiliaryNodeGraphCell auxiliaryNode = graph.get(k).createAuxiliaryNodeGraphCell(nodeName,
 							xCoordinate,
-							yCoordinate, learnerDecidable);
+							yCoordinate, learnerDecidable, false);
 					id2auxiliaryNodeGraphCell.put(id, auxiliaryNode);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(auxiliaryNode, vertex);
@@ -849,9 +852,9 @@ public class XMLModelReader {
 					boolean learnerDecidable = new Boolean(constantNodeElement.getAttribute("learnerChangeable"));
 					ConstantNodeGraphCell constantNode = null;
 					try {
-						//need to modify this to include round node -pradeep
+						//MODIFY THIS TO INCLUDE SHARED
 						constantNode = graph.get(k).createConstantNodeGraphCell(nodeName, constantValue,
-								xCoordinate, yCoordinate, learnerDecidable);
+								xCoordinate, yCoordinate, learnerDecidable, false);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}

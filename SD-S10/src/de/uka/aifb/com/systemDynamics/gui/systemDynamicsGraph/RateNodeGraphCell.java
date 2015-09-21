@@ -47,7 +47,7 @@ public class RateNodeGraphCell extends DefaultGraphCell {
     * @param y y coordinate of node's origin
  * @param learnerChangeable 
     */
-   public RateNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable) {
+   public RateNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean learnerChangeable, boolean shared) {
       super(name, vals);
       
       if (name == null) {
@@ -58,6 +58,9 @@ public class RateNodeGraphCell extends DefaultGraphCell {
       }
       else{
     	  BORDER_COLOR = Color.black;
+      }
+      if(shared){
+    	  GraphConstants.setBackground(getAttributes(), Color.LIGHT_GRAY);
       }
       // add one standard port
       addPort();

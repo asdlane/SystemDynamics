@@ -49,7 +49,7 @@ public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
     * @param x x coordinate of node's origin
     * @param y y coordinate of node's origin
     */
-   public AuxiliaryNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean LearnerChangeable) {
+   public AuxiliaryNodeGraphCell(String name, double x, double y, AttributeMap vals, boolean LearnerChangeable, boolean shared) {
       super(name, vals);
       
       if (name == null) {
@@ -60,6 +60,9 @@ public class AuxiliaryNodeGraphCell extends DefaultGraphCell {
       }
       else{
     	 BORDER_COLOR = Color.black;
+      }
+      if(shared){
+    	  GraphConstants.setBackground(getAttributes(), Color.LIGHT_GRAY);
       }
       // add one standard port
       addPort();

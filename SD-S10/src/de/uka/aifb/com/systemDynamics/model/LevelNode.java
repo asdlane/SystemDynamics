@@ -51,6 +51,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
    private boolean learnerChangeable;
+   private boolean shared;
    /**
     * Constructor.
     * 
@@ -60,7 +61,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
     * @param maxValue max value allowed across the entire simulation
     * @param curve characteristic behaviour of this LevelNode
     */
-   protected LevelNode(String nodeName, double startValue, double min, double max, double curve, boolean learnerChangeable) {
+   protected LevelNode(String nodeName, double startValue, double min, double max, double curve, boolean learnerChangeable, boolean shared) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
@@ -84,20 +85,22 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
       setMaxValue(max);
       setCurveValue(curve);
       setLearnerChangeable(learnerChangeable);
-      
+      setShared(shared);
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();
    }
    
-   /**
+
+
+/**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 
     * @param nodeName node name
     * @param startValue start value
     * @return created new instance
     */
-   private static LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerDecidable) {
-      return new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable);
+   private static LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerDecidable, boolean shared) {
+      return new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, shared);
    }
    
    /**
@@ -135,7 +138,10 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
 	   this.learnerChangeable = learnerChangeable;
 	   
    }
-
+   void setShared(boolean shared){
+	   this.shared = shared;
+	   
+   }
    /**
     * Sets the level node's characteristic behaviour
     * 
@@ -155,6 +161,10 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    }
    public boolean getLearnerChangeable(){
 	   return learnerChangeable;
+	   
+   }
+   public boolean getShared(){
+	   return shared;
 	   
    }
    /**

@@ -100,12 +100,12 @@ public class Model {
     * @param maxValue max value allowed across the entire simulation
     * @return created level node
     */
-   public LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerChangeable) {
+   public LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerChangeable, boolean shared) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable);
+      LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable, shared);
       levelNodes.add(levelNode);
       return levelNode;
    }

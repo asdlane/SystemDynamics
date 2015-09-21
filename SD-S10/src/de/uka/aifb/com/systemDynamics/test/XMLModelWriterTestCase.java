@@ -83,7 +83,7 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with auxiliary nodes cycle dependency -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       RateNode rateNode = model.createRateNode("Rate node", false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
@@ -132,7 +132,7 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with rate node without formula -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       RateNode rateNode = model.createRateNode("Rate node", false);
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
@@ -157,7 +157,7 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with rate node without flow -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       RateNode rateNode = model.createRateNode("Rate node", false);
       model.setFormula(rateNode, levelNode);
       
@@ -180,7 +180,7 @@ public class XMLModelWriterTestCase extends TestCase {
       // model with useless nodes -> WRONG
       Model model = new Model();
       model.setModelName("Model name");
-      model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0);
             
       try {
@@ -201,7 +201,7 @@ public class XMLModelWriterTestCase extends TestCase {
    public void testWriteXMLModel7() {
       Model model = new Model();
       model.setModelName("Model name");
-      model.createLevelNode("Level node", 0, 0, 0, 3, false);
+      model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       
       try {
          XMLModelWriter.writeXMLModel(model, FILE_NAME);
@@ -237,8 +237,8 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       
-      LevelNode levelNodeA = model.createLevelNode("Level node A", 1, 0, 0, 3, false);
-      LevelNode levelNodeB = model.createLevelNode("Level node B", -1.234, 0, 0, 3, false);
+      LevelNode levelNodeA = model.createLevelNode("Level node A", 1, 0, 0, 3, false, false);
+      LevelNode levelNodeB = model.createLevelNode("Level node B", -1.234, 0, 0, 3, false, false);
       SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
       RateNode rateNode1 = model.createRateNode("Rate node 1", false);
       RateNode rateNode2 = model.createRateNode("Rate node 2", false);
@@ -394,13 +394,12 @@ public class XMLModelWriterTestCase extends TestCase {
       SystemDynamicsGraph graph = new SystemDynamicsGraph(start, new JFrame());
       ArrayList<SystemDynamicsGraph> graphList = new ArrayList<SystemDynamicsGraph>();
       graphList.add(graph);
-      SourceSinkNodeGraphCell sourceSinkNode1 = graph.createSourceSinkNodeGraphCell(20, 20);
-      SourceSinkNodeGraphCell sourceSinkNode2 = graph.createSourceSinkNodeGraphCell(500, 20);
-      LevelNodeGraphCell levelNode = graph.createLevelNodeGraphCell("LevelNode", 0, 260, 40, 0, 0, 3, false);
-      RateNodeGraphCell rateNode1 = graph.createRateNodeGraphCell("Rate node 1", 170, 40, false);
-      RateNodeGraphCell rateNode2 = graph.createRateNodeGraphCell("Rate node 2", 400, 40, false);
-      ConstantNodeGraphCell constantNode = graph.createConstantNodeGraphCell("ConstantNode", 0, 275, 200, false);
-      
+      SourceSinkNodeGraphCell sourceSinkNode1 = graph.createSourceSinkNodeGraphCell(20, 20, false);
+      SourceSinkNodeGraphCell sourceSinkNode2 = graph.createSourceSinkNodeGraphCell(500, 20, false);
+      LevelNodeGraphCell levelNode = graph.createLevelNodeGraphCell("LevelNode", 0, 260, 40, 0, 0, 3, false, false);
+      RateNodeGraphCell rateNode1 = graph.createRateNodeGraphCell("Rate node 1", 170, 40, false, false);
+      RateNodeGraphCell rateNode2 = graph.createRateNodeGraphCell("Rate node 2", 400, 40, false, false);
+      ConstantNodeGraphCell constantNode = graph.createConstantNodeGraphCell("ConstantNode", 0, 275, 200, false, false);
       graph.setFormula(rateNode1, (ConstantNode)graph.getModelNode(constantNode), false);
       graph.setFormula(rateNode2, (ConstantNode)graph.getModelNode(constantNode), false);
       
