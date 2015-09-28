@@ -19,7 +19,7 @@ package de.uka.aifb.com.systemDynamics.model;
 public class RoundNode extends ConstantNode {
 
 	protected RoundNode(String nodeName, double constantValue) {
-		super(nodeName,constantValue);
+		super(nodeName,constantValue, false, false);
 	}
 
 	@Override

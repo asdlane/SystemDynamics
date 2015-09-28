@@ -40,10 +40,10 @@ public class FormulaParserTestCase extends TestCase {
    private HashMap<Integer, ConstantNode> id2constantNode;
    private HashMap<Integer, LevelNode> id2levelNode;
    Model model = new Model();
-   private AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
-   private AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
-   private ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0);
-   private ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0);
+   private AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1", false, false);
+   private AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2", false, false);
+   private ConstantNode constantNode1 = model.createConstantNode("Constant node 1", 0, false, false);
+   private ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0, false, false);
    private LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false, false);
    private LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false, false);
    

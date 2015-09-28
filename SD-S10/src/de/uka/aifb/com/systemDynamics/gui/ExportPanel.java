@@ -208,7 +208,8 @@ public class ExportPanel extends JPanel implements ActionListener,
       Model clonedModel;
       try {
          XMLModelWriter.writeXMLModel(model, TEMP_MODEL_FILE_NAME);
-         clonedModel = XMLModelReader.readXMLModel(TEMP_MODEL_FILE_NAME);
+         //clonedModel = XMLModelReader.readXMLModel(TEMP_MODEL_FILE_NAME);
+         clonedModel = null;
          clonedModel.validateModelAndSetUnchangeable(0);
       } catch (Exception excep) {
          JOptionPane.showMessageDialog(this,

@@ -72,7 +72,7 @@ import org.xml.sax.SAXException;
 public class XMLModelReader {
 
 	private static HashMap<String,String> levelNodeInfo;
-	private static final String XSD_FILE_NAME = "xsd/model.xsd";
+	private static final String XSD_FILE_NAME = "xsd/model1.xsd";
 
 	/**
 	 * Reads a System Dynamics model stored in an XML file. The method checks whether the XML file
@@ -89,7 +89,7 @@ public class XMLModelReader {
 	 * @throws XMLRateNodeFlowException if a rate node has no incoming or no outgoing flow
 	 * @throws XMLUselessNodeException if a node has no influence on a level node
 	 */
-	public static Model readXMLModel(String fileName) throws AuxiliaryNodesCycleDependencyException,
+	public static ArrayList<Model> readXMLModel(String fileName) throws AuxiliaryNodesCycleDependencyException,
 	XMLModelReaderWriterException,
 	XMLNodeParameterOutOfRangeException,
 	XMLRateNodeFlowException,
@@ -98,7 +98,7 @@ public class XMLModelReader {
 			throw new IllegalArgumentException("'fileName' must not be null.");
 		}
 
-		Model model = new Model();
+		ArrayList<Model> model = new ArrayList<Model>();
 
 		HashMap<String, AuxiliaryNode> id2auxiliaryNode = new HashMap<String, AuxiliaryNode>();
 		HashMap<String, ConstantNode> id2constantNode = new HashMap<String, ConstantNode>();
@@ -181,14 +181,14 @@ public class XMLModelReader {
 				new HashMap<String, RateNodeGraphCell>();
 		HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNode =
 				new HashMap<String, SourceSinkNodeGraphCell>();
-		
+
 		Thread.currentThread();
-		
+
 		graph = createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
 				id2levelNode, id2rateNode, id2sourceSinkNode, start, frame);
-		
+
 		System.out.println("ID TO LEVEL SIZE" + id2levelNode.size());
-		
+
 		return graph;
 	}
 
@@ -212,7 +212,7 @@ public class XMLModelReader {
 	 * @throws XMLRateNodeFlowException if a rate node has no incoming or no outgoing flow
 	 * @throws XMLUselessNodeException if a node has no influence on a level node
 	 */
-	protected static void createModelFromXML(String fileString, String xsdFileString, Model model,
+	protected static void createModelFromXML(String fileString, String xsdFileString, ArrayList<Model> model,
 			String rootElementName,
 			HashMap<String, AuxiliaryNode> id2auxiliaryNode,
 			HashMap<String, ConstantNode> id2constantNode,
@@ -251,9 +251,9 @@ public class XMLModelReader {
 		if (id2sourceSinkNode == null) {
 			throw new IllegalArgumentException("'id2sourceSinkNode' must not be null.");
 		}
-
+	
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
-
+		
 		// create schema
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema = null;
@@ -274,298 +274,326 @@ public class XMLModelReader {
 			// exception should not happen
 			throw new XMLModelReaderWriterException(e);
 		}
-
+		
 		// set own error handler that throws exception if XML file is not Schema compliant
 		builder.setErrorHandler(new MyErrorHandler());
-
+		System.out.println("GOT HERE");
 		Document document = null;
 		try {
 			document = builder.parse(new File(fileString));  // can throw IOException
 			// can throw SAXException
 		} catch (Exception e) {
-
+			System.out.println("GOT HERE");
 			throw new XMLModelReaderWriterException(e);
-		}
-
-
+		}		
+		
+		
 		// create XPath object
 		XPath xpath = XPathFactory.newInstance().newXPath();
-
+		String modelName = "";
 		// set model name
-		Element rootElement = document.getDocumentElement();
-		String modelName = rootElement.getAttribute("name");
-		model.setModelName(modelName);
-
-		// (1) create nodes
-		// (1a) create level nodes
 		try {
-			NodeList levelNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/LevelNodes/LevelNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < levelNodeElements.getLength(); i++) {
-				Element levelNodeElement = (Element)levelNodeElements.item(i);
-				String id = levelNodeElement.getAttribute("id");
-				String nodeName = levelNodeElement.getAttribute("name");
-				double startValue = new Double(levelNodeElement.getAttribute("startValue"));
-				String minName, maxName, curveName;
-				double minValue, maxValue, curve;
-				minName = levelNodeElement.getAttribute("minValue");
-				if(minName.length() == 0)
-					minValue = 0;
-				else
-					minValue = new Double(minName);
-				maxName = levelNodeElement.getAttribute("maxValue");
-				if(maxName.length() == 0)
-					maxValue = 0;
-				else
-					maxValue = new Double(maxName);
-				curveName = levelNodeElement.getAttribute("curve");
-				if(curveName.length() == 0)
-					curve = 0;
-				else
-					curve = new Double(curveName);
+			Element modelElement = (Element)xpath.evaluate("/Model", document, XPathConstants.NODE);
+			modelName = modelElement.getAttribute("name");
+			Model blankModel = new Model();
+			model.add(blankModel);
+			model.get(0).setModelName(modelName);
+		} catch (XPathExpressionException e) {
+			// correct xpath expression -> no exception
+			throw new XMLModelReaderWriterException(e);
+		}
 
-				LevelNode levelNode = null;
-				try {
-					levelNode = model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, false, false);
-				} catch (NodeParameterOutOfRangeException e) {
-					throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
+		NodeList Submodels = null;
+
+		try {
+			Submodels = (NodeList)xpath.evaluate("/Model/SubModel", document, XPathConstants.NODESET);
+			
+
+
+		} catch (XPathExpressionException e1) {
+			// TODO Auto-generated catch block
+			
+			e1.printStackTrace();
+		}
+		for(int i=1;i<Submodels.getLength();i++){
+			Model blankModel = new Model();
+			model.add(blankModel);
+		}
+
+		for(int k=0;k<Submodels.getLength();k++){
+
+			// (1) create nodes
+			// (1a) create level nodes
+			try {
+				NodeList levelNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/LevelNodes/LevelNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < levelNodeElements.getLength(); i++) {
+					Element levelNodeElement = (Element)levelNodeElements.item(i);
+					String id = levelNodeElement.getAttribute("id");
+					String nodeName = levelNodeElement.getAttribute("name");
+					double startValue = new Double(levelNodeElement.getAttribute("startValue"));
+					String minName, maxName, curveName;
+					double minValue, maxValue, curve;
+					minName = levelNodeElement.getAttribute("minValue");
+					if(minName.length() == 0)
+						minValue = 0;
+					else
+						minValue = new Double(minName);
+					maxName = levelNodeElement.getAttribute("maxValue");
+					if(maxName.length() == 0)
+						maxValue = 0;
+					else
+						maxValue = new Double(maxName);
+					curveName = levelNodeElement.getAttribute("curve");
+					if(curveName.length() == 0)
+						curve = 0;
+					else
+						curve = new Double(curveName);
+					boolean learnerDecidable = new Boolean(levelNodeElement.getAttribute("learnerChangeable"));
+
+					LevelNode levelNode = null;
+					try {
+						levelNode = model.get(k).createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, false);
+					} catch (NodeParameterOutOfRangeException e) {
+						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
+					}
+					id2levelNode.put(id, levelNode);
 				}
-				id2levelNode.put(id, levelNode);
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
 			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
 
-		// (1b) create source/sink nodes
-		try {
-			NodeList sourceSinkNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/SourceSinkNodes/SourceSinkNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
-				Element sourceSinkNodeElement = (Element)sourceSinkNodeElements.item(i);
-				String id = sourceSinkNodeElement.getAttribute("id");
+			// (1b) create source/sink nodes
+			try {
+				NodeList sourceSinkNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/SourceSinkNodes/SourceSinkNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
+					Element sourceSinkNodeElement = (Element)sourceSinkNodeElements.item(i);
+					String id = sourceSinkNodeElement.getAttribute("id");
 
-				SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-				id2sourceSinkNode.put(id, sourceSinkNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (1c) create rate nodes
-		try {
-			NodeList rateNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/RateNodes/RateNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < rateNodeElements.getLength(); i++) {
-				Element rateNodeElement = (Element)rateNodeElements.item(i);
-				String id = rateNodeElement.getAttribute("id");
-				String nodeName = rateNodeElement.getAttribute("name");
-
-				RateNode rateNode = model.createRateNode(nodeName, false);
-				id2rateNode.put(id, rateNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (1d) create auxiliary nodes
-		try {
-			NodeList auxiliaryNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < auxiliaryNodeElements.getLength(); i++) {
-				Element auxiliaryNodeElement = (Element)auxiliaryNodeElements.item(i);
-				String id = auxiliaryNodeElement.getAttribute("id");
-				String nodeName = auxiliaryNodeElement.getAttribute("name");
-
-				AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode(nodeName);
-				id2auxiliaryNode.put(id, auxiliaryNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (1e) create constant nodes
-		try {
-			NodeList constantNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/ConstantNodes/ConstantNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < constantNodeElements.getLength(); i++) {
-				Element constantNodeElement = (Element)constantNodeElements.item(i);
-				String id = constantNodeElement.getAttribute("id");
-				String nodeName = constantNodeElement.getAttribute("name");
-				double constantValue = new Double(constantNodeElement.getAttribute("constantValue"));
-
-				ConstantNode constantNode = null;
-				try {
-					constantNode = model.createConstantNode(nodeName, constantValue);
-				} catch (NodeParameterOutOfRangeException e) {
-					throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
+					SourceSinkNode sourceSinkNode = model.get(k).createSourceSinkNode(false);
+					id2sourceSinkNode.put(id, sourceSinkNode);
 				}
-				id2constantNode.put(id, constantNode);
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
 			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
 
-		// (2) set formulas
-		// (2a) set formulas of auxiliary nodes
-		try {
-			NodeList auxiliaryNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < auxiliaryNodeElements.getLength(); i++) {
-				Element auxiliaryNodeElement = (Element)auxiliaryNodeElements.item(i);
-				String id = auxiliaryNodeElement.getAttribute("id");
-				Element formulaElement = (Element)xpath.evaluate("./Formula", auxiliaryNodeElement,
-						XPathConstants.NODE);
-				ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-						id2levelNode, id2rateNode);
-				model.setFormula(id2auxiliaryNode.get(id), formula);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (2b) set formulas of rate nodes
-		try {
-			NodeList rateNodeElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Nodes/RateNodes/RateNode", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < rateNodeElements.getLength(); i++) {
-				Element rateNodeElement = (Element)rateNodeElements.item(i);
-				String id = rateNodeElement.getAttribute("id");
-				Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
-						XPathConstants.NODE);
-				ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-						id2levelNode, id2rateNode);
-				model.setFormula(id2rateNode.get(id), formula);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (3) create flows
-		// (3a) incoming flows of level nodes
-		try {
-			NodeList incomingFlowElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Flows/RateNode2LevelNodeFlow", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < incomingFlowElements.getLength(); i++) {
-				Element incomingFlowElement = (Element)incomingFlowElements.item(i);
-				String rateNodeId = incomingFlowElement.getAttribute("fromRateNodeIdRef");
-				String levelNodeId = incomingFlowElement.getAttribute("toLevelNodeIdRef");
-
-				RateNode rateNode = id2rateNode.get(rateNodeId);
-				LevelNode levelNode = id2levelNode.get(levelNodeId);
-				model.addFlowFromRateNode2LevelNode(rateNode, levelNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (3b) outgoing flows of level nodes
-		try {
-			NodeList outgoingFlowElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Flows/LevelNode2RateNodeFlow", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < outgoingFlowElements.getLength(); i++) {
-				Element outgoingFlowElement = (Element)outgoingFlowElements.item(i);
-				String levelNodeId = outgoingFlowElement.getAttribute("fromLevelNodeIdRef");
-				String rateNodeId = outgoingFlowElement.getAttribute("toRateNodeIdRef");
-
-				LevelNode levelNode = id2levelNode.get(levelNodeId);
-				RateNode rateNode = id2rateNode.get(rateNodeId);
-				model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (3c) incoming flows of source/sink nodes
-		try {
-			NodeList incomingFlowElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Flows/RateNode2SourceSinkNodeFlow", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < incomingFlowElements.getLength(); i++) {
-				Element incomingFlowElement = (Element)incomingFlowElements.item(i);
-				String rateNodeId = incomingFlowElement.getAttribute("fromRateNodeIdRef");
-				String sourceSinkNodeId = incomingFlowElement.getAttribute("toSourceSinkNodeIdRef");
-
-				RateNode rateNode = id2rateNode.get(rateNodeId);
-				SourceSinkNode sourceSinkNode = id2sourceSinkNode.get(sourceSinkNodeId);
-				model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// (3d) outgoing flows of source/sink
-		try {
-			NodeList outgoingFlowElements =
-					(NodeList)xpath.evaluate("/" + rootElementName + "/Flows/SourceSinkNode2RateNodeFlow", document,
-							XPathConstants.NODESET);
-			for (int i = 0; i < outgoingFlowElements.getLength(); i++) {
-				Element outgoingFlowElement = (Element)outgoingFlowElements.item(i);
-				String sourceSinkNodeId = outgoingFlowElement.getAttribute("fromSourceSinkNodeIdRef");
-				String rateNodeId = outgoingFlowElement.getAttribute("toRateNodeIdRef");
-
-				SourceSinkNode sourceSinkNode = id2sourceSinkNode.get(sourceSinkNodeId);
-				RateNode rateNode = id2rateNode.get(rateNodeId);
-				model.addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode);
-			}
-		} catch (XPathExpressionException e) {
-			// correct xpath expression -> no exception
-			throw new XMLModelReaderWriterException(e);
-		}
-
-		// is model valide? (check for errors that cannot be expressed in the XML Schema)
-		try {
-			model.validateModel(0);
-		} catch (RateNodeFlowException e) {
-			// search problematic rate node ID
-			RateNode problematicRateNode = e.getProblematicRateNode();
-			for (String id : id2rateNode.keySet()) {
-				if (id2rateNode.get(id) == problematicRateNode) {
-					throw new XMLRateNodeFlowException(id);
+			// (1c) create rate nodes
+			try {
+				NodeList rateNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/RateNodes/RateNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < rateNodeElements.getLength(); i++) {
+					Element rateNodeElement = (Element)rateNodeElements.item(i);
+					String id = rateNodeElement.getAttribute("id");
+					String nodeName = rateNodeElement.getAttribute("name");
+					boolean learnerDecidable = new Boolean(rateNodeElement.getAttribute("learnerChangeable"));
+					RateNode rateNode = model.get(k).createRateNode(nodeName, learnerDecidable, false);
+					id2rateNode.put(id, rateNode);
 				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
 			}
-		} catch (UselessNodeException e) {
-			// search problematic node ID (only constant, auxiliary or source/sink node possible!)
-			AbstractNode problematicNode = e.getUselessNode();
-			for (String id : id2constantNode.keySet()) {
-				if (id2constantNode.get(id) == problematicNode) {
-					throw new XMLUselessNodeException(id);
+
+			// (1d) create auxiliary nodes
+			try {
+				NodeList auxiliaryNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < auxiliaryNodeElements.getLength(); i++) {
+					Element auxiliaryNodeElement = (Element)auxiliaryNodeElements.item(i);
+					String id = auxiliaryNodeElement.getAttribute("id");
+					String nodeName = auxiliaryNodeElement.getAttribute("name");
+					boolean learnerDecidable = new Boolean(auxiliaryNodeElement.getAttribute("learnerChangeable"));
+					AuxiliaryNode auxiliaryNode = model.get(k).createAuxiliaryNode(nodeName, learnerDecidable, false);
+					id2auxiliaryNode.put(id, auxiliaryNode);
 				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
 			}
-			for (String id : id2auxiliaryNode.keySet()) {
-				if (id2auxiliaryNode.get(id) == problematicNode) {
-					throw new XMLUselessNodeException(id);
+
+			// (1e) create constant nodes
+			try {
+				NodeList constantNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/ConstantNodes/ConstantNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < constantNodeElements.getLength(); i++) {
+					Element constantNodeElement = (Element)constantNodeElements.item(i);
+					String id = constantNodeElement.getAttribute("id");
+					String nodeName = constantNodeElement.getAttribute("name");
+					double constantValue = new Double(constantNodeElement.getAttribute("constantValue"));
+					boolean learnerDecidable = new Boolean(constantNodeElement.getAttribute("learnerChangeable"));
+					ConstantNode constantNode = null;
+					try {
+						constantNode = model.get(k).createConstantNode(nodeName, constantValue, learnerDecidable, false);
+					} catch (NodeParameterOutOfRangeException e) {
+						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
+					}
+					id2constantNode.put(id, constantNode);
 				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
 			}
-			for (String id : id2sourceSinkNode.keySet()) {
-				if (id2sourceSinkNode.get(id) == problematicNode) {
-					throw new XMLUselessNodeException(id);
+
+			// (2) set formulas
+			// (2a) set formulas of auxiliary nodes
+			try {
+				NodeList auxiliaryNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/AuxiliaryNodes/AuxiliaryNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < auxiliaryNodeElements.getLength(); i++) {
+					Element auxiliaryNodeElement = (Element)auxiliaryNodeElements.item(i);
+					String id = auxiliaryNodeElement.getAttribute("id");
+					Element formulaElement = (Element)xpath.evaluate("./Formula", auxiliaryNodeElement,
+							XPathConstants.NODE);
+					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
+							id2levelNode, id2rateNode);
+					model.get(k).setFormula(id2auxiliaryNode.get(id), formula);
 				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
 			}
-		} catch (NoFormulaException e) {
-			// that must not happen -> SAXException is thrown earlier
-			throw new XMLModelReaderWriterException(e);
-		} catch (NoLevelNodeException e) {
-			// that must not happen -> SAXException is thrown earlier
-			throw new XMLModelReaderWriterException(e);
+
+			// (2b) set formulas of rate nodes
+			try {
+				NodeList rateNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/RateNodes/RateNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < rateNodeElements.getLength(); i++) {
+					Element rateNodeElement = (Element)rateNodeElements.item(i);
+					String id = rateNodeElement.getAttribute("id");
+					Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
+							XPathConstants.NODE);
+					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
+							id2levelNode, id2rateNode);
+					model.get(k).setFormula(id2rateNode.get(id), formula);
+				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+
+			// (3) create flows
+			// (3a) incoming flows of level nodes
+			try {
+				NodeList incomingFlowElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Flows/RateNode2LevelNodeFlow", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < incomingFlowElements.getLength(); i++) {
+					Element incomingFlowElement = (Element)incomingFlowElements.item(i);
+					String rateNodeId = incomingFlowElement.getAttribute("fromRateNodeIdRef");
+					String levelNodeId = incomingFlowElement.getAttribute("toLevelNodeIdRef");
+
+					RateNode rateNode = id2rateNode.get(rateNodeId);
+					LevelNode levelNode = id2levelNode.get(levelNodeId);
+					model.get(k).addFlowFromRateNode2LevelNode(rateNode, levelNode);
+				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+
+			// (3b) outgoing flows of level nodes
+			try {
+				NodeList outgoingFlowElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Flows/LevelNode2RateNodeFlow", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < outgoingFlowElements.getLength(); i++) {
+					Element outgoingFlowElement = (Element)outgoingFlowElements.item(i);
+					String levelNodeId = outgoingFlowElement.getAttribute("fromLevelNodeIdRef");
+					String rateNodeId = outgoingFlowElement.getAttribute("toRateNodeIdRef");
+
+					LevelNode levelNode = id2levelNode.get(levelNodeId);
+					RateNode rateNode = id2rateNode.get(rateNodeId);
+					model.get(k).addFlowFromLevelNode2RateNode(levelNode, rateNode);
+				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+
+			// (3c) incoming flows of source/sink nodes
+			try {
+				NodeList incomingFlowElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Flows/RateNode2SourceSinkNodeFlow", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < incomingFlowElements.getLength(); i++) {
+					Element incomingFlowElement = (Element)incomingFlowElements.item(i);
+					String rateNodeId = incomingFlowElement.getAttribute("fromRateNodeIdRef");
+					String sourceSinkNodeId = incomingFlowElement.getAttribute("toSourceSinkNodeIdRef");
+
+					RateNode rateNode = id2rateNode.get(rateNodeId);
+					SourceSinkNode sourceSinkNode = id2sourceSinkNode.get(sourceSinkNodeId);
+					model.get(k).addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
+				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+
+			// (3d) outgoing flows of source/sink
+			try {
+				NodeList outgoingFlowElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Flows/SourceSinkNode2RateNodeFlow", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < outgoingFlowElements.getLength(); i++) {
+					Element outgoingFlowElement = (Element)outgoingFlowElements.item(i);
+					String sourceSinkNodeId = outgoingFlowElement.getAttribute("fromSourceSinkNodeIdRef");
+					String rateNodeId = outgoingFlowElement.getAttribute("toRateNodeIdRef");
+
+					SourceSinkNode sourceSinkNode = id2sourceSinkNode.get(sourceSinkNodeId);
+					RateNode rateNode = id2rateNode.get(rateNodeId);
+					model.get(k).addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode);
+				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+
+			// is model valide? (check for errors that cannot be expressed in the XML Schema)
+			try {
+				model.get(k).validateModel(0);
+			} catch (RateNodeFlowException e) {
+				// search problematic rate node ID
+				RateNode problematicRateNode = e.getProblematicRateNode();
+				for (String id : id2rateNode.keySet()) {
+					if (id2rateNode.get(id) == problematicRateNode) {
+						throw new XMLRateNodeFlowException(id);
+					}
+				}
+			} catch (UselessNodeException e) {
+				// search problematic node ID (only constant, auxiliary or source/sink node possible!)
+				AbstractNode problematicNode = e.getUselessNode();
+				for (String id : id2constantNode.keySet()) {
+					if (id2constantNode.get(id) == problematicNode) {
+						throw new XMLUselessNodeException(id);
+					}
+				}
+				for (String id : id2auxiliaryNode.keySet()) {
+					if (id2auxiliaryNode.get(id) == problematicNode) {
+						throw new XMLUselessNodeException(id);
+					}
+				}
+				for (String id : id2sourceSinkNode.keySet()) {
+					if (id2sourceSinkNode.get(id) == problematicNode) {
+						throw new XMLUselessNodeException(id);
+					}
+				}
+			} catch (NoFormulaException e) {
+				// that must not happen -> SAXException is thrown earlier
+				throw new XMLModelReaderWriterException(e);
+			} catch (NoLevelNodeException e) {
+				// that must not happen -> SAXException is thrown earlier
+				throw new XMLModelReaderWriterException(e);
+			}
 		}
 	}
 
@@ -601,6 +629,7 @@ public class XMLModelReader {
 					XMLNodeParameterOutOfRangeException,
 					XMLRateNodeFlowException,
 					XMLUselessNodeException {
+		
 		if (fileString == null) {
 			throw new IllegalArgumentException("'fileString' must not be null.");
 		}
@@ -631,7 +660,7 @@ public class XMLModelReader {
 		HashMap<AbstractNode, AutomaticGraphLayout.Vertex> abstractNode2Vertex =
 				new HashMap<AbstractNode, AutomaticGraphLayout.Vertex>();
 		AutomaticGraphLayout graphLayout = new AutomaticGraphLayout(800, 500);
-		
+
 		boolean automaticGraphLayoutNecessary = true;
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
@@ -662,7 +691,7 @@ public class XMLModelReader {
 
 		Document document = null;
 		try {
-			
+
 			document = builder.parse(new File(fileString));  // can throw IOException
 			// can throw SAXException
 		} catch (Exception e) {
@@ -677,27 +706,28 @@ public class XMLModelReader {
 		try {
 			Element modelElement = (Element)xpath.evaluate("/Model", document, XPathConstants.NODE);
 			modelName = modelElement.getAttribute("name");
-			
+
 		} catch (XPathExpressionException e) {
 			// correct xpath expression -> no exception
 			throw new XMLModelReaderWriterException(e);
 		}
-		
+
 		NodeList Submodels = null;
-		
+
 		try {
 			Submodels = (NodeList)xpath.evaluate("/Model/SubModel", document, XPathConstants.NODESET);
-			
-			
-			
+
+
+
 		} catch (XPathExpressionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 		for(int i=0;i<Submodels.getLength();i++){
-			
+
 			String SubmodelColor = Submodels.item(i).getAttributes().getNamedItem("color").getNodeValue();
-			
+
 			String[] test = new String[3];
 			test = SubmodelColor.split(", ");
 			Color SubmodelBorder = new Color(Integer.parseInt(test[0]), Integer.parseInt(test[1]),Integer.parseInt(test[2]));
@@ -705,24 +735,24 @@ public class XMLModelReader {
 			Border SubmodelColorBorder = BorderFactory.createLineBorder(SubmodelBorder,15);
 			SubmodelGraph.setBorder(SubmodelColorBorder);
 			SubmodelGraph.borderColor = SubmodelBorder;
-			
+
 			SubmodelGraph.setSize(400,400);
 			if(i==0){
-			SubmodelGraph.setModelName(modelName);	
+				SubmodelGraph.setModelName(modelName);	
 			}
 			graph.add(SubmodelGraph);
-			
+
 		}
 		System.out.println(graph.size());
 		for(int k=0;k<graph.size();k++){// (1) create nodes
 			// (1a) create level nodes
 			try {
-				
+
 				NodeList levelNodeElements = 
 						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/LevelNodes/LevelNode", document,
 								XPathConstants.NODESET);
-				
-				
+
+
 				for (int i = 0; i < levelNodeElements.getLength(); i++) {
 					Element levelNodeElement = (Element)levelNodeElements.item(i);
 					String id = levelNodeElement.getAttribute("id");
@@ -734,11 +764,13 @@ public class XMLModelReader {
 					double xCoordinate = new Double(levelNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(levelNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(levelNodeElement.getAttribute("learnerChangeable"));
+	
 
 					LevelNodeGraphCell levelNode = null;
 					try {
 						//CHANGE FALSE TO SHARED LATER!!!
 						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable, false);
+						graph.get(k).model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, false);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
@@ -748,7 +780,7 @@ public class XMLModelReader {
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(levelNode, vertex);
 					System.out.println("graphCell2Vertex SIZE: " + graphCell2Vertex.size());
-					
+
 					abstractNode2Vertex.put(graph.get(k).getModelNode(levelNode), vertex);
 					System.out.println("abstractNode22Vertex SIZE: " + abstractNode2Vertex.size());
 					if (xCoordinate != 10.0 && yCoordinate != 10.0) {
@@ -785,7 +817,6 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
-
 			// (1c) create rate nodes
 			try {
 				NodeList rateNodeElements =
@@ -1057,7 +1088,6 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
-
 			// (3d) outgoing flows of source/sink
 			try {
 				NodeList outgoingFlowElements =
@@ -1353,7 +1383,8 @@ public class XMLModelReader {
 			}
 		}
 		return graph;
-		
+
+
 	}
 	/**
 	 * Creates the formula according to the specified XML 'Formula' element tag.
@@ -1394,15 +1425,15 @@ public class XMLModelReader {
 				String tagName = childElement.getTagName();
 
 				// what kind of child?
-						if (tagName.endsWith("Node")) {
-							return createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
-									id2levelNode, id2rateNode);
-						}
-						else {
-							// ASTPlus, ASTMinus,ASTMultiply, ASTDivide, ASTRound, ASTMax, ASTMin -> binary operation
-							return createBinaryOperationFormula(childElement, id2auxiliaryNode, id2constantNode,
-									id2levelNode, id2rateNode);
-						}
+				if (tagName.endsWith("Node")) {
+					return createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
+							id2levelNode, id2rateNode);
+				}
+				else {
+					// ASTPlus, ASTMinus,ASTMultiply, ASTDivide, ASTRound, ASTMax, ASTMin -> binary operation
+					return createBinaryOperationFormula(childElement, id2auxiliaryNode, id2constantNode,
+							id2levelNode, id2rateNode);
+				}
 			}
 		}
 
@@ -1506,28 +1537,28 @@ public class XMLModelReader {
 				String tagName = childElement.getTagName();
 
 				// what kind of child?
-						if (tagName.endsWith("Node")) {
-							if (!firstOperandCreated) {
-								firstOperand = createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
-										id2levelNode, id2rateNode);
-							} else {
-								secondOperand = createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
-										id2levelNode, id2rateNode);
-							}
-						} else {
-							// ASTPlus, ASTMinus, ASTMultiply or ASTRound-> binary operation
-							if (!firstOperandCreated) {
-								firstOperand = createBinaryOperationFormula(childElement, id2auxiliaryNode,
-										id2constantNode, id2levelNode,
-										id2rateNode);
-							} else {
-								secondOperand = createBinaryOperationFormula(childElement, id2auxiliaryNode,
-										id2constantNode, id2levelNode,
-										id2rateNode);
-							}
-						}
+				if (tagName.endsWith("Node")) {
+					if (!firstOperandCreated) {
+						firstOperand = createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
+								id2levelNode, id2rateNode);
+					} else {
+						secondOperand = createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
+								id2levelNode, id2rateNode);
+					}
+				} else {
+					// ASTPlus, ASTMinus, ASTMultiply or ASTRound-> binary operation
+					if (!firstOperandCreated) {
+						firstOperand = createBinaryOperationFormula(childElement, id2auxiliaryNode,
+								id2constantNode, id2levelNode,
+								id2rateNode);
+					} else {
+						secondOperand = createBinaryOperationFormula(childElement, id2auxiliaryNode,
+								id2constantNode, id2levelNode,
+								id2rateNode);
+					}
+				}
 
-						firstOperandCreated = true;
+				firstOperandCreated = true;
 			}
 		}
 

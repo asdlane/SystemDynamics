@@ -23,10 +23,14 @@ package de.uka.aifb.com.systemDynamics.test;
 
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
 import junit.framework.*;
 import junitx.util.PrivateAccessor;
+
 import org.xml.sax.*;
 
 /**
@@ -182,19 +186,19 @@ public class XMLModelReaderTestCase extends TestCase {
     */
    public void testReadXMLModel8() {
       // existing and correct file, but very small model -> CORRECT
-      Model model = null;
+      ArrayList<Model> model = null;
       try {
          model = XMLModelReader.readXMLModel("./testResources/model_small.xml");
       } catch (Exception e) {
          fail();
       }
       
-      assertEquals("Model name", model.getModelName());
+      assertEquals("Model name", model.get(0).getModelName());
       
       // check level nodes
-      assertTrue(model.getLevelNodes().size() == 1);
+      assertTrue(model.get(0).getLevelNodes().size() == 1);
       boolean levelNode1Found = false;
-      for (LevelNode levelNode : model.getLevelNodes()) {
+      for (LevelNode levelNode : model.get(0).getLevelNodes()) {
          if (levelNode.getNodeName().equals("Level node 1")) {
             assertTrue(levelNode.getStartValue() == 0);
             levelNode1Found = true;
@@ -209,22 +213,22 @@ public class XMLModelReaderTestCase extends TestCase {
     */
    public void testReadXMLModel9() {
       // existing and correct file -> CORRECT
-      Model model = null;
+      ArrayList<Model> model = null;
       try {
          model = XMLModelReader.readXMLModel("./testResources/model.xml");
       } catch (Exception e) {
          fail();
       }
       
-      assertEquals("Model name", model.getModelName());
+      assertEquals("Model name", model.get(0).getModelName());
       
       HashMap<String, AbstractNode> nodeName2node = new HashMap<String, AbstractNode>();
       
       // check level nodes
-      assertTrue(model.getLevelNodes().size() == 2);
+      assertTrue(model.get(0).getLevelNodes().size() == 2);
       boolean levelNode1Found = false;
       boolean levelNode2Found = false;
-      for (LevelNode levelNode : model.getLevelNodes()) {
+      for (LevelNode levelNode : model.get(0).getLevelNodes()) {
          if (levelNode.getNodeName().equals("Level node 1")) {
             assertTrue(levelNode.getStartValue() == 0);
             nodeName2node.put(levelNode.getNodeName(), levelNode);
@@ -239,14 +243,14 @@ public class XMLModelReaderTestCase extends TestCase {
       assertTrue(levelNode1Found && levelNode2Found);
       
       // check source/sink node
-      assertTrue(model.getSourceSinkNodes().size() == 1);
-      SourceSinkNode sourceSinkNode = model.getSourceSinkNodes().iterator().next();      
+      assertTrue(model.get(0).getSourceSinkNodes().size() == 1);
+      SourceSinkNode sourceSinkNode = model.get(0).getSourceSinkNodes().iterator().next();      
       
       // check rate nodes
-      assertTrue(model.getRateNodes().size() == 2);
+      assertTrue(model.get(0).getRateNodes().size() == 2);
       boolean rateNode1Found = false;
       boolean rateNode2Found = false;
-      for (RateNode rateNode : model.getRateNodes()) {
+      for (RateNode rateNode : model.get(0).getRateNodes()) {
          if (rateNode.getNodeName().equals("Rate node 1")) {
             nodeName2node.put(rateNode.getNodeName(), rateNode);
             rateNode1Found = true;
@@ -259,10 +263,10 @@ public class XMLModelReaderTestCase extends TestCase {
       assertTrue(rateNode1Found && rateNode2Found);
       
       // check auxiliary nodes
-      assertTrue(model.getAuxiliaryNodes().size() == 2);
+      assertTrue(model.get(0).getAuxiliaryNodes().size() == 2);
       boolean auxiliaryNode1Found = false;
       boolean auxiliaryNode2Found = false;
-      for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
+      for (AuxiliaryNode auxiliaryNode : model.get(0).getAuxiliaryNodes()) {
          if (auxiliaryNode.getNodeName().equals("Auxiliary node 1")) {
             nodeName2node.put(auxiliaryNode.getNodeName(), auxiliaryNode);
             auxiliaryNode1Found = true;
@@ -275,10 +279,10 @@ public class XMLModelReaderTestCase extends TestCase {
       assertTrue(auxiliaryNode1Found && auxiliaryNode2Found);
       
       // check constant nodes
-      assertTrue(model.getConstantNodes().size() == 2);
+      assertTrue(model.get(0).getConstantNodes().size() == 2);
       boolean constantNode1Found = false;
       boolean constantNode2Found = false;
-      for (ConstantNode constantNode : model.getConstantNodes()) {
+      for (ConstantNode constantNode : model.get(0).getConstantNodes()) {
          if (constantNode.getNodeName().equals("Constant node 1")) {
             assertTrue(constantNode.getConstantValue() == 1);
             nodeName2node.put(constantNode.getNodeName(), constantNode);

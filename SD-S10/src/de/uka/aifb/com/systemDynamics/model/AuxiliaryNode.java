@@ -40,28 +40,40 @@ public class AuxiliaryNode extends AbstractNode implements ASTElement {
    private double currentValue;
    
    private ASTElement formula;
-   
+   private boolean learnerDecidable;
+   private boolean shared;
    /**
     * Constructor.
     * 
     * @param nodeName node name
     */
-   protected AuxiliaryNode(String nodeName) {
+   protected AuxiliaryNode(String nodeName, boolean learnerChangeable, boolean Shared) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
          
       setNodeName(nodeName);
+      setlearnerDecidable(learnerChangeable);
+      setShared(Shared);
+   }
+
+   private void setlearnerDecidable(boolean learnerChangeable) {
+		// TODO Auto-generated method stub
+		   this.learnerDecidable = learnerChangeable;
    }
    
+   private void setShared(boolean Shared) {
+	// TODO Auto-generated method stub
+	   this.shared = Shared;
+   }
    /**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 
     * @param nodeName node name
     * @return created new instance
     */
-   private static AuxiliaryNode createAuxiliaryNode(String nodeName) {
-      return new AuxiliaryNode(nodeName);
+   private static AuxiliaryNode createAuxiliaryNode(String nodeName,boolean learnerChangeable, boolean Shared) {
+      return new AuxiliaryNode(nodeName, learnerChangeable, Shared);
    }
    
    /**
@@ -259,4 +271,9 @@ public Object clone() {
          throw new UnsupportedOperationException();
       }
    }
+
+public boolean getShared() {
+	// TODO Auto-generated method stub
+	return shared;
+}
 }

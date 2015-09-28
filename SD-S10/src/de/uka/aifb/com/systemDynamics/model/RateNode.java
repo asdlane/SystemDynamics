@@ -44,18 +44,20 @@ public class RateNode extends AbstractNode {
    
    private ASTElement formula;
    private boolean learnerDecidable;
+   private boolean shared;
    /**
     * Constructor.
     * 
     * @param nodeName node name
     */
-   protected RateNode(String nodeName, boolean learnerChangeable) {
+   protected RateNode(String nodeName, boolean learnerChangeable, boolean Shared) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
       
       setNodeName(nodeName);
       setlearnerDecidable(learnerChangeable);
+      setShared(Shared);
    }
    
    private void setlearnerDecidable(boolean learnerChangeable) {
@@ -63,14 +65,19 @@ public class RateNode extends AbstractNode {
 	   this.learnerDecidable = learnerChangeable;
    }
 
+   private void setShared(boolean Shared) {
+	// TODO Auto-generated method stub
+	   this.shared = Shared;
+	   
+   }
 /**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 
     * @param nodeName node name
     * @return created new instance
     */
-   private static RateNode createRateNode(String nodeName, boolean learnerChangeable) {
-      return new RateNode(nodeName, learnerChangeable);
+   private static RateNode createRateNode(String nodeName, boolean learnerChangeable, boolean Shared) {
+      return new RateNode(nodeName, learnerChangeable, Shared);
    }
    
    /**
@@ -231,4 +238,9 @@ public double getCurrentValue() {
 void computeNextValue() {
       currentValue = formula.evaluate();
    }
+
+public boolean getShared() {
+	// TODO Auto-generated method stub
+	return shared;
+}
 }

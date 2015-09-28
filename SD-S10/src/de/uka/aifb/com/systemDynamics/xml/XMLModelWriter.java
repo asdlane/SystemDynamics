@@ -424,19 +424,29 @@ public class XMLModelWriter {
       Element levelNodesElement = document.createElement("LevelNodes");
       
       nodesElement.appendChild(levelNodesElement);
+      
       for (LevelNode levelNode : model.getLevelNodes()) {
-         String id = createId("LN", nextLevelNodeId++);
+    	
+         String id = createId("LN", SubmodelID);
          node2Id.put(levelNode, id);
 
          Element levelNodeElement = document.createElement("LevelNode");
          levelNodesElement.appendChild(levelNodeElement);
          levelNodeElement.setAttribute("id", id);
-         levelNodeElement.setAttribute("name", levelNode.getNodeName());
+         if(levelNode.getShared()){
+         	String name= levelNode.getNodeName();
+         	String[] nameSeparated = name.split("[(0-9)*]");
+         	levelNodeElement.setAttribute("name", nameSeparated[0] + "?");
+         }else{
+         	levelNodeElement.setAttribute("name", levelNode.getNodeName());
+         }
+         
          levelNodeElement.setAttribute("startValue", String.valueOf(levelNode.getStartValue()));
          levelNodeElement.setAttribute("minValue", String.valueOf(levelNode.getMinValue()));
          levelNodeElement.setAttribute("maxValue", String.valueOf(levelNode.getMaxValue()));
          levelNodeElement.setAttribute("curve", String.valueOf(levelNode.getCurveValue()));
          levelNodeElement.setAttribute("learnerChangeable", String.valueOf(levelNode.getLearnerChangeable()));
+         levelNodeElement.setAttribute("shared", String.valueOf(levelNode.getShared()));
          
       }
       // (1b) source/sink nodes
@@ -450,6 +460,8 @@ public class XMLModelWriter {
             Element sourceSinkNodeElement = document.createElement("SourceSinkNode");
             sourceSinkNodesElement.appendChild(sourceSinkNodeElement);
             sourceSinkNodeElement.setAttribute("id", id);
+            sourceSinkNodeElement.setAttribute("shared", String.valueOf(sourceSinkNode.getShared()));
+            
          }
       }
       // (1c) rate nodes
@@ -463,8 +475,16 @@ public class XMLModelWriter {
             Element rateNodeElement = document.createElement("RateNode");
             rateNodesElement.appendChild(rateNodeElement);
             rateNodeElement.setAttribute("id", id);
-            rateNodeElement.setAttribute("name", rateNode.getNodeName());
+            if(rateNode.getShared()){
+             	String name= rateNode.getNodeName();
+             	String[] nameSeparated = name.split("[(0-9)*]");
+             	rateNodeElement.setAttribute("name", nameSeparated[0] + "?");
+             }else{
+             	rateNodeElement.setAttribute("name", rateNode.getNodeName());
+             }
+            
             rateNodeElement.setAttribute("learnerChangeable", String.valueOf(rateNode.getLearnerChangeable()));
+            rateNodeElement.setAttribute("shared", String.valueOf(rateNode.getShared()));
          }
       }
       // (1d) auxiliary nodes
@@ -478,7 +498,16 @@ public class XMLModelWriter {
             Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
             auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
             auxiliaryNodeElement.setAttribute("id", id);
-            auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+            //split number from name
+           
+            if(auxiliaryNode.getShared()){
+            	String name= auxiliaryNode.getNodeName();
+            	String[] nameSeparated = name.split(".*[^0-9].");
+            	auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
+            }else{
+            	auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+            }
+            auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
          }
       }
       // (1e) constant nodes
@@ -492,8 +521,17 @@ public class XMLModelWriter {
             Element constantNodeElement = document.createElement("ConstantNode");
             constantNodesElement.appendChild(constantNodeElement);
             constantNodeElement.setAttribute("id", id);
-            constantNodeElement.setAttribute("name", constantNode.getNodeName());
+            if(constantNode.getShared()){
+             	String name= constantNode.getNodeName();
+             	String[] nameSeparated = name.split("[(0-9)*]");
+             	constantNodeElement.setAttribute("name", nameSeparated[0] + "?");
+             }else{
+            	 constantNodeElement.setAttribute("name", constantNode.getNodeName());
+             }
+            
             constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
+            constantNodeElement.setAttribute("shared", String.valueOf(constantNode.getShared()));
+            
          }
       }
       if(!model.getColoredSourceSinkNodes().isEmpty()){

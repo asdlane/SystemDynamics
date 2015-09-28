@@ -84,10 +84,10 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-      RateNode rateNode = model.createRateNode("Rate node", false);
-      AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1");
-      AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2");
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      RateNode rateNode = model.createRateNode("Rate node", false, false);
+      AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1", false, false);
+      AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2", false, false);
       
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
@@ -133,8 +133,8 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-      RateNode rateNode = model.createRateNode("Rate node", false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      RateNode rateNode = model.createRateNode("Rate node", false, false);
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       
@@ -158,7 +158,7 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
-      RateNode rateNode = model.createRateNode("Rate node", false);
+      RateNode rateNode = model.createRateNode("Rate node", false, false);
       model.setFormula(rateNode, levelNode);
       
       try {
@@ -181,7 +181,7 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
-      ConstantNode constantNode = model.createConstantNode("Constant node", 0);
+      ConstantNode constantNode = model.createConstantNode("Constant node", 0, false, false);
             
       try {
          XMLModelWriter.writeXMLModel(model, FILE_NAME);
@@ -209,7 +209,7 @@ public class XMLModelWriterTestCase extends TestCase {
          fail();
       }
       
-      Model importedModel = null;
+      ArrayList<Model> importedModel = null;
       
       // is output XML Schema compliant?
       try {
@@ -218,8 +218,8 @@ public class XMLModelWriterTestCase extends TestCase {
          fail();
       }
       
-      assertTrue(importedModel.getLevelNodes().size() == 1);
-      for (LevelNode levelNode : importedModel.getLevelNodes()) {
+      assertTrue(importedModel.get(0).getLevelNodes().size() == 1);
+      for (LevelNode levelNode : importedModel.get(0).getLevelNodes()) {
          // there is only one level node...
          assertEquals("Level node", levelNode.getNodeName());
          assertTrue(levelNode.getStartValue() == 0);
@@ -239,14 +239,14 @@ public class XMLModelWriterTestCase extends TestCase {
       
       LevelNode levelNodeA = model.createLevelNode("Level node A", 1, 0, 0, 3, false, false);
       LevelNode levelNodeB = model.createLevelNode("Level node B", -1.234, 0, 0, 3, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
-      RateNode rateNode1 = model.createRateNode("Rate node 1", false);
-      RateNode rateNode2 = model.createRateNode("Rate node 2", false);
-      AuxiliaryNode auxiliaryNodeA = model.createAuxiliaryNode("Auxiliary node A");
-      AuxiliaryNode auxiliaryNodeB = model.createAuxiliaryNode("Auxiliary node B");
-      AuxiliaryNode auxiliaryNodeC = model.createAuxiliaryNode("Auxiliary node C");
-      ConstantNode constantNodeA = model.createConstantNode("Constant node A", 2);
-      ConstantNode constantNodeB = model.createConstantNode("Constant node B", -2);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      RateNode rateNode1 = model.createRateNode("Rate node 1", false, false);
+      RateNode rateNode2 = model.createRateNode("Rate node 2", false, false);
+      AuxiliaryNode auxiliaryNodeA = model.createAuxiliaryNode("Auxiliary node A", false, false);
+      AuxiliaryNode auxiliaryNodeB = model.createAuxiliaryNode("Auxiliary node B", false, false);
+      AuxiliaryNode auxiliaryNodeC = model.createAuxiliaryNode("Auxiliary node C", false, false);
+      ConstantNode constantNodeA = model.createConstantNode("Constant node A", 2, false, false);
+      ConstantNode constantNodeB = model.createConstantNode("Constant node B", -2, false, false);
       
       model.addFlowFromLevelNode2RateNode(levelNodeA, rateNode1);
       model.addFlowFromRateNode2LevelNode(rateNode1, levelNodeB);
@@ -266,7 +266,7 @@ public class XMLModelWriterTestCase extends TestCase {
       
       HashMap<AbstractNode, AbstractNode> node2ImportedNode = new HashMap<AbstractNode, AbstractNode>();
       
-      Model importedModel = null;
+      ArrayList<Model> importedModel = null;
       
       // is output XML Schema compliant?
       try {
@@ -276,8 +276,8 @@ public class XMLModelWriterTestCase extends TestCase {
       }
       
       // compare imported model with original one
-      assertTrue(importedModel.getLevelNodes().size() == 2);
-      for (LevelNode importedLevelNode : importedModel.getLevelNodes()) {
+      assertTrue(importedModel.get(0).getLevelNodes().size() == 2);
+      for (LevelNode importedLevelNode : importedModel.get(0).getLevelNodes()) {
          if (importedLevelNode.getNodeName().equals("Level node A")) {
             node2ImportedNode.put(levelNodeA, importedLevelNode);
             assertTrue(importedLevelNode.getStartValue() == levelNodeA.getStartValue());
@@ -289,11 +289,11 @@ public class XMLModelWriterTestCase extends TestCase {
       }
       assertTrue(node2ImportedNode.size() == 2);
       
-      assertTrue(importedModel.getSourceSinkNodes().size() == 1);
-      SourceSinkNode importedSourceSinkNode = importedModel.getSourceSinkNodes().iterator().next();
+      assertTrue(importedModel.get(0).getSourceSinkNodes().size() == 1);
+      SourceSinkNode importedSourceSinkNode = importedModel.get(0).getSourceSinkNodes().iterator().next();
       
-      assertTrue(importedModel.getRateNodes().size() == 2);
-      for (RateNode importedRateNode : importedModel.getRateNodes()) {
+      assertTrue(importedModel.get(0).getRateNodes().size() == 2);
+      for (RateNode importedRateNode : importedModel.get(0).getRateNodes()) {
          if (importedRateNode.getNodeName().equals("Rate node 1")) {
             node2ImportedNode.put(rateNode1, importedRateNode);
          }
@@ -303,8 +303,8 @@ public class XMLModelWriterTestCase extends TestCase {
       }
       assertTrue(node2ImportedNode.size() == 4);
       
-      assertTrue(importedModel.getAuxiliaryNodes().size() == 3);
-      for (AuxiliaryNode importedAuxiliaryNode : importedModel.getAuxiliaryNodes()) {
+      assertTrue(importedModel.get(0).getAuxiliaryNodes().size() == 3);
+      for (AuxiliaryNode importedAuxiliaryNode : importedModel.get(0).getAuxiliaryNodes()) {
          if (importedAuxiliaryNode.getNodeName().equals("Auxiliary node A")) {
             node2ImportedNode.put(auxiliaryNodeA, importedAuxiliaryNode);
          }
@@ -317,8 +317,8 @@ public class XMLModelWriterTestCase extends TestCase {
       }
       assertTrue(node2ImportedNode.size() == 7);
       
-      assertTrue(importedModel.getConstantNodes().size() == 2);
-      for (ConstantNode importedConstantNode : importedModel.getConstantNodes()) {
+      assertTrue(importedModel.get(0).getConstantNodes().size() == 2);
+      for (ConstantNode importedConstantNode : importedModel.get(0).getConstantNodes()) {
          if (importedConstantNode.getNodeName().equals("Constant node A")) {
             node2ImportedNode.put(constantNodeA, importedConstantNode);
             assertTrue(importedConstantNode.getConstantValue() == constantNodeA.getConstantValue());

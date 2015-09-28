@@ -252,7 +252,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		vals.put("LearnerChangeable", learnerChangeable);
 		vals.put("shared", shared);
 		// create node
-		RateNode rateNode = model.createRateNode(nodeName, learnerChangeable);
+		RateNode rateNode = model.createRateNode(nodeName, learnerChangeable, shared);
 
 		//create graph cell with the attribute map attached to it.
 		RateNodeGraphCell rateNodeGraphCell = new RateNodeGraphCell(nodeName, x, y, vals, learnerChangeable, shared);
@@ -290,7 +290,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		}
 
 		// create node
-		ConstantNode constantNode = model.createConstantNode(nodeName, constantValue);
+		ConstantNode constantNode = model.createConstantNode(nodeName, constantValue, LearnerChangeable, shared);
 
 		//create a new attribute map to store all the values that pertain to the node trying to be created.
 		AttributeMap vals = new AttributeMap();
@@ -337,7 +337,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		vals.put("shared", shared);
 
 
-		AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode(nodeName);
+		AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode(nodeName, LearnerChangeable, shared);
 		//create graph cell with the attribute map attached to it.
 		AuxiliaryNodeGraphCell auxiliaryNodeGraphCell = new AuxiliaryNodeGraphCell(nodeName, x, y, vals, LearnerChangeable, shared);
 
@@ -370,7 +370,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		AttributeMap vals = new AttributeMap();
 		vals.put("shared", shared);
 		
-		SourceSinkNode sourceSinkNode = model.createSourceSinkNode();
+		SourceSinkNode sourceSinkNode = model.createSourceSinkNode(shared);
 		SourceSinkNodeGraphCell sourceSinkNodeGraphCell = new SourceSinkNodeGraphCell(x, y, shared);
 
 		// insert vertex to graph

@@ -116,12 +116,12 @@ public class Model {
     * @param nodeName node name
     * @return created rate node
     */
-   public RateNode createRateNode(String nodeName, boolean learnerChangeable) {
+   public RateNode createRateNode(String nodeName, boolean learnerChangeable, boolean shared) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      RateNode rateNode = new RateNode(nodeName, learnerChangeable);
+      RateNode rateNode = new RateNode(nodeName, learnerChangeable, shared);
       rateNodes.add(rateNode);
       return rateNode;
    }
@@ -133,12 +133,12 @@ public class Model {
     * @param constantValue constant value
     * @return created constant node
     */
-   public ConstantNode createConstantNode(String nodeName, double constantValue) {
+   public ConstantNode createConstantNode(String nodeName, double constantValue, boolean learnerDecidable, boolean shared) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      ConstantNode constantNode = new ConstantNode(nodeName, constantValue);
+      ConstantNode constantNode = new ConstantNode(nodeName, constantValue, learnerDecidable, shared);
       constantNodes.add(constantNode);
       return constantNode;
    }
@@ -149,12 +149,12 @@ public class Model {
     * @param nodeName node name
     * @return created auxiliary node
     */
-   public AuxiliaryNode createAuxiliaryNode(String nodeName) {
+   public AuxiliaryNode createAuxiliaryNode(String nodeName, boolean learnerChangeable, boolean shared) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      AuxiliaryNode auxiliaryNode = new AuxiliaryNode(nodeName);
+      AuxiliaryNode auxiliaryNode = new AuxiliaryNode(nodeName, learnerChangeable, shared);
       auxiliaryNodes.add(auxiliaryNode);
       return auxiliaryNode;
    }
@@ -164,12 +164,12 @@ public class Model {
     * 
     * @return created source/sink node
     */
-   public SourceSinkNode createSourceSinkNode() {
+   public SourceSinkNode createSourceSinkNode(boolean shared) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      SourceSinkNode sourceSinkNode = new SourceSinkNode();
+      SourceSinkNode sourceSinkNode = new SourceSinkNode(shared);
       sourceSinkNodes.add(sourceSinkNode);
       return sourceSinkNode;
    }

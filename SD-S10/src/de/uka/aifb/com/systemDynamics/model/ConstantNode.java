@@ -44,6 +44,8 @@ public class ConstantNode extends AbstractNode implements ASTElement {
    public static final double MAX_CONSTANT = 1000000000;
 
    private double constantValue;
+   private boolean learnerDecidable;
+   private boolean shared;
    
    /**
     * Constructor.
@@ -51,7 +53,7 @@ public class ConstantNode extends AbstractNode implements ASTElement {
     * @param nodeName node name
     * @param constantValue constant value (only from MIN_CONSTANT to MAX_CONSTANT!)
     */
-   protected ConstantNode(String nodeName, double constantValue) {
+   protected ConstantNode(String nodeName, double constantValue, boolean learnerChangeable, boolean Shared) {
       if (nodeName == null) {
          throw new IllegalArgumentException("'nodeName' must not be null.");
       }
@@ -61,8 +63,19 @@ public class ConstantNode extends AbstractNode implements ASTElement {
       
       setNodeName(nodeName);
       setConstantValue(constantValue);
+      setlearnerDecidable(learnerChangeable);
+      setShared(Shared);
    }
-   
+   private void setlearnerDecidable(boolean learnerChangeable) {
+	// TODO Auto-generated method stub
+	   this.learnerDecidable = learnerChangeable;
+   }
+
+   private void setShared(boolean Shared) {
+	// TODO Auto-generated method stub
+	   this.shared = Shared;
+	   
+   }
    /**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 
@@ -70,8 +83,8 @@ public class ConstantNode extends AbstractNode implements ASTElement {
     * @param constantValue constant value
     * @return created new instance
     */
-   private static ConstantNode createConstantNode(String nodeName, double constantValue) {
-      return new ConstantNode(nodeName, constantValue);
+   private static ConstantNode createConstantNode(String nodeName, double constantValue, boolean learnerDecidable, boolean Shared) {
+      return new ConstantNode(nodeName, constantValue, learnerDecidable, Shared);
    }
    
    /**
@@ -245,4 +258,9 @@ public Object clone() {
          throw new UnsupportedOperationException();
       }
    }
+
+public boolean getShared() {
+	// TODO Auto-generated method stub
+	return shared;
+}
 }

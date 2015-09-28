@@ -68,7 +68,7 @@ import java.util.Random;
  * 2008-01-24: createMenuBar was rewritten: additional language 'Spanish'
  * 2008-01-24: actionPerformed was rewritten: additional code for Spanish GUI
  * 2014-09-15: changed zoom level to zoom in by a factor of 1.3 instead of 2.  replaced question 
- * mark character in spanish language option with the correct character. *John Hinkel
+ * 
  */
 
 /**
@@ -319,7 +319,7 @@ WindowListener {
 		copyAction = new CopyAction("Copy", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON)), "Copy",copyActionFunction);
 		pasteAction = new PasteAction("Paste", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Paste",pasteActionFunction);
 		closeAction.setEnabled(false);
-		shareAction = new shareAction("Share", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SHARE_ICON)), "Share");
+		shareAction = new shareAction("Share", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Share");
 		saveAction = new SaveAction(messages.getString("MainFrame.MenuBar.File.Save"),
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_SAVE_ICON)),
 				messages.getString("MainFrame.MenuBar.File.Save"));
@@ -1354,8 +1354,17 @@ WindowListener {
 						//graph = XMLModelReader.readSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						//graph.get(0).addSystemDynamicsGraphModifiedEventLIstener(MainFrame.this);
 						//DELETE FOLLOWING 4 LINES
+						
 						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
-						System.out.println(graph.size());
+						System.out.println("FINISHED READING GRAPH");
+						
+						ArrayList<Model> graphModels = new ArrayList<Model>();
+						graphModels = XMLModelReader.readXMLModel(file.getAbsolutePath());
+						
+						for(int i=0;i<graphModels.size();i++){
+							graph.get(i).model = graphModels.get(i);
+						}
+						
 						for(int i=0;i<graph.size();i++){
 							graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
 						}
@@ -1450,7 +1459,9 @@ WindowListener {
 
 					getContentPane().validate();
 					modelPanel.repaint();
-
+					for(int i=0;i<graph.size();i++){
+						SubmodelColors.add(graph.get(i).borderColor);
+					}
 					//force layout to recalculate now that a new component has been added.
 					modelPanel.revalidate();
 					
@@ -2967,11 +2978,16 @@ WindowListener {
 			Object[] choices = SubmodelNumbers.toArray();
 			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Share with which submodel?","Share",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			subModelIndex = subModelIndex-1;
+			int shareSubModel = 0;
 			for(int j=0;j<graph.size();j++){
 				if(cells.length == 0){
 					cells = graph.get(j).getSelectionCells();
-
+					if(cells.length==0){
+						shareSubModel = j;
+					}
+						
 				}
+				
 
 
 			}
@@ -2980,8 +2996,8 @@ WindowListener {
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
 					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					boolean learnerchange = Boolean.parseBoolean(((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString()); 
-					graph.get(subModelIndex).createAuxiliaryNodeGraphCell(name, 0, 0, learnerchange, true);
-
+					graph.get(subModelIndex).createAuxiliaryNodeGraphCell(name+Integer.toString(shareSubModel+1), 0, 0, learnerchange, true);
+					
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
 					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
@@ -2990,7 +3006,7 @@ WindowListener {
 					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
 					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
 					boolean learnerchange = Boolean.parseBoolean(((LevelNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(subModelIndex).createLevelNodeGraphCell(name, Double.parseDouble(startVal), Double.parseDouble(minVal), Double.parseDouble(maxVal), Double.parseDouble(curve), 0, 0, learnerchange, true);
+					graph.get(subModelIndex).createLevelNodeGraphCell(name+Integer.toString(shareSubModel+1), Double.parseDouble(startVal), Double.parseDouble(minVal), Double.parseDouble(maxVal), Double.parseDouble(curve), 0, 0, learnerchange, true);
 
 
 				}
@@ -3009,12 +3025,12 @@ WindowListener {
 					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
 					boolean learnerchange = Boolean.parseBoolean(((ConstantNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(subModelIndex).createConstantNodeGraphCell(name, Double.parseDouble(values), 0, 0, learnerchange, true);
+					graph.get(subModelIndex).createConstantNodeGraphCell(name+Integer.toString(shareSubModel+1), Double.parseDouble(values), 0, 0, learnerchange, true);
 				}
 				else if(cells[i] instanceof RateNodeGraphCell){
 					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					boolean learnerchange = Boolean.parseBoolean(((RateNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(subModelIndex).createRateNodeGraphCell(name, 0, 0, learnerchange, true);
+					graph.get(subModelIndex).createRateNodeGraphCell(name+Integer.toString(shareSubModel+1), 0, 0, learnerchange, true);
 				}
 			}
 
