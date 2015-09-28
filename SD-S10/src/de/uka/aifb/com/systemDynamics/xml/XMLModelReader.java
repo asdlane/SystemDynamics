@@ -764,13 +764,13 @@ public class XMLModelReader {
 					double xCoordinate = new Double(levelNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(levelNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(levelNodeElement.getAttribute("learnerChangeable"));
-	
+					boolean shared = new Boolean(levelNodeElement.getAttribute("shared"));
 
 					LevelNodeGraphCell levelNode = null;
 					try {
-						//CHANGE FALSE TO SHARED LATER!!!
-						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable, false);
-						graph.get(k).model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, false);
+						
+						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable, shared);
+						graph.get(k).model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, shared);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
@@ -787,7 +787,7 @@ public class XMLModelReader {
 						automaticGraphLayoutNecessary = false;
 					}
 				}
-			} catch (XPathExpressionException e) {
+			}catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
@@ -802,9 +802,10 @@ public class XMLModelReader {
 					String id = sourceSinkNodeElement.getAttribute("id");
 					double xCoordinate = new Double(sourceSinkNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(sourceSinkNodeElement.getAttribute("yCoordinate"));
-					//ADD IN SHARED ATTRIBUTE
+					boolean shared = new Boolean(sourceSinkNodeElement.getAttribute("shared"));
+
 					SourceSinkNodeGraphCell sourceSinkNode = graph.get(k).createSourceSinkNodeGraphCell(xCoordinate,
-							yCoordinate, false);
+							yCoordinate, shared);
 					id2sourceSinkNodeGraphCell.put(id, sourceSinkNode);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(sourceSinkNode, vertex);
@@ -829,9 +830,10 @@ public class XMLModelReader {
 					double xCoordinate = new Double(rateNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(rateNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(rateNodeElement.getAttribute("learnerChangeable"));
-					//ADD IN SHARED LATER
+					boolean shared = new Boolean(rateNodeElement.getAttribute("shared"));
+					
 					RateNodeGraphCell rateNode = graph.get(k).createRateNodeGraphCell(nodeName, xCoordinate,
-							yCoordinate, learnerDecidable, false);
+							yCoordinate, learnerDecidable, shared);
 					id2rateNodeGraphCell.put(id, rateNode);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(rateNode, vertex);
@@ -857,7 +859,8 @@ public class XMLModelReader {
 					double xCoordinate = new Double(auxiliaryNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(auxiliaryNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(auxiliaryNodeElement.getAttribute("learnerChangeable"));
-					//ADD IN SHARED LATER
+					boolean shared = new Boolean(auxiliaryNodeElement.getAttribute("shared"));
+					//
 					AuxiliaryNodeGraphCell auxiliaryNode = graph.get(k).createAuxiliaryNodeGraphCell(nodeName,
 							xCoordinate,
 							yCoordinate, learnerDecidable, false);
@@ -887,11 +890,12 @@ public class XMLModelReader {
 					double xCoordinate = new Double(constantNodeElement.getAttribute("xCoordinate"));
 					double yCoordinate = new Double(constantNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(constantNodeElement.getAttribute("learnerChangeable"));
+					boolean shared = new Boolean(constantNodeElement.getAttribute("shared"));
 					ConstantNodeGraphCell constantNode = null;
 					try {
-						//MODIFY THIS TO INCLUDE SHARED
+						
 						constantNode = graph.get(k).createConstantNodeGraphCell(nodeName, constantValue,
-								xCoordinate, yCoordinate, learnerDecidable, false);
+								xCoordinate, yCoordinate, learnerDecidable, shared);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}

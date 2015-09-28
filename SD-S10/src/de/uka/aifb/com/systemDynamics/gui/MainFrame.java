@@ -1141,6 +1141,13 @@ WindowListener {
 						graph.add(newGraphs.get(j));
 						SubmodelColors.add(newGraphs.get(j).borderColor);
 					}
+
+					ArrayList<Model> graphModels = new ArrayList<Model>();
+					graphModels = XMLModelReader.readXMLModel(file.getAbsolutePath());
+					
+					for(int i=0;i<graphModels.size();i++){
+						graph.get(i).model = graphModels.get(i);
+					}
 					System.out.println(graph.size());
 					for(int i=0;i<graph.size();i++){
 
@@ -1237,7 +1244,7 @@ WindowListener {
 
 				//force layout to recalculate now that a new component has been added.
 				modelPanel.revalidate();
-
+				JOptionPane.showMessageDialog(MainFrame.this, "SubModel Successfully imported.  Don't forget to change the names of shared variables (if any)");
 				saveAction.setEnabled(true);
 				ArchiveSubmodelAction.setEnabled(true);
 
@@ -1367,6 +1374,7 @@ WindowListener {
 						
 						for(int i=0;i<graph.size();i++){
 							graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
+							System.out.println(graph.get(0).model.getLevelNodes().size());
 						}
 
 
@@ -1464,7 +1472,7 @@ WindowListener {
 					}
 					//force layout to recalculate now that a new component has been added.
 					modelPanel.revalidate();
-					
+					JOptionPane.showMessageDialog(MainFrame.this, "Model Successfully opened.  Don't forget to change the names of shared variables (if any)");
 					saveAction.setEnabled(true);
 					ArchiveSubmodelAction.setEnabled(true);
 
