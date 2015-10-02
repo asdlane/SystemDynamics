@@ -1726,7 +1726,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 * @throws UselessNodeException if a node has no influence on a level node
 	 * @throws XMLModelReaderWriterException if there is any exception (wrapper for inner exception)
 	 */
-	public void storeToXML(String fileName, ArrayList<SystemDynamicsGraph> graph, ArrayList<Color> submodelColors, boolean clearFile) throws AuxiliaryNodesCycleDependencyException,
+	public void storeToXML(String fileName, ArrayList<SystemDynamicsGraph> graph, ArrayList<Color> submodelColors, boolean clearFile, boolean archive) throws AuxiliaryNodesCycleDependencyException,
 	NoFormulaException,
 	NoLevelNodeException,
 	RateNodeFlowException,
@@ -1760,7 +1760,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		//XMLModelWriter.writeXMLSystemDynamicsGraph(this, model, graphNodes, flowEdges, dependencyEdges,
 		//                        fileName);
 		System.out.println("GRAPH SIZE: " + graph.size());
-		XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, submodelColors, clearFile);
+		XMLModelWriter.WriteGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, submodelColors, clearFile, archive);
 
 	}
 	public void storeSubmodelToXML(String fileName, SystemDynamicsGraph graph, Color SubmodelColor) throws AuxiliaryNodesCycleDependencyException,
@@ -1796,7 +1796,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		//XMLModelWriter.writeXMLSystemDynamicsGraph(this, model, graphNodes, flowEdges, dependencyEdges,
 		  //                      fileName);
-		XMLModelWriter.WriteSubmodelGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, SubmodelColor);
+		XMLModelWriter.WriteSubmodelGraph(model, graphNodes, flowEdges, dependencyEdges, fileName, graph, SubmodelColor, false);
 
 	}   
 	/**

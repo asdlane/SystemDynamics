@@ -1655,7 +1655,7 @@ WindowListener {
 			JFrame frame = new JFrame("InputDialog");
 			Object[] choices = SubmodelNumbers.toArray();
 
-			int archiveIndex = (Integer)JOptionPane.showInputDialog(frame,"Which submodel should be archived?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			int archiveIndex = (Integer)JOptionPane.showInputDialog(frame,"Which submodel should be archived?","Archive",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			archiveIndex = archiveIndex-1;
 			File file = xmlFile;
 			if (file == null) {
@@ -1697,7 +1697,7 @@ WindowListener {
 				Color submodelColorsingle = SubmodelColors.get(archiveIndex);
 				ArrayList<Color> submodelColor = new ArrayList<Color>();
 				submodelColor.add(submodelColorsingle);
-				graph.get(archiveIndex).storeToXML(file.getAbsolutePath(), submodelGraph, submodelColor, false);
+				graph.get(archiveIndex).storeToXML(file.getAbsolutePath(), submodelGraph, submodelColor, false, true);
 
 			} catch (AuxiliaryNodesCycleDependencyException e1) {
 				// TODO Auto-generated catch block
@@ -1773,7 +1773,7 @@ WindowListener {
 				//graph.get(0).storeToXML(file.getAbsolutePath, graph);
 				//open file and write model tag in here itself
 
-				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, true);
+				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, true, false);
 
 
 				//				graph.get(0).storeToXML(file.getAbsolutePath());				
@@ -1956,7 +1956,7 @@ WindowListener {
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
 
-				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false);
+				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false, false);
 
 				//				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {

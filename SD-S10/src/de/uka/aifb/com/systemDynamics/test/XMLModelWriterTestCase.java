@@ -56,7 +56,7 @@ public class XMLModelWriterTestCase extends TestCase {
    public void testWriteXMLModel1() {
       // parameter 'model' = 'null' -> WRONG
       try {
-         XMLModelWriter.writeXMLModel(null, FILE_NAME);
+         XMLModelWriter.writeXMLModel(null, FILE_NAME, false);
          fail();
       } catch (IllegalArgumentException e) {
          assertEquals("'model' must not be null.", e.getMessage());
@@ -66,7 +66,7 @@ public class XMLModelWriterTestCase extends TestCase {
       
       // parameter 'fileName' = 'null' -> WRONG
       try {
-         XMLModelWriter.writeXMLModel(new Model(), null);
+         XMLModelWriter.writeXMLModel(new Model(), null, false);
          fail();
       } catch (IllegalArgumentException e) {
          assertEquals("'fileName' must not be null.", e.getMessage());
@@ -96,7 +96,7 @@ public class XMLModelWriterTestCase extends TestCase {
       model.setFormula(auxiliaryNode2, auxiliaryNode1);
       
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
          fail();
       } catch (AuxiliaryNodesCycleDependencyException e) {
          assertEquals("The model's auxiliary nodes have a cycle dependency.", e.getMessage());
@@ -115,7 +115,7 @@ public class XMLModelWriterTestCase extends TestCase {
       model.setModelName("Model name");
       
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
          fail();
       } catch (NoLevelNodeException e) {
          assertEquals("The System Dynamics model has no level node.", e.getMessage());
@@ -139,7 +139,7 @@ public class XMLModelWriterTestCase extends TestCase {
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
          fail();
       } catch (NoFormulaException e) {
          assertEquals("A node has no formula.", e.getMessage());
@@ -162,7 +162,7 @@ public class XMLModelWriterTestCase extends TestCase {
       model.setFormula(rateNode, levelNode);
       
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
          fail();
       } catch (RateNodeFlowException e) {
          assertEquals("A rate node has no incoming or no outgoing flow.", e.getMessage());
@@ -184,7 +184,7 @@ public class XMLModelWriterTestCase extends TestCase {
       ConstantNode constantNode = model.createConstantNode("Constant node", 0, false, false);
             
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
          fail();
       } catch (UselessNodeException e) {
          assertEquals("There is a useless node in the model.", e.getMessage());
@@ -204,7 +204,7 @@ public class XMLModelWriterTestCase extends TestCase {
       model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
       } catch (Exception e) {
          fail();
       }
@@ -259,7 +259,7 @@ public class XMLModelWriterTestCase extends TestCase {
       model.setFormula(auxiliaryNodeC, constantNodeB);
       
       try {
-         XMLModelWriter.writeXMLModel(model, FILE_NAME);
+         XMLModelWriter.writeXMLModel(model, FILE_NAME, false);
       } catch (Exception e) {
          fail();
       }
@@ -412,7 +412,7 @@ public class XMLModelWriterTestCase extends TestCase {
       ArrayList<Color> colors = new ArrayList<Color>();
       colors.add(new Color(20,30,40));
       try {
-         graph.storeToXML(FILE_NAME, graphList, colors, false);
+         graph.storeToXML(FILE_NAME, graphList, colors, false, false);
       } catch (Exception e) {
          fail();
       }
