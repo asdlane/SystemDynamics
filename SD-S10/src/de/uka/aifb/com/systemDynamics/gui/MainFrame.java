@@ -319,7 +319,7 @@ WindowListener {
 		copyAction = new CopyAction("Copy", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(COPY_ICON)), "Copy",copyActionFunction);
 		pasteAction = new PasteAction("Paste", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Paste",pasteActionFunction);
 		closeAction.setEnabled(false);
-		shareAction = new shareAction("Share", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(PASTE_ICON)), "Share");
+		shareAction = new shareAction("Share", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SHARE_ICON)), "Share");
 		saveAction = new SaveAction(messages.getString("MainFrame.MenuBar.File.Save"),
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_SAVE_ICON)),
 				messages.getString("MainFrame.MenuBar.File.Save"));
