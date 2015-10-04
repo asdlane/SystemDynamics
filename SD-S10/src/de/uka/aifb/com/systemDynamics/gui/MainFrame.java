@@ -1911,6 +1911,7 @@ WindowListener {
 			File file = null;
 			fileChooser.setDialogTitle(messages.getString("MainFrame.MenuBar.File.SaveAs"));
 			int returnVal = fileChooser.showSaveDialog(MainFrame.this);
+			int selectedOption = 0;
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// file was selected and 'OK' was pressed
 				file = fileChooser.getSelectedFile();
@@ -1932,7 +1933,7 @@ WindowListener {
 					writer.print("");
 					writer.close();
 					Object[] options = { messages.getString("MainFrame.Yes"), messages.getString("MainFrame.No") };
-					int selectedOption = JOptionPane.showOptionDialog(MainFrame.this,
+					selectedOption = JOptionPane.showOptionDialog(MainFrame.this,
 							messages.getString("MainFrame.ConfirmOverwriting.Message"),
 							messages.getString("MainFrame.ConfirmOverwriting.Title"),
 							JOptionPane.YES_NO_OPTION,
@@ -1955,8 +1956,12 @@ WindowListener {
 				//***************STORETOXML MIGHT NEED TO BE MODIFIED TO TAKE THE ARRAY LIST AND BUILD THE XML FROM THE ARRAYLIST OF GRAPHS INSTEAD!!!******************				
 				//TODO: 
 				//graph.get(0).storeToXML(file.getAbsolutePath(),graph);
-
-				graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false, false);
+				if (selectedOption==1){
+					graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, true, false);
+				}
+				else{
+					graph.get(0).storeToXML(file.getAbsolutePath(), graph, SubmodelColors, false, false);
+				}
 
 				//				graph.get(0).storeToXML(file.getAbsolutePath());
 			} catch (AuxiliaryNodesCycleDependencyException excep) {
