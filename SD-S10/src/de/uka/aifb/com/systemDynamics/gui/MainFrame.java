@@ -2596,15 +2596,23 @@ WindowListener {
 
 			tabbedPane = new JTabbedPane();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Model"), modelPanel);
-			ModelExecutionChartPanel chartPanel = graph.get(0).getChartPanel();
-			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart"), chartPanel);
-			ExportPanel exportPanel = graph.get(0).getExportPanel();
-
-			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Export"), exportPanel);
+			ArrayList<ModelExecutionChartPanel> chartPanelAllSubmodels = new ArrayList<ModelExecutionChartPanel>();
+			ArrayList<ExportPanel> exportPanelAllSubmodels = new ArrayList<ExportPanel>();
+			for(int j=0;j<graph.size();j++){
+				ModelExecutionChartPanel chartPanelIndividual = graph.get(j).getChartPanel();
+				ExportPanel exportPanel = graph.get(j).getExportPanel();	
+				chartPanelAllSubmodels.add(chartPanelIndividual);
+				exportPanelAllSubmodels.add(exportPanel);
+			}
+			for(int j=0;j<graph.size();j++){
+				tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart") + " SM"+(j+1), chartPanelAllSubmodels.get(j));
+				tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Export")+ " SM"+(j+1), exportPanelAllSubmodels.get(j));
+	
+			}
 			tabbedPane.addChangeListener(MainFrame.this);
 			tabbedPane.setSelectedIndex(1);
 
-			MainFrame.this.getRootPane().setDefaultButton(chartPanel.getExecutionButton());
+			//MainFrame.this.getRootPane().setDefaultButton(chartPanelAllSubmodels.get(0).getExecutionButton());
 
 			contentPanel.removeAll();
 			contentPanel.add(tabbedPane);
