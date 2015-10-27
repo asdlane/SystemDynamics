@@ -2596,14 +2596,45 @@ WindowListener {
 
 			tabbedPane = new JTabbedPane();
 			tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Model"), modelPanel);
-			ArrayList<ModelExecutionChartPanel> chartPanelAllSubmodels = new ArrayList<ModelExecutionChartPanel>();
+			final ArrayList<ModelExecutionChartPanel> chartPanelAllSubmodels = new ArrayList<ModelExecutionChartPanel>();
 			ArrayList<ExportPanel> exportPanelAllSubmodels = new ArrayList<ExportPanel>();
+			
+			
 			for(int j=0;j<graph.size();j++){
 				ModelExecutionChartPanel chartPanelIndividual = graph.get(j).getChartPanel();
 				ExportPanel exportPanel = graph.get(j).getExportPanel();	
 				chartPanelAllSubmodels.add(chartPanelIndividual);
 				exportPanelAllSubmodels.add(exportPanel);
 			}
+			JPanel overallExecutePanel = new JPanel();
+			
+			final JTextField roundsTextModel = new JTextField("1");
+			final JLabel roundsLabel = new JLabel("Number of Rounds to execute");
+			roundsTextModel.setPreferredSize(new Dimension(200,20));
+			JButton ModelExecButton = new JButton("Execute Model");
+			 ModelExecButton.addActionListener(new ActionListener() {
+		         public void actionPerformed(ActionEvent e) {
+		        	 for(int i=0;i<chartPanelAllSubmodels.size();i++){
+		        		 JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(2);
+		 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);		 				
+		 				roundsText.setText(roundsTextModel.getText());
+		        		chartPanelAllSubmodels.get(i).getExecutionButton().doClick(); 
+		        	 }
+		         }
+			 });
+			 overallExecutePanel.add(roundsLabel);
+			 overallExecutePanel.add(roundsTextModel);
+			 overallExecutePanel.add(ModelExecButton);
+			 tabbedPane.addTab("Model Execute", overallExecutePanel); 
+			for(int k=0;k<chartPanelAllSubmodels.size();k++){
+				chartPanelAllSubmodels.get(k).getExecutionButton().setVisible(false);
+				JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(k).getComponent(2);
+				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);
+				roundsText.setVisible(false);
+			}
+			
+			
+			
 			for(int j=0;j<graph.size();j++){
 				tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Chart") + " SM"+(j+1), chartPanelAllSubmodels.get(j));
 				tabbedPane.addTab(messages.getString("MainFrame.TabbedPane.Export")+ " SM"+(j+1), exportPanelAllSubmodels.get(j));

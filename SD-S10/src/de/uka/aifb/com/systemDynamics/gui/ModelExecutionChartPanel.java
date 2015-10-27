@@ -215,7 +215,9 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       
       // PAGE_END: number of rounds and execution button
       JPanel commandPanel = new JPanel();
-      commandPanel.add(new JLabel(messages.getString("ModelExecutionChartPanel.NumberRounds")));
+      JLabel label = new JLabel (messages.getString("ModelExecutionChartPanel.NumberRounds"));
+      label.setVisible(false);
+      commandPanel.add(label);
       final JTextField numberRoundsField = new JTextField("1", 5);
       numberRoundsField.addFocusListener(this);
       commandPanel.add(numberRoundsField);
