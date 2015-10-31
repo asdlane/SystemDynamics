@@ -23,12 +23,15 @@ package de.uka.aifb.com.systemDynamics.gui;
 
 import de.uka.aifb.com.systemDynamics.SystemDynamics;
 import de.uka.aifb.com.systemDynamics.model.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.text.*;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.*;
@@ -259,8 +262,35 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     */
    private JFreeChart createChart() {
       levelNodes = new LevelNode[model.getLevelNodes().size()];
+      
       int i = 0;
+      String[] levelNodeList = new String[model.getLevelNodes().size()];
+      
+      int k=0;
       for (LevelNode levelNode : model.getLevelNodes()) {
+    	  levelNodeList[k++] = levelNode.getNodeName();
+      }
+      JPanel listPanel = new JPanel();
+      JList list = new JList(levelNodeList);
+      GridLayout layout = new GridLayout(2,1);
+      listPanel.setLayout(layout);
+      JLabel label = new JLabel("which variables would you like to graph?");
+      
+      listPanel.add(label);
+      listPanel.add(list);
+      JOptionPane.showMessageDialog(
+        null, listPanel, "Multi-Select Example", JOptionPane.PLAIN_MESSAGE);
+      
+      System.out.println(Arrays.toString(list.getSelectedIndices()));
+      	//JFrame frame = new JFrame("InputDialog");
+		//Object[] choices = levelNodeList.toArray();
+
+		//String levelNodeOption = (String) JOptionPane.showInputDialog(frame,"Which variables would you like to graph?","Select Variables",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+		//System.out.println(levelNodeOption);
+      
+      //TODO: TAKE USER CHOICES AND ONLY ADD THE ONES THAT CORRESPOND WITH THOSE CHOICES 
+      for (LevelNode levelNode : model.getLevelNodes()) {
+    	 
          levelNodes[i++] = levelNode;
       }
       // sort level nodes alphabetically

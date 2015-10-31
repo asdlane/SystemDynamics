@@ -2105,19 +2105,14 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-				JFrame LearnerDecidableframe = new JFrame("InputDialog");
-				Object[] LeanerDecidablechoices = {"yes","no"};
-				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
+				//JFrame LearnerDecidableframe = new JFrame("InputDialog");
+				//Object[] LeanerDecidablechoices = {"no","yes"};
+				//String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
 				if(graph.size()==1){
 					//if the node is learner decidable, send true.  else, send false.
-					if(LearnerDecidable.equals("yes")){
-						graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true, false);
+					graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, false);
 
-					}
-					else{
-						graph.get(0).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, false);
-
-					}
+					
 				}
 				else{
 					//accounts for if user cancels the insert
@@ -2126,13 +2121,10 @@ WindowListener {
 						Object[] choices = SubmodelNumbers.toArray();
 
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Auxiliary Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-						//Whether the learner can change the node or not is sent
-						if(LearnerDecidable.equals("yes")){
-							graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true, false);
-						}
-						else{
-							graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, false);
-						}
+					
+					
+						graph.get(subModelIndex-1).createAuxiliaryNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, false);
+					
 					}catch(Exception ex){
 
 					}
@@ -2169,7 +2161,7 @@ WindowListener {
 					SubmodelNumbers.add(i);
 				}
 				JFrame LearnerDecidableframe = new JFrame("InputDialog");
-				Object[] LeanerDecidablechoices = {"yes","no"};
+				Object[] LeanerDecidablechoices = {"no","yes"};
 				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
@@ -2240,7 +2232,7 @@ WindowListener {
 					SubmodelNumbers.add(i);
 				}
 				JFrame LearnerDecidableframe = new JFrame("InputDialog");
-				Object[] LeanerDecidablechoices = {"yes","no"};
+				Object[] LeanerDecidablechoices = {"no","yes"};
 				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
 				
 				//lets you insert nodes into a single model that doesn't have submodels.
@@ -2318,18 +2310,15 @@ WindowListener {
 				for(int i=1;i<=graph.size();i++){
 					SubmodelNumbers.add(i);
 				}
-				JFrame LearnerDecidableframe = new JFrame("InputDialog");
-				Object[] LeanerDecidablechoices = {"yes","no"};
-				String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
+				//JFrame LearnerDecidableframe = new JFrame("InputDialog");
+				//Object[] LeanerDecidablechoices = {"no","yes"};
+				//String LearnerDecidable = (String) JOptionPane.showInputDialog(LearnerDecidableframe,"Should this node be Learner Decidable?","Leaner Decidable?",JOptionPane.PLAIN_MESSAGE,null,LeanerDecidablechoices,LeanerDecidablechoices[0]);
 
 				//lets you insert nodes into a single model that doesn't have submodels.
 				if(graph.size()==1){
-					if(LearnerDecidable=="yes"){
-						graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true, false);	
-					}
-					else{
+					
 						graph.get(0).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, false);
-					}
+					
 
 				}
 				else{
@@ -2339,12 +2328,9 @@ WindowListener {
 						Object[] choices = SubmodelNumbers.toArray();
 
 						int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add Constant Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-						if(LearnerDecidable=="yes"){
-							graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, true, false);
-						}
-						else{
+						
 							graph.get(subModelIndex - 1).createRateNodeGraphCell(nodeName, MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, false);
-						}
+						
 
 					}catch(Exception ex){
 
@@ -2600,7 +2586,9 @@ WindowListener {
 			ArrayList<ExportPanel> exportPanelAllSubmodels = new ArrayList<ExportPanel>();
 			
 			
+			
 			for(int j=0;j<graph.size();j++){
+				
 				ModelExecutionChartPanel chartPanelIndividual = graph.get(j).getChartPanel();
 				ExportPanel exportPanel = graph.get(j).getExportPanel();	
 				chartPanelAllSubmodels.add(chartPanelIndividual);
@@ -2615,7 +2603,7 @@ WindowListener {
 			 ModelExecButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
 		        	 for(int i=0;i<chartPanelAllSubmodels.size();i++){
-		        		 JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(2);
+		        		JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(2);
 		 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);		 				
 		 				roundsText.setText(roundsTextModel.getText());
 		        		chartPanelAllSubmodels.get(i).getExecutionButton().doClick(); 
@@ -2675,7 +2663,7 @@ WindowListener {
 			toggleAddFlowAction.setEnabled(true);
 			changeModelNameAction.setEnabled(true);
 			executeModelAction.setEnabled(true);
-
+			
 			contentPanel.remove(tabbedPane);
 			contentPanel.add(modelPanel);
 			contentPanel.repaint();

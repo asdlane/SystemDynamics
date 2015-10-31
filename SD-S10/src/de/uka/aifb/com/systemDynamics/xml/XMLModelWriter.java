@@ -495,6 +495,10 @@ public class XMLModelWriter {
 
 				rateNodeElement.setAttribute("learnerChangeable", String.valueOf(rateNode.getLearnerChangeable()));
 				rateNodeElement.setAttribute("shared", String.valueOf(rateNode.getShared()));
+				Element formulaElement = document.createElement("Formula");
+				formulaElement.appendChild(createXMLForFormula(document, rateNode.getFormula(),
+						node2Id));
+				rateNodeElement.appendChild(formulaElement);
 			}
 		}
 		// (1d) auxiliary nodes
