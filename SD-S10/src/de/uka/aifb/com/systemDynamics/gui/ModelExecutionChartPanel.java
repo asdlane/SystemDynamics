@@ -309,7 +309,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       XYSeriesCollection data = new XYSeriesCollection();
       for (i = 0; i < xySeriesArray.length; i++) {
          XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
-         xySeries.add(0.0, levelNodes[i]. ());
+         xySeries.add(0.0, levelNodes[i].getCurrentValue());
          data.addSeries(xySeries);
          xySeriesArray[i] = xySeries;
       }
