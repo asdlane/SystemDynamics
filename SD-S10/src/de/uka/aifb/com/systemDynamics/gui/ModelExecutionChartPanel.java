@@ -262,7 +262,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     * @return XY line chart
     */
    private JFreeChart createChart() {
-      levelNodes = new LevelNode[model.getLevelNodes().size()];
+      
       
       int i = 0;
       String[] levelNodeList = new String[model.getLevelNodes().size()];
@@ -288,7 +288,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 
 		//String levelNodeOption = (String) JOptionPane.showInputDialog(frame,"Which variables would you like to graph?","Select Variables",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 		//System.out.println(levelNodeOption);
-      
+      levelNodes = new LevelNode[list.getSelectedIndices().length];
       String[] SelectedNames = new String[list.getSelectedIndices().length];
       int j=0;
       for (int index : list.getSelectedIndices()){
@@ -302,12 +302,14 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     		 }
     	 }
       }
+      System.out.println(levelNodes[0].getNodeName());
       // sort level nodes alphabetically
-      Arrays.sort(levelNodes);
+      //Arrays.sort(levelNodes);
       
       xySeriesArray = new XYSeries[levelNodes.length];
       XYSeriesCollection data = new XYSeriesCollection();
       for (i = 0; i < xySeriesArray.length; i++) {
+    	 System.out.println(i);
          XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
          xySeries.add(0.0, levelNodes[i].getCurrentValue());
          data.addSeries(xySeries);
