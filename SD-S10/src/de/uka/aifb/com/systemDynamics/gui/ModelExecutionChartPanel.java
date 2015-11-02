@@ -39,6 +39,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.RangeType;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
+import org.jfree.util.ArrayUtilities;
 
 /*
  * Changes:
@@ -288,10 +289,18 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 		//String levelNodeOption = (String) JOptionPane.showInputDialog(frame,"Which variables would you like to graph?","Select Variables",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 		//System.out.println(levelNodeOption);
       
-      //TODO: TAKE USER CHOICES AND ONLY ADD THE ONES THAT CORRESPOND WITH THOSE CHOICES 
+      String[] SelectedNames = new String[list.getSelectedIndices().length];
+      int j=0;
+      for (int index : list.getSelectedIndices()){
+    	 SelectedNames[j++] = levelNodeList[index]; 
+      }
       for (LevelNode levelNode : model.getLevelNodes()) {
-    	 
-         levelNodes[i++] = levelNode;
+    	 for(int f=0;f<SelectedNames.length;f++){
+    		 if(SelectedNames[f] == levelNode.getNodeName()){
+    			 levelNodes[i++] = levelNode;
+    			 System.out.println("GOT HERE!!!");
+    		 }
+    	 }
       }
       // sort level nodes alphabetically
       Arrays.sort(levelNodes);
@@ -300,7 +309,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       XYSeriesCollection data = new XYSeriesCollection();
       for (i = 0; i < xySeriesArray.length; i++) {
          XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
-         xySeries.add(0.0, levelNodes[i].getCurrentValue());
+         xySeries.add(0.0, levelNodes[i]. ());
          data.addSeries(xySeries);
          xySeriesArray[i] = xySeries;
       }
