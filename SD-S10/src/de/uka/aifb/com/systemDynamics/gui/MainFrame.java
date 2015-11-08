@@ -1658,7 +1658,7 @@ WindowListener {
 			int archiveIndex = (Integer)JOptionPane.showInputDialog(frame,"Which submodel should be archived?","Archive",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			archiveIndex = archiveIndex-1;
 			File file = xmlFile;
-			if (file == null) {
+			
 				int returnVal = fileChooser.showSaveDialog(MainFrame.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					// file was selected and 'OK' was pressed
@@ -1686,10 +1686,7 @@ WindowListener {
 							return;
 						}
 					}
-				} else {
-					// no file selected
-					return;
-				}
+
 			}
 			try {
 				ArrayList<SystemDynamicsGraph> submodelGraph = new ArrayList<SystemDynamicsGraph>();
