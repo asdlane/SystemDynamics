@@ -72,7 +72,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    
    private JButton axesButton;
    private JButton executionButton;
-   
+   public int submodelNumber;
    /**
     * Constructor.
     * 
@@ -280,7 +280,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       listPanel.add(label);
       listPanel.add(list);
       JOptionPane.showMessageDialog(
-        null, listPanel, "Multi-Select Example", JOptionPane.PLAIN_MESSAGE);
+        null, listPanel, "Submodel", JOptionPane.PLAIN_MESSAGE);
       
       System.out.println(Arrays.toString(list.getSelectedIndices()));
       	//JFrame frame = new JFrame("InputDialog");
