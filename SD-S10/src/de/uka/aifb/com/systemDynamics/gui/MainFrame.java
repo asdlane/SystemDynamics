@@ -3040,46 +3040,39 @@ WindowListener {
 
 
 			}
-
+			String sharedPointerLocal = "";
 			for(int i=0; i<cells.length;i++){
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
-					String name = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					boolean learnerchange = Boolean.parseBoolean(((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString()); 
-					graph.get(subModelIndex).createAuxiliaryNodeGraphCell(name+Integer.toString(shareSubModel+1), 0, 0, learnerchange, true);
+					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 					
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
-					String name = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					String startVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal").toString();
-					String minVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("minVal").toString();
-					String maxVal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("maxVal").toString();
-					String curve = ((LevelNodeGraphCell)cells[i]).getAttributes().get("curve").toString();
-					boolean learnerchange = Boolean.parseBoolean(((LevelNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(subModelIndex).createLevelNodeGraphCell(name+Integer.toString(shareSubModel+1), Double.parseDouble(startVal), Double.parseDouble(minVal), Double.parseDouble(maxVal), Double.parseDouble(curve), 0, 0, learnerchange, true);
-
+					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 
 				}
 				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
-					graph.get(subModelIndex).createSourceSinkNodeGraphCell(0, 0, true);
+					sharedPointerLocal = "SourceSink";
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 				}
 				else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
-
-					String colorIndex = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("colorIndex").toString();
+					
+					
 					String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
 					Color truecolor = new Color(Integer.parseInt(color[0]),Integer.parseInt(color[1]),Integer.parseInt(color[2]));
-					graph.get(subModelIndex).createColoredSourceSinkNodeGraphCell(0, 0, truecolor, Integer.parseInt(colorIndex));
+					sharedPointerLocal = "Colored" + truecolor.getRed() + truecolor.getGreen() + truecolor.getBlue();
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 
 				}
 				else if(cells[i] instanceof ConstantNodeGraphCell){
-					String name = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					String values = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval").toString();
-					boolean learnerchange = Boolean.parseBoolean(((ConstantNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(subModelIndex).createConstantNodeGraphCell(name+Integer.toString(shareSubModel+1), Double.parseDouble(values), 0, 0, learnerchange, true);
+					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 				}
 				else if(cells[i] instanceof RateNodeGraphCell){
-					String name = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					boolean learnerchange = Boolean.parseBoolean(((RateNodeGraphCell)cells[i]).getAttributes().get("LearnerChangeable").toString());
-					graph.get(subModelIndex).createRateNodeGraphCell(name+Integer.toString(shareSubModel+1), 0, 0, learnerchange, true);
+					sharedPointerLocal = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
+					
 				}
 			}
 

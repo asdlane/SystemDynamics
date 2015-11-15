@@ -231,6 +231,32 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		return levelNodeGraphCell;
 	}
+	public SharedNodeGraphCell createSharedNodeGraphCell(String SharedPointer) {
+		
+		//create a new attribute map to store all the values that pertain to the node trying to be created.
+		AttributeMap vals = new AttributeMap();
+		vals.put("SharedPointer", SharedPointer);
+		
+		// create node
+		SharedNode sharedNode = model.createSharedNode(SharedPointer);
+
+		//create graph cell with the attribute map attached to it.
+		SharedNodeGraphCell sharedNodeGraphCell = new SharedNodeGraphCell(0,0,vals,SharedPointer);
+
+		// insert vertex to graph
+		getGraphLayoutCache().insert(sharedNodeGraphCell);
+
+		// insert mappings
+		modelNode2graphNode.put(sharedNode, sharedNodeGraphCell);
+		graphNode2modelNode.put(sharedNodeGraphCell, sharedNode);
+
+		// inform listeners
+		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+			listener.performGraphModifiedEvent();
+		}
+
+		return sharedNodeGraphCell;
+	}
 
 	/**
 	 * Creates a new rate node vertex and a corresponding rate node with the specified parameters

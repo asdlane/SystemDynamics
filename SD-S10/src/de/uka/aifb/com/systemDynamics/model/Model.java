@@ -40,6 +40,7 @@ public class Model {
    protected HashSet<AuxiliaryNode> auxiliaryNodes;
    protected HashSet<SourceSinkNode> sourceSinkNodes;
    protected HashSet<ColoredSourceSinkNode> ColoredsourceSinkNodes;
+   protected HashSet<SharedNode> SharedNodes;
    
    protected boolean isChangeable;
    
@@ -58,7 +59,7 @@ public class Model {
       auxiliaryNodes = new HashSet<AuxiliaryNode>();
       sourceSinkNodes = new HashSet<SourceSinkNode>();
       ColoredsourceSinkNodes = new HashSet<ColoredSourceSinkNode>();
-      
+      SharedNodes = new HashSet<SharedNode>();
       isChangeable = true;
    }
    
@@ -109,7 +110,15 @@ public class Model {
       levelNodes.add(levelNode);
       return levelNode;
    }
-   
+   public SharedNode createSharedNode(String sharedPointer) {
+	   if(!isChangeable){
+		   throw new ModelNotChangeableException();
+	   }
+	   SharedNode sharedNode = new SharedNode(sharedPointer);
+	   SharedNodes.add(sharedNode);
+		// TODO Auto-generated method stub
+		return sharedNode;
+   }
    /**
     * Creates a new rate node with the specified parameter and stores it in the model.
     * 
@@ -1155,4 +1164,6 @@ public class Model {
       
       return numberOfPredecessorsMap;
    }
+
+
 }
