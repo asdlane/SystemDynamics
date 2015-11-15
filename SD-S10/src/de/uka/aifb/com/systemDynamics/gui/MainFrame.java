@@ -2596,6 +2596,14 @@ WindowListener {
 			final JTextField roundsTextModel = new JTextField("1");
 			final JLabel roundsLabel = new JLabel("Number of Rounds to execute");
 			roundsTextModel.setPreferredSize(new Dimension(200,20));
+			JButton ResetButton = new JButton ("Reset");
+			ResetButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e){
+						reset();
+						//reset everything.  Remove the tabbedPane and scrollPane
+						
+				}
+			});
 			JButton ModelExecButton = new JButton("Execute Model");
 			 ModelExecButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
@@ -2610,6 +2618,7 @@ WindowListener {
 			 overallExecutePanel.add(roundsLabel);
 			 overallExecutePanel.add(roundsTextModel);
 			 overallExecutePanel.add(ModelExecButton);
+			 overallExecutePanel.add(ResetButton);
 			 tabbedPane.addTab("Model Execute", overallExecutePanel); 
 			for(int k=0;k<chartPanelAllSubmodels.size();k++){
 				chartPanelAllSubmodels.get(k).getExecutionButton().setVisible(false);				
@@ -2635,6 +2644,9 @@ WindowListener {
 
 			MainFrame.this.getContentPane().validate();
 			exitExecuteModelAction.setEnabled(true);
+		}
+		public void reset(){
+			actionPerformed(null);
 		}
 	}
 
