@@ -33,7 +33,7 @@ public class SharedNodeGraphCell extends DefaultGraphCell {
  * @param learnerChangeable 
     */
    public SharedNodeGraphCell(double x, double y, AttributeMap vals, String sharedNodeName) {
-      super(sharedNodeName, vals);
+      super("sharedNode", vals);
       
       
       

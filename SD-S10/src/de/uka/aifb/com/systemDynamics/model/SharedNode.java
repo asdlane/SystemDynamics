@@ -15,13 +15,7 @@ import java.util.*;
  * @author Joachim Melcher, University of Karlsruhe, AIFB
  * @version 1.0
  */
-public class SharedNode extends AbstractNode{
-   
-   /** minimal start value */
-   public static final double MIN_START_VALUE = -1000000000;
-   
-   /** maximal start value */
-   public static final double MAX_START_VALUE = 1000000000;
+public class SharedNode extends AbstractNode{  
    
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
@@ -154,38 +148,4 @@ void computeNextValue() {
 
 
    
-   /////////////////////////////////////////////////////////////////////////////////////////////////
-   // methods from abstract class AbstractNode
-   /////////////////////////////////////////////////////////////////////////////////////////////////
-   
-
-   /////////////////////////////////////////////////////////////////////////////////////////////////
-   // methods from interface ASTElement
-   /////////////////////////////////////////////////////////////////////////////////////////////////
-   
-   
-   /**
-    * Gets a short <code>String</code> representation of the node's formula.
-    * 
-    * @param auxiliaryNode2id auxiliary node to id mapping
-    * @param constantNode2id constant node to id mapping
-    * @param levelNode2id level node to id mapping
-    * @return short <code>String</code> representation of the node's formula
-    */
-   
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//                               methods of interface Comparable
-////////////////////////////////////////////////////////////////////////////////////////////////////
-   
-   /**
-    * Compares this level node with the specified level node for order.
-    * <p>
-    * Returns a negative integer, zero, or a positive integer as this object is less than, equal to,
-    * or greater than the specified object.
-    * 
-    * @param levelNode level node to compare to
-    * @return a negative integer, zero, or a positive integer as this object is less than, equal to,
-    *         or greater than the specified object
-    */
-
 }
