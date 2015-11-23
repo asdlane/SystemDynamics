@@ -105,13 +105,14 @@ public class XMLModelReader {
 		HashMap<String, LevelNode> id2levelNode = new HashMap<String, LevelNode>();
 		HashMap<String, RateNode> id2rateNode = new HashMap<String, RateNode>();
 		HashMap<String, SourceSinkNode> id2sourceSinkNode = new HashMap<String, SourceSinkNode>();
+		HashMap<String, SharedNode> id2SharedNode = new HashMap<String, SharedNode>();
 		/*String currentdir = System.getProperty("user.dir");
       System.out.println(currentdir);
       File dir = new File(currentdir);
       System.out.println("Current Working Directory : "+ dir);*/
 
 		createModelFromXML(fileName, XSD_FILE_NAME, model, "Model", id2auxiliaryNode, id2constantNode,
-				id2levelNode, id2rateNode, id2sourceSinkNode);
+				id2levelNode, id2rateNode, id2sourceSinkNode, id2SharedNode);
 
 		setLevelNodes(id2levelNode);
 		return model;
@@ -181,11 +182,13 @@ public class XMLModelReader {
 				new HashMap<String, RateNodeGraphCell>();
 		HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNode =
 				new HashMap<String, SourceSinkNodeGraphCell>();
+		HashMap<String, SharedNodeGraphCell> id2SharedNode =
+				new HashMap<String, SharedNodeGraphCell>();
 
 		Thread.currentThread();
 
 		graph = createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
-				id2levelNode, id2rateNode, id2sourceSinkNode, start, frame);
+				id2levelNode, id2rateNode, id2sourceSinkNode, id2SharedNode, start, frame);
 
 		System.out.println("ID TO LEVEL SIZE" + id2levelNode.size());
 
@@ -218,7 +221,8 @@ public class XMLModelReader {
 			HashMap<String, ConstantNode> id2constantNode,
 			HashMap<String, LevelNode> id2levelNode,
 			HashMap<String, RateNode> id2rateNode,
-			HashMap<String, SourceSinkNode> id2sourceSinkNode)
+			HashMap<String, SourceSinkNode> id2sourceSinkNode,
+			HashMap<String, SharedNode> id2SharedNode)
 					throws AuxiliaryNodesCycleDependencyException,
 					XMLModelReaderWriterException,
 					XMLNodeParameterOutOfRangeException,
@@ -251,9 +255,9 @@ public class XMLModelReader {
 		if (id2sourceSinkNode == null) {
 			throw new IllegalArgumentException("'id2sourceSinkNode' must not be null.");
 		}
-	
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
-		
+
 		// create schema
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema = null;
@@ -274,7 +278,7 @@ public class XMLModelReader {
 			// exception should not happen
 			throw new XMLModelReaderWriterException(e);
 		}
-		
+
 		// set own error handler that throws exception if XML file is not Schema compliant
 		builder.setErrorHandler(new MyErrorHandler());
 		System.out.println("GOT HERE");
@@ -286,8 +290,8 @@ public class XMLModelReader {
 			System.out.println("GOT HERE");
 			throw new XMLModelReaderWriterException(e);
 		}		
-		
-		
+
+
 		// create XPath object
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		String modelName = "";
@@ -307,12 +311,12 @@ public class XMLModelReader {
 
 		try {
 			Submodels = (NodeList)xpath.evaluate("/Model/SubModel", document, XPathConstants.NODESET);
-			
+
 
 
 		} catch (XPathExpressionException e1) {
 			// TODO Auto-generated catch block
-			
+
 			e1.printStackTrace();
 		}
 		for(int i=1;i<Submodels.getLength();i++){
@@ -376,6 +380,22 @@ public class XMLModelReader {
 
 					SourceSinkNode sourceSinkNode = model.get(k).createSourceSinkNode(false);
 					id2sourceSinkNode.put(id, sourceSinkNode);
+				}
+			} catch (XPathExpressionException e) {
+				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+			// (1b) create shared nodes
+			try {
+				NodeList sourceSinkNodeElements =
+						(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/SharedNodes/SharedNode", document,
+								XPathConstants.NODESET);
+				for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
+					Element SharedElement = (Element)sourceSinkNodeElements.item(i);
+					String id = SharedElement.getAttribute("sharedPointer");
+
+					SharedNode sharedNode = model.get(k).createSharedNode(id);
+					id2SharedNode.put(id, sharedNode);
 				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
@@ -622,14 +642,15 @@ public class XMLModelReader {
 			HashMap<String, ConstantNodeGraphCell> id2constantNodeGraphCell,
 			HashMap<String, LevelNodeGraphCell> id2levelNodeGraphCell,
 			HashMap<String, RateNodeGraphCell> id2rateNodeGraphCell,
-			HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNodeGraphCell,SystemDynamics start,
+			HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNodeGraphCell,
+			HashMap<String, SharedNodeGraphCell> id2SharedNodeGraphCell, SystemDynamics start,
 			JFrame frame)
 					throws AuxiliaryNodesCycleDependencyException,
 					XMLModelReaderWriterException,
 					XMLNodeParameterOutOfRangeException,
 					XMLRateNodeFlowException,
 					XMLUselessNodeException {
-		
+
 		if (fileString == null) {
 			throw new IllegalArgumentException("'fileString' must not be null.");
 		}
@@ -723,7 +744,7 @@ public class XMLModelReader {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		for(int i=0;i<Submodels.getLength();i++){
 
 			String SubmodelColor = Submodels.item(i).getAttributes().getNamedItem("color").getNodeValue();
@@ -768,7 +789,7 @@ public class XMLModelReader {
 
 					LevelNodeGraphCell levelNode = null;
 					try {
-						
+
 						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable, shared);
 						graph.get(k).model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, shared);
 					} catch (NodeParameterOutOfRangeException e) {
@@ -791,7 +812,22 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
+			// (1b) create shared nodes
+						try {
+							NodeList sourceSinkNodeElements =
+									(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/SharedNodes/SharedNode", document,
+											XPathConstants.NODESET);
+							for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
+								Element SharedElement = (Element)sourceSinkNodeElements.item(i);
+								String id = SharedElement.getAttribute("sharedPointer");
 
+								SharedNodeGraphCell sharedNode = graph.get(k).createSharedNodeGraphCell(id);
+								id2SharedNodeGraphCell.put(id, sharedNode);
+							}
+						} catch (XPathExpressionException e) {
+							// correct xpath expression -> no exception
+							throw new XMLModelReaderWriterException(e);
+						}
 			// (1b) create source/sink nodes
 			try {
 				NodeList sourceSinkNodeElements =
@@ -831,7 +867,7 @@ public class XMLModelReader {
 					double yCoordinate = new Double(rateNodeElement.getAttribute("yCoordinate"));
 					boolean learnerDecidable = new Boolean(rateNodeElement.getAttribute("learnerChangeable"));
 					boolean shared = new Boolean(rateNodeElement.getAttribute("shared"));
-					
+
 					RateNodeGraphCell rateNode = graph.get(k).createRateNodeGraphCell(nodeName, xCoordinate,
 							yCoordinate, learnerDecidable, shared);
 					id2rateNodeGraphCell.put(id, rateNode);
@@ -893,7 +929,7 @@ public class XMLModelReader {
 					boolean shared = new Boolean(constantNodeElement.getAttribute("shared"));
 					ConstantNodeGraphCell constantNode = null;
 					try {
-						
+
 						constantNode = graph.get(k).createConstantNodeGraphCell(nodeName, constantValue,
 								xCoordinate, yCoordinate, learnerDecidable, shared);
 					} catch (NodeParameterOutOfRangeException e) {

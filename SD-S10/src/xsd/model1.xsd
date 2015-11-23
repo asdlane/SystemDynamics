@@ -98,6 +98,18 @@
                   </xsd:sequence>
                 </xsd:complexType>
               </xsd:element>
+              <xsd:element name="SharedNodes" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="SharedNode" maxOccurs="unbounded">
+                      <xsd:complexType>
+                        <xsd:attribute name="sharedPointer"                     use="required">                          
+                        </xsd:attribute>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
               <xsd:element name="RateNodes" minOccurs="0">
                 <xsd:complexType>
                   <xsd:sequence>
