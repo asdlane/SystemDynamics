@@ -22,6 +22,7 @@
 package de.uka.aifb.com.systemDynamics.model;
 
 import java.awt.Color;
+import java.awt.geom.RectangularShape;
 import java.util.*;
 
 /**
@@ -1163,6 +1164,10 @@ public class Model {
       }
       
       return numberOfPredecessorsMap;
+   }
+
+   public HashSet<SharedNode> getSharedNodes() {
+	      return (HashSet<SharedNode>)SharedNodes.clone();
    }
 
 

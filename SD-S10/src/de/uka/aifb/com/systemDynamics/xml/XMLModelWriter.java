@@ -89,6 +89,7 @@ import de.uka.aifb.com.systemDynamics.model.NoFormulaException;
 import de.uka.aifb.com.systemDynamics.model.NoLevelNodeException;
 import de.uka.aifb.com.systemDynamics.model.RateNode;
 import de.uka.aifb.com.systemDynamics.model.RateNodeFlowException;
+import de.uka.aifb.com.systemDynamics.model.SharedNode;
 import de.uka.aifb.com.systemDynamics.model.SourceSinkNode;
 import de.uka.aifb.com.systemDynamics.model.UselessNodeException;
 
@@ -416,6 +417,7 @@ public class XMLModelWriter {
 		int nextRateNodeId = 1;
 		int nextAuxiliaryNodeId = 1;
 		int nextConstantNodeId = 1;
+		int nextSharedNodeId = 1;
 
 		// (1) nodes
 		Element nodesElement = document.createElement("Nodes");
@@ -555,6 +557,18 @@ public class XMLModelWriter {
 				constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
 				constantNodeElement.setAttribute("shared", String.valueOf(constantNode.getShared()));
 
+			}
+		}
+		//shared nodes
+		if(!model.getSharedNodes().isEmpty()) {
+			Element SharedNodesElement = document.createElement("SharedNodes");
+			nodesElement.appendChild(SharedNodesElement);
+			for(SharedNode sharednode : model.getSharedNodes()) {
+				String id = createId("SN", nextSharedNodeId++);
+				node2Id.put(sharednode, id);
+				Element sharedNodeElement = document.createElement("SharedNode");
+				SharedNodesElement.appendChild(sharedNodeElement);
+				sharedNodeElement.setAttribute("sharedPointer", sharednode.getSharedPointer());
 			}
 		}
 		if(!model.getColoredSourceSinkNodes().isEmpty()){
