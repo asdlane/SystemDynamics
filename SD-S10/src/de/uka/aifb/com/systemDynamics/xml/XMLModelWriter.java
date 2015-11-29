@@ -471,6 +471,34 @@ public class XMLModelWriter {
 
 			}
 		}
+		// (1e) constant nodes
+				if (!model.getConstantNodes().isEmpty()) {
+					Element constantNodesElement = document.createElement("ConstantNodes");
+					nodesElement.appendChild(constantNodesElement);
+					for (ConstantNode constantNode : model.getConstantNodes()) {
+						String id = createId("CN", nextConstantNodeId++);
+						node2Id.put(constantNode, id);
+
+						Element constantNodeElement = document.createElement("ConstantNode");
+						constantNodesElement.appendChild(constantNodeElement);
+						constantNodeElement.setAttribute("id", id);
+						if(constantNode.getShared()){
+							if(archive){
+								String name= constantNode.getNodeName();
+								String[] nameSeparated = name.split("[(0-9)*]");
+								constantNodeElement.setAttribute("name", nameSeparated[0] + "?");
+							}else{
+								constantNodeElement.setAttribute("name", constantNode.getNodeName());
+							}
+						}else{
+							constantNodeElement.setAttribute("name", constantNode.getNodeName());
+						}
+
+						constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
+						constantNodeElement.setAttribute("shared", String.valueOf(constantNode.getShared()));
+
+					}
+				}
 		// (1c) rate nodes
 		if (!model.getRateNodes().isEmpty()) {
 			Element rateNodesElement = document.createElement("RateNodes");
@@ -531,34 +559,7 @@ public class XMLModelWriter {
 				auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
 			}
 		}
-		// (1e) constant nodes
-		if (!model.getConstantNodes().isEmpty()) {
-			Element constantNodesElement = document.createElement("ConstantNodes");
-			nodesElement.appendChild(constantNodesElement);
-			for (ConstantNode constantNode : model.getConstantNodes()) {
-				String id = createId("CN", nextConstantNodeId++);
-				node2Id.put(constantNode, id);
-
-				Element constantNodeElement = document.createElement("ConstantNode");
-				constantNodesElement.appendChild(constantNodeElement);
-				constantNodeElement.setAttribute("id", id);
-				if(constantNode.getShared()){
-					if(archive){
-						String name= constantNode.getNodeName();
-						String[] nameSeparated = name.split("[(0-9)*]");
-						constantNodeElement.setAttribute("name", nameSeparated[0] + "?");
-					}else{
-						constantNodeElement.setAttribute("name", constantNode.getNodeName());
-					}
-				}else{
-					constantNodeElement.setAttribute("name", constantNode.getNodeName());
-				}
-
-				constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
-				constantNodeElement.setAttribute("shared", String.valueOf(constantNode.getShared()));
-
-			}
-		}
+		
 		//shared nodes
 		if(!model.getSharedNodes().isEmpty()) {
 			Element SharedNodesElement = document.createElement("SharedNodes");
