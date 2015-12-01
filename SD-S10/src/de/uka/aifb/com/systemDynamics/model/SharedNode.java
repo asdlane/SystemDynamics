@@ -30,6 +30,7 @@ public class SharedNode extends AbstractNode{
     * @param curve characteristic behaviour of this LevelNode
     */
    protected SharedNode(String sharedPointer) {
+	  
 	  setsharedPointer(sharedPointer);
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();

@@ -606,7 +606,26 @@ public class Model {
 	      rateNode.setFlowSource(ColoredsourceSinkNode);
 	      return true;
 	   }
-   
+   public boolean addFlowFromSharedNode2RateNode(SharedNode SharedNode, RateNode rateNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if ( SharedNode== null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      
+	      if (rateNode.getFlowSource() != null) {
+	         // there is already another flow to this rate node
+	         return false;
+	      }
+	      
+	      SharedNode.addOutgoingFlow(rateNode);
+	      rateNode.setFlowSource(SharedNode);
+	      return true;
+	   }   
    /**
     * Removes the flow from the specified source/sink node to the specified rate node.
     * 
@@ -665,7 +684,33 @@ public class Model {
 	      }
 	      
 	      throw new Error("Flow to remove not stored consistently.");
-	   }   
+	   }
+   public boolean removeFlowFromSharedNode2RateNode(SharedNode SharedNode, RateNode rateNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (SharedNode == null) {
+	         throw new IllegalArgumentException("'sharedNode' must not be null.");
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      
+	      boolean rateNodeCorrect = rateNode.getFlowSource().equals(SharedNode);
+	      boolean SharedNodeCorrect = SharedNode.getOutgoingFlows().contains(rateNode);
+	      
+	      if (rateNodeCorrect && SharedNodeCorrect) {
+	         rateNode.removeFlowSource();
+	         return SharedNode.removeOutgoingFlow(rateNode);
+	      }
+	      
+	      if (!rateNodeCorrect && !SharedNodeCorrect) {
+	         // no such flow -> nothing to remove
+	         return false;
+	      }
+	      
+	      throw new Error("Flow to remove not stored consistently.");
+	   }
    /**
     * Adds a flow from the specified rate node to the specified source/sink node. If there is
     * already another flow from this rate node, the addition of this flow is not possible.
@@ -714,7 +759,26 @@ public class Model {
 	      ColoredsourceSinkNode.addIncomingFlow(rateNode);
 	      return true;
 	   }
-   
+   public boolean addFlowFromRateNode2SharedNode(RateNode rateNode, SharedNode SharedNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      if (SharedNode == null) {
+	         throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+	      }
+	      
+	      if (rateNode.getFlowSink() != null) {
+	         // there is already another flow from this rate node 
+	         return false;
+	      }
+	      
+	      rateNode.setFlowSink(SharedNode);
+	      SharedNode.addIncomingFlow(rateNode);
+	      return true;
+	   }   
    /**
     * Removes the flow from the specified rate node to the specified level node.
     * 
@@ -768,6 +832,32 @@ public class Model {
 	      }
 	      
 	      if (!rateNodeCorrect && !sourceSinkNodeCorrect) {
+	         // no such flow -> nothing to remove
+	         return false;
+	      }
+	      
+	      throw new Error("Flow to remove not stored consistently.");
+	   }
+   public boolean removeFlowFromRateNode2SharedNode(RateNode rateNode, SharedNode SharedNode) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (rateNode == null) {
+	         throw new IllegalArgumentException("'rateNode' must not be null.");
+	      }
+	      if (SharedNode == null) {
+	         throw new IllegalArgumentException("'SharedNode' must not be null.");
+	      }
+	      
+	      boolean rateNodeCorrect = rateNode.getFlowSink().equals(SharedNode);
+	      boolean SharedNodeCorrect = SharedNode.getIncomingFlows().contains(rateNode);
+	      
+	      if (rateNodeCorrect && SharedNodeCorrect) {
+	         rateNode.removeFlowSink();
+	         return SharedNode.removeIncomingFlow(rateNode);
+	      }
+	      
+	      if (!rateNodeCorrect && !SharedNodeCorrect) {
 	         // no such flow -> nothing to remove
 	         return false;
 	      }

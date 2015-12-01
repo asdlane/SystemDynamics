@@ -34,8 +34,7 @@ public class SharedNodeGraphCell extends DefaultGraphCell {
     */
    public SharedNodeGraphCell(double x, double y, AttributeMap vals, String sharedNodeName) {
       super("sharedNode", vals);
-      
-      
+      addPort();
       
       // layout
       GraphConstants.setBounds(getAttributes(), new  Rectangle2D.Double(x, y, WIDTH, HEIGHT));

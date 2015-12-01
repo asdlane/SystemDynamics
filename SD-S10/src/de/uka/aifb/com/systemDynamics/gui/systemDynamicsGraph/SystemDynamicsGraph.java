@@ -832,6 +832,60 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 * @param sourceSinkNode source/sink node
 	 * @return <code>true</code> iff the flow could be added
 	 */
+	public boolean addFlow(RateNodeGraphCell rateNode, SharedNodeGraphCell SharedNode) {
+		if (rateNode == null) {
+			throw new IllegalArgumentException("'rateNode' must not be null.");
+		}
+		if (SharedNode == null) {
+			throw new IllegalArgumentException("'SharedNode' must not be null.");
+		}
+
+		boolean successful =
+				model.addFlowFromRateNode2SharedNode((RateNode)graphNode2modelNode.get(rateNode),
+						(SharedNode)graphNode2modelNode.get(SharedNode));
+
+		if (successful) {
+			this.insertFlowEdge(rateNode, SharedNode);
+
+			// inform listeners
+			for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+				listener.performGraphModifiedEvent();
+			}
+		}
+
+		return successful;
+	}
+	public boolean addFlow(SharedNodeGraphCell SharedNode, RateNodeGraphCell rateNode) {
+		if (SharedNode == null) {
+			throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+		}
+		if (rateNode == null) {
+			throw new IllegalArgumentException("'rateNode' must not be null.");
+		}
+
+		boolean successful =
+				model.addFlowFromSharedNode2RateNode((SharedNode)graphNode2modelNode.get(SharedNode),
+						(RateNode)graphNode2modelNode.get(rateNode));
+
+		if (successful) {
+			this.insertFlowEdge(SharedNode, rateNode);
+
+			// inform listeners
+			for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+				listener.performGraphModifiedEvent();
+			}
+		}
+
+		return successful;
+	}
+
+	/**
+	 * Adds a flow between the specified vertices and in the System Dynamics model.
+	 *
+	 * @param rateNode rate node
+	 * @param sourceSinkNode source/sink node
+	 * @return <code>true</code> iff the flow could be added
+	 */
 	public boolean addFlow(RateNodeGraphCell rateNode, ColoredSourceSinkNodeGraphCell ColoredsourceSinkNode) {
 		if (rateNode == null) {
 			throw new IllegalArgumentException("'rateNode' must not be null.");
@@ -1263,6 +1317,30 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		if (successful) {
 			this.removeFlowEdge(ColoredsourceSinkNode, rateNode);
+
+			// inform listeners
+			for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+				listener.performGraphModifiedEvent();
+			}
+		}
+
+		return successful;
+	}
+	public boolean removeFlow(SharedNodeGraphCell SharedNode, RateNodeGraphCell rateNode) {
+		if (SharedNode == null) {
+			throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+		}
+		if (rateNode == null) {
+			throw new IllegalArgumentException("'rateNode' must not be null.");
+		}
+
+		boolean successful =
+				model.removeFlowFromColoredSourceSinkNode2RateNode((ColoredSourceSinkNode)graphNode2modelNode.get(SharedNode),
+						
+						(RateNode)graphNode2modelNode.get(rateNode));
+
+		if (successful) {
+			this.removeFlowEdge(SharedNode, rateNode);
 
 			// inform listeners
 			for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
