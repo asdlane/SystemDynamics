@@ -33,7 +33,8 @@ public class SharedNodeGraphCell extends DefaultGraphCell {
  * @param learnerChangeable 
     */
    public SharedNodeGraphCell(double x, double y, AttributeMap vals, String sharedNodeName) {
-      super("sharedNode", vals);
+	  
+      super(vals.get("SharedPointer").toString() + "_SH", vals);
       addPort();
       
       // layout
