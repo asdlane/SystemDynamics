@@ -205,11 +205,12 @@ public class XMLModelWriter {
 				// add position information of nodes and additional control points to DOC document
 
 				try{
+					
 					addPositionInformationToDocument(document.get(i), graph.get(i), graphNodes, flowEdges, dependencyEdges,
 							node2Id);
 				}
 				catch(Exception e){
-
+					e.printStackTrace();
 
 				}
 				// XML output
@@ -454,6 +455,8 @@ public class XMLModelWriter {
 			levelNodeElement.setAttribute("curve", String.valueOf(levelNode.getCurveValue()));
 			levelNodeElement.setAttribute("learnerChangeable", String.valueOf(levelNode.getLearnerChangeable()));
 			levelNodeElement.setAttribute("shared", String.valueOf(levelNode.getShared()));
+			
+			
 
 		}
 		// (1b) source/sink nodes
@@ -775,7 +778,7 @@ public class XMLModelWriter {
 			if (node instanceof AuxiliaryNodeGraphCell) {
 				try {
 					Element auxiliaryNodeElement =
-							(Element)xpath.evaluate("/Model/Nodes/AuxiliaryNodes/AuxiliaryNode[@id='" + modelNodeId + "']",
+							(Element)xpath.evaluate("/SubModel/Nodes/AuxiliaryNodes/AuxiliaryNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					auxiliaryNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					auxiliaryNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
@@ -787,7 +790,7 @@ public class XMLModelWriter {
 			if (node instanceof ConstantNodeGraphCell) {
 				try {
 					Element constantNodeElement =
-							(Element)xpath.evaluate("/Model/Nodes/ConstantNodes/ConstantNode[@id='" + modelNodeId + "']",
+							(Element)xpath.evaluate("/SubModel/Nodes/ConstantNodes/ConstantNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					constantNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					constantNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
@@ -798,8 +801,11 @@ public class XMLModelWriter {
 			}
 			if (node instanceof LevelNodeGraphCell) {
 				try {
+					
+					Element SubModelElement = (Element)xpath.evaluate("/SubModel", document, XPathConstants.NODE);
+					xpath.evaluate("SubModel", document, XPathConstants.NODE);
 					Element levelNodeElement =
-							(Element)xpath.evaluate("/Model/Nodes/LevelNodes/LevelNode[@id='" + modelNodeId + "']",
+							(Element)xpath.evaluate("/SubModel/Nodes/LevelNodes/LevelNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					levelNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					levelNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
@@ -811,7 +817,7 @@ public class XMLModelWriter {
 			if (node instanceof RateNodeGraphCell) {
 				try {
 					Element rateNodeElement =
-							(Element)xpath.evaluate("/Model/Nodes/RateNodes/RateNode[@id='" + modelNodeId + "']",
+							(Element)xpath.evaluate("/SubModel/Nodes/RateNodes/RateNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					rateNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					rateNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
@@ -823,7 +829,7 @@ public class XMLModelWriter {
 			if (node instanceof SourceSinkNodeGraphCell) {
 				try {
 					Element sourceSinkNodeElement =
-							(Element)xpath.evaluate("/Model/Nodes/SourceSinkNodes/SourceSinkNode[@id='" + modelNodeId + "']",
+							(Element)xpath.evaluate("/SubModel/Nodes/SourceSinkNodes/SourceSinkNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					sourceSinkNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					sourceSinkNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
@@ -856,7 +862,7 @@ public class XMLModelWriter {
 				if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
 					try {
 						Element flowElement =
-								(Element)xpath.evaluate("/Model/Flows/LevelNode2RateNodeFlow[@fromLevelNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
+								(Element)xpath.evaluate("/SubModel/Flows/LevelNode2RateNodeFlow[@fromLevelNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
 										document, XPathConstants.NODE);
 						flowElement.appendChild(additionalControlPointsElement);
 					} catch (XPathExpressionException e) {
@@ -867,7 +873,7 @@ public class XMLModelWriter {
 				if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
 					try {
 						Element flowElement =
-								(Element)xpath.evaluate("/Model/Flows/SourceSinkNode2RateNodeFlow[@fromSourceSinkNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
+								(Element)xpath.evaluate("/SubModel/Flows/SourceSinkNode2RateNodeFlow[@fromSourceSinkNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
 										document, XPathConstants.NODE);
 						flowElement.appendChild(additionalControlPointsElement);
 					} catch (XPathExpressionException e) {
@@ -878,7 +884,7 @@ public class XMLModelWriter {
 				if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
 					try {
 						Element flowElement =
-								(Element)xpath.evaluate("/Model/Flows/RateNode2LevelNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toLevelNodeIdRef='" + edgeTargetId + "']",
+								(Element)xpath.evaluate("/SubModel/Flows/RateNode2LevelNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toLevelNodeIdRef='" + edgeTargetId + "']",
 										document, XPathConstants.NODE);
 						flowElement.appendChild(additionalControlPointsElement);
 					} catch (XPathExpressionException e) {
@@ -889,7 +895,7 @@ public class XMLModelWriter {
 				if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
 					try {
 						Element flowElement =
-								(Element)xpath.evaluate("/Model/Flows/RateNode2SourceSinkNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toSourceSinkNodeIdRef='" + edgeTargetId + "']",
+								(Element)xpath.evaluate("/SubModel/Flows/RateNode2SourceSinkNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toSourceSinkNodeIdRef='" + edgeTargetId + "']",
 										document, XPathConstants.NODE);
 						flowElement.appendChild(additionalControlPointsElement);
 					} catch (XPathExpressionException e) {
@@ -971,7 +977,7 @@ public class XMLModelWriter {
 		}
 		if (hasDependencyWithControlPoint) {
 			try {
-				Element modelElement = (Element)xpath.evaluate("/Model", document, XPathConstants.NODE);
+				Element modelElement = (Element)xpath.evaluate("/SubModel", document, XPathConstants.NODE);
 				modelElement.appendChild(dependenciesElement);
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception

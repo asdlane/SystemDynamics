@@ -1846,7 +1846,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		for (Object vertex : vertices) {
 			graphNodes.add((DefaultGraphCell)vertex);
 		}
-
+		
 		// flow edges and dependency edges
 		Object[] edges = getGraphLayoutCache().getCells(false, false, false, true);
 		LinkedList<FlowEdge> flowEdges = new LinkedList<FlowEdge>();
