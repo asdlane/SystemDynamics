@@ -61,6 +61,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.AuxiliaryNodeGraphCell;
@@ -68,6 +69,7 @@ import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.ConstantNodeGraphC
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.FlowEdge;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.LevelNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.RateNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SharedNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SourceSinkNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
 import de.uka.aifb.com.systemDynamics.model.ASTDivide;
@@ -205,7 +207,8 @@ public class XMLModelWriter {
 				// add position information of nodes and additional control points to DOC document
 
 				try{
-					
+					System.out.println("GOT HERE");
+					System.out.println(node2Id.size());
 					addPositionInformationToDocument(document.get(i), graph.get(i), graphNodes, flowEdges, dependencyEdges,
 							node2Id);
 				}
@@ -573,6 +576,7 @@ public class XMLModelWriter {
 				Element sharedNodeElement = document.createElement("SharedNode");
 				SharedNodesElement.appendChild(sharedNodeElement);
 				sharedNodeElement.setAttribute("sharedPointer", sharednode.getSharedPointer());
+				sharedNodeElement.setAttribute("id", id);
 			}
 		}
 		if(!model.getColoredSourceSinkNodes().isEmpty()){
@@ -772,16 +776,37 @@ public class XMLModelWriter {
 			Rectangle2D r = GraphConstants.getBounds(node.getAttributes());
 			double xCoordinate = r.getX();
 			double yCoordinate = r.getY();
-
+			
+			try{
+				graph.getModelNode(node).toString();
+			}
+			catch(Exception e) {
+				continue;
+			}
 			String modelNodeId = node2Id.get(graph.getModelNode(node));
+			
 
 			if (node instanceof AuxiliaryNodeGraphCell) {
 				try {
+					//modelNodeId is NULL FOR ALL SUBMODELS AFTER THE FIRST.  PROBLEM WITH HOW NODE2ID IS GETTING BUILT.
 					Element auxiliaryNodeElement =
 							(Element)xpath.evaluate("/SubModel/Nodes/AuxiliaryNodes/AuxiliaryNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					auxiliaryNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					auxiliaryNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
+				} catch (XPathExpressionException e) {
+					// correct xpath expression -> no exception
+					throw new XMLModelReaderWriterException(e);
+				}
+			}
+			if (node instanceof SharedNodeGraphCell) {
+				try {
+					
+					Element sharedNodeElement =
+							(Element)xpath.evaluate("/SubModel/Nodes/SharedNodes/SharedNode[@id='" + modelNodeId + "']",
+									document, XPathConstants.NODE);
+					sharedNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
+					sharedNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
 				} catch (XPathExpressionException e) {
 					// correct xpath expression -> no exception
 					throw new XMLModelReaderWriterException(e);
@@ -801,11 +826,9 @@ public class XMLModelWriter {
 			}
 			if (node instanceof LevelNodeGraphCell) {
 				try {
-					
-					Element SubModelElement = (Element)xpath.evaluate("/SubModel", document, XPathConstants.NODE);
-					xpath.evaluate("SubModel", document, XPathConstants.NODE);
+					System.out.println(modelNodeId);
 					Element levelNodeElement =
-							(Element)xpath.evaluate("/SubModel/Nodes/LevelNodes/LevelNode[@id='" + modelNodeId + "']",
+							(Element)xpath.evaluate("/SubModel/Nodes/LevelNodes/LevelNode",
 									document, XPathConstants.NODE);
 					levelNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					levelNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
