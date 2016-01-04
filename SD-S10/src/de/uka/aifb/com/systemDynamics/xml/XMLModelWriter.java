@@ -865,6 +865,7 @@ public class XMLModelWriter {
 
 		// (2) location of control points of flows
 		for (FlowEdge flowEdge : flowEdges) {
+		try {	
 			List<Point2D> points = GraphConstants.getPoints(flowEdge.getAttributes());
 			if (points != null && points.size() > 2) {
 				// additional control points exist
@@ -928,11 +929,16 @@ public class XMLModelWriter {
 				}
 			}
 		}
+		catch(Exception e) {
+			continue;
+		}
+		}
 
 		// (3) location of control points of dependencies
 		Element dependenciesElement = document.createElement("Dependencies");
 		boolean hasDependencyWithControlPoint = false;
 		for (DefaultEdge dependencyEdge : dependencyEdges) {
+			try {
 			List<Point2D> points = GraphConstants.getPoints(dependencyEdge.getAttributes());
 			if (points != null && points.size() > 2) {
 				// additional control points exist
@@ -996,6 +1002,9 @@ public class XMLModelWriter {
 					dependencyElement.appendChild(additionalControlPointsElement);
 					dependenciesElement.appendChild(dependencyElement);
 				}
+			}
+			}catch(Exception e) {
+				continue;
 			}
 		}
 		if (hasDependencyWithControlPoint) {

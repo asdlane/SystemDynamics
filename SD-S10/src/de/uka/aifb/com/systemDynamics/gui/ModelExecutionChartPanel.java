@@ -60,7 +60,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    
    private Locale locale;
    private ResourceBundle messages;
-   
+   private int submodelCounter;
    private NumberFormat integerNumberFormatter;
    
    private Model model;
@@ -79,9 +79,9 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     * @param start {@link de.uka.aifb.com.systemDynamics.SystemDynamics} instance
     * @param model {@link de.uka.aifb.com.systemDynamics.model.Model} instance
     */
-   public ModelExecutionChartPanel(SystemDynamics start, Model model) {
+   public ModelExecutionChartPanel(SystemDynamics start, Model model, int submodelCounter) {
       super(null);
-      
+      this.submodelCounter = submodelCounter;
       if (start == null) {
          throw new IllegalArgumentException("'start' must not be null");
       }
@@ -275,7 +275,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       JList list = new JList(levelNodeList);
       GridLayout layout = new GridLayout(2,1);
       listPanel.setLayout(layout);
-      JLabel label = new JLabel("which variables would you like to graph?");
+      JLabel label = new JLabel("which variables would you like to graph? (Submodel " + this.submodelCounter + ")");
       
       listPanel.add(label);
       listPanel.add(list);

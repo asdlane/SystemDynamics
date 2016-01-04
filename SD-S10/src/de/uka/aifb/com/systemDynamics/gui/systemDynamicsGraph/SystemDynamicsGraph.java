@@ -1260,6 +1260,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		boolean successful =
 				model.removeFlowFromRateNode2LevelNode((RateNode)graphNode2modelNode.get(rateNode),
 						(LevelNode)graphNode2modelNode.get(levelNode));
+				
 
 		if (successful) {
 			this.removeFlowEdge(rateNode, levelNode);
@@ -1335,9 +1336,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		}
 
 		boolean successful =
-				model.removeFlowFromColoredSourceSinkNode2RateNode((ColoredSourceSinkNode)graphNode2modelNode.get(SharedNode),
-						
-						(RateNode)graphNode2modelNode.get(rateNode));
+				model.removeFlowFromSharedNode2RateNode((SharedNode)graphNode2modelNode.get(SharedNode), (RateNode)graphNode2modelNode.get(rateNode));
 
 		if (successful) {
 			this.removeFlowEdge(SharedNode, rateNode);
@@ -1382,6 +1381,30 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		return successful;
 	}
+	public boolean removeFlow(RateNodeGraphCell rateNode, SharedNodeGraphCell SharedNode) {
+		if (SharedNode == null) {
+			throw new IllegalArgumentException("'sourceSinkNode' must not be null.");
+		}
+		if (rateNode == null) {
+			throw new IllegalArgumentException("'rateNode' must not be null.");
+		}
+
+		boolean successful =
+				model.removeFlowFromRateNode2SharedNode((RateNode)graphNode2modelNode.get(rateNode), (SharedNode)graphNode2modelNode.get(SharedNode));
+				
+
+		if (successful) {
+			this.removeFlowEdge(SharedNode, rateNode);
+
+			// inform listeners
+			for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+				listener.performGraphModifiedEvent();
+			}
+		}
+
+		return successful;
+	}
+
 	public boolean removeFlow(RateNodeGraphCell rateNode, ColoredSourceSinkNodeGraphCell ColoredsourceSinkNode) {
 		if (rateNode == null) {
 			throw new IllegalArgumentException("'rateNode' must not be null.");
@@ -1725,6 +1748,13 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 							if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof ColoredSourceSinkNodeGraphCell) {
 								removeFlow((RateNodeGraphCell)edgeSource, (ColoredSourceSinkNodeGraphCell)edgeTarget);
 							}
+							if(edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SharedNodeGraphCell) {
+								removeFlow((RateNodeGraphCell)edgeSource, (SharedNodeGraphCell)edgeTarget);
+							}
+							if(edgeSource instanceof SharedNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+								removeFlow((SharedNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+							}
+				
 						}
 					});
 					menu.add(removeFlowMenuItem);
@@ -1850,19 +1880,19 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 			}
 			
 		}
-		
-		
-		// flow edges and dependency edges
-		Object[] edges = getGraphLayoutCache().getCells(false, false, false, true);
 		LinkedList<FlowEdge> flowEdges = new LinkedList<FlowEdge>();
 		LinkedList<DefaultEdge> dependencyEdges = new LinkedList<DefaultEdge>();
-		for (Object edge : edges) {
-			if (edge instanceof FlowEdge) {
-				// flow edge
-				flowEdges.add((FlowEdge)edge);
-			} else {
-				// dependency edge
-				dependencyEdges.add((DefaultEdge)edge);
+		for(int i=0;i<graph.size();i++) {
+			// flow edges and dependency edges
+			Object[] edges = graph.get(i).getGraphLayoutCache().getCells(false, false, false, true);
+			for (Object edge : edges) {
+				if (edge instanceof FlowEdge) {
+				// 	flow edge
+					flowEdges.add((FlowEdge)edge);
+				} else {
+				// 	dependency edge
+					dependencyEdges.add((DefaultEdge)edge);
+				}
 			}
 		}
 
@@ -1913,8 +1943,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 * 
 	 * @return chart panel
 	 */
-	public ModelExecutionChartPanel getChartPanel() {
-		return new ModelExecutionChartPanel(start, model);
+	public ModelExecutionChartPanel getChartPanel(int submodelCounter) {
+		return new ModelExecutionChartPanel(start, model, submodelCounter);
 	}
 
 	/**

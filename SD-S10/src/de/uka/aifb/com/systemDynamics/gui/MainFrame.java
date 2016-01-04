@@ -2518,7 +2518,8 @@ WindowListener {
 
 				for (SystemDynamicsGraph subGraph : graph) {
 					if(subGraph.getModel().getRootCount() != 0){
-						subGraph.validateModelAndSetUnchangeable(i);
+						//subGraph.validateModelAndSetUnchangeable(i);
+						subGraph.validateModel(i);
 					}
 					i++;
 				}
@@ -2586,7 +2587,7 @@ WindowListener {
 			
 			for(int j=0;j<graph.size();j++){
 				
-				ModelExecutionChartPanel chartPanelIndividual = graph.get(j).getChartPanel();
+				ModelExecutionChartPanel chartPanelIndividual = graph.get(j).getChartPanel(j+1);
 				ExportPanel exportPanel = graph.get(j).getExportPanel();	
 				chartPanelAllSubmodels.add(chartPanelIndividual);
 				exportPanelAllSubmodels.add(exportPanel);
