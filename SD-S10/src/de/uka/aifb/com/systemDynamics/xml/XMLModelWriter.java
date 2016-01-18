@@ -35,6 +35,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -575,8 +576,46 @@ public class XMLModelWriter {
 				node2Id.put(sharednode, id);
 				Element sharedNodeElement = document.createElement("SharedNode");
 				SharedNodesElement.appendChild(sharedNodeElement);
+				
+				String tempid = "";
+				boolean levelNodeShared = false;
+				boolean constantNodeShared = false;
+				boolean auxiliaryNodeShared = false;
+				int constantCounter = 0;
+				int auxiliaryCounter = 0;
+				
+				for(LevelNode levelnode : model.getLevelNodes()){
+					if(levelnode.getNodeName()==sharednode.getSharedPointer()){
+						levelNodeShared = true;
+						break;
+					}
+				}
+				for(ConstantNode constantnode : model.getConstantNodes()){
+					if(constantnode.getNodeName()==sharednode.getSharedPointer()){
+						constantNodeShared = true;
+						constantCounter++;
+						break;
+					}
+				}
+				for(AuxiliaryNode auxiliarynode : model.getAuxiliaryNodes()){
+					if(auxiliarynode.getNodeName()==sharednode.getSharedPointer()){
+						auxiliaryNodeShared = true;
+						auxiliaryCounter++;
+						break;
+					}
+				}
+				if(levelNodeShared){
+					tempid = createId("LN", SubmodelID);
+				}
+				else if(constantNodeShared){
+					tempid = createId("CN", constantCounter);
+				}
+				else if(auxiliaryNodeShared){
+					tempid = createId("AN", auxiliaryCounter);
+				}
 				sharedNodeElement.setAttribute("sharedPointer", sharednode.getSharedPointer());
 				sharedNodeElement.setAttribute("id", id);
+				sharedNodeElement.setAttribute("sharedPointerid", tempid);
 			}
 		}
 		if(!model.getColoredSourceSinkNodes().isEmpty()){

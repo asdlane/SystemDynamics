@@ -822,6 +822,7 @@ public class XMLModelReader {
 								String id = SharedElement.getAttribute("sharedPointer");
 
 								SharedNodeGraphCell sharedNode = graph.get(k).createSharedNodeGraphCell(id);
+								graph.get(k).model.createSharedNode(id);
 								id2SharedNodeGraphCell.put(id, sharedNode);
 							}
 						} catch (XPathExpressionException e) {
