@@ -55,6 +55,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
    private HashMap<Integer, AuxiliaryNode> id2auxiliaryNode;
    private HashMap<Integer, ConstantNode> id2constantNode;
    private HashMap<Integer, LevelNode> id2levelNode;
+   private HashMap<Integer, SharedNode> id2sharedNode;
    
    private ASTElement initialFormula;
    
@@ -75,7 +76,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
                              ASTElement initialFormula,
                              HashMap<Integer, AuxiliaryNode> id2auxiliaryNode,
                              HashMap<Integer, ConstantNode> id2constantNode,
-                             HashMap<Integer, LevelNode> id2levelNode) {
+                             HashMap<Integer, LevelNode> id2levelNode, HashMap<Integer, SharedNode> id2sharedNode) {
       // call constructor of super class
       super(owner, true);
       
@@ -97,12 +98,15 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       if (id2levelNode == null) {
          throw new IllegalArgumentException("'id2levelNode' must not be null.");
       }
-      
+      if(id2sharedNode == null){
+    	  throw new IllegalArgumentException("'id2sharedNode' must not be null.");
+      }
       messages = start.getMessages();
       
       this.id2auxiliaryNode = id2auxiliaryNode;
       this.id2constantNode = id2constantNode;
       this.id2levelNode = id2levelNode;
+      this.id2sharedNode = id2sharedNode;
       this.initialFormula = initialFormula;
       
       newFormula = new Formula(null, false);
@@ -148,7 +152,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
                                                   ASTElement initialFormula,
                                                   HashMap<Integer, AuxiliaryNode> id2auxiliaryNode,
                                                   HashMap<Integer, ConstantNode> id2constantNode,
-                                                  HashMap<Integer, LevelNode> id2levelNode) {
+                                                  HashMap<Integer, LevelNode> id2levelNode, HashMap<Integer, SharedNode> id2sharedNode) {
       if (start == null) {
          throw new IllegalArgumentException("'start' must not be null.");
       }
@@ -167,10 +171,13 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       if (id2levelNode == null) {
          throw new IllegalArgumentException("'id2levelNode' must not be null.");
       }
+      if(id2sharedNode==null){
+    	  throw new IllegalArgumentException("'id2levelNode' must not be null.");
+      }
       
       NodeFormulaDialog nodeFormulaDialog =
          new NodeFormulaDialog(start, owner, title, initialFormula, id2auxiliaryNode,
-                               id2constantNode, id2levelNode);
+                               id2constantNode, id2levelNode, id2sharedNode);
       
       // null if new node formula was not successfully verified
       return nodeFormulaDialog.newFormula;

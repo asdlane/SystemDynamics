@@ -16,7 +16,7 @@ import java.util.*;
  * @version 1.0
  */
 public class SharedNode extends AbstractNode{  
-   
+	private ASTElement formula;
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
    private String LocalSharedPointer;
@@ -130,7 +130,43 @@ public class SharedNode extends AbstractNode{
       return (HashSet<RateNode>)outgoingFlows.clone();
    }
 
-
+   /**
+    * Sets the auxiliary node's formula. A deep copy of the formula is stored. So the stored formula
+    * cannot be changed from outside. The formula can also be <code>null</code> in order to
+    * delete the formula.
+    * 
+    * @param formula formula
+    */
+   void setFormula(ASTElement formula) {
+      if (formula == null) {
+         this.formula = null;
+      } else {
+         this.formula = (ASTElement)formula.clone();
+      }
+   }
+   
+   /**
+    * Checks whether the auxiliary node has a formula.
+    * 
+    * @return <code>true</code> iff the auxiliary node has a formula
+    */
+   public boolean hasFormula() {
+      return (formula != null);
+   }
+   
+   /**
+    * Gets the auxiliary node's formula. A deep copy of the formula is returned. So the stored
+    * formula cannot be changed from outside.
+    * 
+    * @return auxiliary node's formula or <code>null</code> iff there is no formula
+    */
+   public ASTElement getFormula() {
+      if (formula == null) {
+         return null;
+      }
+      
+      return (ASTElement)formula.clone();
+   }
 
 @Override
 public double getCurrentValue() {

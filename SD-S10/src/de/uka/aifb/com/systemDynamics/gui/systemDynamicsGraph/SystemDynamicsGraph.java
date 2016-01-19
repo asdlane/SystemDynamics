@@ -951,7 +951,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 			throw new IllegalArgumentException("'edgeSource' does not have the correct type.");
 		}
 		if (!(edgeTarget instanceof AuxiliaryNodeGraphCell)
-				&& !(edgeTarget instanceof RateNodeGraphCell)) {
+				&& !(edgeTarget instanceof RateNodeGraphCell) && !(edgeTarget instanceof SharedNodeGraphCell)) {
+			
 			throw new IllegalArgumentException("'edgeTarget' does not have the correct type.");
 		}
 
@@ -1191,7 +1192,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 			throw new IllegalArgumentException("'edgeTarget' must not be null.");
 		}
 		if (!(edgeTarget instanceof AuxiliaryNodeGraphCell)
-				&& !(edgeTarget instanceof RateNodeGraphCell)) {
+				&& !(edgeTarget instanceof RateNodeGraphCell) && !(edgeTarget instanceof SharedNodeGraphCell)) {
+	
 			throw new IllegalArgumentException("'edgeTarget' does not have the correct type.");
 		}
 
@@ -1469,7 +1471,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 */
 	private void createId2NodeMappings(HashMap<Integer, AuxiliaryNode> id2auxiliaryNode,
 			HashMap<Integer, ConstantNode> id2constantNode,
-			HashMap<Integer, LevelNode> id2levelNode) {
+			HashMap<Integer, LevelNode> id2levelNode, HashMap<Integer, SharedNode> id2sharedNode) {
 		if (id2auxiliaryNode == null) {
 			throw new IllegalArgumentException("'id2auxiliaryNode' must not be null.");
 		}
@@ -1488,10 +1490,14 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		if (!id2levelNode.isEmpty()) {
 			throw new IllegalArgumentException("'id2levelNode' must be empty.");
 		}
+		if(!id2sharedNode.isEmpty()){
+			throw new IllegalArgumentException("'id2sharedNode' must be empty.");
+		}
 
 		int nextAuxiliaryNodeIndex = 1;
 		int nextConstantNodeIndex = 1;
 		int nextLevelNodeIndex = 1;
+		int nextSharedNodeIndex = 1;
 
 		for (AbstractNode node : modelNode2graphNode.keySet()) {
 			if (node instanceof AuxiliaryNode) {
@@ -1504,6 +1510,9 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 			}
 			if (node instanceof LevelNode) {
 				id2levelNode.put(nextLevelNodeIndex++, (LevelNode)node);
+			}
+			if (node instanceof SharedNode){
+				id2sharedNode.put(nextSharedNodeIndex++, (SharedNode)node);
 			}
 		}
 	}
@@ -1669,7 +1678,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 						menu.add(changeConstantValueMenuItem);
 					}
 
-					if (cell instanceof AuxiliaryNodeGraphCell || cell instanceof RateNodeGraphCell) {
+					if (cell instanceof AuxiliaryNodeGraphCell || cell instanceof RateNodeGraphCell || cell instanceof SharedNodeGraphCell) {
 						// change formula
 						JMenuItem changeFormulaMenuItem =
 								new JMenuItem(messages.getString("SystemDynamicsGraph.PopupMenu.ChangeFormula"));
@@ -1679,24 +1688,33 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 								ASTElement initialFormula;
 								if (node instanceof AuxiliaryNode) {
 									initialFormula = ((AuxiliaryNode)node).getFormula();
-								} else {
+								} else if (node instanceof SharedNode){
+									initialFormula = ((SharedNode)node).getFormula();
+								}
+									else {
+								
 									// node instanceof RateNode
 									initialFormula = ((RateNode)node).getFormula();
 								}
 								HashMap<Integer, AuxiliaryNode> id2auxiliaryNode = new HashMap<Integer, AuxiliaryNode>();
 								HashMap<Integer, ConstantNode> id2constantNode = new HashMap<Integer, ConstantNode>();
 								HashMap<Integer, LevelNode> id2levelNode = new HashMap<Integer, LevelNode>();
-								createId2NodeMappings(id2auxiliaryNode, id2constantNode, id2levelNode);
+								HashMap<Integer, SharedNode> id2sharedNode = new HashMap<Integer, SharedNode>();
+								createId2NodeMappings(id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
 								NodeFormulaDialog.Formula newFormula =
 										NodeFormulaDialog.showNodeFormulaDialog(
 												start, frame,
 												messages.getString("SystemDynamicsGraph.PopupMenu.ChangeFormula"),
 												initialFormula,
-												id2auxiliaryNode, id2constantNode, id2levelNode);
+												id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
 								if (newFormula.wasNewFormulaEntered()) {
 									if (cell instanceof AuxiliaryNodeGraphCell) {
 										setFormula((AuxiliaryNodeGraphCell)cell, newFormula.getFormula(), true);
-									} else {
+									} else if (cell instanceof SharedNodeGraphCell){
+										setFormula((SharedNodeGraphCell)cell, newFormula.getFormula(), true);
+									}
+										else {
+									
 										// cell instanceof RateNodeGraphCell
 										setFormula((RateNodeGraphCell)cell, newFormula.getFormula(), true);
 									}

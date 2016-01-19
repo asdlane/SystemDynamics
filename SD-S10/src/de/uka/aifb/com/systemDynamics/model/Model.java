@@ -420,13 +420,16 @@ public class Model {
       if (node == null) {
          throw new IllegalArgumentException("'node' must not be null.");
       }
-      if (!(node instanceof AuxiliaryNode) && !(node instanceof RateNode)) {
-         throw new IllegalArgumentException("'node' must be of type AuxiliaryNode or RateNode.");
+      if (!(node instanceof AuxiliaryNode) && !(node instanceof RateNode) && !(node instanceof SharedNode)){
+         throw new IllegalArgumentException("'node' must be of type AuxiliaryNode or RateNode or SharedNode.");
       }
       
       if (node instanceof AuxiliaryNode) {
          ((AuxiliaryNode)node).setFormula(formula);
-      } else {
+      } else if (node instanceof SharedNode){
+    	  ((SharedNode)node).setFormula(formula);
+      }else {
+      
          // node instanceof RateNode
          ((RateNode)node).setFormula(formula);
       }
