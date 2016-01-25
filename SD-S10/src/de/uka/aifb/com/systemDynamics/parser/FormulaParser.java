@@ -2,8 +2,9 @@
         package de.uka.aifb.com.systemDynamics.parser;
 
         import de.uka.aifb.com.systemDynamics.model.*;
-        import java.io.*;
-        import java.util.HashMap;
+
+import java.io.*;
+import java.util.HashMap;
 
         /**
     * This class implements a parser for node formulas.
@@ -26,11 +27,12 @@
            private HashMap<Integer, AuxiliaryNode> id2auxiliaryNode;
       private HashMap<Integer, ConstantNode> id2constantNode;
       private HashMap<Integer, LevelNode> id2levelNode;
+	private HashMap<Integer, SharedNode> id2sharedNode;
 
                 public static ASTElement parseFormula(String parseString,
                                                       HashMap<Integer, AuxiliaryNode> id2auxiliaryNode,
                                                       HashMap<Integer, ConstantNode> id2constantNode,
-                                                      HashMap<Integer, LevelNode> id2levelNode)
+                                                      HashMap<Integer, LevelNode> id2levelNode, HashMap<Integer, SharedNode> id2sharedNode)
                                 throws ParseException, TokenMgrError {
                    if (id2auxiliaryNode == null) {
                         throw new IllegalArgumentException("'id2auxiliaryNode' must not be null.");
@@ -48,6 +50,7 @@
                    parser.id2auxiliaryNode = id2auxiliaryNode;
                    parser.id2constantNode = id2constantNode;
                    parser.id2levelNode = id2levelNode;
+                   parser.id2sharedNode = id2sharedNode;
 
                         return parser.Start();
                 }
@@ -155,6 +158,7 @@
     case AUXILIARY_NODE:
     case CONSTANT_NODE:
     case LEVEL_NODE:
+    case SHARED_NODE:
       formula = Node();
       break;
     case OPEN_PAR:
@@ -215,6 +219,19 @@
                         {if (true) throw new ParseException("Level node with Id " + id + " does not exist.");}
         }
       break;
+    case SHARED_NODE:
+        jj_consume_token(SHARED_NODE);
+        jj_consume_token(OPEN_PAR);
+        t = jj_consume_token(ID);
+        jj_consume_token(CLOSE_PAR);
+                  id = Integer.parseInt(t.image);
+                  formula = id2sharedNode.get(id);
+                  if (formula != null) {
+                          {if (true) return formula;}
+                  } else {
+                          {if (true) throw new ParseException("Shared node with Id " + id + " does not exist.");}
+          }
+        break;
     default:
       jj_la1[5] = jj_gen;
       jj_consume_token(-1);

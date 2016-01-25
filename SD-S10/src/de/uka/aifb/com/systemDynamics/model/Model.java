@@ -1028,9 +1028,7 @@ public class Model {
     * Computes the nodes' values for the next time step.
     */
    public void computeNextValues() {
-      if (isChangeable) {
-         throw new ModelStillChangeableException();
-      }
+      
       
       // compute next values for auxiliary nodes (in topological order!)
       HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>> adjacentList = getAdjacentListOfAuxiliaryNodes();

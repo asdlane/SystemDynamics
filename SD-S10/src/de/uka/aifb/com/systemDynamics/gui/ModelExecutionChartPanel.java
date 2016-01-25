@@ -65,14 +65,18 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    
    private Model model;
    private LevelNode[] levelNodes;
+   private SharedNode[] sharedNodes;
    
    private XYSeries[] xySeriesArray;
+   private XYSeries[] xySeriesArray2;
    private JFreeChart chart;
    private int nextRound;
    
    private JButton axesButton;
    private JButton executionButton;
    public int submodelNumber;
+
+private JFreeChart chart2;
    /**
     * Constructor.
     * 
@@ -113,14 +117,18 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     */
    private void createPanel() {
       setLayout(new BorderLayout());
-      
+      JFreeChart[] charts = createChart();
       // CENTER: chart
-      ChartPanel chartPanel = new ChartPanel(createChart());
+      ChartPanel chartPanel = new ChartPanel(charts[0]);
+      ChartPanel chartPanel2 = new ChartPanel(charts[1]);
       // no context menu
       chartPanel.setPopupMenu(null);
+      chartPanel2.setPopupMenu(null);
       // not zoomable
       chartPanel.setMouseZoomable(false);
+      chartPanel2.setMouseZoomable(false);
       add(chartPanel, BorderLayout.CENTER);
+      add(chartPanel2, BorderLayout.WEST);
       
       // LINE_END: series table
       JPanel tablePanel = new JPanel(new GridBagLayout());
@@ -261,24 +269,31 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     * 
     * @return XY line chart
     */
-   private JFreeChart createChart() {
+   private JFreeChart[] createChart() {
       
       
       int i = 0;
       String[] levelNodeList = new String[model.getLevelNodes().size()];
+      String[] sharedNodeList = new String[model.getSharedNodes().size()];
       
       int k=0;
+      int t=0;
       for (LevelNode levelNode : model.getLevelNodes()) {
     	  levelNodeList[k++] = levelNode.getNodeName();
       }
+      for(SharedNode sharedNode: model.getSharedNodes()){
+    	  sharedNodeList[t++] = sharedNode.getNodeName();
+      }
       JPanel listPanel = new JPanel();
       JList list = new JList(levelNodeList);
-      GridLayout layout = new GridLayout(2,1);
+      JList list2 = new JList(sharedNodeList);
+      GridLayout layout = new GridLayout(3,1);
       listPanel.setLayout(layout);
       JLabel label = new JLabel("which variables would you like to graph? (Submodel " + this.submodelCounter + ")");
       
       listPanel.add(label);
       listPanel.add(list);
+      listPanel.add(list2);
       JOptionPane.showMessageDialog(
         null, listPanel, "Submodel", JOptionPane.PLAIN_MESSAGE);
       
@@ -289,32 +304,55 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 		//String levelNodeOption = (String) JOptionPane.showInputDialog(frame,"Which variables would you like to graph?","Select Variables",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 		//System.out.println(levelNodeOption);
       levelNodes = new LevelNode[list.getSelectedIndices().length];
+      sharedNodes = new SharedNode[list2.getSelectedIndices().length];
       String[] SelectedNames = new String[list.getSelectedIndices().length];
+      String[] SelectedNames2 = new String[list2.getSelectedIndices().length];
       int j=0;
+      int z=0;
       for (int index : list.getSelectedIndices()){
     	 SelectedNames[j++] = levelNodeList[index]; 
+      }
+      for(int index2 : list2.getSelectedIndices()){
+    	  SelectedNames2[z++] = sharedNodeList[index2];
       }
       for (LevelNode levelNode : model.getLevelNodes()) {
     	 for(int f=0;f<SelectedNames.length;f++){
     		 if(SelectedNames[f] == levelNode.getNodeName()){
     			 levelNodes[i++] = levelNode;
-    			 System.out.println("GOT HERE!!!");
+    			 
     		 }
     	 }
       }
-      System.out.println(levelNodes[0].getNodeName());
+      for(SharedNode sharedNode : model.getSharedNodes()){
+    	  for(int f=0;f<SelectedNames2.length;f++){
+    		  if(SelectedNames2[f] == sharedNode.getSharedPointer()){
+    			  sharedNodes[i++] = sharedNode;
+    		  }
+    	  }
+      }
+      
       // sort level nodes alphabetically
       //Arrays.sort(levelNodes);
       
       xySeriesArray = new XYSeries[levelNodes.length];
+      xySeriesArray2 = new XYSeries[sharedNodes.length];
+      
       XYSeriesCollection data = new XYSeriesCollection();
+      XYSeriesCollection data2 = new XYSeriesCollection();
       for (i = 0; i < xySeriesArray.length; i++) {
-    	 System.out.println(i);
+    	 
          XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
          xySeries.add(0.0, levelNodes[i].getCurrentValue());
          data.addSeries(xySeries);
          xySeriesArray[i] = xySeries;
       }
+      for (i = 0; i < xySeriesArray2.length; i++) {
+     	 
+          XYSeries xySeries = new XYSeries(sharedNodes[i].getSharedPointer());
+          xySeries.add(0.0, sharedNodes[i].getCurrentValue());
+          data2.addSeries(xySeries);
+          xySeriesArray2[i] = xySeries;
+       }
       nextRound = 1;
       
       chart = ChartFactory.createXYLineChart(null,
@@ -323,23 +361,39 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
                                              data,
                                              PlotOrientation.VERTICAL,
                                              true, false, false);
+      chart2 = ChartFactory.createXYLineChart(null, 
+    		  								messages.getString("ModelExecutionChartPanel.Round"), 
+    		  								messages.getString("ModelExecutionChartPanel.Value"), 
+    		  								data2, 
+    		  								PlotOrientation.VERTICAL,
+    		  								true, false, false);
       XYPlot plot = chart.getXYPlot();
+      XYPlot plot2 = chart2.getXYPlot();
       
       // horizontal axis range: 0 ... maximal rounds
       ((NumberAxis)(chart.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
       plot.getDomainAxis().setAutoRangeMinimumSize(20);
       
+      ((NumberAxis)(chart2.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
+      plot2.getDomainAxis().setAutoRangeMinimumSize(20);
+      
       // only integer values as labels for horizontal axis
       plot.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+      plot2.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
       
       // number formatting according to current locale
       ((NumberAxis)(plot.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
       ((NumberAxis)(plot.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
+      ((NumberAxis)(plot2.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
+      ((NumberAxis)(plot2.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
       
       // legend at top position
       chart.getLegend().setPosition(RectangleEdge.TOP);
+      chart2.getLegend().setPosition(RectangleEdge.TOP);
       
-      return chart;
+      JFreeChart[] allCharts = {chart, chart2};
+      
+      return allCharts;
    }
    
 ////////////////////////////////////////////////////////////////////////////////////////////////////

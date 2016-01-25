@@ -3,6 +3,8 @@ package de.uka.aifb.com.systemDynamics.model;
 
 import java.util.*;
 
+import de.uka.aifb.com.systemDynamics.model.AuxiliaryNode.AuxiliaryNodeIterator;
+
 /**
  * This class implements a System Dynamics model node representing a level.
  * 
@@ -15,7 +17,8 @@ import java.util.*;
  * @author Joachim Melcher, University of Karlsruhe, AIFB
  * @version 1.0
  */
-public class SharedNode extends AbstractNode{  
+public class SharedNode extends AbstractNode implements ASTElement{  
+	private double currentValue;
 	private ASTElement formula;
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
@@ -171,17 +174,142 @@ public class SharedNode extends AbstractNode{
 @Override
 public double getCurrentValue() {
 	// TODO Auto-generated method stub
-	return 0;
+	return currentValue;
 }
 
 
 
 @Override
 void computeNextValue() {
-	// TODO Auto-generated method stub
+	currentValue = formula.evaluate();
 	
 }
 
+
+
+/**
+ * Evaluates the ASTElement.
+ * 
+ * @return ASTElement value
+ */
+public double evaluate() {
+   return currentValue;
+}
+
+/**
+ * Gets all nodes in this AST subtree (inclusive this ASTElement).
+ * 
+ * @return set of all nodes in AST subtree
+ */
+public HashSet<AbstractNode> getAllNodesInASTSubtree() {
+   HashSet<AbstractNode> nodeSet = new HashSet<AbstractNode>();
+   nodeSet.add(this);
+   return nodeSet;
+}
+
+/**
+ * Gets a <code>String</code> representation of the node's formula.
+ * 
+ * @return <code>String</code> representation of the node's formula
+ */
+public String getStringRepresentation() {
+   return getNodeName() + "(AN)";
+}
+
+/**
+ * Gets a short <code>String</code> representation of the node's formula.
+ * 
+ * @param auxiliaryNode2id auxiliary node to id mapping
+ * @param constantNode2id constant node to id mapping
+ * @param levelNode2id level node to id mapping
+ * @return short <code>String</code> representation of the node's formula
+ */
+public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
+                                           HashMap<ConstantNode, Integer> constantNode2id,
+                                           HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id) {
+   if (sharedNode2id == null) {
+      throw new IllegalArgumentException("'sharedNode2id' must not be null.");
+   }
+   if (sharedNode2id.isEmpty()) {
+      throw new IllegalArgumentException("'auxiliaryNode2id' must not be empty.");
+   }
+   
+   return "SN(" + sharedNode2id.get(this) + ")";
+}
+
+/**
+ * Creates and returns a <b>deep</b> copy of this object. Only the nodes in the leaves
+ * are not cloned.
+ * 
+ * @return a deep clone of this instance
+ */
+@Override
+public Object clone() {
+   // return 'this' AuxiliaryNode, no clone!
+   return this;
+}
+
+/**
+ * Returns an iterator over the subtree of this node (here: only this node).
+ * 
+ * @return iterator over the subtree of this node (here: only this node)
+ */
+public Iterator<ASTElement> iterator() {
+   return new SharedNodeIterator(this);
+}
+
+/**
+ * Inner class implementing the {@link java.util.Iterator} interface. 
+ */
+private class SharedNodeIterator implements Iterator<ASTElement> {
+   
+   private AuxiliaryNode auxiliaryNode;
+private SharedNode sharedNode;
+   
+   /**
+    * Constructor.
+    * 
+    * @param auxiliaryNode {@link de.uka.aifb.com.systemDynamics.model.AuxiliaryNode} instance
+    */
+   private SharedNodeIterator(SharedNode sharedNode) {
+      if (auxiliaryNode == null) {
+         throw new IllegalArgumentException("'auxiliaryNode' must not be null.");
+      }
+      
+      this.sharedNode = sharedNode;
+   }
+   
+   /**
+    * Checks if there is a next element in this iteration.
+    * 
+    * @return <code>true</code> iff there is a next element
+    */
+   public boolean hasNext() {
+      return sharedNode != null;
+   }
+   
+   /**
+    * Gets this iteration's next element.
+    * 
+    * @return next element
+    */
+   public ASTElement next() {
+      if (sharedNode!= null) {
+         SharedNode temp = sharedNode;
+         sharedNode = null;
+         return temp;
+      } else {
+         throw new NoSuchElementException();
+      }
+   }
+   
+   /**
+    * Removes the element last returned by this iterator.
+    */
+   public void remove() {
+      throw new UnsupportedOperationException();
+   }
+}
 
 
    

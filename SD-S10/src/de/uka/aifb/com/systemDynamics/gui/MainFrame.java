@@ -2609,7 +2609,7 @@ WindowListener {
 			 ModelExecButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
 		        	 for(int i=0;i<chartPanelAllSubmodels.size();i++){
-		        		JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(2);		    
+		        		JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(3);		    
 		 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);		 				
 		 				roundsText.setText(roundsTextModel.getText());
 		        		chartPanelAllSubmodels.get(i).getExecutionButton().doClick(); 
@@ -2623,7 +2623,7 @@ WindowListener {
 			 tabbedPane.addTab("Model Execute", overallExecutePanel); 
 			for(int k=0;k<chartPanelAllSubmodels.size();k++){
 				chartPanelAllSubmodels.get(k).getExecutionButton().setVisible(false);				
-				JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(k).getComponent(2);
+				JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(k).getComponent(3);
 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);
 				roundsText.setVisible(false);
 			}

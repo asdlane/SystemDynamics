@@ -188,7 +188,7 @@ void computeNextValue() {
     */
    public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                               HashMap<ConstantNode, Integer> constantNode2id,
-                                              HashMap<LevelNode, Integer> levelNode2id) {
+                                              HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id) {
       if (auxiliaryNode2id == null) {
          throw new IllegalArgumentException("'auxiliaryNode2id' must not be null.");
       }
@@ -223,7 +223,7 @@ public Object clone() {
    /**
     * Inner class implementing the {@link java.util.Iterator} interface. 
     */
-   private class AuxiliaryNodeIterator implements Iterator<ASTElement> {
+   public class AuxiliaryNodeIterator implements Iterator<ASTElement> {
       
       private AuxiliaryNode auxiliaryNode;
       

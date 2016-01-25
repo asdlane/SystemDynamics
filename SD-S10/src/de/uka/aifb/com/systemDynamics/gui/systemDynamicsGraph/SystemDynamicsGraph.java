@@ -1490,7 +1490,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		if (!id2levelNode.isEmpty()) {
 			throw new IllegalArgumentException("'id2levelNode' must be empty.");
 		}
-		if(!id2sharedNode.isEmpty()){
+		if (!id2sharedNode.isEmpty()){
 			throw new IllegalArgumentException("'id2sharedNode' must be empty.");
 		}
 

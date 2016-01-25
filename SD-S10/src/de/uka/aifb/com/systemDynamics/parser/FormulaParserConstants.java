@@ -39,6 +39,8 @@ public interface FormulaParserConstants {
   /** RegularExpression Id. */
   int MAXIMUM = 15;
 
+  int SHARED_NODE=16;
+  
   /** Lexical state. */
   int DEFAULT = 0;
 
@@ -60,6 +62,7 @@ public interface FormulaParserConstants {
     "\"f()\"",
     "\"MIN\"",
     "\"MAX\"",
+    "\"SN\""
   };
 
 }
