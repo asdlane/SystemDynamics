@@ -282,7 +282,7 @@ private JFreeChart chart2;
     	  levelNodeList[k++] = levelNode.getNodeName();
       }
       for(SharedNode sharedNode: model.getSharedNodes()){
-    	  sharedNodeList[t++] = sharedNode.getNodeName();
+    	  sharedNodeList[t++] = sharedNode.getSharedPointer();
       }
       JPanel listPanel = new JPanel();
       JList list = new JList(levelNodeList);
@@ -326,7 +326,7 @@ private JFreeChart chart2;
       for(SharedNode sharedNode : model.getSharedNodes()){
     	  for(int f=0;f<SelectedNames2.length;f++){
     		  if(SelectedNames2[f] == sharedNode.getSharedPointer()){
-    			  sharedNodes[i++] = sharedNode;
+    			  sharedNodes[f++] = sharedNode;
     		  }
     	  }
       }
@@ -594,6 +594,7 @@ private JFreeChart chart2;
             model.computeNextValues();
             for (int j = 0; j < xySeriesArray.length; j++) {
                xySeriesArray[j].add(nextRound, levelNodes[j].getCurrentValue());
+               xySeriesArray2[j].add(nextRound, sharedNodes[j].getCurrentValue());
             }
             nextRound++;
          }
