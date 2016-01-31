@@ -74,6 +74,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    
    private JButton axesButton;
    private JButton executionButton;
+   private JButton changeValueButton;
    public int submodelNumber;
 
 private JFreeChart chart2;
@@ -231,8 +232,45 @@ private JFreeChart chart2;
       label.setVisible(false);
       commandPanel.add(label);
       final JTextField numberRoundsField = new JTextField("1", 5);
+      
+      //Giving people the ability to change LevelNode values
+      HashSet<LevelNode> LevelNodes = model.getLevelNodes();
+      
+      final ArrayList<JTextField> LevelNodeChangeFields = new ArrayList<JTextField>();
+      final ArrayList<JLabel> LevelNodeLabels = new ArrayList<JLabel>();
+      final ArrayList<LevelNode> LearnerChangeableNodes = new ArrayList<LevelNode>();
+      for(LevelNode level:levelNodes) {
+    	  if(level.getLearnerChangeable()) {
+    		  LevelNodeChangeFields.add(new JTextField(Double.toString(level.getCurrentValue()), 10));
+    		  LevelNodeLabels.add(new JLabel(level.getNodeName()));
+    		  LearnerChangeableNodes.add(level);
+    	  }
+      }
+      
       numberRoundsField.addFocusListener(this);
       commandPanel.add(numberRoundsField);
+      for(int i=0;i<LevelNodeChangeFields.size();i++) {
+    	  commandPanel.add(LevelNodeLabels.get(i));
+    	  commandPanel.add(LevelNodeChangeFields.get(i));    	  
+      }
+      
+      changeValueButton = new JButton("Change node values");
+      changeValueButton.addActionListener(new ActionListener() {
+    	 public void actionPerformed(ActionEvent e) {
+    		 for(int i=0;i<LearnerChangeableNodes.size();i++) {
+    			 try {
+    				 model.setStartValue(LearnerChangeableNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
+    				 JOptionPane.showMessageDialog(null, "Value change completed");	
+    			 }
+    			 catch(Exception e1) {
+    				 JOptionPane.showMessageDialog(null, e1);
+    				 break;
+    			 }
+    		 }
+    		 
+    	 }
+      });
+      commandPanel.add(changeValueButton);
       executionButton = new JButton(messages.getString("ModelExecutionChartPanel.ExecutionButton.Text"));
       executionButton.setToolTipText(messages.getString("ModelExecutionChartPanel.ExecutionButton.ToolTipText"));
       executionButton.addActionListener(new ActionListener() {
