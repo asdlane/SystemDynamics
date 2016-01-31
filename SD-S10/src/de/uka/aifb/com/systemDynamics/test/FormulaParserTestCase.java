@@ -84,7 +84,7 @@ public class FormulaParserTestCase extends TestCase {
    public void testParseFormula1() {
       // (1) 'id2auxiliaryNode' == null => WRONG
       try {
-         FormulaParser.parseFormula("", null, id2constantNode, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("", null, id2constantNode, id2levelNode);
          fail();
       } catch (IllegalArgumentException e) {
          assertEquals("'id2auxiliaryNode' must not be null.", e.getMessage());
@@ -94,7 +94,7 @@ public class FormulaParserTestCase extends TestCase {
       
       // (2) 'id2constantNode' == null => WRONG
       try {
-         FormulaParser.parseFormula("", id2auxiliaryNode, null, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("", id2auxiliaryNode, null, id2levelNode);
          fail();
       } catch (IllegalArgumentException e) {
          assertEquals("'id2constantNode' must not be null.", e.getMessage());
@@ -104,7 +104,7 @@ public class FormulaParserTestCase extends TestCase {
       
       // (3) 'id2levelNode' == null => WRONG
       try {
-         FormulaParser.parseFormula("", id2auxiliaryNode, id2constantNode, null, id2sharedNode);
+         FormulaParser.parseFormula("", id2auxiliaryNode, id2constantNode, null);
          fail();
       } catch (IllegalArgumentException e) {
          assertEquals("'id2levelNode' must not be null.", e.getMessage());
@@ -120,7 +120,7 @@ public class FormulaParserTestCase extends TestCase {
    public void testParseFormula2() {
       // (1) "AN(0)" => WRONG
       try {
-         FormulaParser.parseFormula("AN(0)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("AN(0)", id2auxiliaryNode, id2constantNode, id2levelNode);
          fail();
       } catch (ParseException e) {
          assertEquals("Auxiliary node with Id 0 does not exist.", e.getMessage());
@@ -129,7 +129,7 @@ public class FormulaParserTestCase extends TestCase {
       // (2) "AN(1)" => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          assertTrue(formula == auxiliaryNode1);
       } catch (Exception e) {
          fail();
@@ -138,7 +138,7 @@ public class FormulaParserTestCase extends TestCase {
       // (3) "AN(2)" => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("AN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("AN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          assertTrue(formula == auxiliaryNode2);
       } catch (Exception e) {
          fail();
@@ -146,7 +146,7 @@ public class FormulaParserTestCase extends TestCase {
       
       // (4) "CN(0)" => WRONG
       try {
-         FormulaParser.parseFormula("CN(0)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("CN(0)", id2auxiliaryNode, id2constantNode, id2levelNode);
          fail();
       } catch (ParseException e) {
          assertEquals("Constant node with Id 0 does not exist.", e.getMessage());
@@ -155,7 +155,7 @@ public class FormulaParserTestCase extends TestCase {
       // (5) "CN(1)" => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          assertTrue(formula == constantNode1);
       } catch (Exception e) {
          fail();
@@ -164,7 +164,7 @@ public class FormulaParserTestCase extends TestCase {
       // (6) "CN(2)" => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          assertTrue(formula == constantNode2);
       } catch (Exception e) {
          fail();
@@ -172,7 +172,7 @@ public class FormulaParserTestCase extends TestCase {
       
       // (7) "LN(0)" => WRONG
       try {
-         FormulaParser.parseFormula("LN(0)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("LN(0)", id2auxiliaryNode, id2constantNode, id2levelNode);
          fail();
       } catch (ParseException e) {
          assertEquals("Level node with Id 0 does not exist.", e.getMessage());
@@ -181,7 +181,7 @@ public class FormulaParserTestCase extends TestCase {
       // (8) "LN(1)" => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("LN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("LN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          assertTrue(formula == levelNode1);
       } catch (Exception e) {
          fail();
@@ -190,7 +190,7 @@ public class FormulaParserTestCase extends TestCase {
       // (9) "LN(2)" => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("LN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("LN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          assertTrue(formula == levelNode2);
       } catch (Exception e) {
          fail();
@@ -198,7 +198,7 @@ public class FormulaParserTestCase extends TestCase {
       
       // (10) "LN(2" => WRONG
       try {
-         FormulaParser.parseFormula("LN(2", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("LN(2", id2auxiliaryNode, id2constantNode, id2levelNode);
          fail();
       } catch (ParseException e) {
          // do nothing
@@ -208,7 +208,7 @@ public class FormulaParserTestCase extends TestCase {
       
       // (11) "LN(a)" => WRONG
       try {
-         FormulaParser.parseFormula("LN(a)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+         FormulaParser.parseFormula("LN(a)", id2auxiliaryNode, id2constantNode, id2levelNode);
          fail();
       } catch (TokenMgrError e) {
          // do nothing
@@ -225,7 +225,7 @@ public class FormulaParserTestCase extends TestCase {
       // (1) CN(1) + CN(2) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) + CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) + CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula instanceof ASTPlus);
          try {
@@ -241,7 +241,7 @@ public class FormulaParserTestCase extends TestCase {
       // (2) CN(1)+CN(2) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) + CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) + CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula instanceof ASTPlus);
          try {
@@ -257,7 +257,7 @@ public class FormulaParserTestCase extends TestCase {
       // (3) AN(1) - CN(2) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("AN(1) - CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("AN(1) - CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula instanceof ASTMinus);
          try {
@@ -273,7 +273,7 @@ public class FormulaParserTestCase extends TestCase {
       // (4) AN(1)-CN(2) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("AN(1)-CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("AN(1)-CN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula instanceof ASTMinus);
          try {
@@ -289,7 +289,7 @@ public class FormulaParserTestCase extends TestCase {
       // (5) AN(1) * LN(2) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("AN(1) * LN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("AN(1) * LN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula instanceof ASTMultiply);
          try {
@@ -305,7 +305,7 @@ public class FormulaParserTestCase extends TestCase {
       // (6) AN(1)*LN(2) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("AN(1) * LN(2)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("AN(1) * LN(2)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula instanceof ASTMultiply);
          try {
@@ -327,7 +327,7 @@ public class FormulaParserTestCase extends TestCase {
       // (1) CN(1) + CN(2) + AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) + CN(2) + AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) + CN(2) + AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTPlus);
@@ -346,7 +346,7 @@ public class FormulaParserTestCase extends TestCase {
       // (2) CN(1) - CN(2) - AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) - CN(2) - AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) - CN(2) - AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTMinus);
@@ -365,7 +365,7 @@ public class FormulaParserTestCase extends TestCase {
       // (3) CN(1) - CN(2) + AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) - CN(2) + AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) - CN(2) + AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTPlus);
@@ -384,7 +384,7 @@ public class FormulaParserTestCase extends TestCase {
       // (4) CN(1) * CN(2) * AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) * CN(2) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) * CN(2) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTMultiply);
@@ -403,13 +403,13 @@ public class FormulaParserTestCase extends TestCase {
    
    /**
     * Tests the method
-    * {@link de.uka.aifb.com.systemDynamics.parser.FormulaParser#parseFormula(String, HashMap, HashMap, HashMap, id2sharedNode)}.
+    * {@link de.uka.aifb.com.systemDynamics.parser.FormulaParser#parseFormula(String, HashMap, HashMap, HashMap)}.
     */
    public void testParseFormula5() {
       // (1) CN(1) + CN(2) * AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) + CN(2) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) + CN(2) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTPlus);
@@ -428,7 +428,7 @@ public class FormulaParserTestCase extends TestCase {
       // (2) CN(1) - CN(2) * AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) - CN(2) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) - CN(2) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTMinus);
@@ -447,7 +447,7 @@ public class FormulaParserTestCase extends TestCase {
       // (3) CN(1) * CN(2) + AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) * CN(2) + AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) * CN(2) + AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTPlus);
@@ -466,7 +466,7 @@ public class FormulaParserTestCase extends TestCase {
       // (4) CN(1) * CN(2) - AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) * CN(2) - AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) * CN(2) - AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTMinus);
@@ -485,13 +485,13 @@ public class FormulaParserTestCase extends TestCase {
    
    /**
     * Tests the method
-    * {@link de.uka.aifb.com.systemDynamics.parser.FormulaParser#parseFormula(String, HashMap, HashMap, HashMap, id2sharedNode)}.
+    * {@link de.uka.aifb.com.systemDynamics.parser.FormulaParser#parseFormula(String, HashMap, HashMap, HashMap)}.
     */
    public void testParseFormula6() {
       // (1) (CN(1)) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("(CN(1))", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("(CN(1))", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          assertTrue(formula == constantNode1);
       } catch (Exception e) {
@@ -501,7 +501,7 @@ public class FormulaParserTestCase extends TestCase {
       // (2) CN(1) + (CN(2) + AN(1)) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("CN(1) + (CN(2) + AN(1))", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("CN(1) + (CN(2) + AN(1))", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTPlus);
@@ -520,7 +520,7 @@ public class FormulaParserTestCase extends TestCase {
       // (3) (CN(1) - CN(2)) * AN(1) => CORRECT
       try {
          ASTElement formula =
-            FormulaParser.parseFormula("(CN(1) - CN(2)) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
+            FormulaParser.parseFormula("(CN(1) - CN(2)) * AN(1)", id2auxiliaryNode, id2constantNode, id2levelNode);
          
          try {
             assertTrue(formula instanceof ASTMultiply);

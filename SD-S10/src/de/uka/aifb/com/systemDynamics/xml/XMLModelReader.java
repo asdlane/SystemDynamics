@@ -820,8 +820,17 @@ public class XMLModelReader {
 							for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
 								Element SharedElement = (Element)sourceSinkNodeElements.item(i);
 								String id = SharedElement.getAttribute("sharedPointer");
-
-								SharedNodeGraphCell sharedNode = graph.get(k).createSharedNodeGraphCell(id);
+								String NodeType = SharedElement.getAttribute("sharedPointerid");
+								SharedNodeGraphCell sharedNode = null;
+								if(NodeType.contains("LN")) {
+									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Level");
+								}
+								else if(NodeType.contains("CN")) {
+									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Constant");
+								}
+								else if(NodeType.contains("AN")) {
+									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Auxiliary");
+								}
 								graph.get(k).model.createSharedNode(id);
 								id2SharedNodeGraphCell.put(id, sharedNode);
 							}

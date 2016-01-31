@@ -62,7 +62,7 @@ public interface ASTElement extends Iterable<ASTElement> {
     */
    public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                               HashMap<ConstantNode, Integer> constantNode2id,
-                                              HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id);
+                                              HashMap<LevelNode, Integer> levelNode2id);
    
    /**
     * Creates and returns a <b>deep</b> copy of this object. Only the nodes in the leaves

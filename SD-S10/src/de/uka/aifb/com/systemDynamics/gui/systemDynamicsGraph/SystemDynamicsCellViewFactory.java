@@ -85,7 +85,12 @@ protected VertexView createVertexView(Object v) {
     	 VertexView view = new ColoredSourceSinkNodeVertexView(v);
     	 return view;
       }
-      
+      if(v instanceof SharedNodeGraphCell) {
+    	 SharedNodeGraphCell temp = (SharedNodeGraphCell)v;
+    	  String NodeType = (String) temp.getAttributes().get("SharedName");
+    	  VertexView view = new SharedNodeVertexView(v, NodeType);
+    	  return view;
+      }
       
       return super.createVertexView(v);
    }

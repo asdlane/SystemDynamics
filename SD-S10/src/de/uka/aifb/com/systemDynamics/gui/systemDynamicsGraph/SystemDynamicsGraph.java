@@ -231,12 +231,12 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		return levelNodeGraphCell;
 	}
-	public SharedNodeGraphCell createSharedNodeGraphCell(String SharedPointer) {
+	public SharedNodeGraphCell createSharedNodeGraphCell(String SharedPointer, String SharedName) {
 		
 		//create a new attribute map to store all the values that pertain to the node trying to be created.
 		AttributeMap vals = new AttributeMap();
 		vals.put("SharedPointer", SharedPointer);
-		
+		vals.put("SharedName", SharedName);
 		// create node
 		SharedNode sharedNode = model.createSharedNode(SharedPointer);
 

@@ -380,7 +380,7 @@ void computeNextValue() {
     */
    public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                               HashMap<ConstantNode, Integer> constantNode2id,
-                                              HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id) {
+                                              HashMap<LevelNode, Integer> levelNode2id) {
       if (levelNode2id == null) {
          throw new IllegalArgumentException("'levelNode2id' must not be null.");
       }

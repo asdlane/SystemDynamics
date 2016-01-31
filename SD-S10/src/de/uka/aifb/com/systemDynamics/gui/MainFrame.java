@@ -3045,17 +3045,17 @@ WindowListener {
 			for(int i=0; i<cells.length;i++){
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
 					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Auxiliary");
 					
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
 					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Level");
 
 				}
-				else if(cells[i] instanceof SourceSinkNodeGraphCell){					
+				/*else if(cells[i] instanceof SourceSinkNodeGraphCell){					
 					sharedPointerLocal = "SourceSink";
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "SourceSink");
 				}
 				else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
 					
@@ -3065,16 +3065,16 @@ WindowListener {
 					sharedPointerLocal = "Colored" + truecolor.getRed() + truecolor.getGreen() + truecolor.getBlue();
 					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 
-				}
+				}*/
 				else if(cells[i] instanceof ConstantNodeGraphCell){
 					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
-				}
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Constant");
+				}/*
 				else if(cells[i] instanceof RateNodeGraphCell){
 					sharedPointerLocal = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
 					
-				}
+				}*/
 			}
 
 		}

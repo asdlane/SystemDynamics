@@ -175,7 +175,7 @@ void computeNextValue() {
     */
    public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                               HashMap<ConstantNode, Integer> constantNode2id,
-                                              HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id) {
+                                              HashMap<LevelNode, Integer> levelNode2id) {
       if (constantNode2id == null) {
          throw new IllegalArgumentException("'constantNode2id' must not be null.");
       }

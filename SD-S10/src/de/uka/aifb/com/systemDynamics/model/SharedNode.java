@@ -226,15 +226,8 @@ public String getStringRepresentation() {
  */
 public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                            HashMap<ConstantNode, Integer> constantNode2id,
-                                           HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id) {
-   if (sharedNode2id == null) {
-      throw new IllegalArgumentException("'sharedNode2id' must not be null.");
-   }
-   if (sharedNode2id.isEmpty()) {
-      throw new IllegalArgumentException("'auxiliaryNode2id' must not be empty.");
-   }
-   
-   return "SN(" + sharedNode2id.get(this) + ")";
+                                           HashMap<LevelNode, Integer> levelNode2id) {
+  return "";
 }
 
 /**

@@ -103,7 +103,7 @@ public class ASTMultiply implements ASTElement {
     */
    public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                               HashMap<ConstantNode, Integer> constantNode2id,
-                                              HashMap<LevelNode, Integer> levelNode2id, HashMap<SharedNode, Integer> sharedNode2id) {
+                                              HashMap<LevelNode, Integer> levelNode2id) {
       if (auxiliaryNode2id == null) {
          throw new IllegalArgumentException("'auxiliaryNode2id' must not be null.");
       }
@@ -115,15 +115,15 @@ public class ASTMultiply implements ASTElement {
       }
       
       if ((leftElement instanceof AbstractNode || leftElement instanceof ASTMultiply) && rightElement instanceof AbstractNode) {
-         return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + " * " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id);
+         return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + " * " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id);
       } else {
          if (leftElement instanceof AbstractNode || leftElement instanceof ASTMultiply) {
-            return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + " * (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ")";
+            return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + " * (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ")";
          } else {
             if ((leftElement instanceof ASTPlus || leftElement instanceof ASTMinus) && rightElement instanceof AbstractNode) {
-               return "(" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ") * " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id);
+               return "(" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ") * " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id);
             } else {
-               return "(" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ") * (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ")";
+               return "(" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ") * (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ")";
             }
          }
       }
