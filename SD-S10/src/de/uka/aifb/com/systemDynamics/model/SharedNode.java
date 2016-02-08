@@ -32,11 +32,12 @@ public class SharedNode extends AbstractNode implements ASTElement{
     * @param maxValue max value allowed across the entire simulation
     * @param curve characteristic behaviour of this LevelNode
     */
-   protected SharedNode(String sharedPointer) {
+   protected SharedNode(String sharedPointer, double nodeVal) {
 	  
 	  setsharedPointer(sharedPointer);
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();
+      currentValue = nodeVal;
    }
    void setsharedPointer(String sharedPointer){
 	   LocalSharedPointer = sharedPointer;
@@ -52,8 +53,8 @@ public class SharedNode extends AbstractNode implements ASTElement{
     * @param startValue start value
     * @return created new instance
     */
-   private static SharedNode createSharedNode(String sharedPointer) {
-      return new SharedNode(sharedPointer);
+   private static SharedNode createSharedNode(String sharedPointer, int nodeVal) {
+      return new SharedNode(sharedPointer, nodeVal);
    }
    
    

@@ -616,6 +616,7 @@ public class XMLModelWriter {
 				sharedNodeElement.setAttribute("sharedPointer", sharednode.getSharedPointer());
 				sharedNodeElement.setAttribute("id", id);
 				sharedNodeElement.setAttribute("sharedPointerid", tempid);
+				sharedNodeElement.setAttribute("value", Double.toString(sharednode.getCurrentValue()));
 			}
 		}
 		if(!model.getColoredSourceSinkNodes().isEmpty()){

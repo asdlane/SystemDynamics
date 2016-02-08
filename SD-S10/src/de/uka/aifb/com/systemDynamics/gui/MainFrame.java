@@ -2624,8 +2624,16 @@ WindowListener {
 			 overallExecutePanel.add(ResetButton);
 			 tabbedPane.addTab("Model Execute", overallExecutePanel); 
 			for(int k=0;k<chartPanelAllSubmodels.size();k++){
-				chartPanelAllSubmodels.get(k).getExecutionButton().setVisible(false);				
-				JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(k).getComponent(3);
+				chartPanelAllSubmodels.get(k).getExecutionButton().setVisible(false);
+				JPanel roundsPanel;
+				//accounts for whether there are shared nodes or not.... If there are not shared nodes,
+				//then the component at index 2 is the graph instead of the component at index 3.
+				try {
+					roundsPanel = (JPanel)chartPanelAllSubmodels.get(k).getComponent(3);
+				}
+				catch(Exception e2) {
+					roundsPanel = (JPanel)chartPanelAllSubmodels.get(k).getComponent(2);
+				}
 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);
 				roundsText.setVisible(false);
 			}
@@ -3047,12 +3055,15 @@ WindowListener {
 			for(int i=0; i<cells.length;i++){
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
 					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Auxiliary");
+					
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Auxiliary", -1);
 					
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
 					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Level");
+					Double startVal = (Double)((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal");
+					
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Level", startVal);
 
 				}
 				/*else if(cells[i] instanceof SourceSinkNodeGraphCell){					
@@ -3070,7 +3081,8 @@ WindowListener {
 				}*/
 				else if(cells[i] instanceof ConstantNodeGraphCell){
 					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Constant");
+					int constVal = (Integer)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
+					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Constant", constVal);
 				}/*
 				else if(cells[i] instanceof RateNodeGraphCell){
 					sharedPointerLocal = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();

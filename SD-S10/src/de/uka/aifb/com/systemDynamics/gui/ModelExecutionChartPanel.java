@@ -129,7 +129,9 @@ private JFreeChart chart2;
       chartPanel.setMouseZoomable(false);
       chartPanel2.setMouseZoomable(false);
       add(chartPanel, BorderLayout.CENTER);
-      add(chartPanel2, BorderLayout.WEST);
+      if(model.getSharedNodes().size()>0) {
+    	  add(chartPanel2, BorderLayout.WEST);
+      }
       
       // LINE_END: series table
       JPanel tablePanel = new JPanel(new GridBagLayout());

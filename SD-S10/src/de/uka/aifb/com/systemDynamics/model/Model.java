@@ -111,11 +111,11 @@ public class Model {
       levelNodes.add(levelNode);
       return levelNode;
    }
-   public SharedNode createSharedNode(String sharedPointer) {
+   public SharedNode createSharedNode(String sharedPointer, double nodeVal) {
 	   if(!isChangeable){
 		   throw new ModelNotChangeableException();
 	   }
-	   SharedNode sharedNode = new SharedNode(sharedPointer);
+	   SharedNode sharedNode = new SharedNode(sharedPointer, nodeVal);
 	   SharedNodes.add(sharedNode);
 		// TODO Auto-generated method stub
 		return sharedNode;
