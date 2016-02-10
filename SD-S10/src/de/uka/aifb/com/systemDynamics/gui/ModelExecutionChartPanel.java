@@ -634,7 +634,12 @@ private JFreeChart chart2;
             model.computeNextValues();
             for (int j = 0; j < xySeriesArray.length; j++) {
                xySeriesArray[j].add(nextRound, levelNodes[j].getCurrentValue());
+               try {
                xySeriesArray2[j].add(nextRound, sharedNodes[j].getCurrentValue());
+               }
+               catch(Exception e) {
+            	   
+               }
             }
             nextRound++;
          }

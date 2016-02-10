@@ -2609,7 +2609,13 @@ WindowListener {
 			 ModelExecButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
 		        	 for(int i=0;i<chartPanelAllSubmodels.size();i++){
-		        		JPanel roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(3);		    
+		        		 JPanel roundsPanel;
+		        		try {
+		        		roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(3);
+		        		}
+		        		catch(Exception e2) {
+		        			roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(2);
+		        		}
 		 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);		 				
 		 				roundsText.setText(roundsTextModel.getText());
 		        		chartPanelAllSubmodels.get(i).getExecutionButton().doClick(); 
