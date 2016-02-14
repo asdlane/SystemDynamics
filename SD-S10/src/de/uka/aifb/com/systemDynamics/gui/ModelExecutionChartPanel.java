@@ -241,7 +241,7 @@ private JFreeChart chart2;
       final ArrayList<JTextField> LevelNodeChangeFields = new ArrayList<JTextField>();
       final ArrayList<JLabel> LevelNodeLabels = new ArrayList<JLabel>();
       final ArrayList<LevelNode> LearnerChangeableNodes = new ArrayList<LevelNode>();
-      for(LevelNode level:levelNodes) {
+      for(LevelNode level:LevelNodes) {
     	  if(level.getLearnerChangeable()) {
     		  LevelNodeChangeFields.add(new JTextField(Double.toString(level.getCurrentValue()), 10));
     		  LevelNodeLabels.add(new JLabel(level.getNodeName()));
