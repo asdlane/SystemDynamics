@@ -76,6 +76,9 @@ public class ConstantNode extends AbstractNode implements ASTElement {
 	   this.shared = Shared;
 	   
    }
+   public boolean getLearnerChangeable() {
+	   return this.learnerDecidable;
+   }
    /**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 

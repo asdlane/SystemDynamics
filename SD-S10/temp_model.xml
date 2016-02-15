@@ -197,3 +197,10 @@
     </Nodes>
   </SubModel>
 </Model>
+<SubModel SubmodelId="0" color="255, 0, 0">
+  <Nodes>
+    <LevelNodes>
+      <LevelNode curve="3.0" id="LN0000" learnerChangeable="false" maxValue="99.0" minValue="8.0" name="test" shared="false" startValue="9.0"/>
+    </LevelNodes>
+  </Nodes>
+</SubModel>

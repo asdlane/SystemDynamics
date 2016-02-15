@@ -237,15 +237,30 @@ private JFreeChart chart2;
       
       //Giving people the ability to change LevelNode values
       HashSet<LevelNode> LevelNodes = model.getLevelNodes();
+      HashSet<ConstantNode> ConstantNodes = model.getConstantNodes();
       
       final ArrayList<JTextField> LevelNodeChangeFields = new ArrayList<JTextField>();
       final ArrayList<JLabel> LevelNodeLabels = new ArrayList<JLabel>();
       final ArrayList<LevelNode> LearnerChangeableNodes = new ArrayList<LevelNode>();
       for(LevelNode level:LevelNodes) {
     	  if(level.getLearnerChangeable()) {
-    		  LevelNodeChangeFields.add(new JTextField(Double.toString(level.getCurrentValue()), 10));
+    		  JTextField newField = new JTextField(Double.toString(level.getCurrentValue()), 10);
+    		  Color pastelYellow = new Color(255,253,16);
+    		  newField.setBackground(pastelYellow);
+    		  LevelNodeChangeFields.add(newField);
     		  LevelNodeLabels.add(new JLabel(level.getNodeName()));
     		  LearnerChangeableNodes.add(level);
+    	  }
+      }
+      
+      final ArrayList<JTextField> ConstantNodeChangeFields = new ArrayList<JTextField>();
+      final ArrayList<JLabel> ConstantNodeLabels = new ArrayList<JLabel>();
+      final ArrayList<ConstantNode> LearnerChangeableConstantNodes = new ArrayList<ConstantNode>();
+      for(ConstantNode constant:ConstantNodes) {
+    	  if(constant.getLearnerChangeable()) {
+    		  ConstantNodeChangeFields.add(new JTextField(Double.toString(constant.getCurrentValue()), 10));
+    		  ConstantNodeLabels.add(new JLabel(constant.getNodeName()));
+    		  LearnerChangeableConstantNodes.add(constant);
     	  }
       }
       
@@ -253,19 +268,34 @@ private JFreeChart chart2;
       commandPanel.add(numberRoundsField);
       for(int i=0;i<LevelNodeChangeFields.size();i++) {
     	  commandPanel.add(LevelNodeLabels.get(i));
-    	  commandPanel.add(LevelNodeChangeFields.get(i));    	  
+    	  commandPanel.add(LevelNodeChangeFields.get(i));
+      }
+      for(int i=0;i<ConstantNodeChangeFields.size();i++) {
+    	  commandPanel.add(ConstantNodeLabels.get(i));
+    	  commandPanel.add(ConstantNodeChangeFields.get(i));
       }
       
       changeValueButton = new JButton("Change node values");
       changeValueButton.addActionListener(new ActionListener() {
     	 public void actionPerformed(ActionEvent e) {
     		 for(int i=0;i<LearnerChangeableNodes.size();i++) {
-    			 try {
+    			 try {    				 
     				 model.setStartValue(LearnerChangeableNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
-    				 JOptionPane.showMessageDialog(null, "Value change completed");	
+    				 JOptionPane.showMessageDialog(null, "Value change for Level Nodes completed");	
     			 }
     			 catch(Exception e1) {
     				 JOptionPane.showMessageDialog(null, e1);
+    				 break;
+    			 }
+    		 }
+    		 for(int i=0;i<LearnerChangeableConstantNodes.size();i++) {
+    			 try {
+    				 model.setConstantValue(LearnerChangeableConstantNodes.get(i), Double.parseDouble(ConstantNodeChangeFields.get(i).getText()));
+    				 JOptionPane.showMessageDialog(null, "Value change for Constant Nodes completed");
+    				 
+    			 }
+    			 catch(Exception e2) {
+    				 JOptionPane.showMessageDialog(null, e2);
     				 break;
     			 }
     		 }
