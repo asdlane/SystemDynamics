@@ -110,44 +110,6 @@
                   </xsd:sequence>
                 </xsd:complexType>
               </xsd:element>
-              <xsd:element name="RateNodes" minOccurs="0">
-                <xsd:complexType>
-                  <xsd:sequence>
-                    <xsd:element name="RateNode" maxOccurs="unbounded">
-                      <xsd:complexType>
-                        <xsd:sequence>
-                          <xsd:element name="Formula" type="myFormula"/>
-                        </xsd:sequence>
-                        
-                        <xsd:attribute name="id"                     use="required">
-                          <xsd:simpleType>
-                            <xsd:restriction base="xsd:string">
-                              <xsd:pattern value="RN[0-9]{4}"/>
-                            </xsd:restriction>
-                          </xsd:simpleType>
-                        </xsd:attribute>
-                        <xsd:attribute name="shared"       type="xsd:string" use="required"/>
-                        <xsd:attribute name="name" type="xsd:string" use="required"/>
-                        <xsd:attribute name="learnerChangeable" type="xsd:string" use="required"/>
-                        <xsd:attribute name="xCoordinate" default="10.0">
-                          <xsd:simpleType>
-                            <xsd:restriction base="xsd:double">
-                              <xsd:minInclusive value="0.0"/>
-                            </xsd:restriction>
-                          </xsd:simpleType>
-                        </xsd:attribute>
-                        <xsd:attribute name="yCoordinate" default="10.0">
-                          <xsd:simpleType>
-                            <xsd:restriction base="xsd:double">
-                              <xsd:minInclusive value="0.0"/>
-                            </xsd:restriction>
-                          </xsd:simpleType>
-                        </xsd:attribute>
-                      </xsd:complexType>
-                    </xsd:element>
-                  </xsd:sequence>
-                </xsd:complexType>
-              </xsd:element>
               <xsd:element name="AuxiliaryNodes" minOccurs="0">
                 <xsd:complexType>
                   <xsd:sequence>
@@ -202,6 +164,44 @@
                         <xsd:attribute name="shared"       type="xsd:string" use="required"/>
                         <xsd:attribute name="name"          type="xsd:string" use="required"/>
                         <xsd:attribute name="constantValue" type="xsd:double" use="required"/>
+                        <xsd:attribute name="xCoordinate" default="10.0">
+                          <xsd:simpleType>
+                            <xsd:restriction base="xsd:double">
+                              <xsd:minInclusive value="0.0"/>
+                            </xsd:restriction>
+                          </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="yCoordinate" default="10.0">
+                          <xsd:simpleType>
+                            <xsd:restriction base="xsd:double">
+                              <xsd:minInclusive value="0.0"/>
+                            </xsd:restriction>
+                          </xsd:simpleType>
+                        </xsd:attribute>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+                            <xsd:element name="RateNodes" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="RateNode" maxOccurs="unbounded">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element name="Formula" type="myFormula"/>
+                        </xsd:sequence>
+                        
+                        <xsd:attribute name="id"                     use="required">
+                          <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                              <xsd:pattern value="RN[0-9]{4}"/>
+                            </xsd:restriction>
+                          </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="shared"       type="xsd:string" use="required"/>
+                        <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        <xsd:attribute name="learnerChangeable" type="xsd:string" use="required"/>
                         <xsd:attribute name="xCoordinate" default="10.0">
                           <xsd:simpleType>
                             <xsd:restriction base="xsd:double">

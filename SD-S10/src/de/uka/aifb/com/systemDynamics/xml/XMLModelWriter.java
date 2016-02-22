@@ -459,8 +459,8 @@ public class XMLModelWriter {
 			levelNodeElement.setAttribute("curve", String.valueOf(levelNode.getCurveValue()));
 			levelNodeElement.setAttribute("learnerChangeable", String.valueOf(levelNode.getLearnerChangeable()));
 			levelNodeElement.setAttribute("shared", String.valueOf(levelNode.getShared()));
-			
-			
+
+
 
 		}
 		// (1b) source/sink nodes
@@ -479,33 +479,33 @@ public class XMLModelWriter {
 			}
 		}
 		// (1e) constant nodes
-				if (!model.getConstantNodes().isEmpty()) {
-					Element constantNodesElement = document.createElement("ConstantNodes");
-					nodesElement.appendChild(constantNodesElement);
-					for (ConstantNode constantNode : model.getConstantNodes()) {
-						String id = createId("CN", nextConstantNodeId++);
-						node2Id.put(constantNode, id);
+		if (!model.getConstantNodes().isEmpty()) {
+			Element constantNodesElement = document.createElement("ConstantNodes");
+			nodesElement.appendChild(constantNodesElement);
+			for (ConstantNode constantNode : model.getConstantNodes()) {
+				String id = createId("CN", nextConstantNodeId++);
+				node2Id.put(constantNode, id);
 
-						Element constantNodeElement = document.createElement("ConstantNode");
-						constantNodesElement.appendChild(constantNodeElement);
-						constantNodeElement.setAttribute("id", id);
-						if(constantNode.getShared()){
-							if(archive){
-								String name= constantNode.getNodeName();
-								String[] nameSeparated = name.split("[(0-9)*]");
-								constantNodeElement.setAttribute("name", nameSeparated[0] + "?");
-							}else{
-								constantNodeElement.setAttribute("name", constantNode.getNodeName());
-							}
-						}else{
-							constantNodeElement.setAttribute("name", constantNode.getNodeName());
-						}
-
-						constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
-						constantNodeElement.setAttribute("shared", String.valueOf(constantNode.getShared()));
-
+				Element constantNodeElement = document.createElement("ConstantNode");
+				constantNodesElement.appendChild(constantNodeElement);
+				constantNodeElement.setAttribute("id", id);
+				if(constantNode.getShared()){
+					if(archive){
+						String name= constantNode.getNodeName();
+						String[] nameSeparated = name.split("[(0-9)*]");
+						constantNodeElement.setAttribute("name", nameSeparated[0] + "?");
+					}else{
+						constantNodeElement.setAttribute("name", constantNode.getNodeName());
 					}
+				}else{
+					constantNodeElement.setAttribute("name", constantNode.getNodeName());
 				}
+
+				constantNodeElement.setAttribute("constantValue", String.valueOf(constantNode.getConstantValue()));
+				constantNodeElement.setAttribute("shared", String.valueOf(constantNode.getShared()));
+
+			}
+		}
 		// (1c) rate nodes
 		if (!model.getRateNodes().isEmpty()) {
 			Element rateNodesElement = document.createElement("RateNodes");
@@ -566,7 +566,7 @@ public class XMLModelWriter {
 				auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
 			}
 		}
-		
+
 		//shared nodes
 		if(!model.getSharedNodes().isEmpty()) {
 			Element SharedNodesElement = document.createElement("SharedNodes");
@@ -576,14 +576,14 @@ public class XMLModelWriter {
 				node2Id.put(sharednode, id);
 				Element sharedNodeElement = document.createElement("SharedNode");
 				SharedNodesElement.appendChild(sharedNodeElement);
-				
+
 				String tempid = "";
 				boolean levelNodeShared = false;
 				boolean constantNodeShared = false;
 				boolean auxiliaryNodeShared = false;
 				int constantCounter = 0;
 				int auxiliaryCounter = 0;
-				
+
 				for(LevelNode levelnode : model.getLevelNodes()){
 					if(levelnode.getNodeName()==sharednode.getSharedPointer()){
 						levelNodeShared = true;
@@ -816,7 +816,7 @@ public class XMLModelWriter {
 			Rectangle2D r = GraphConstants.getBounds(node.getAttributes());
 			double xCoordinate = r.getX();
 			double yCoordinate = r.getY();
-			
+
 			try{
 				graph.getModelNode(node).toString();
 			}
@@ -824,7 +824,7 @@ public class XMLModelWriter {
 				continue;
 			}
 			String modelNodeId = node2Id.get(graph.getModelNode(node));
-			
+
 
 			if (node instanceof AuxiliaryNodeGraphCell) {
 				try {
@@ -841,7 +841,7 @@ public class XMLModelWriter {
 			}
 			if (node instanceof SharedNodeGraphCell) {
 				try {
-					
+
 					Element sharedNodeElement =
 							(Element)xpath.evaluate("/SubModel/Nodes/SharedNodes/SharedNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
@@ -905,144 +905,149 @@ public class XMLModelWriter {
 
 		// (2) location of control points of flows
 		for (FlowEdge flowEdge : flowEdges) {
-		try {	
-			List<Point2D> points = GraphConstants.getPoints(flowEdge.getAttributes());
-			if (points != null && points.size() > 2) {
-				// additional control points exist
-				Element additionalControlPointsElement = document.createElement("AdditionalControlPoints");
-				for (int i = 1; i < points.size() - 1; i++) {
-					Element additionalControlPointElement = document.createElement("AdditionalControlPoint");
-					double xCoordinate = points.get(i).getX();
-					double yCoordinate = points.get(i).getY();
-					additionalControlPointElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
-					additionalControlPointElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
-					additionalControlPointsElement.appendChild(additionalControlPointElement);
-				}
+			try {	
+				List<Point2D> points = GraphConstants.getPoints(flowEdge.getAttributes());
+				if (points != null && points.size() > 2) {
+					// additional control points exist
+					Element additionalControlPointsElement = document.createElement("AdditionalControlPoints");
+					for (int i = 1; i < points.size() - 1; i++) {
+						Element additionalControlPointElement = document.createElement("AdditionalControlPoint");
+						double xCoordinate = points.get(i).getX();
+						double yCoordinate = points.get(i).getY();
+						additionalControlPointElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
+						additionalControlPointElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
+						additionalControlPointsElement.appendChild(additionalControlPointElement);
+					}
 
-				DefaultGraphCell edgeSource = (DefaultGraphCell)((DefaultPort)graphModel.getSource(flowEdge)).getParent();
-				String edgeSourceId = node2Id.get(graph.getModelNode(edgeSource));
-				DefaultGraphCell edgeTarget = (DefaultGraphCell)((DefaultPort)graphModel.getTarget(flowEdge)).getParent();
-				String edgeTargetId = node2Id.get(graph.getModelNode(edgeTarget));
-				if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-					try {
-						Element flowElement =
-								(Element)xpath.evaluate("/SubModel/Flows/LevelNode2RateNodeFlow[@fromLevelNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
-										document, XPathConstants.NODE);
-						flowElement.appendChild(additionalControlPointsElement);
-					} catch (XPathExpressionException e) {
-						// correct xpath expression -> no exception
-						throw new XMLModelReaderWriterException(e);
+					DefaultGraphCell edgeSource = (DefaultGraphCell)((DefaultPort)graphModel.getSource(flowEdge)).getParent();
+					String edgeSourceId = node2Id.get(graph.getModelNode(edgeSource));
+					DefaultGraphCell edgeTarget = (DefaultGraphCell)((DefaultPort)graphModel.getTarget(flowEdge)).getParent();
+					String edgeTargetId = node2Id.get(graph.getModelNode(edgeTarget));
+					if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+						try {
+							Element flowElement =
+									(Element)xpath.evaluate("/SubModel/Flows/LevelNode2RateNodeFlow[@fromLevelNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
+											document, XPathConstants.NODE);
+							flowElement.appendChild(additionalControlPointsElement);
+						} catch (XPathExpressionException e) {
+							// correct xpath expression -> no exception
+							throw new XMLModelReaderWriterException(e);
+						}
 					}
-				}
-				if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-					try {
-						Element flowElement =
-								(Element)xpath.evaluate("/SubModel/Flows/SourceSinkNode2RateNodeFlow[@fromSourceSinkNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
-										document, XPathConstants.NODE);
-						flowElement.appendChild(additionalControlPointsElement);
-					} catch (XPathExpressionException e) {
-						// correct xpath expression -> no exception
-						throw new XMLModelReaderWriterException(e);
+					if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+						try {
+							Element flowElement =
+									(Element)xpath.evaluate("/SubModel/Flows/SourceSinkNode2RateNodeFlow[@fromSourceSinkNodeIdRef='" + edgeSourceId + "' and @toRateNodeIdRef='" + edgeTargetId + "']",
+											document, XPathConstants.NODE);
+							flowElement.appendChild(additionalControlPointsElement);
+						} catch (XPathExpressionException e) {
+							// correct xpath expression -> no exception
+							throw new XMLModelReaderWriterException(e);
+						}
 					}
-				}
-				if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
-					try {
-						Element flowElement =
-								(Element)xpath.evaluate("/SubModel/Flows/RateNode2LevelNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toLevelNodeIdRef='" + edgeTargetId + "']",
-										document, XPathConstants.NODE);
-						flowElement.appendChild(additionalControlPointsElement);
-					} catch (XPathExpressionException e) {
-						// correct xpath expression -> no exception
-						throw new XMLModelReaderWriterException(e);
+					if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+						try {
+							Element flowElement =
+									(Element)xpath.evaluate("/SubModel/Flows/RateNode2LevelNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toLevelNodeIdRef='" + edgeTargetId + "']",
+											document, XPathConstants.NODE);
+							flowElement.appendChild(additionalControlPointsElement);
+						} catch (XPathExpressionException e) {
+							// correct xpath expression -> no exception
+							throw new XMLModelReaderWriterException(e);
+						}
 					}
-				}
-				if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
-					try {
-						Element flowElement =
-								(Element)xpath.evaluate("/SubModel/Flows/RateNode2SourceSinkNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toSourceSinkNodeIdRef='" + edgeTargetId + "']",
-										document, XPathConstants.NODE);
-						flowElement.appendChild(additionalControlPointsElement);
-					} catch (XPathExpressionException e) {
-						// correct xpath expression -> no exception
-						throw new XMLModelReaderWriterException(e);
+					if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+						try {
+							Element flowElement =
+									(Element)xpath.evaluate("/SubModel/Flows/RateNode2SourceSinkNodeFlow[@fromRateNodeIdRef='" + edgeSourceId + "' and @toSourceSinkNodeIdRef='" + edgeTargetId + "']",
+											document, XPathConstants.NODE);
+							flowElement.appendChild(additionalControlPointsElement);
+						} catch (XPathExpressionException e) {
+							// correct xpath expression -> no exception
+							throw new XMLModelReaderWriterException(e);
+						}
 					}
 				}
 			}
-		}
-		catch(Exception e) {
-			continue;
-		}
+			catch(Exception e) {
+				continue;
+			}
 		}
 
 		// (3) location of control points of dependencies
 		Element dependenciesElement = document.createElement("Dependencies");
 		boolean hasDependencyWithControlPoint = false;
 		for (DefaultEdge dependencyEdge : dependencyEdges) {
+
 			try {
-			List<Point2D> points = GraphConstants.getPoints(dependencyEdge.getAttributes());
-			if (points != null && points.size() > 2) {
-				// additional control points exist
-				hasDependencyWithControlPoint = true;
+				List<Point2D> points = GraphConstants.getPoints(dependencyEdge.getAttributes());
+				if (points != null && points.size() > 2) {
+					// additional control points exist
+					hasDependencyWithControlPoint = true;
 
-				Element additionalControlPointsElement = document.createElement("AdditionalControlPoints");
-				for (int i = 1; i < points.size() - 1; i++) {
-					Element additionalControlPointElement = document.createElement("AdditionalControlPoint");
-					double xCoordinate = points.get(i).getX();
-					double yCoordinate = points.get(i).getY();
-					additionalControlPointElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
-					additionalControlPointElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
-					additionalControlPointsElement.appendChild(additionalControlPointElement);
-				}
+					Element additionalControlPointsElement = document.createElement("AdditionalControlPoints");
+					for (int i = 1; i < points.size() - 1; i++) {
+						Element additionalControlPointElement = document.createElement("AdditionalControlPoint");
+						double xCoordinate = points.get(i).getX();
+						double yCoordinate = points.get(i).getY();
+						additionalControlPointElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
+						additionalControlPointElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
+						additionalControlPointsElement.appendChild(additionalControlPointElement);
+					}
 
-				DefaultGraphCell edgeSource = (DefaultGraphCell)((DefaultPort)graphModel.getSource(dependencyEdge)).getParent();
-				String edgeSourceId = node2Id.get(graph.getModelNode(edgeSource));
-				DefaultGraphCell edgeTarget = (DefaultGraphCell)((DefaultPort)graphModel.getTarget(dependencyEdge)).getParent();
-				String edgeTargetId = node2Id.get(graph.getModelNode(edgeTarget));
-				if (edgeSource instanceof AuxiliaryNodeGraphCell && edgeTarget instanceof AuxiliaryNodeGraphCell) {
-					Element dependencyElement = document.createElement("AuxiliaryNode2AuxiliaryNodeDependency");
-					dependencyElement.setAttribute("fromAuxiliaryNodeIdRef", edgeSourceId);
-					dependencyElement.setAttribute("toAuxiliaryNodeIdRef", edgeTargetId);
-					dependencyElement.appendChild(additionalControlPointsElement);
-					dependenciesElement.appendChild(dependencyElement);
-				}
-				if (edgeSource instanceof AuxiliaryNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-					Element dependencyElement = document.createElement("AuxiliaryNode2RateNodeDependency");
-					dependencyElement.setAttribute("fromAuxiliaryNodeIdRef", edgeSourceId);
-					dependencyElement.setAttribute("toRateNodeIdRef", edgeTargetId);
-					dependencyElement.appendChild(additionalControlPointsElement);
-					dependenciesElement.appendChild(dependencyElement);
-				}
-				if (edgeSource instanceof ConstantNodeGraphCell && edgeTarget instanceof AuxiliaryNodeGraphCell) {
-					Element dependencyElement = document.createElement("ConstantNode2AuxiliaryNodeDependency");
-					dependencyElement.setAttribute("fromConstantNodeIdRef", edgeSourceId);
-					dependencyElement.setAttribute("toAuxiliaryNodeIdRef", edgeTargetId);
-					dependencyElement.appendChild(additionalControlPointsElement);
-					dependenciesElement.appendChild(dependencyElement);
-				}
-				if (edgeSource instanceof ConstantNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-					Element dependencyElement = document.createElement("ConstantNode2RateNodeDependency");
-					dependencyElement.setAttribute("fromConstantNodeIdRef", edgeSourceId);
-					dependencyElement.setAttribute("toRateNodeIdRef", edgeTargetId);
-					dependencyElement.appendChild(additionalControlPointsElement);
-					dependenciesElement.appendChild(dependencyElement);
-				}
-				if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof AuxiliaryNodeGraphCell) {
+					DefaultGraphCell edgeSource = (DefaultGraphCell)((DefaultPort)graphModel.getSource(dependencyEdge)).getParent();
+					String edgeSourceId = node2Id.get(graph.getModelNode(edgeSource));
+					DefaultGraphCell edgeTarget = (DefaultGraphCell)((DefaultPort)graphModel.getTarget(dependencyEdge)).getParent();
+					String edgeTargetId = node2Id.get(graph.getModelNode(edgeTarget));
 
 
-					Element dependencyElement = document.createElement("LevelNode2AuxiliaryNodeDependency");
-					dependencyElement.setAttribute("fromLevelNodeIdRef", edgeSourceId);
-					dependencyElement.setAttribute("toAuxiliaryNodeIdRef", edgeTargetId);
-					dependencyElement.appendChild(additionalControlPointsElement);
-					dependenciesElement.appendChild(dependencyElement);
+					if (edgeSourceId.equals("")==false && edgeTargetId.equals("")==false) {
+						if (edgeSource instanceof AuxiliaryNodeGraphCell && edgeTarget instanceof AuxiliaryNodeGraphCell) {
+							Element dependencyElement = document.createElement("AuxiliaryNode2AuxiliaryNodeDependency");
+							dependencyElement.setAttribute("fromAuxiliaryNodeIdRef", edgeSourceId);
+							dependencyElement.setAttribute("toAuxiliaryNodeIdRef", edgeTargetId);
+							dependencyElement.appendChild(additionalControlPointsElement);
+							dependenciesElement.appendChild(dependencyElement);
+						}
+						if (edgeSource instanceof AuxiliaryNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+							Element dependencyElement = document.createElement("AuxiliaryNode2RateNodeDependency");
+							dependencyElement.setAttribute("fromAuxiliaryNodeIdRef", edgeSourceId);
+							dependencyElement.setAttribute("toRateNodeIdRef", edgeTargetId);
+							dependencyElement.appendChild(additionalControlPointsElement);
+							dependenciesElement.appendChild(dependencyElement);
+						}
+						if (edgeSource instanceof ConstantNodeGraphCell && edgeTarget instanceof AuxiliaryNodeGraphCell) {
+							Element dependencyElement = document.createElement("ConstantNode2AuxiliaryNodeDependency");
+							dependencyElement.setAttribute("fromConstantNodeIdRef", edgeSourceId);
+							dependencyElement.setAttribute("toAuxiliaryNodeIdRef", edgeTargetId);
+							dependencyElement.appendChild(additionalControlPointsElement);
+							dependenciesElement.appendChild(dependencyElement);
+						}
+						if (edgeSource instanceof ConstantNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+							Element dependencyElement = document.createElement("ConstantNode2RateNodeDependency");
+							dependencyElement.setAttribute("fromConstantNodeIdRef", edgeSourceId);
+							dependencyElement.setAttribute("toRateNodeIdRef", edgeTargetId);
+							dependencyElement.appendChild(additionalControlPointsElement);
+							dependenciesElement.appendChild(dependencyElement);
+						}
+						if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof AuxiliaryNodeGraphCell) {
+
+
+							Element dependencyElement = document.createElement("LevelNode2AuxiliaryNodeDependency");
+							dependencyElement.setAttribute("fromLevelNodeIdRef", edgeSourceId);
+							dependencyElement.setAttribute("toAuxiliaryNodeIdRef", edgeTargetId);
+							dependencyElement.appendChild(additionalControlPointsElement);
+							dependenciesElement.appendChild(dependencyElement);
+						}
+						if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+							Element dependencyElement = document.createElement("LevelNode2RateNodeDependency");
+							dependencyElement.setAttribute("fromLevelNodeIdRef", edgeSourceId);
+							dependencyElement.setAttribute("toRateNodeIdRef", edgeTargetId);
+							dependencyElement.appendChild(additionalControlPointsElement);
+							dependenciesElement.appendChild(dependencyElement);
+						}
+					}
 				}
-				if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
-					Element dependencyElement = document.createElement("LevelNode2RateNodeDependency");
-					dependencyElement.setAttribute("fromLevelNodeIdRef", edgeSourceId);
-					dependencyElement.setAttribute("toRateNodeIdRef", edgeTargetId);
-					dependencyElement.appendChild(additionalControlPointsElement);
-					dependenciesElement.appendChild(dependencyElement);
-				}
-			}
 			}catch(Exception e) {
 				continue;
 			}

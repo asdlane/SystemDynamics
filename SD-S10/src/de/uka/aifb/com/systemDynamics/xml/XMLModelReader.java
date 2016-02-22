@@ -171,7 +171,7 @@ public class XMLModelReader {
 			throw new IllegalArgumentException("'frame' must not be null.");
 		}
 		ArrayList<SystemDynamicsGraph> graph = new ArrayList<SystemDynamicsGraph>();
-
+		
 		HashMap<String, AuxiliaryNodeGraphCell> id2auxiliaryNode =
 				new HashMap<String, AuxiliaryNodeGraphCell>();
 		HashMap<String, ConstantNodeGraphCell> id2constantNode =
@@ -650,7 +650,7 @@ public class XMLModelReader {
 					XMLNodeParameterOutOfRangeException,
 					XMLRateNodeFlowException,
 					XMLUselessNodeException {
-
+		
 		if (fileString == null) {
 			throw new IllegalArgumentException("'fileString' must not be null.");
 		}
@@ -696,9 +696,9 @@ public class XMLModelReader {
 			// exception should not happen because schema is correct!
 			throw new XMLModelReaderWriterException(e);
 		}
-
+		
 		factory.setSchema(schema);
-
+		
 		DocumentBuilder builder = null;
 		try {
 			builder = factory.newDocumentBuilder();
@@ -706,11 +706,12 @@ public class XMLModelReader {
 			// exception should not happen
 			throw new XMLModelReaderWriterException(e);
 		}
-
+		
 		// set own error handler that throws exception if XML file is not Schema compliant
 		builder.setErrorHandler(new MyErrorHandler());
 
 		Document document = null;
+		
 		try {
 
 			document = builder.parse(new File(fileString));  // can throw IOException
@@ -719,7 +720,7 @@ public class XMLModelReader {
 			throw new XMLModelReaderWriterException(e);
 		}
 
-
+		
 		// create XPath object
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		String modelName = "";
@@ -764,7 +765,8 @@ public class XMLModelReader {
 			graph.add(SubmodelGraph);
 
 		}
-		System.out.println(graph.size());
+		
+		
 		for(int k=0;k<graph.size();k++){// (1) create nodes
 			// (1a) create level nodes
 			try {
@@ -796,14 +798,13 @@ public class XMLModelReader {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
 					id2levelNodeGraphCell.put(id, levelNode);
-					System.out.println("ID TO LEVEL SIZE 1 LEVEL DEEPER: " + id2levelNodeGraphCell.size());
-					System.out.println("ID KEY: " + id);
+					
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(levelNode, vertex);
-					System.out.println("graphCell2Vertex SIZE: " + graphCell2Vertex.size());
+					
 
 					abstractNode2Vertex.put(graph.get(k).getModelNode(levelNode), vertex);
-					System.out.println("abstractNode22Vertex SIZE: " + abstractNode2Vertex.size());
+					
 					if (xCoordinate != 10.0 && yCoordinate != 10.0) {
 						automaticGraphLayoutNecessary = false;
 					}
@@ -865,6 +866,7 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
+			//CUT FROM HERE
 			// (1c) create rate nodes
 			try {
 				NodeList rateNodeElements =
@@ -1002,7 +1004,7 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
-
+			
 			// (2b) set formulas of rate nodes
 			try {
 				NodeList rateNodeElements =
@@ -1024,7 +1026,7 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
-
+			
 			// (3) create flows
 			// (3a) incoming flows of level nodes
 			try {
@@ -1176,7 +1178,7 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
-
+			
 			// automatic graph layout (if necessary)
 			if (automaticGraphLayoutNecessary) {
 				graphLayout.doLayout();
@@ -1352,7 +1354,7 @@ public class XMLModelReader {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
 			}
-
+			
 			// (4e) level node 2 auxiliary node dependency edges
 			try {
 				NodeList levelNode2auxiliaryNodeDependencyElements =
@@ -1433,6 +1435,7 @@ public class XMLModelReader {
 				throw new XMLModelReaderWriterException(e);
 			}
 		}
+		
 		return graph;
 
 
