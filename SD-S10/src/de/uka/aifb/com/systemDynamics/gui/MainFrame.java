@@ -3087,7 +3087,7 @@ WindowListener {
 				}*/
 				else if(cells[i] instanceof ConstantNodeGraphCell){
 					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					int constVal = (Integer)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
+					double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
 					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Constant", constVal);
 				}/*
 				else if(cells[i] instanceof RateNodeGraphCell){
