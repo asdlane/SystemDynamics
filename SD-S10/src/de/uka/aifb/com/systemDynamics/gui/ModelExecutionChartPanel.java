@@ -238,10 +238,15 @@ private JFreeChart chart2;
       //Giving people the ability to change LevelNode values
       HashSet<LevelNode> LevelNodes = model.getLevelNodes();
       HashSet<ConstantNode> ConstantNodes = model.getConstantNodes();
+      HashSet<SharedNode> sharedNodesModel = model.getSharedNodes();
       
       final ArrayList<JTextField> LevelNodeChangeFields = new ArrayList<JTextField>();
       final ArrayList<JLabel> LevelNodeLabels = new ArrayList<JLabel>();
       final ArrayList<LevelNode> LearnerChangeableNodes = new ArrayList<LevelNode>();
+      final ArrayList<SharedNode> sharedNodes = new ArrayList<SharedNode>();
+      for(SharedNode shared:sharedNodesModel){
+    	  sharedNodes.add(shared);
+      }
       for(LevelNode level:LevelNodes) {
     	  if(level.getLearnerChangeable()) {
     		  JTextField newField = new JTextField(Double.toString(level.getCurrentValue()), 10);
@@ -281,6 +286,7 @@ private JFreeChart chart2;
     		 for(int i=0;i<LearnerChangeableNodes.size();i++) {
     			 try {    				 
     				 model.setStartValue(LearnerChangeableNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
+    				 model.setSharedValue(sharedNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
     				 JOptionPane.showMessageDialog(null, "Value change for Level Nodes completed");	
     			 }
     			 catch(Exception e1) {
@@ -291,6 +297,7 @@ private JFreeChart chart2;
     		 for(int i=0;i<LearnerChangeableConstantNodes.size();i++) {
     			 try {
     				 model.setConstantValue(LearnerChangeableConstantNodes.get(i), Double.parseDouble(ConstantNodeChangeFields.get(i).getText()));
+    				 model.setSharedValue(sharedNodes.get(i), Double.parseDouble(ConstantNodeChangeFields.get(i).getText()));
     				 JOptionPane.showMessageDialog(null, "Value change for Constant Nodes completed");
     				 
     			 }

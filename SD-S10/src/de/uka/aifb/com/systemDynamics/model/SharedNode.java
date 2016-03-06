@@ -177,7 +177,9 @@ public double getCurrentValue() {
 	// TODO Auto-generated method stub
 	return currentValue;
 }
-
+public void setCurrentValue(Double newVal){
+	currentValue = newVal;
+}
 
 
 @Override

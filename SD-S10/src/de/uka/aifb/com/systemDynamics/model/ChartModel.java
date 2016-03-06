@@ -31,9 +31,17 @@ import java.util.*;
  * @author Joachim Melcher, University of Karlsruhe, AIFB
  * @version 1.0
  */
-public class Model {
+public class ChartModel {
    
-   private String modelName;
+   private String chartName;
+   private String chartId;
+   private String file;
+   private String xAxisLabel;
+   private String yAxisLabel;
+   private String pr;
+   private String step;
+   private String Fstep;
+   private String global;
    
    protected HashSet<LevelNode> levelNodes;
    protected HashSet<RateNode> rateNodes;
@@ -53,7 +61,7 @@ public class Model {
    /**
     * Constructor.
     */
-   public Model() {
+   public ChartModel() {
       levelNodes = new HashSet<LevelNode>();
       rateNodes = new HashSet<RateNode>();
       constantNodes = new HashSet<ConstantNode>();
@@ -69,15 +77,92 @@ public class Model {
     * 
     * @param modelName model name
     */
-   public void setModelName(String modelName) {
+   public void setChartName(String chartName) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
-      if (modelName == null) {
-         throw new IllegalArgumentException("'modelName' must not be null.");
+      if (chartName == null) {
+         throw new IllegalArgumentException("'chartName' must not be null.");
       }
+      this.chartName = chartName;
       
-      this.modelName = modelName;
+   }
+   public void setChartId(String chartId) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (chartId == null) {
+	         throw new IllegalArgumentException("'chartId' must not be null.");
+	      }
+	      this.chartId = chartId;
+	      
+   }
+   public void setChartFile(String file) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (file == null) {
+	         throw new IllegalArgumentException("'file' must not be null.");
+	      }
+	      this.file = file;
+	      
+   }
+   public void setxAxisLabel(String xAxisLabel) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (xAxisLabel == null) {
+	         throw new IllegalArgumentException("'xAxisLabel' must not be null.");
+	      }
+	      this.xAxisLabel = xAxisLabel;
+	      
+   }
+   public void setyAxisLabel(String yAxisLabel) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (yAxisLabel == null) {
+	         throw new IllegalArgumentException("'yAxisLabel' must not be null.");
+	      }
+	      this.yAxisLabel = yAxisLabel;	      
+   }
+   public void setPR(String PR) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (PR == null) {
+	         throw new IllegalArgumentException("'PR' must not be null.");
+	      }
+	      this.pr = PR;	      
+   
+   }
+   public void setstep(String step) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (step == null) {
+	         throw new IllegalArgumentException("'step' must not be null.");
+	      }
+	      this.step = step;	      
+   
+   }
+   public void setFstep(String Fstep) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (Fstep == null) {
+	         throw new IllegalArgumentException("'Fstep' must not be null.");
+	      }
+	      this.Fstep = Fstep;	      
+   }
+   public void setglobal(String global) {
+	      if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	      }
+	      if (global == null) {
+	         throw new IllegalArgumentException("'Fstep' must not be null.");
+	      }
+	      this.global = global;	      
    }
    
    /**
@@ -85,10 +170,36 @@ public class Model {
     * 
     * @return model name
     */
-   public String getModelName() {
-      return modelName;
+   public String getchartName() {
+      return chartName;
+   }
+   public String getchartId(){
+	   return chartId;
+   }
+   public String getfile(){
+	   return file;
+   }
+   public String getxAxisLabel(){
+	   return xAxisLabel;
+   }
+   public String getyAxisLabel(){
+	   return yAxisLabel;
+   }
+   public String getPr(){
+	   return pr;
+   }
+   public String getStep(){
+	   return step;
+   }
+   public String getFstep(){
+	   return Fstep;
+   
+   }
+   public String getGlobal(){
+	   return global;
    }
    
+//************************************************STOPPED HERE****************************************************************************************************//
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods for creating new nodes
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,16 +449,7 @@ public class Model {
       
       levelNode.setStartValue(startValue);
    }
-   public void setSharedValue(SharedNode sharedNode, double startValue) {
-	      if (!isChangeable) {
-	         throw new ModelNotChangeableException();
-	      }
-	      if (sharedNode == null) {
-	         throw new IllegalArgumentException("'SharedNode' must not be null.");
-	      }
-	      
-	     sharedNode.setCurrentValue(startValue);
-	   }
+   
    /**
     * Sets the specified level node's min value.
     * 

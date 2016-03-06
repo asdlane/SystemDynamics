@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+
+
+<!-- XML Schema for a System Dynamics model  -->
+
+<!-- REMARKS:
+       (1) In an XPath expression, '//' stands for recursive descent in the tree.
+       (2) In an XPath expression, './/' must be at the beginning of the expression!
+  -->
+
+<!--
+ * Changes:
+ * ========
+ *
+ * 2009-10-13: typing error in element "AuxiliaryNode2RateNodeDependency" corrected
+  -->
+
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0">
+	<xsd:element name="Charts">                 		  
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Chart" maxOccurs="unbounded">
+                    <xsd:complexType>
+                    	<xsd:all>
+                    		<xsd:element name="ChartLevelNodes" maxOccurs="1" minOccurs="0">
+                    			<xsd:complexType>
+                    				<xsd:sequence>
+                    					<xsd:element name="ChartLevelNode" maxOccurs="unbounded" minOccurs="0">
+                    						<xsd:complexType>
+                    							<xsd:attribute name="levelNodeIdRef"/>
+                    							<xsd:attribute name="label"/>
+                    						</xsd:complexType>
+                    					</xsd:element>
+                    				</xsd:sequence>
+                    			</xsd:complexType>
+                    		</xsd:element>
+                    		<xsd:element name="ChartPlanNodes" maxOccurs="1" minOccurs="0">
+                    			<xsd:complexType>
+                    				<xsd:sequence>
+                    					<xsd:element name="ChartPlanNode" maxOccurs="unbounded" minOccurs="0">
+                    						<xsd:complexType>
+                    							<xsd:attribute name="planNodeIdRef"/>
+                    							<xsd:attribute name="label"/>
+                    						</xsd:complexType>
+                    					</xsd:element>
+                    				</xsd:sequence>
+                    			</xsd:complexType>
+                    		</xsd:element>
+                    		
+                    	</xsd:all>
+						<xsd:attribute name="id"/>
+						<xsd:attribute name="name"/>
+						<xsd:attribute name="file"/>
+						<xsd:attribute name="xAxisLabel"/>
+						<xsd:attribute name="yAxisLabel"/>
+						<xsd:attribute name="pr"/>
+						<xsd:attribute name="step"/>
+						<xsd:attribute name="Fstep"/>
+						<xsd:attribute name="global"/>
+                    </xsd:complexType>
+				</xsd:element>
+				<xsd:element name="PlanNodes">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="PlanNode" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+									
+										<xsd:element name="PlanNodeIncrement" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:attribute name="id"/>
+												<xsd:attribute name="length"/>
+												<xsd:attribute name="slope"/>
+												<xsd:attribute name="position"/>
+												<xsd:attribute name="label"/>
+											</xsd:complexType>											
+										</xsd:element>
+									</xsd:sequence>
+									<xsd:attribute name="id"/>
+									<xsd:attribute name="name"/>
+									<xsd:attribute name="startValue"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				
+			</xsd:sequence>
+            <xsd:attribute name="name"/>
+        </xsd:complexType>
+	</xsd:element>
+</xsd:schema>

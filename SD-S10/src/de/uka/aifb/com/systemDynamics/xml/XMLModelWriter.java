@@ -468,7 +468,7 @@ public class XMLModelWriter {
 			Element sourceSinkNodesElement = document.createElement("SourceSinkNodes");
 			nodesElement.appendChild(sourceSinkNodesElement);
 			for (SourceSinkNode sourceSinkNode : model.getSourceSinkNodes()) {
-				String id = createId("SN", nextSourceSinkNodeId++);
+				String id = createId("SH", nextSourceSinkNodeId++);
 				node2Id.put(sourceSinkNode, id);
 
 				Element sourceSinkNodeElement = document.createElement("SourceSinkNode");
@@ -572,7 +572,7 @@ public class XMLModelWriter {
 			Element SharedNodesElement = document.createElement("SharedNodes");
 			nodesElement.appendChild(SharedNodesElement);
 			for(SharedNode sharednode : model.getSharedNodes()) {
-				String id = createId("SN", nextSharedNodeId++);
+				String id = createId("SH", nextSharedNodeId++);
 				node2Id.put(sharednode, id);
 				Element sharedNodeElement = document.createElement("SharedNode");
 				SharedNodesElement.appendChild(sharedNodeElement);
