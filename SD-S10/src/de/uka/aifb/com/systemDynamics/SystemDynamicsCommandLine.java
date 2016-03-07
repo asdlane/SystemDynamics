@@ -132,9 +132,9 @@ public class SystemDynamicsCommandLine {
 					for (int i = 0; i < columnNames.length; i++) {
 						columnNames[i] = levelNodes[i].getNodeName();
 					}
-
+					System.out.println("EXPORTERRORPOTENTIAL");
 					CSVExport csvExport = new CSVExport(exportFileName, model.get(k).getModelName(), columnNames);
-
+					System.out.println("AFTEREXPORTERRORPOTENTIAL");
 					int percent = 0;
 					System.out.print("Export: 00%");
 
@@ -318,13 +318,18 @@ public class SystemDynamicsCommandLine {
 		{
 			System.out.println("Simulating Phase 2 init");
 			String modelName = doMain(args,phaseCycle);
+			System.out.println("HERE1");
 			SystemDynamicsCommandLine object = new SystemDynamicsCommandLine(modelName,
 					numberRounds,
 					exportCSV,phase + "/"+
 							exportFileName);
+			System.out.println("HERE2");
 			levelNodeMap = object.executeCommand();
+			System.out.println("HERE3");
 			PostProcess.postProcess(numberRounds, modelName, exportFileName, 0);
+			System.out.println("HERE4");
 			DrawGraphs_Init graphs = new DrawGraphs_Init(levelNodeMap,"chart.xml");
+			System.out.println("HERE5");
 			System.out.println("Generating Graphs");
 			graphs.drawGraphs(0, exportFileName,"phase2");
 			System.out.println("Simulation completed succesfully");

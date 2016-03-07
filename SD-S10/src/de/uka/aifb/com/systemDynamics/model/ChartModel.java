@@ -43,13 +43,10 @@ public class ChartModel {
    private String Fstep;
    private String global;
    
-   protected HashSet<LevelNode> levelNodes;
-   protected HashSet<RateNode> rateNodes;
-   protected HashSet<ConstantNode> constantNodes;
-   protected HashSet<AuxiliaryNode> auxiliaryNodes;
-   protected HashSet<SourceSinkNode> sourceSinkNodes;
-   protected HashSet<ColoredSourceSinkNode> ColoredsourceSinkNodes;
-   protected HashSet<SharedNode> SharedNodes;
+   protected HashSet<ChartLevelNode> ChartlevelNodes;
+   protected HashSet<ChartPlanNode> ChartplanNodes;
+   protected HashSet<PlanNode> PlanNodes;
+   
    
    protected boolean isChangeable;
    
@@ -62,13 +59,9 @@ public class ChartModel {
     * Constructor.
     */
    public ChartModel() {
-      levelNodes = new HashSet<LevelNode>();
-      rateNodes = new HashSet<RateNode>();
-      constantNodes = new HashSet<ConstantNode>();
-      auxiliaryNodes = new HashSet<AuxiliaryNode>();
-      sourceSinkNodes = new HashSet<SourceSinkNode>();
-      ColoredsourceSinkNodes = new HashSet<ColoredSourceSinkNode>();
-      SharedNodes = new HashSet<SharedNode>();
+      ChartlevelNodes = new HashSet<ChartLevelNode>(); 
+      ChartplanNodes = new HashSet<ChartPlanNode>();
+      PlanNodes = new HashSet<PlanNode>();
       isChangeable = true;
    }
    
@@ -213,110 +206,43 @@ public class ChartModel {
     * @param maxValue max value allowed across the entire simulation
     * @return created level node
     */
-   public LevelNode createLevelNode(String nodeName, double startValue, double minValue, double maxValue, double curve, boolean learnerChangeable, boolean shared) {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      
-      LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable, shared);
-      levelNodes.add(levelNode);
-      return levelNode;
-   }
-   public SharedNode createSharedNode(String sharedPointer, double nodeVal) {
-	   if(!isChangeable){
-		   throw new ModelNotChangeableException();
-	   }
-	   SharedNode sharedNode = new SharedNode(sharedPointer, nodeVal);
-	   SharedNodes.add(sharedNode);
-		// TODO Auto-generated method stub
-		return sharedNode;
-   }
-   /**
-    * Creates a new rate node with the specified parameter and stores it in the model.
-    * 
-    * @param nodeName node name
-    * @return created rate node
-    */
-   public RateNode createRateNode(String nodeName, boolean learnerChangeable, boolean shared) {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      
-      RateNode rateNode = new RateNode(nodeName, learnerChangeable, shared);
-      rateNodes.add(rateNode);
-      return rateNode;
-   }
-   
-   /**
-    * Creates a new constant node with the specified parameters and stores it in the model.
-    * 
-    * @param nodeName node name
-    * @param constantValue constant value
-    * @return created constant node
-    */
-   public ConstantNode createConstantNode(String nodeName, double constantValue, boolean learnerDecidable, boolean shared) {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      
-      ConstantNode constantNode = new ConstantNode(nodeName, constantValue, learnerDecidable, shared);
-      constantNodes.add(constantNode);
-      return constantNode;
-   }
-   
-   /**
-    * Creates a new auxiliary node with the specified parameter and stores it in the model.
-    * 
-    * @param nodeName node name
-    * @return created auxiliary node
-    */
-   public AuxiliaryNode createAuxiliaryNode(String nodeName, boolean learnerChangeable, boolean shared) {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      
-      AuxiliaryNode auxiliaryNode = new AuxiliaryNode(nodeName, learnerChangeable, shared);
-      auxiliaryNodes.add(auxiliaryNode);
-      return auxiliaryNode;
-   }
-   
-   /**
-    * Creates a new source/sink node and stores it in the model.
-    * 
-    * @return created source/sink node
-    */
-   public SourceSinkNode createSourceSinkNode(boolean shared) {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      
-      SourceSinkNode sourceSinkNode = new SourceSinkNode(shared);
-      sourceSinkNodes.add(sourceSinkNode);
-      return sourceSinkNode;
-   }
-   public ColoredSourceSinkNode createColoredSourceSinkNode(Color nodeColor, int linksTo) {
-	      if (!isChangeable) {
+   public ChartLevelNode createChartLevelNode(String levelNodeIdRef, String Label){
+	   if (!isChangeable) {
 	         throw new ModelNotChangeableException();
-	      }
-	      
-	      ColoredSourceSinkNode ColoredsourceSinkNode = new ColoredSourceSinkNode(nodeColor, linksTo);
-	      ColoredsourceSinkNodes.add(ColoredsourceSinkNode);
-	      return ColoredsourceSinkNode;
+	   }
+	   //TODO ADD CONSTRUCTOR
+	   ChartLevelNode chartlevelNode = new ChartLevelNode();
+	   return chartlevelNode;
    }
-   
+   public ChartPlanNode createChartPlanNode(String ChartPlanNodeIdRef, String Label){
+	   if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	   }
+	   //TODO ADD CONSTRUCTOR
+	   ChartPlanNode chartplanNode = new ChartPlanNode();
+	   return chartplanNode;
+   }
+   public PlanNode createPlanNode(String id, String name, double startValue){
+	   if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	   }
+	   //TODO ADD CONSTRUCTOR
+	   PlanNode planNode = new PlanNode();
+	   return planNode;
+   }   
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods for changing existing nodes
    /////////////////////////////////////////////////////////////////////////////////////////////////
    
-   /**
-    * Removes the specified node from this model. If this node is a level node, a rate node or a
-    * source/sink node, all incoming and outgoing flows to and from this node are also removed.
-    * <p>
-    * A node is not allowed to be removed if it is part of another node's formula.
-    * 
-    * @param node node to remove
-    * @throws FormulaDependencyException if this node is part of the formula of another node
-    */
+   /*
+   protected HashSet<ChartLevelNode> ChartlevelNodes;
+   protected HashSet<ChartPlanNode> ChartplanNodes;
+   protected HashSet<PlanNode> PlanNodes;
+   protected HashSet<PlanNodeIncrement> planNodeIncrements;
+   
+   */
+   
+   /*
    public void removeNode(AbstractNode node) throws FormulaDependencyException {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
@@ -406,15 +332,15 @@ public class ChartModel {
       
       //   (3) remove node
       if (node instanceof AuxiliaryNode) {
-         auxiliaryNodes.remove(node);
+   //      auxiliaryNodes.remove(node);
       }
       if (node instanceof ConstantNode) {
-         constantNodes.remove(node);
+     //    constantNodes.remove(node);
       }
       if (node instanceof LevelNode) {
-         levelNodes.remove(node);
+       //  levelNodes.remove(node);
       }
-   }
+   } */
    
    /**
     * Sets the specified node's name.
@@ -422,6 +348,7 @@ public class ChartModel {
     * @param node node to change
     * @param nodeName new node name
     */
+   /*
    public void setNodeName(AbstractNode node, String nodeName) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
@@ -432,6 +359,7 @@ public class ChartModel {
       
       node.setNodeName(nodeName);
    }
+   */
    
    /**
     * Sets the specified level node's start value.
@@ -987,24 +915,29 @@ public class ChartModel {
     * 
     * @return model's level nodes
     */
+   /*
    public HashSet<LevelNode> getLevelNodes() {
       return (HashSet<LevelNode>)levelNodes.clone();
    }
    
+   */
    /**
     * Gets the model's rate nodes. A shallow clone of the set of rate nodes is returned.
     * 
     * @return model's rate nodes
     */
+   
+   /*
    public HashSet<RateNode> getRateNodes() {
       return (HashSet<RateNode>)rateNodes.clone();
    }
-   
+   */
    /**
     * Gets the model's constant nodes. A shallow clone of the set of constant nodes is returned.
     * 
     * @return constant nodes
     */
+   /*
    public HashSet<ConstantNode> getConstantNodes() {
       return (HashSet<ConstantNode>)constantNodes.clone();
    }
@@ -1012,35 +945,38 @@ public class ChartModel {
 	  return (HashSet<ColoredSourceSinkNode>)  ColoredsourceSinkNodes.clone();
 	   
    }
-   
+   */
    /**
     * Gets the model's auxiliary nodes. A shallow clone of the set of auxiliary nodes is returned.
     * 
     * @return model's auxiliary nodes
     */
+   /*
    public HashSet<AuxiliaryNode> getAuxiliaryNodes() {
       return (HashSet<AuxiliaryNode>)auxiliaryNodes.clone();
    }
-   
+   */
    /**
     * Gets the model's source/sink nodes. A shallow clone of the set of source/sink nodes is
     * returned.
     * 
     * @return model's source/sink nodes
     */
+   /*
    public HashSet<SourceSinkNode> getSourceSinkNodes() {
       return (HashSet<SourceSinkNode>)sourceSinkNodes.clone();
    }
-   
+   */
    /**
     * Checks whether the model is changeable.
     * 
     * @return <code>true</code> iff the model is changeable
     */
+   /*
    public boolean isChangeable() {
       return isChangeable;
    }
-   
+   */
    /**
     * Validates the model and sets it unchangeable. If the model is valid, the method runs without
     * throwing any exception. Otherwise, an appropriate exception is thrown.
@@ -1056,7 +992,7 @@ public class ChartModel {
                                                         NoLevelNodeException,
                                                         RateNodeFlowException,
                                                         UselessNodeException {
-      validateModel(modelNumber);
+     // validateModel(modelNumber);
       isChangeable = false;
    }
    
@@ -1071,6 +1007,7 @@ public class ChartModel {
     * @throws RateNodeFlowException if a rate node has no incoming or no outgoing flow
     * @throws UselessNodeException if a node has no influence on a level node
     */
+   /*
    public void validateModel(int modelNumber) throws AuxiliaryNodesCycleDependencyException,
                                       NoFormulaException,
                                       NoLevelNodeException,
@@ -1134,10 +1071,11 @@ public class ChartModel {
          }
       }
    }
-   
+   */
    /**
     * Computes the nodes' values for the next time step.
     */
+   /*
    public void computeNextValues() {
       
       
@@ -1171,8 +1109,8 @@ public class ChartModel {
                break;
             }
          }
-      }
-      
+      }*/
+      /*
       // compute next values for rate nodes
       for (RateNode rateNode : rateNodes) {
          rateNode.computeNextValue();
@@ -1181,14 +1119,14 @@ public class ChartModel {
       // compute next values for level nodes
       for (LevelNode levelNode : levelNodes) {
          levelNode.computeNextValue();
-      }
+      }*/
    }
    
    /**
     * Checks whether the auxiliary nodes have a cycle dependency.
     * 
     * @return <code>true</code> iff the auxiliary nodes have a cycle dependency
-    */
+    *//*
    private boolean haveAuxiliaryNodesCycleDependency() {
       visitedAuxiliaryNodes = new HashSet<AuxiliaryNode>();
       finishedAuxiliaryNodes = new HashSet<AuxiliaryNode>();
@@ -1198,17 +1136,17 @@ public class ChartModel {
       adjacentListOfAuxiliaryNodes = getAdjacentListOfAuxiliaryNodes();
       
       // search for cycles using adapted depth-first search algorithm
-      for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
-         if (DFS_visit(auxiliaryNode)) {
+      //for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
+        // if (DFS_visit(auxiliaryNode)) {
             // cycle found -> return true
-            return true;
-         }
-      }
+          //  return true;
+         //}
+      //}
       
       // no cycle found -> return false
       return false;
    }
-   
+   */
    /**
     * Searches for cycles using depth-first search (DFS) starting with the specified auxiliary node.
     * This method should only be invoked by method {@link #haveAuxiliaryNodesCycleDependency()}.
@@ -1216,6 +1154,7 @@ public class ChartModel {
     * @param auxiliaryNode auxiliary node
     * @return <code>true</code> iff cycle was found in examined partial graph
     */
+   /*
    private boolean DFS_visit(AuxiliaryNode auxiliaryNode) {
       if (auxiliaryNode == null) {
          throw new IllegalArgumentException("'auxiliaryNode' must not be null.");
@@ -1246,17 +1185,17 @@ public class ChartModel {
       // no cycle found -> return false
       return false;
    }
-   
+   */
    /**
     * Gets all nodes the model's level nodes depend on.
     * 
     * @return set of all nodes the model's level nodes depend on
     */
-   private HashSet<AbstractNode> getAllNodesLevelNodesDependOn() {
-      HashSet<AbstractNode> nodeSet = new HashSet<AbstractNode>();
-      LinkedList<AbstractNode> todoList = new LinkedList<AbstractNode>();
-      HashSet<AbstractNode> nodesAlreadyProcessed = new HashSet<AbstractNode>();
-      
+   //private HashSet<AbstractNode> getAllNodesLevelNodesDependOn() {
+     // HashSet<AbstractNode> nodeSet = new HashSet<AbstractNode>();
+      //LinkedList<AbstractNode> todoList = new LinkedList<AbstractNode>();
+      //HashSet<AbstractNode> nodesAlreadyProcessed = new HashSet<AbstractNode>();
+      /*
       for (LevelNode levelNode : levelNodes) {
          for (RateNode rateNode : levelNode.getIncomingFlows()) {
             if (!nodesAlreadyProcessed.contains(rateNode)) {
@@ -1274,7 +1213,7 @@ public class ChartModel {
             }
          }
       }
-      
+    /*  
       while (!todoList.isEmpty()) {
          AbstractNode nodeToDo = todoList.removeFirst();
          if (nodeToDo instanceof RateNode) {
@@ -1303,9 +1242,9 @@ public class ChartModel {
          
          // node instanceof SourceSinkNode: do nothing (source/sink nodes do not depend on other nodes!)
       }
-      
-      return nodeSet;
-   }
+      */
+     // return nodeSet;
+   //}
    
    /**
     * Gets an adjacent list reprensentation of the auxiliary nodes dependency graph.
@@ -1313,10 +1252,10 @@ public class ChartModel {
     * 
     * @return adjacent list of the auxiliary nodes dependency graph
     */
-   private HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>> getAdjacentListOfAuxiliaryNodes() {
-      HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>> adjacentList =
-         new HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>>();
-      
+   //private HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>> getAdjacentListOfAuxiliaryNodes() {
+      //HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>> adjacentList =
+        // new HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>>();
+      /*
       // initialize directed graph representation of auxiliary nodes dependencies
       for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
          HashSet<AbstractNode> nodesThisAuxiliaryNodeDependsOn =
@@ -1348,6 +1287,7 @@ public class ChartModel {
     * 
     * @return mapping from auxiliary nodes to the number of their predecessor auxiliary nodes
     */
+      /*
    private HashMap<AuxiliaryNode, Integer> getNumberOfPredecessorsMap() {
       HashMap<AuxiliaryNode, Integer> numberOfPredecessorsMap = new HashMap<AuxiliaryNode, Integer>();
       
@@ -1374,3 +1314,4 @@ public class ChartModel {
 
 
 }
+*/

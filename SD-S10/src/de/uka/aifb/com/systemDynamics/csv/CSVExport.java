@@ -56,7 +56,8 @@ public class CSVExport {
     * @throws IOException if any IOException occurs
     */
    public CSVExport(String fileName, String modelName, String[] columnNames) throws IOException {
-      if (fileName == null) {
+	   
+	  if (fileName == null) {
          throw new IllegalArgumentException("'fileName' must not be null.");
       }
       if (modelName == null) {
@@ -68,14 +69,16 @@ public class CSVExport {
       if (columnNames.length < 1) {
          throw new IllegalArgumentException("'columnNames' must have at least length 1.");
       }
-      
+	  
       numberColumns = columnNames.length;
       
       // double values for formatted with nine positions after decimal point
       myFormatter = new DecimalFormat("#.#########");
-      
+      System.out.println("FILE NAME = " + fileName);
       File file = new File(fileName);
+      System.out.println("CSVEXPORTGOTHERE2");
       fileWriter = new FileWriter(file);
+      System.out.println("CSVEXPORTGOTHERE");
       bufferedWriter = new BufferedWriter(fileWriter);
       
       // write model name to file

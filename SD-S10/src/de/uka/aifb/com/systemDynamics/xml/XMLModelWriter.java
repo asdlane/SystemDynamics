@@ -468,7 +468,7 @@ public class XMLModelWriter {
 			Element sourceSinkNodesElement = document.createElement("SourceSinkNodes");
 			nodesElement.appendChild(sourceSinkNodesElement);
 			for (SourceSinkNode sourceSinkNode : model.getSourceSinkNodes()) {
-				String id = createId("SH", nextSourceSinkNodeId++);
+				String id = createId("SN", nextSourceSinkNodeId++);
 				node2Id.put(sourceSinkNode, id);
 
 				Element sourceSinkNodeElement = document.createElement("SourceSinkNode");
