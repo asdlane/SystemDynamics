@@ -50,11 +50,6 @@ public class ChartModel {
    
    protected boolean isChangeable;
    
-   /** data structure used in method 'haveAuxiliaryNodesCycleDependency()' */
-   private HashSet<AuxiliaryNode> visitedAuxiliaryNodes;
-   private HashSet<AuxiliaryNode> finishedAuxiliaryNodes;
-   private HashMap<AuxiliaryNode, HashSet<AuxiliaryNode>> adjacentListOfAuxiliaryNodes;
-   
    /**
     * Constructor.
     */
@@ -210,16 +205,17 @@ public class ChartModel {
 	   if (!isChangeable) {
 	         throw new ModelNotChangeableException();
 	   }
-	   //TODO ADD CONSTRUCTOR
-	   ChartLevelNode chartlevelNode = new ChartLevelNode();
+	   ChartLevelNode chartlevelNode = new ChartLevelNode(levelNodeIdRef, Label);
+	   ChartlevelNodes.add(chartlevelNode);
 	   return chartlevelNode;
    }
    public ChartPlanNode createChartPlanNode(String ChartPlanNodeIdRef, String Label){
 	   if (!isChangeable) {
 	         throw new ModelNotChangeableException();
 	   }
-	   //TODO ADD CONSTRUCTOR
-	   ChartPlanNode chartplanNode = new ChartPlanNode();
+
+	   ChartPlanNode chartplanNode = new ChartPlanNode(ChartPlanNodeIdRef, Label);
+	   ChartplanNodes.add(chartplanNode);
 	   return chartplanNode;
    }
    public PlanNode createPlanNode(String id, String name, double startValue){
@@ -227,9 +223,19 @@ public class ChartModel {
 	         throw new ModelNotChangeableException();
 	   }
 	   //TODO ADD CONSTRUCTOR
-	   PlanNode planNode = new PlanNode();
+	   PlanNode planNode = new PlanNode(id, name, startValue);
+	   PlanNodes.add(planNode);
 	   return planNode;
    }   
+   public HashSet<PlanNode> getPlanNodes(){
+	   return PlanNodes;
+   }
+   public HashSet<ChartPlanNode> getChartPlanNodes(){
+	   return ChartplanNodes;
+   }
+   public HashSet<ChartLevelNode> getChartLevelNodes(){
+	   return ChartlevelNodes;
+   }
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods for changing existing nodes
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1287,7 +1293,18 @@ public class ChartModel {
     * 
     * @return mapping from auxiliary nodes to the number of their predecessor auxiliary nodes
     */
+      /*HashSet<AbstractNode> getAllNodesLevelNodesDependOn() {
+     // HashSet<AbstractNode> nodeSet = new HashSet<AbstractNode>();
+      //LinkedList<AbstractNode> todoList = new LinkedList<AbstractNode>();
+      //HashSet<AbstractNode> nodesAlreadyProcessed = new HashSet<AbstractNode>();
       /*
+      for (LevelNode levelNode : levelNodes) {
+         for (RateNode rateNode : levelNode.getIncomingFlows()) {
+            if (!nodesAlreadyProcessed.contains(rateNode)) {
+               nodeSet.add(rateNode);
+               todoList.add(rateNode);
+               nodesAlreadyProcessed.add(rateNode);
+            }
    private HashMap<AuxiliaryNode, Integer> getNumberOfPredecessorsMap() {
       HashMap<AuxiliaryNode, Integer> numberOfPredecessorsMap = new HashMap<AuxiliaryNode, Integer>();
       
