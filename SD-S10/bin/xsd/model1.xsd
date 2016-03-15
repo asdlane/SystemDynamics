@@ -103,7 +103,17 @@
                   <xsd:sequence>
                     <xsd:element name="SharedNode" maxOccurs="unbounded">
                       <xsd:complexType>
-                        <xsd:attribute name="sharedPointer"                     use="required">                          
+                        <xsd:attribute name="sharedPointer"                     use="required">
+                        </xsd:attribute>
+                        <xsd:attribute name="id"                     >                          
+                        </xsd:attribute>
+                        <xsd:attribute name="sharedPointerid"                     >                          
+                        </xsd:attribute>
+                        <xsd:attribute name="value"                     >                          
+                        </xsd:attribute>
+                        <xsd:attribute name="xCoordinate"                     >                          
+                        </xsd:attribute>
+                        <xsd:attribute name="yCoordinate"                     >                          
                         </xsd:attribute>
                       </xsd:complexType>
                     </xsd:element>

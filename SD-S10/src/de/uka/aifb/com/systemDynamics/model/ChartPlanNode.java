@@ -6,5 +6,11 @@ public class ChartPlanNode {
 		this.chartPlanNodeIdRef = chartPlanNodeIdRef;
 		this.label = label;
 	}
+	public String getchartPlanNodeIdRef(){
+		return chartPlanNodeIdRef;
+	}
+	public String getLabel(){
+		return label;
+	}
 
 }

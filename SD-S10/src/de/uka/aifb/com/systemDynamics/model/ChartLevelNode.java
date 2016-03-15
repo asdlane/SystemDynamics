@@ -8,9 +8,11 @@ public class ChartLevelNode{
 		this.label = label;
 	}
 	 
-	private static ChartLevelNode createChartLevelNode(String levelNodeIdRef, String label){
-		return new ChartLevelNode(levelNodeIdRef, label);
+	public String getLevelNodeIdRef(){
+		return levelNodeIdRef;
 	}
-	
+	public String getLabel(){
+		return label;
+	}
 
 }
