@@ -172,6 +172,7 @@ WindowListener {
 	private Action newSubmodelAction;
 	private Action importAction;
 	private Action shareAction;
+	private Action chartDesignerAction;
 	private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
@@ -330,7 +331,7 @@ WindowListener {
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
 		shareAction.setEnabled(false);
-
+		chartDesignerAction = new chartDesignerAction("ChartDesigner", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Enter Chart Designer");
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		importAction = new importAction("Import", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(IMPORT_ICON)), "Import Submodel");
@@ -710,6 +711,7 @@ WindowListener {
 
 		toolBar.add(executeModelAction);
 		toolBar.add(exitExecuteModelAction);
+		toolBar.add(chartDesignerAction);
 
 		toolBar.addSeparator();
 
@@ -1020,6 +1022,18 @@ WindowListener {
 			modelPanel.add(scrollPane);
 		}
 
+	}
+	private class chartDesignerAction extends AbstractAction{
+		public chartDesignerAction(String name, Icon icon, String toolTipText){
+			super(name, icon);
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ChartMainFrame ChartDesigner = new ChartMainFrame();
+			
+		}
+		
 	}
 	private class NewSubmodelAction extends AbstractAction {
 
