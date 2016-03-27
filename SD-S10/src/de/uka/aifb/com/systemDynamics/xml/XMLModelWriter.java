@@ -975,7 +975,9 @@ public class XMLModelWriter {
 		}
 
 		// (3) location of control points of dependencies
+		
 		Element dependenciesElement = document.createElement("Dependencies");
+		
 		boolean hasDependencyWithControlPoint = false;
 		for (DefaultEdge dependencyEdge : dependencyEdges) {
 

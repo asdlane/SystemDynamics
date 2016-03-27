@@ -394,7 +394,7 @@ public class XMLModelReader {
 					Element SharedElement = (Element)sharedNodeElements.item(i);
 					String id = SharedElement.getAttribute("sharedPointer");
 					String value = SharedElement.getAttribute("value");
-					SharedNode sharedNode = model.get(k).createSharedNode(id, Integer.parseInt(value));
+					SharedNode sharedNode = model.get(k).createSharedNode(id, Double.parseDouble(value));
 					id2SharedNode.put(id, sharedNode);
 				}
 			} catch (XPathExpressionException e) {
@@ -832,6 +832,9 @@ public class XMLModelReader {
 								}
 								else if(NodeType.contains("AN")) {
 									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Auxiliary", Double.parseDouble(value));
+								}
+								else{
+									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "other", Double.parseDouble(value));
 								}
 								graph.get(k).model.createSharedNode(id, Double.parseDouble(value));
 								id2SharedNodeGraphCell.put(id, sharedNode);

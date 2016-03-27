@@ -278,7 +278,7 @@
         </xsd:element>
         <xsd:element name="Dependencies" minOccurs="0">
           <xsd:complexType>
-            <xsd:choice maxOccurs="unbounded">
+            <xsd:choice maxOccurs="unbounded" minOccurs="0">
               <xsd:element name="AuxiliaryNode2AuxiliaryNodeDependency">
                 <xsd:complexType>
                   <xsd:sequence>

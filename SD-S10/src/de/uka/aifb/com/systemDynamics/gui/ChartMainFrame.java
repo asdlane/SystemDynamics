@@ -40,6 +40,7 @@ public class ChartMainFrame extends JFrame{
 	JFileChooser fileChooser;
 	private static final String FILE_ICON = "resources/icon.png";
 	private static final String FILE_OPEN_ICON = "resources/folder_page_white.png";
+	private static final String SUBMODEL_ICON = "resources/submodel.png";
 	private Action newAction;
 	private Action openAction;
 	private Action newChartLevelNodeAction;
@@ -50,6 +51,7 @@ public class ChartMainFrame extends JFrame{
 	private JPanel contentPanel;
 	private JScrollPane chartScrollPanel;
 	private JPanel panel1;
+	private static final String FILE_NEW_LN_ICON = "resources/new_level_node_en_US.png";
 	private ArrayList<ChartModel> chart;
 	private ArrayList<JPanel> chartPanels;
 	private JLabel GraphNumber = new JLabel("");
@@ -136,7 +138,7 @@ public class ChartMainFrame extends JFrame{
 		openAction = new openAction("Open",
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_OPEN_ICON)),
 				"Open");
-		newChartLevelNodeAction = new newChartLevelNodeAction("New Chart Level Node", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
+		newChartLevelNodeAction = new newChartLevelNodeAction("New Chart Level Node", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_LN_ICON)),
 				"New Chart Level Node");
 		newChartPlanNodeAction = new newChartPlanNodeAction("New Chart Plan Node", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
 				"New Chart Plan Node");
@@ -144,7 +146,7 @@ public class ChartMainFrame extends JFrame{
 				"New Plan Node");
 		newPlanNodeIncrementAction = new newPlanNodeIncrementAction("New Plan Node Increment", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
 				"New Plan Node Increment");
-		addChartAction = new addChartAction("Add Chart", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
+		addChartAction = new addChartAction("Add Chart", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_ICON)),
 				"Add Chart");
 		addChartAction.setEnabled(false);
 		newChartLevelNodeAction.setEnabled(false);
