@@ -1108,7 +1108,6 @@ WindowListener {
 
 			Border SubmodelColor = BorderFactory.createLineBorder(SubmodelColors.get(SubmodelColors.size()-1),15);
 
-
 			graph.get(graph.size()-1).setBorder(SubmodelColor);
 			graph.get(graph.size()-1).setSize(400,400);
 			graph.get(graph.size()-1).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);

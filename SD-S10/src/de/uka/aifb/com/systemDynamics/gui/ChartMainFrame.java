@@ -8,15 +8,20 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,6 +32,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
+import de.uka.aifb.com.systemDynamics.model.ChartModel;
+import de.uka.aifb.com.systemDynamics.model.PlanNode;
+import de.uka.aifb.com.systemDynamics.model.PlanNodeIncrement;
 
 public class ChartMainFrame extends JFrame{
 	JFileChooser fileChooser;
@@ -38,16 +46,14 @@ public class ChartMainFrame extends JFrame{
 	private Action newChartPlanNodeAction;
 	private Action newPlanNodeAction;
 	private Action newPlanNodeIncrementAction;
+	private Action addChartAction;
 	private JPanel contentPanel;
-	private JPanel modelPanel;
-	private JScrollPane chartLevelNodePanel;
-	private JScrollPane chartPlanNodePanel;
-	private JScrollPane PlanNodePanel;
-	private JScrollPane PlanNodeIncrementPanel;
+	private JScrollPane chartScrollPanel;
 	private JPanel panel1;
-	private JPanel panel2;
-	private JPanel panel3;
-	private JPanel panel4;
+	private ArrayList<ChartModel> chart;
+	private ArrayList<JPanel> chartPanels;
+	private JLabel GraphNumber = new JLabel("");
+	
 	
 	private static final String FILE_NEW_ICON = "resources/page_white.png";
 	public ChartMainFrame(){		
@@ -56,7 +62,9 @@ public class ChartMainFrame extends JFrame{
 
 		//allows JFileChooser to select both files and directories.
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
+		chart = new ArrayList<ChartModel>();
+		chartPanels = new ArrayList<JPanel>();
+		
 		setTitle("Chart Designer");
 
 		// set frame size and location
@@ -74,35 +82,46 @@ public class ChartMainFrame extends JFrame{
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createToolBar(), BorderLayout.PAGE_START);
 		
+		Border chartBorder = BorderFactory.createLineBorder(Color.black,5);
+		
 		panel1 = new JPanel(new BorderLayout());
-		panel1.setBackground(Color.red);
-		
-		panel2 = new JPanel(new BorderLayout());
-		panel2.setBackground(Color.white);
-		
-		panel3 = new JPanel(new BorderLayout());
-		panel3.setBackground(Color.green);
-	
-		panel4 = new JPanel(new BorderLayout());
-		panel4.setBackground(Color.yellow);
-		
-		contentPanel = new JPanel(new GridLayout(2,2));
-		
-		
-		chartLevelNodePanel = new JScrollPane(panel1);
-		
-		
-		chartPlanNodePanel = new JScrollPane(panel2);
-		
-	
-		PlanNodePanel = new JScrollPane(panel3);
-		
-		
-		PlanNodeIncrementPanel = new JScrollPane(panel4);
-		
-		
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		JTextArea newTextArea = new JTextArea(10,5);
+		newTextArea.addMouseListener(new MouseListener(){
 
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				//Change label on toolbar to show graph number
+				for(int i=0;i<chartPanels.size();i++){
+					if(chartPanels.get(i).equals(panel1)){
+						GraphNumber.setText(Integer.toString(i+1));
+					}
+				}
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+
+		});
+		panel1.add(newTextArea);
+		panel1.setBorder(chartBorder);
+		chartPanels.add(panel1);
+		
+		contentPanel = new JPanel(new GridLayout(1,4));
+		
+		
+		chartScrollPanel = new JScrollPane(panel1);
+					
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
 		setVisible(true);
 
@@ -118,13 +137,21 @@ public class ChartMainFrame extends JFrame{
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_OPEN_ICON)),
 				"Open");
 		newChartLevelNodeAction = new newChartLevelNodeAction("New Chart Level Node", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
-				"New Chart Plan Node");
+				"New Chart Level Node");
 		newChartPlanNodeAction = new newChartPlanNodeAction("New Chart Plan Node", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
 				"New Chart Plan Node");
 		newPlanNodeAction = new newPlanNodeAction("New Plan Node", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
 				"New Plan Node");
 		newPlanNodeIncrementAction = new newPlanNodeIncrementAction("New Plan Node Increment", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
 				"New Plan Node Increment");
+		addChartAction = new addChartAction("Add Chart", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_NEW_ICON)),
+				"Add Chart");
+		addChartAction.setEnabled(false);
+		newChartLevelNodeAction.setEnabled(false);
+		newChartPlanNodeAction.setEnabled(false);
+		newPlanNodeAction.setEnabled(false);
+		newPlanNodeIncrementAction.setEnabled(false);
+		
 		
 	}
 	private JToolBar createToolBar() {
@@ -133,11 +160,17 @@ public class ChartMainFrame extends JFrame{
 		toolBar.setFloatable(false);
 
 		toolBar.add(newAction);
+		toolBar.add(addChartAction);
+		toolBar.addSeparator();
 		toolBar.add(openAction);
 		toolBar.add(newChartLevelNodeAction);
 		toolBar.add(newChartPlanNodeAction);
 		toolBar.add(newPlanNodeAction);
 		toolBar.add(newPlanNodeIncrementAction);
+		
+		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
+		toolBar.add(GraphNumber);
+		
 		return toolBar;
 
 	}
@@ -155,30 +188,20 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(null, "TEST");
 			// TODO Auto-generated method stub
 			//modelPanel.add(chartLevelNodePanel);
 			//modelPanel.add(PlanNodePanel);
 			//modelPanel.add(PlanNodeIncrementPanel);
-			chartLevelNodePanel.setVisible(true);
-			chartPlanNodePanel.setVisible(true);
-			PlanNodePanel.setVisible(true);
-			PlanNodeIncrementPanel.setVisible(true);
-			contentPanel.setLayout(new GridLayout(2,2));
-			contentPanel.add(chartLevelNodePanel);
-			
-			contentPanel.add(chartLevelNodePanel);
-			
-			contentPanel.add(chartPlanNodePanel);
-			
-			contentPanel.add(PlanNodePanel);
-			contentPanel.add(PlanNodeIncrementPanel);
-			
-			//contentPanel.add(modelPanel);
-			
+			chart.add(new ChartModel());
+			chartScrollPanel = new JScrollPane(panel1);
+			contentPanel.add(chartScrollPanel);
+			chartScrollPanel.setVisible(true);
+			GraphNumber.setText("1");
 			contentPanel.setVisible(true);
+			addChartAction.setEnabled(true);
+			newChartLevelNodeAction.setEnabled(true);
+			newPlanNodeAction.setEnabled(true);
 			
-			chartLevelNodePanel.setVisible(true);
 			contentPanel.revalidate();
 		}
 
@@ -205,7 +228,33 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e){
+			ArrayList<Integer> chartNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=chartPanels.size();i++){
+				chartNumbers.add(i);
+			}
+			if(chartPanels.size()==1){
+				String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
+				String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
+				chart.get(0).createChartLevelNode(levelNodeIdRef, Label);
+				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);
+				chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+			}
+			else{
+				try{
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = chartNumbers.toArray();
+					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
+					String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
+					chart.get(chartIndex-1).createChartLevelNode(levelNodeIdRef, Label);
+					JTextArea chartText = (JTextArea)chartPanels.get(chartIndex-1).getComponent(0);
+					chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+					
+				}catch(Exception ex){
 
+				}
+			}
+			
 		}
 	}
 	private class newChartPlanNodeAction extends AbstractAction{
@@ -215,7 +264,102 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e){
-
+			
+			HashSet<PlanNode> PlanNodes = new HashSet<PlanNode>();
+			
+			ArrayList<Integer> chartNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=chartPanels.size();i++){
+				chartNumbers.add(i);
+			}
+						
+			if(chartPanels.size()==1){
+				PlanNodes = chart.get(0).getPlanNodes();
+				ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
+				
+				for(PlanNode t: PlanNodes){
+					chartPlanNodeNames.add(t.getName());
+				}
+				
+				JFrame frame = new JFrame("InputDialog");
+				Object[] choices = chartPlanNodeNames.toArray();
+				String chosenPlanNode = (String)JOptionPane.showInputDialog(frame,"Which Plan Node Would you Like to add?","Chart PlanNode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+				String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new chart PlanNode", JOptionPane.PLAIN_MESSAGE);
+				chart.get(0).createChartPlanNode(chosenPlanNode, Label);
+				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);				
+				chartText.append("\n ChartPlanNode(planNodeIdRef: \""+chosenPlanNode+"\", Label: \""+Label+")");
+				
+				//display plan node and plannode increments too.
+				String PlanNodeName = "";
+				String PlanNodeId = "";
+				for(PlanNode t: PlanNodes){
+					if(t.getName()==chosenPlanNode){
+						PlanNodeName = t.getName();
+						PlanNodeId = t.getId();
+					}
+				}
+				if(PlanNodeName!=""){
+					chartText.append("\n PlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
+				}
+				
+				for(PlanNode t: PlanNodes){
+					if(t.getName()==chosenPlanNode){
+						HashSet<PlanNodeIncrement> increments = t.getPlanNodeIncrements();
+						for(PlanNodeIncrement increment: increments){
+							chartText.append("\n\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
+						}
+					}
+				}
+				
+				
+			}
+			else{
+				try{
+					
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = chartNumbers.toArray();
+					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					
+					PlanNodes = chart.get(chartIndex-1).getPlanNodes();
+					ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
+					
+					for(PlanNode t: PlanNodes){
+						chartPlanNodeNames.add(t.getName());
+					}
+					
+					JFrame frame2 = new JFrame("InputDialog");
+					Object[] choices2 = chartPlanNodeNames.toArray();
+					String chosenPlanNode = (String)JOptionPane.showInputDialog(frame2,"Which Plan Node Would you Like to add?","Chart PlanNode",JOptionPane.PLAIN_MESSAGE,null,choices2,choices2[0]);
+					String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new chart PlanNode", JOptionPane.PLAIN_MESSAGE);
+					chart.get(chartIndex-1).createChartPlanNode(chosenPlanNode, Label);
+					JTextArea chartText = (JTextArea)chartPanels.get(chartIndex-1).getComponent(0);				
+					chartText.append("\n ChartPlanNode(planNodeIdRef: \""+chosenPlanNode+"\", Label: \""+Label+")");
+					
+					//display plan node and plannode increments too.
+					String PlanNodeName = "";
+					String PlanNodeId = "";
+					for(PlanNode t: PlanNodes){
+						if(t.getName()==chosenPlanNode){
+							PlanNodeName = t.getName();
+							PlanNodeId = t.getId();
+						}
+					}
+					if(PlanNodeName!=""){
+						chartText.append("\n PlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
+					}	
+						
+					for(PlanNode t: PlanNodes){
+						if(t.getName()==chosenPlanNode){
+							HashSet<PlanNodeIncrement> increments = t.getPlanNodeIncrements();
+							for(PlanNodeIncrement increment: increments){
+								chartText.append("\n\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
+							}
+						}
+					}
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}			
+			
 		}
 	}
 	private class newPlanNodeAction extends AbstractAction{
@@ -225,7 +369,39 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e){
+			ArrayList<Integer> chartNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=chartPanels.size();i++){
+				chartNumbers.add(i);
+			}
+			if(chartPanels.size()==1){
+				String id = (String)JOptionPane.showInputDialog(null, "Id:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
+				String name = (String)JOptionPane.showInputDialog(null, "Name:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
+				Double startValue = Double.parseDouble(JOptionPane.showInputDialog(null, "Start Value:", "new PlanNode", JOptionPane.PLAIN_MESSAGE));
+				
+				chart.get(0).createPlanNode(id, name, startValue);
+				JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Chart 1's Plan Node Library");
+			}
+			else{
+				try{
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = chartNumbers.toArray();
+					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+					
+					String id = (String)JOptionPane.showInputDialog(null, "Id:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
+					String name = (String)JOptionPane.showInputDialog(null, "Name:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
+					Double startValue = Double.parseDouble(JOptionPane.showInputDialog(null, "Start Value:", "new PlanNode", JOptionPane.PLAIN_MESSAGE));
+					
+					chart.get(chartIndex-1).createPlanNode(id, name, startValue);
+					JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Chart"+ chartIndex+ "'s Plan Node Library");
+					
+					
+				}catch(Exception ex){
 
+				}
+			}
+			
+			newChartPlanNodeAction.setEnabled(true);
+			newPlanNodeIncrementAction.setEnabled(true);
 		}
 	}
 	private class newPlanNodeIncrementAction extends AbstractAction{
@@ -235,7 +411,132 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e){
+HashSet<PlanNode> PlanNodes = new HashSet<PlanNode>();
+			
+			ArrayList<Integer> chartNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=chartPanels.size();i++){
+				chartNumbers.add(i);
+			}
+						
+			if(chartPanels.size()==1){
+				PlanNodes = chart.get(0).getPlanNodes();
+				ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
+				
+				for(PlanNode t: PlanNodes){
+					chartPlanNodeNames.add(t.getName());	
+				}
+				
+				JFrame frame = new JFrame("InputDialog");
+				Object[] choices = chartPlanNodeNames.toArray();
+				String chosenPlanNode = (String)JOptionPane.showInputDialog(frame,"Add PlanNodeIncrement to which PlanNode?","PlanNodeIncrement",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+				
+				
+				String id = (String)JOptionPane.showInputDialog(null, "Label:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE);
+				Double length = Double.parseDouble(JOptionPane.showInputDialog(null, "Length:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
+				Double slope = Double.parseDouble(JOptionPane.showInputDialog(null, "Slope", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
+				
+				//display plan node and plannode increments too.
+				
+				for(PlanNode t: PlanNodes){
+					if(t.getName()==chosenPlanNode){
+						t.createPlanNodeIncrement(id, length, slope);
+					}
+				}
+				
+				JOptionPane.showMessageDialog(null, "PlanNodeIncrement Sucessfully created");
+				
+			}
+			else{
+				try{
+					
+					JFrame frame = new JFrame("InputDialog");
+					Object[] choices = chartNumbers.toArray();
+					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+											
+					PlanNodes = chart.get(chartIndex-1).getPlanNodes();
+					ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
+					
+					for(PlanNode t: PlanNodes){
+						chartPlanNodeNames.add(t.getName());	
+					}
+					
+					JFrame frame2 = new JFrame("InputDialog");
+					Object[] choices2 = chartPlanNodeNames.toArray();
+					String chosenPlanNode = (String)JOptionPane.showInputDialog(frame2,"Add PlanNodeIncrement to which PlanNode?","PlanNodeIncrement",JOptionPane.PLAIN_MESSAGE,null,choices2,choices2[0]);
+					
+					String id = (String)JOptionPane.showInputDialog(null, "Label:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE);
+					Double length = Double.parseDouble(JOptionPane.showInputDialog(null, "Length:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
+					Double slope = Double.parseDouble(JOptionPane.showInputDialog(null, "Slope", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
+					
+					//display plan node and plannode increments too.
+					
+					for(PlanNode t: PlanNodes){
+						if(t.getName()==chosenPlanNode){
+							t.createPlanNodeIncrement(id, length, slope);
+						}
+					}
+					
+					JOptionPane.showMessageDialog(null, "PlanNodeIncrement Sucessfully created");
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}			
+		}
+	}
+	private class addChartAction extends AbstractAction{
+		public addChartAction(String name, Icon icon, String toolTipText){
+			super(name, icon);
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+		@Override
 
+		public void actionPerformed(ActionEvent e){
+			
+			Border chartBorder = BorderFactory.createLineBorder(Color.black,5);
+			
+			final JPanel panel2 = new JPanel(new BorderLayout());
+			JTextArea newTextArea = new JTextArea(10,5);
+			
+			chart.add(new ChartModel());
+			
+			newTextArea.addMouseListener(new MouseListener(){
+
+				@Override
+				public void mouseClicked(MouseEvent e) {}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					//Change label on toolbar to show graph number
+					for(int i=0;i<chartPanels.size();i++){
+						if(chartPanels.get(i).equals(panel2)){
+							GraphNumber.setText(Integer.toString(i+1));
+						}
+					}
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {}
+
+				@Override
+				public void mousePressed(MouseEvent e) {}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {}
+
+			});
+			panel2.add(newTextArea);
+			panel2.setBorder(chartBorder);
+			chartPanels.add(panel2);
+			
+			JScrollPane submodelScroll = new JScrollPane(chartPanels.get(chartPanels.size()-1));
+			GraphNumber.setText(Integer.toString(chartPanels.size()));
+			contentPanel.add(submodelScroll);
+			if(chartPanels.size()>=4){
+				contentPanel.setLayout(new GridLayout(2,4));
+			}
+			//force layout to recalculate now that a new component has been added.
+			contentPanel.revalidate();
 		}
 	}
 }
