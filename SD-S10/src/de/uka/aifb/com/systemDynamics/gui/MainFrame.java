@@ -97,7 +97,8 @@ WindowListener {
 	private static final String COPY_ICON = "resources/copy.png";
 	private static final String PASTE_ICON = "resources/paste.png";
 	private static final String FILE_SAVE_ICON = "resources/disk.png";
-
+	private static final String	CHART_ICON = "resources/chart.png";
+	
 	private static final String FILE_NEW_AN_ICON = "resources/new_auxiliary_node_en_US.png";
 	private static final String FILE_NEW_AN_de_DE_ICON = "resources/new_auxiliary_node_de_DE.png";
 	private static final String FILE_NEW_CN_ICON = "resources/new_constant_node_en_US.png";
@@ -331,7 +332,7 @@ WindowListener {
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
 		shareAction.setEnabled(false);
-		chartDesignerAction = new chartDesignerAction("ChartDesigner", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Enter Chart Designer");
+		chartDesignerAction = new chartDesignerAction("ChartDesigner", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(CHART_ICON)), "Enter Chart Designer");
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		importAction = new importAction("Import", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(IMPORT_ICON)), "Import Submodel");
