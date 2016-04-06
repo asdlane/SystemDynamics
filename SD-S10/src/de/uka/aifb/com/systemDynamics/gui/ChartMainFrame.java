@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -35,14 +38,17 @@ import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGrap
 import de.uka.aifb.com.systemDynamics.model.ChartModel;
 import de.uka.aifb.com.systemDynamics.model.PlanNode;
 import de.uka.aifb.com.systemDynamics.model.PlanNodeIncrement;
+import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelWriter;
 
 public class ChartMainFrame extends JFrame{
 	JFileChooser fileChooser;
 	private static final String FILE_ICON = "resources/icon.png";
 	private static final String FILE_OPEN_ICON = "resources/folder_page_white.png";
 	private static final String SUBMODEL_ICON = "resources/submodel.png";
+	private static final String FILE_SAVE_ICON = "resources/disk.png";
 	private Action newAction;
 	private Action openAction;
+	private Action saveAction;
 	private Action newChartLevelNodeAction;
 	private Action newChartPlanNodeAction;
 	private Action newPlanNodeAction;
@@ -150,6 +156,8 @@ public class ChartMainFrame extends JFrame{
 				"New Plan Node Increment");
 		addChartAction = new addChartAction("Add Chart", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_ICON)),
 				"Add Chart");
+		saveAction = new saveAction("Save", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_SAVE_ICON)),
+				"Save Chart");
 		addChartAction.setEnabled(false);
 		newChartLevelNodeAction.setEnabled(false);
 		newChartPlanNodeAction.setEnabled(false);
@@ -167,6 +175,7 @@ public class ChartMainFrame extends JFrame{
 		toolBar.add(addChartAction);
 		toolBar.addSeparator();
 		toolBar.add(openAction);
+		toolBar.add(saveAction);
 		toolBar.add(newChartLevelNodeAction);
 		toolBar.add(newChartPlanNodeAction);
 		toolBar.add(newPlanNodeAction);
@@ -196,7 +205,13 @@ public class ChartMainFrame extends JFrame{
 			//modelPanel.add(chartLevelNodePanel);
 			//modelPanel.add(PlanNodePanel);
 			//modelPanel.add(PlanNodeIncrementPanel);
-			chart.add(new ChartModel());
+			String name = JOptionPane.showInputDialog(null,"Chart Name:","Name",JOptionPane.PLAIN_MESSAGE);
+			String id = JOptionPane.showInputDialog(null,"Chart Id: ","Id",JOptionPane.PLAIN_MESSAGE);
+			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
+			String xAxisLabel = JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE);
+			String yAxisLabel = JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE);
+			
+			chart.add(new ChartModel(name,id,file,xAxisLabel,yAxisLabel));
 			chartScrollPanel = new JScrollPane(panel1);
 			contentPanel.add(chartScrollPanel);
 			chartScrollPanel.setVisible(true);
@@ -224,7 +239,62 @@ public class ChartMainFrame extends JFrame{
 		}
 
 	}
+	private class saveAction extends AbstractAction{
+		public saveAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
 
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			File file = null;
+			fileChooser.setDialogTitle("Save Chart As");
+			int returnVal = fileChooser.showSaveDialog(ChartMainFrame.this);
+			int selectedOption = 0;
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				// file was selected and 'OK' was pressed
+				file = fileChooser.getSelectedFile();
+
+				// file name should end with ".xml"
+				if (!file.getName().toLowerCase().endsWith(".xml")) {
+					file = new File(file.getAbsolutePath() + ".xml");
+				}
+
+				// check if existing file should be overwritten -> ask for confirmation!
+				if (file.exists()) {
+					PrintWriter writer = null;
+					try {
+						writer = new PrintWriter(file);
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					writer.print("");
+					writer.close();
+					Object[] options = { "Yes", "No"};
+					selectedOption = JOptionPane.showOptionDialog(ChartMainFrame.this,
+							"Are you sure you want to overwrite?",
+							"Overwrite file",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null, // don't use a custom Icon
+							options,
+							options[1]); // default button title
+
+					if (selectedOption == 1) {
+						// do not save
+						return;
+					}
+				}
+			} else {
+				// no file selected
+				return;
+			}
+			ChartXMLModelWriter.writeXMLModel(chart, file.getAbsolutePath());
+		}
+
+	}
 	private class newChartLevelNodeAction extends AbstractAction{
 		public newChartLevelNodeAction(String name, Icon icon, String toolTipText){
 			super(name, icon);
@@ -519,8 +589,13 @@ public class ChartMainFrame extends JFrame{
 
 			final JPanel panel2 = new JPanel(new BorderLayout());
 			JTextArea newTextArea = new JTextArea(10,5);
-
-			chart.add(new ChartModel());
+			String name = JOptionPane.showInputDialog(null,"Chart Name:","Name",JOptionPane.PLAIN_MESSAGE);
+			String id = JOptionPane.showInputDialog(null,"Chart Id: ","Id",JOptionPane.PLAIN_MESSAGE);
+			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
+			String xAxisLabel = JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE);
+			String yAxisLabel = JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE);
+			
+			chart.add(new ChartModel(name, id, file, xAxisLabel, yAxisLabel));
 
 			newTextArea.addMouseListener(new MouseListener(){
 

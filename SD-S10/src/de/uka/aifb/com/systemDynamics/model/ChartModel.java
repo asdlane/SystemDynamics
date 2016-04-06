@@ -53,11 +53,16 @@ public class ChartModel {
    /**
     * Constructor.
     */
-   public ChartModel() {
+   public ChartModel(String chartname, String chartId, String file, String xAxisLabel, String yAxisLabel) {
       ChartlevelNodes = new HashSet<ChartLevelNode>(); 
       ChartplanNodes = new HashSet<ChartPlanNode>();
       PlanNodes = new HashSet<PlanNode>();
       isChangeable = true;
+      chartName = chartname;
+      this.chartId = chartId;
+      this.file = file;
+      this.xAxisLabel = xAxisLabel;
+      this.yAxisLabel = yAxisLabel;
    }
    
    /**
@@ -235,137 +240,7 @@ public class ChartModel {
    }
    public HashSet<ChartLevelNode> getChartLevelNodes(){
 	   return ChartlevelNodes;
-   }
-   /////////////////////////////////////////////////////////////////////////////////////////////////
-   // methods for changing existing nodes
-   /////////////////////////////////////////////////////////////////////////////////////////////////
-   
-   /*
-   protected HashSet<ChartLevelNode> ChartlevelNodes;
-   protected HashSet<ChartPlanNode> ChartplanNodes;
-   protected HashSet<PlanNode> PlanNodes;
-   protected HashSet<PlanNodeIncrement> planNodeIncrements;
-   
-   */
-   
-   /*
-   public void removeNode(AbstractNode node) throws FormulaDependencyException {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      if (node == null) {
-         throw new IllegalArgumentException("'node' must not be null.");
-      }
-      
-      // node is a rate node
-      if (node instanceof RateNode) {
-         RateNode rateNode = (RateNode)node;
-         
-         // remove incoming flow
-         AbstractNode source = rateNode.getFlowSource();
-         if (source != null) {
-            if (source instanceof LevelNode) {
-               removeFlowFromLevelNode2RateNode((LevelNode)source, rateNode);
-            }
-            if (source instanceof SourceSinkNode) {
-               removeFlowFromSourceSinkNode2RateNode((SourceSinkNode)source, rateNode);
-            }
-         }
-         
-         // remove outgoing flow
-         AbstractNode sink = rateNode.getFlowSink();
-         if (sink != null) {
-            if (sink instanceof LevelNode) {
-               removeFlowFromRateNode2LevelNode(rateNode, (LevelNode)sink);
-            }
-            if (sink instanceof SourceSinkNode) {
-               removeFlowFromRateNode2SourceSinkNode(rateNode, (SourceSinkNode)sink);
-            }
-         }
-         
-         rateNodes.remove(node);
-      }
-      
-      // node is a source/sink node
-      if (node instanceof SourceSinkNode) {
-         SourceSinkNode sourceSinkNode = (SourceSinkNode)node;
-         
-         // remove incoming flows
-         for (RateNode rateNode : sourceSinkNode.getIncomingFlows()) {
-            removeFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
-         }
-         
-         // remove outgoing flows
-         for (RateNode rateNode : sourceSinkNode.getOutgoingFlows()) {
-            removeFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode);
-         }
-         
-         sourceSinkNodes.remove(node);
-      }
-      
-      // node is a level node, a constant node or an auxiliary node
-
-      //   (1) check whether it is part of the formula of *another* rate node or auxiliary node
-      for (RateNode rateNode : rateNodes) {
-         if (node != rateNode) {
-            if (rateNode.getAllNodesThisOneDependsOn().contains(node)) {
-               throw new FormulaDependencyException(rateNode);
-            }
-         }
-      }
-      for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
-         if (node != auxiliaryNode) {
-            if (auxiliaryNode.getAllNodesThisOneDependsOn().contains(node)) {
-               throw new FormulaDependencyException(auxiliaryNode);
-            }
-         }
-      }
-      
-      //   (2) if node is level node: remove incoming and outgoing flows
-      if (node instanceof LevelNode) {
-         LevelNode levelNode = (LevelNode)node;
-         
-         // remove incoming flows
-         for (RateNode rateNode : levelNode.getIncomingFlows()) {
-            removeFlowFromRateNode2LevelNode(rateNode, levelNode);
-         }
-         
-         // remove outgoing flows
-         for (RateNode rateNode : levelNode.getOutgoingFlows()) {
-            removeFlowFromLevelNode2RateNode(levelNode, rateNode);
-         }
-      }
-      
-      //   (3) remove node
-      if (node instanceof AuxiliaryNode) {
-   //      auxiliaryNodes.remove(node);
-      }
-      if (node instanceof ConstantNode) {
-     //    constantNodes.remove(node);
-      }
-      if (node instanceof LevelNode) {
-       //  levelNodes.remove(node);
-      }
-   } */
-   
-   /**
-    * Sets the specified node's name.
-    * 
-    * @param node node to change
-    * @param nodeName new node name
-    */
-   /*
-   public void setNodeName(AbstractNode node, String nodeName) {
-      if (!isChangeable) {
-         throw new ModelNotChangeableException();
-      }
-      if (node == null) {
-         throw new IllegalArgumentException("'node' must not be null.");
-      }
-      
-      node.setNodeName(nodeName);
-   }
-   */
+   }   
    
    /**
     * Sets the specified level node's start value.
