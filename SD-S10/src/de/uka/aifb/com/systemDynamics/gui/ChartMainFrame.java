@@ -38,6 +38,7 @@ import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGrap
 import de.uka.aifb.com.systemDynamics.model.ChartModel;
 import de.uka.aifb.com.systemDynamics.model.PlanNode;
 import de.uka.aifb.com.systemDynamics.model.PlanNodeIncrement;
+import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelReader;
 import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelWriter;
 
 public class ChartMainFrame extends JFrame{
@@ -234,8 +235,18 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-
+			int returnVal = fileChooser.showOpenDialog(ChartMainFrame.this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				// file was selected and 'OK' was pressed
+				File file = fileChooser.getSelectedFile();
+				try {
+					ArrayList<ChartModel> chart = ChartXMLModelReader.readXMLModel(file.getAbsolutePath());
+					System.out.println(chart.size());
+				}
+				catch(Exception e3){
+					e3.printStackTrace();
+				}
+			}
 		}
 
 	}
@@ -454,13 +465,13 @@ public class ChartMainFrame extends JFrame{
 				Double startValue = Double.parseDouble(JOptionPane.showInputDialog(null, "Start Value:", "new PlanNode", JOptionPane.PLAIN_MESSAGE));
 
 				chart.get(0).createPlanNode(id, name, startValue);
-				JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Chart 1's Plan Node Library");
+				JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Plan Node Library");
 				}
 				catch(Exception e3){
 					JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
 				}
 			}
-			else{
+	/*		else{
 				try{
 					JFrame frame = new JFrame("InputDialog");
 					Object[] choices = chartNumbers.toArray();
@@ -483,7 +494,7 @@ public class ChartMainFrame extends JFrame{
 
 				}
 			}
-
+*/
 			newChartPlanNodeAction.setEnabled(true);
 			newPlanNodeIncrementAction.setEnabled(true);
 		}

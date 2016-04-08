@@ -70,6 +70,9 @@ public class ChartModel {
     * 
     * @param modelName model name
     */
+   public void addPlanNode(PlanNode node){
+	   PlanNodes.add(node);
+   }
    public void setChartName(String chartName) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();

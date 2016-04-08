@@ -22,20 +22,21 @@ import org.xml.sax.SAXException;
 
 import de.uka.aifb.com.systemDynamics.model.ChartModel;
 import de.uka.aifb.com.systemDynamics.model.Model;
+import de.uka.aifb.com.systemDynamics.model.PlanNode;
 
 public class ChartXMLModelReader {
 	private static final String XSD_FILE_NAME = "xsd/chartModel.xsd";
-	public static ArrayList<ChartModel> readXMLModel(String fileName){
+	public static ArrayList<ChartModel> readXMLModel(String fileName) throws XPathExpressionException{
 		if (fileName == null) {
 			throw new IllegalArgumentException("'fileName' must not be null.");
 		}
 		ArrayList<ChartModel> model = new ArrayList<ChartModel>();
 		createModelFromXML(fileName,XSD_FILE_NAME, model, "Charts");
-		return null;
+		return model;
 		
 	}
 	protected static void createModelFromXML(String fileString, String xsdFileString, ArrayList<ChartModel> model,
-			String rootElementName){
+			String rootElementName) throws XPathExpressionException{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
 
 		// create schema
@@ -61,7 +62,7 @@ public class ChartXMLModelReader {
 
 		// set own error handler that throws exception if XML file is not Schema compliant
 		builder.setErrorHandler(new MyErrorHandler());
-		System.out.println("GOT HERE");
+		
 		Document document = null;
 		try {
 			document = builder.parse(new File(fileString));  // can throw IOException
@@ -81,7 +82,7 @@ public class ChartXMLModelReader {
 		}
 		
 		for(int i=0;i<Charts.getLength();i++){
-			Element chartElement = (Element)Charts.item(0);
+			Element chartElement = (Element)Charts.item(i);
 					
 			String name=chartElement.getAttribute("name");
 			String id=chartElement.getAttribute("id");
@@ -90,6 +91,49 @@ public class ChartXMLModelReader {
 			String yAxisLabel=chartElement.getAttribute("yAxisLabel");
 			
 			ChartModel blankModel = new ChartModel(name, id, file, xAxisLabel, yAxisLabel);
+			
+			NodeList ChartlevelNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartLevelNodes/ChartLevelNode", document,
+							XPathConstants.NODESET);
+			
+			NodeList ChartPlanNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartPlanNodes/ChartPlanNode", document,
+					XPathConstants.NODESET);
+			
+			NodeList PlanNodeElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode", document,
+					XPathConstants.NODESET);
+			
+			
+			for(int j=0;j<ChartlevelNodeElements.getLength();j++){
+				Element ChartlevelNodeElement = (Element)ChartlevelNodeElements.item(i);
+				String levelNodeIdRef = ChartlevelNodeElement.getAttribute("levelNodeIdRef");
+				String label = ChartlevelNodeElement.getAttribute("label");
+				blankModel.createChartLevelNode(levelNodeIdRef, label);
+					
+			}
+			for(int j=0;j<ChartPlanNodeElements.getLength();j++){
+				Element ChartPlanNodeElement = (Element)ChartPlanNodeElements.item(i);
+				String planNodeIdRef = ChartPlanNodeElement.getAttribute("planNodeIdRef");
+				String label = ChartPlanNodeElement.getAttribute("label");
+				blankModel.createChartPlanNode(planNodeIdRef, label);
+			}
+			for(int j=0;j<PlanNodeElements.getLength();j++){
+				Element PlanNodeElement = (Element)PlanNodeElements.item(i);
+				
+				String PlanNodeid = PlanNodeElement.getAttribute("id"); 
+				String PlanNodename = PlanNodeElement.getAttribute("name");
+				double startValue = Double.parseDouble(PlanNodeElement.getAttribute("startValue"));
+				
+				PlanNode add = new PlanNode(PlanNodeid, PlanNodename, startValue);
+				NodeList PlanNodeIncrementElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode[@id='"+id+"']/PlanNodeIncrement", document,
+						XPathConstants.NODESET);
+				for(int k=0;k<PlanNodeIncrementElements.getLength();k++){
+					Element PlanNodeIncrementElement = (Element)PlanNodeIncrementElements.item(k);
+					String Incrementid = PlanNodeIncrementElement.getAttribute("id");
+					double length = Double.parseDouble(PlanNodeIncrementElement.getAttribute("length"));
+					double slope = Double.parseDouble(PlanNodeIncrementElement.getAttribute("slope"));
+					add.createPlanNodeIncrement(Incrementid, length, slope);
+				}
+				blankModel.addPlanNode(add);
+			}
 			model.add(blankModel);
 		}
 		
