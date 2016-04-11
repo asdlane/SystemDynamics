@@ -1,7 +1,9 @@
 package de.uka.aifb.com.systemDynamics.xml;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -34,7 +36,7 @@ import de.uka.aifb.com.systemDynamics.model.RateNodeFlowException;
 import de.uka.aifb.com.systemDynamics.model.UselessNodeException;
 
 public class ChartXMLModelWriter {
-	public static void writeXMLModel(ArrayList<ChartModel> chart, String filename){
+	public static void writeXMLModel(ArrayList<ChartModel> chart, String filename) throws XMLModelReaderWriterException{
 		if (chart == null) {
 			throw new IllegalArgumentException("'model' must not be null.");
 		}
@@ -43,7 +45,21 @@ public class ChartXMLModelWriter {
 		}
 		
 		ArrayList<Document> document = new ArrayList<Document>();
-		
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(new File(filename), true);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			bw.write("<Charts>");
+			bw.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		try {
 			for(int i=0;i<chart.size();i++){
 				document.add(createDocumentForModel(chart.get(i)));
@@ -55,6 +71,49 @@ public class ChartXMLModelWriter {
 		// XML output
 		for(int i=0;i<document.size();i++){
 			writeDocumentToXMLFile(document.get(i), filename);
+		}
+		DocumentBuilderFactory factory2 = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder2 = null;
+		try {
+			builder2 = factory2.newDocumentBuilder();
+
+		} catch (ParserConfigurationException e) {
+			throw new XMLModelReaderWriterException(e);
+		}
+
+		
+		try {
+			fos = new FileOutputStream(new File(filename), true);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			
+			HashSet<PlanNode> planNodeSet = chart.get(0).getPlanNodes();
+			bw.write("<PlanNodes>\n");
+			
+			if(!planNodeSet.isEmpty()){
+				for(PlanNode planNode:planNodeSet){
+					bw.write("\t<PlanNode id=\""+planNode.getId() + "\" name=\""+planNode.getName()+"\" startValue=\""+Double.toString(planNode.getStartValue())+"\">\n");
+					
+					HashSet<PlanNodeIncrement>PlanNodeIncrementSet = planNode.getPlanNodeIncrements();
+					
+					for(PlanNodeIncrement planNodeIncrement:PlanNodeIncrementSet){
+						bw.write("\t\t<PlanNodeIncrement id=\""+planNodeIncrement.getId()+"\" length=\""+Double.toString(planNodeIncrement.getLength())+"\" slope=\""+Double.toString(planNodeIncrement.getSlope())+"\"/>\n");
+						
+					}
+					
+					bw.write("\t</PlanNode>");
+					
+					
+				}
+			}
+			bw.write("</PlanNodes>\n");
+			bw.write("</Charts>");
+			bw.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
@@ -78,7 +137,7 @@ public class ChartXMLModelWriter {
 						transformerFactory.setAttribute("indent-number", new Integer(2));
 
 						Transformer transformer = transformerFactory.newTransformer();
-						transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+						transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 						transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 
@@ -120,8 +179,8 @@ public class ChartXMLModelWriter {
 		}
 
 		Document document = builder.newDocument();
-		Element modelElementTop = document.createElement("Charts");
-		document.appendChild(modelElementTop);
+		//Element modelElementTop = document.createElement("Charts");
+		//document.appendChild(modelElementTop);
 		
 		Element modelElement = document.createElement("Chart");
 		modelElement.setAttribute("id", model.getchartId());
@@ -129,7 +188,7 @@ public class ChartXMLModelWriter {
 		modelElement.setAttribute("file",model.getfile());
 		modelElement.setAttribute("yAxisLabel", model.getyAxisLabel());
 		modelElement.setAttribute("xAxisLabel", model.getxAxisLabel());
-		modelElementTop.appendChild(modelElement);
+		document.appendChild(modelElement);
 		
 		Element ChartLevelNodes = document.createElement("ChartLevelNodes");
 		modelElement.appendChild(ChartLevelNodes);
@@ -152,30 +211,7 @@ public class ChartXMLModelWriter {
 				chartPlanNode.setAttribute("label", planNode.getLabel());
 			}
 		}
-		
-		HashSet<PlanNode> planNodeSet = model.getPlanNodes();
-		Element planNodes = document.createElement("PlanNodes");
-		modelElementTop.appendChild(planNodes);
-		
-		if(!planNodeSet.isEmpty()){
-			for(PlanNode planNode:planNodeSet){
-				Element planNodeElement = document.createElement("PlanNode");
-				planNodes.appendChild(planNodeElement);
-				planNodeElement.setAttribute("id", planNode.getId());
-				planNodeElement.setAttribute("name", planNode.getName());
-				planNodeElement.setAttribute("startValue", Double.toString(planNode.getStartValue()));
 				
-				HashSet<PlanNodeIncrement>PlanNodeIncrementSet = planNode.getPlanNodeIncrements();
-				for(PlanNodeIncrement planNodeIncrement:PlanNodeIncrementSet){
-					Element planNodeIncrementElement = document.createElement("PlanNodeIncrement");
-					planNodeElement.appendChild(planNodeIncrementElement);
-					planNodeIncrementElement.setAttribute("id", planNodeIncrement.getId());
-					planNodeIncrementElement.setAttribute("length", Double.toString(planNodeIncrement.getLength()));
-					planNodeIncrementElement.setAttribute("slope", Double.toString(planNodeIncrement.getSlope()));
-				}
-			}
-		}
-		
 		return document;
 	}
 }

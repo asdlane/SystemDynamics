@@ -35,11 +35,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
+import de.uka.aifb.com.systemDynamics.model.ChartLevelNode;
 import de.uka.aifb.com.systemDynamics.model.ChartModel;
 import de.uka.aifb.com.systemDynamics.model.PlanNode;
 import de.uka.aifb.com.systemDynamics.model.PlanNodeIncrement;
 import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelReader;
 import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelWriter;
+import de.uka.aifb.com.systemDynamics.xml.XMLModelReaderWriterException;
 
 public class ChartMainFrame extends JFrame{
 	JFileChooser fileChooser;
@@ -302,7 +304,12 @@ public class ChartMainFrame extends JFrame{
 				// no file selected
 				return;
 			}
-			ChartXMLModelWriter.writeXMLModel(chart, file.getAbsolutePath());
+			try {
+				ChartXMLModelWriter.writeXMLModel(chart, file.getAbsolutePath());
+			} catch (XMLModelReaderWriterException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 	}
@@ -322,7 +329,13 @@ public class ChartMainFrame extends JFrame{
 				String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
 				chart.get(0).createChartLevelNode(levelNodeIdRef, Label);
 				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);
-				chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+				HashSet<ChartLevelNode> levelNodes = chart.get(0).getChartLevelNodes();
+				if(levelNodes.size()>1){
+					chartText.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+				}
+				else{
+					chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+				}
 			}
 			else{
 				try{
@@ -333,7 +346,13 @@ public class ChartMainFrame extends JFrame{
 					String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
 					chart.get(chartIndex-1).createChartLevelNode(levelNodeIdRef, Label);
 					JTextArea chartText = (JTextArea)chartPanels.get(chartIndex-1).getComponent(0);
-					chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+					HashSet<ChartLevelNode> levelNodes = chart.get(chartIndex-1).getChartLevelNodes();
+					if(levelNodes.size()>1){
+						chartText.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+					}
+					else{
+						chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+					}
 
 				}catch(Exception ex){
 
@@ -404,7 +423,7 @@ public class ChartMainFrame extends JFrame{
 					Object[] choices = chartNumbers.toArray();
 					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 
-					PlanNodes = chart.get(chartIndex-1).getPlanNodes();
+					PlanNodes = chart.get(0).getPlanNodes();
 					ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
 
 					for(PlanNode t: PlanNodes){
@@ -458,7 +477,7 @@ public class ChartMainFrame extends JFrame{
 			for(int i=1;i<=chartPanels.size();i++){
 				chartNumbers.add(i);
 			}
-			if(chartPanels.size()==1){
+			
 				String id = (String)JOptionPane.showInputDialog(null, "Id:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
 				String name = (String)JOptionPane.showInputDialog(null, "Name:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
 				try{
@@ -470,7 +489,7 @@ public class ChartMainFrame extends JFrame{
 				catch(Exception e3){
 					JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
 				}
-			}
+			
 	/*		else{
 				try{
 					JFrame frame = new JFrame("InputDialog");
@@ -508,12 +527,7 @@ public class ChartMainFrame extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			HashSet<PlanNode> PlanNodes = new HashSet<PlanNode>();
 
-			ArrayList<Integer> chartNumbers = new ArrayList<Integer>();
-			for(int i=1;i<=chartPanels.size();i++){
-				chartNumbers.add(i);
-			}
-
-			if(chartPanels.size()==1){
+			
 				PlanNodes = chart.get(0).getPlanNodes();
 				ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
 
@@ -544,7 +558,7 @@ public class ChartMainFrame extends JFrame{
 					JOptionPane.showMessageDialog(null, "Length and Slope must be in decimal format");
 				}				
 
-			}
+			/*
 			else{
 				try{
 
@@ -584,7 +598,7 @@ public class ChartMainFrame extends JFrame{
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
-			}			
+			}*/			
 		}
 	}
 	private class addChartAction extends AbstractAction{

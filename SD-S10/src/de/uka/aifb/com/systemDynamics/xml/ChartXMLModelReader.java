@@ -31,11 +31,11 @@ public class ChartXMLModelReader {
 			throw new IllegalArgumentException("'fileName' must not be null.");
 		}
 		ArrayList<ChartModel> model = new ArrayList<ChartModel>();
-		createModelFromXML(fileName,XSD_FILE_NAME, model, "Charts");
+		model = createModelFromXML(fileName,XSD_FILE_NAME, model, "Charts");
 		return model;
 		
 	}
-	protected static void createModelFromXML(String fileString, String xsdFileString, ArrayList<ChartModel> model,
+	protected static ArrayList<ChartModel> createModelFromXML(String fileString, String xsdFileString, ArrayList<ChartModel> model,
 			String rootElementName) throws XPathExpressionException{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  // can throw FactoryConfiguration Error
 
@@ -45,7 +45,7 @@ public class ChartXMLModelReader {
 		try {
 			schema = schemaFactory.newSchema(new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(xsdFileString)));
 		} catch (SAXException e) {
-			System.out.println("Pradeep");
+			
 			// exception should not happen because schema is correct!
 			
 		}
@@ -75,7 +75,7 @@ public class ChartXMLModelReader {
 		String modelName = "";
 		NodeList Charts = null;
 		try {
-			Charts = (NodeList)xpath.evaluate("/Charts/Chart", document, XPathConstants.NODE);
+			Charts = (NodeList)xpath.evaluate("/Charts/Chart", document, XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,7 +137,7 @@ public class ChartXMLModelReader {
 			model.add(blankModel);
 		}
 		
-		
+		return model;
 
 	}
 }
