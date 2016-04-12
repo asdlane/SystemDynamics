@@ -37,6 +37,7 @@ import javax.swing.event.ChangeListener;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
 import de.uka.aifb.com.systemDynamics.model.ChartLevelNode;
 import de.uka.aifb.com.systemDynamics.model.ChartModel;
+import de.uka.aifb.com.systemDynamics.model.ChartPlanNode;
 import de.uka.aifb.com.systemDynamics.model.PlanNode;
 import de.uka.aifb.com.systemDynamics.model.PlanNodeIncrement;
 import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelReader;
@@ -213,7 +214,7 @@ public class ChartMainFrame extends JFrame{
 			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
 			String xAxisLabel = JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE);
 			String yAxisLabel = JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE);
-			
+
 			chart.add(new ChartModel(name,id,file,xAxisLabel,yAxisLabel));
 			chartScrollPanel = new JScrollPane(panel1);
 			contentPanel.add(chartScrollPanel);
@@ -237,18 +238,104 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			chartPanels.remove(0);
 			int returnVal = fileChooser.showOpenDialog(ChartMainFrame.this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// file was selected and 'OK' was pressed
 				File file = fileChooser.getSelectedFile();
 				try {
-					ArrayList<ChartModel> chart = ChartXMLModelReader.readXMLModel(file.getAbsolutePath());
-					System.out.println(chart.size());
+					chart = ChartXMLModelReader.readXMLModel(file.getAbsolutePath());
+
 				}
 				catch(Exception e3){
 					e3.printStackTrace();
 				}
+
+				for(int i=0;i<chart.size();i++){
+
+					Border chartBorder = BorderFactory.createLineBorder(Color.black,5);
+
+					final JPanel panel2 = new JPanel(new BorderLayout());
+					JTextArea newTextArea = new JTextArea(10,5);
+
+					newTextArea.addMouseListener(new MouseListener(){
+
+						@Override
+						public void mouseClicked(MouseEvent e) {}
+
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							//Change label on toolbar to show graph number
+							for(int i=0;i<chartPanels.size();i++){
+								if(chartPanels.get(i).equals(panel2)){
+									GraphNumber.setText(Integer.toString(i+1));
+								}
+							}
+
+						}
+
+						@Override
+						public void mouseExited(MouseEvent e) {}
+
+						@Override
+						public void mousePressed(MouseEvent e) {}
+
+						@Override
+						public void mouseReleased(MouseEvent e) {}
+
+					});
+					panel2.add(newTextArea);
+					panel2.setBorder(chartBorder);
+					chartPanels.add(panel2);
+
+					JScrollPane submodelScroll = new JScrollPane(chartPanels.get(chartPanels.size()-1));
+					GraphNumber.setText(Integer.toString(chartPanels.size()));
+					contentPanel.add(submodelScroll);
+					HashSet<ChartLevelNode> ChartLevelNodes = chart.get(i).getChartLevelNodes();
+					for(ChartLevelNode node: ChartLevelNodes){
+						String levelNodeIdRef = node.getLevelNodeIdRef();
+						String Label = node.getLabel();
+						if(ChartLevelNodes.size()>1){
+							newTextArea.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
+						}
+						else{
+							newTextArea.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
+						}
+					}
+					HashSet<ChartPlanNode>ChartPlanNodes = chart.get(i).getChartPlanNodes();
+					HashSet<PlanNode> PlanNodes = chart.get(0).getPlanNodes();
+					
+					for(ChartPlanNode node : ChartPlanNodes){
+						
+						for(PlanNode planNode : PlanNodes){								
+							if(node.getchartPlanNodeIdRef().equals(planNode.getName())){
+								System.out.println("GOT HERTE");		
+								newTextArea.append("\n ChartPlanNode(planNodeIdRef: \""+planNode.getName()+"\", Label: \""+node.getLabel()+")");
+								newTextArea.append("\n \tPlanNode(Name: \""+planNode.getName()+"\", Id=\""+planNode.getId()+"\")");
+								HashSet<PlanNodeIncrement> planNodeIncrements= planNode.getPlanNodeIncrements();
+								for(PlanNodeIncrement increment: planNodeIncrements){
+									newTextArea.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
+								}
+							}
+						}
+						
+					}
+					
+					
+					
+					newChartPlanNodeAction.setEnabled(true);
+					newPlanNodeAction.setEnabled(true);
+					newPlanNodeIncrementAction.setEnabled(true);
+					
+				}
+				if(chartPanels.size()>=4){
+					contentPanel.setLayout(new GridLayout(2,4));
+				}
+				//force layout to recalculate now that a new component has been added.
+				contentPanel.revalidate();
+
 			}
+
 		}
 
 	}
@@ -331,10 +418,10 @@ public class ChartMainFrame extends JFrame{
 				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);
 				HashSet<ChartLevelNode> levelNodes = chart.get(0).getChartLevelNodes();
 				if(levelNodes.size()>1){
-					chartText.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+					chartText.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
 				}
 				else{
-					chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
+					chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
 				}
 			}
 			else{
@@ -402,14 +489,14 @@ public class ChartMainFrame extends JFrame{
 					}
 				}
 				if(PlanNodeName!=""){
-					chartText.append("\n PlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
+					chartText.append("\n \tPlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
 				}
 
 				for(PlanNode t: PlanNodes){
 					if(t.getName()==chosenPlanNode){
 						HashSet<PlanNodeIncrement> increments = t.getPlanNodeIncrements();
 						for(PlanNodeIncrement increment: increments){
-							chartText.append("\n\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
+							chartText.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
 						}
 					}
 				}
@@ -448,14 +535,14 @@ public class ChartMainFrame extends JFrame{
 						}
 					}
 					if(PlanNodeName!=""){
-						chartText.append("\n PlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
+						chartText.append("\n \tPlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
 					}	
 
 					for(PlanNode t: PlanNodes){
 						if(t.getName()==chosenPlanNode){
 							HashSet<PlanNodeIncrement> increments = t.getPlanNodeIncrements();
 							for(PlanNodeIncrement increment: increments){
-								chartText.append("\n\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
+								chartText.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
 							}
 						}
 					}
@@ -477,20 +564,20 @@ public class ChartMainFrame extends JFrame{
 			for(int i=1;i<=chartPanels.size();i++){
 				chartNumbers.add(i);
 			}
-			
-				String id = (String)JOptionPane.showInputDialog(null, "Id:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
-				String name = (String)JOptionPane.showInputDialog(null, "Name:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
-				try{
+
+			String id = (String)JOptionPane.showInputDialog(null, "Id:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
+			String name = (String)JOptionPane.showInputDialog(null, "Name:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
+			try{
 				Double startValue = Double.parseDouble(JOptionPane.showInputDialog(null, "Start Value:", "new PlanNode", JOptionPane.PLAIN_MESSAGE));
 
 				chart.get(0).createPlanNode(id, name, startValue);
 				JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Plan Node Library");
-				}
-				catch(Exception e3){
-					JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
-				}
-			
-	/*		else{
+			}
+			catch(Exception e3){
+				JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
+			}
+
+			/*		else{
 				try{
 					JFrame frame = new JFrame("InputDialog");
 					Object[] choices = chartNumbers.toArray();
@@ -513,7 +600,7 @@ public class ChartMainFrame extends JFrame{
 
 				}
 			}
-*/
+			 */
 			newChartPlanNodeAction.setEnabled(true);
 			newPlanNodeIncrementAction.setEnabled(true);
 		}
@@ -527,36 +614,36 @@ public class ChartMainFrame extends JFrame{
 		public void actionPerformed(ActionEvent e){
 			HashSet<PlanNode> PlanNodes = new HashSet<PlanNode>();
 
-			
-				PlanNodes = chart.get(0).getPlanNodes();
-				ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
+
+			PlanNodes = chart.get(0).getPlanNodes();
+			ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
+
+			for(PlanNode t: PlanNodes){
+				chartPlanNodeNames.add(t.getName());	
+			}
+
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = chartPlanNodeNames.toArray();
+			String chosenPlanNode = (String)JOptionPane.showInputDialog(frame,"Add PlanNodeIncrement to which PlanNode?","PlanNodeIncrement",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+
+
+			String id = (String)JOptionPane.showInputDialog(null, "Label:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE);
+			try{
+				Double length = Double.parseDouble(JOptionPane.showInputDialog(null, "Length:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
+				Double slope = Double.parseDouble(JOptionPane.showInputDialog(null, "Slope", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
+
+				//display plan node and plannode increments too.
 
 				for(PlanNode t: PlanNodes){
-					chartPlanNodeNames.add(t.getName());	
-				}
-
-				JFrame frame = new JFrame("InputDialog");
-				Object[] choices = chartPlanNodeNames.toArray();
-				String chosenPlanNode = (String)JOptionPane.showInputDialog(frame,"Add PlanNodeIncrement to which PlanNode?","PlanNodeIncrement",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-
-
-				String id = (String)JOptionPane.showInputDialog(null, "Label:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE);
-				try{
-					Double length = Double.parseDouble(JOptionPane.showInputDialog(null, "Length:", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
-					Double slope = Double.parseDouble(JOptionPane.showInputDialog(null, "Slope", "new PlanNodeIncrement", JOptionPane.PLAIN_MESSAGE));
-
-					//display plan node and plannode increments too.
-
-					for(PlanNode t: PlanNodes){
-						if(t.getName()==chosenPlanNode){
-							t.createPlanNodeIncrement(id, length, slope);
-						}
+					if(t.getName()==chosenPlanNode){
+						t.createPlanNodeIncrement(id, length, slope);
 					}
-					JOptionPane.showMessageDialog(null, "PlanNodeIncrement Sucessfully created");
 				}
-				catch(Exception e2){
-					JOptionPane.showMessageDialog(null, "Length and Slope must be in decimal format");
-				}				
+				JOptionPane.showMessageDialog(null, "PlanNodeIncrement Sucessfully created");
+			}
+			catch(Exception e2){
+				JOptionPane.showMessageDialog(null, "Length and Slope must be in decimal format");
+			}				
 
 			/*
 			else{
@@ -594,7 +681,7 @@ public class ChartMainFrame extends JFrame{
 					catch(Exception e3){
 						JOptionPane.showMessageDialog(null, "Length or Slope not in decimal format");
 					}
-					
+
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
@@ -619,7 +706,7 @@ public class ChartMainFrame extends JFrame{
 			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
 			String xAxisLabel = JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE);
 			String yAxisLabel = JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE);
-			
+
 			chart.add(new ChartModel(name, id, file, xAxisLabel, yAxisLabel));
 
 			newTextArea.addMouseListener(new MouseListener(){
