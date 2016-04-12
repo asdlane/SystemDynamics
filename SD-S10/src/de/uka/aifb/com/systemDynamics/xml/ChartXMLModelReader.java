@@ -33,7 +33,7 @@ public class ChartXMLModelReader {
 		ArrayList<ChartModel> model = new ArrayList<ChartModel>();
 		model = createModelFromXML(fileName,XSD_FILE_NAME, model, "Charts");
 		return model;
-		
+
 	}
 	protected static ArrayList<ChartModel> createModelFromXML(String fileString, String xsdFileString, ArrayList<ChartModel> model,
 			String rootElementName) throws XPathExpressionException{
@@ -45,9 +45,9 @@ public class ChartXMLModelReader {
 		try {
 			schema = schemaFactory.newSchema(new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(xsdFileString)));
 		} catch (SAXException e) {
-			
+
 			// exception should not happen because schema is correct!
-			
+
 		}
 
 		factory.setSchema(schema);
@@ -62,13 +62,13 @@ public class ChartXMLModelReader {
 
 		// set own error handler that throws exception if XML file is not Schema compliant
 		builder.setErrorHandler(new MyErrorHandler());
-		
+
 		Document document = null;
 		try {
 			document = builder.parse(new File(fileString));  // can throw IOException
 			// can throw SAXException
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}		
 		XPath xpath = XPathFactory.newInstance().newXPath();
@@ -80,34 +80,34 @@ public class ChartXMLModelReader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		for(int i=0;i<Charts.getLength();i++){
 			Element chartElement = (Element)Charts.item(i);
-					
+
 			String name=chartElement.getAttribute("name");
 			String id=chartElement.getAttribute("id");
 			String file=chartElement.getAttribute("file");
 			String xAxisLabel=chartElement.getAttribute("xAxisLabel");
 			String yAxisLabel=chartElement.getAttribute("yAxisLabel");
-			
+
 			ChartModel blankModel = new ChartModel(name, id, file, xAxisLabel, yAxisLabel);
-			
+
 			NodeList ChartlevelNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartLevelNodes/ChartLevelNode", document,
-							XPathConstants.NODESET);
-			
+					XPathConstants.NODESET);
+
 			NodeList ChartPlanNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartPlanNodes/ChartPlanNode", document,
 					XPathConstants.NODESET);
-			
+
 			NodeList PlanNodeElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode", document,
 					XPathConstants.NODESET);
-			
-			
+
+
 			for(int j=0;j<ChartlevelNodeElements.getLength();j++){
 				Element ChartlevelNodeElement = (Element)ChartlevelNodeElements.item(i);
 				String levelNodeIdRef = ChartlevelNodeElement.getAttribute("levelNodeIdRef");
 				String label = ChartlevelNodeElement.getAttribute("label");
 				blankModel.createChartLevelNode(levelNodeIdRef, label);
-					
+
 			}
 			for(int j=0;j<ChartPlanNodeElements.getLength();j++){
 				Element ChartPlanNodeElement = (Element)ChartPlanNodeElements.item(i);
@@ -115,28 +115,30 @@ public class ChartXMLModelReader {
 				String label = ChartPlanNodeElement.getAttribute("label");
 				blankModel.createChartPlanNode(planNodeIdRef, label);
 			}
-			for(int j=0;j<PlanNodeElements.getLength();j++){
-				Element PlanNodeElement = (Element)PlanNodeElements.item(i);
-				
-				String PlanNodeid = PlanNodeElement.getAttribute("id"); 
-				String PlanNodename = PlanNodeElement.getAttribute("name");
-				double startValue = Double.parseDouble(PlanNodeElement.getAttribute("startValue"));
-				
-				PlanNode add = new PlanNode(PlanNodeid, PlanNodename, startValue);
-				NodeList PlanNodeIncrementElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode[@id='"+id+"']/PlanNodeIncrement", document,
-						XPathConstants.NODESET);
-				for(int k=0;k<PlanNodeIncrementElements.getLength();k++){
-					Element PlanNodeIncrementElement = (Element)PlanNodeIncrementElements.item(k);
-					String Incrementid = PlanNodeIncrementElement.getAttribute("id");
-					double length = Double.parseDouble(PlanNodeIncrementElement.getAttribute("length"));
-					double slope = Double.parseDouble(PlanNodeIncrementElement.getAttribute("slope"));
-					add.createPlanNodeIncrement(Incrementid, length, slope);
+			if(i==0){
+				for(int j=0;j<PlanNodeElements.getLength();j++){
+					Element PlanNodeElement = (Element)PlanNodeElements.item(i);
+
+					String PlanNodeid = PlanNodeElement.getAttribute("id"); 
+					String PlanNodename = PlanNodeElement.getAttribute("name");
+					double startValue = Double.parseDouble(PlanNodeElement.getAttribute("startValue"));
+
+					PlanNode add = new PlanNode(PlanNodeid, PlanNodename, startValue);
+					NodeList PlanNodeIncrementElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode[@id='"+id+"']/PlanNodeIncrement", document,
+							XPathConstants.NODESET);
+					for(int k=0;k<PlanNodeIncrementElements.getLength();k++){
+						Element PlanNodeIncrementElement = (Element)PlanNodeIncrementElements.item(k);
+						String Incrementid = PlanNodeIncrementElement.getAttribute("id");
+						double length = Double.parseDouble(PlanNodeIncrementElement.getAttribute("length"));
+						double slope = Double.parseDouble(PlanNodeIncrementElement.getAttribute("slope"));
+						add.createPlanNodeIncrement(Incrementid, length, slope);
+					}
+					blankModel.addPlanNode(add);
 				}
-				blankModel.addPlanNode(add);
 			}
 			model.add(blankModel);
 		}
-		
+
 		return model;
 
 	}
