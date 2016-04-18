@@ -326,7 +326,7 @@ public class ChartMainFrame extends JFrame{
 					newChartPlanNodeAction.setEnabled(true);
 					newPlanNodeAction.setEnabled(true);
 					newPlanNodeIncrementAction.setEnabled(true);
-					
+					newChartLevelNodeAction.setEnabled(true);
 				}
 				if(chartPanels.size()>=4){
 					contentPanel.setLayout(new GridLayout(2,4));

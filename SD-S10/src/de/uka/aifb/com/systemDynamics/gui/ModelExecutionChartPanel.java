@@ -286,7 +286,9 @@ private JFreeChart chart2;
     		 for(int i=0;i<LearnerChangeableNodes.size();i++) {
     			 try {    				 
     				 model.setStartValue(LearnerChangeableNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
-    				 model.setSharedValue(sharedNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
+    				 if(sharedNodes.size()!=0){
+    					 model.setSharedValue(sharedNodes.get(i), Double.parseDouble(LevelNodeChangeFields.get(i).getText()));
+    				 }
     				 JOptionPane.showMessageDialog(null, "Value change for Level Nodes completed");	
     			 }
     			 catch(Exception e1) {

@@ -2524,6 +2524,8 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			JOptionPane.showMessageDialog(null, "Please Save your file before entering the Parameter Tuner");
+			saveAsAction.actionPerformed(null);
 			int i=0;
 			try {
 				//**********************************************************TODO:***********************************************************
@@ -2677,8 +2679,11 @@ WindowListener {
 			exitExecuteModelAction.setEnabled(true);
 		}
 		public void reset(){
+			JOptionPane.showMessageDialog(null, "Please reopen your file to complete the reset.");
+			openAction.actionPerformed(null);
 			actionPerformed(null);
 		}
+		
 	}
 
 	private class exitExecuteModelAction extends AbstractAction {
