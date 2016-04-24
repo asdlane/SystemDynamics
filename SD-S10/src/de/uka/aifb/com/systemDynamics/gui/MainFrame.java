@@ -332,7 +332,9 @@ WindowListener {
 		copyAction.setEnabled(false);
 		pasteAction.setEnabled(false);
 		shareAction.setEnabled(false);
+		
 		chartDesignerAction = new chartDesignerAction("ChartDesigner", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(CHART_ICON)), "Enter Chart Designer");
+		chartDesignerAction.setEnabled(false);
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		importAction = new importAction("Import", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(IMPORT_ICON)), "Import Submodel");
@@ -1018,6 +1020,7 @@ WindowListener {
 					cutAction.setEnabled(true);
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
+					chartDesignerAction.setEnabled(true);
 				}
 			}
 			modelPanel.add(scrollPane);
@@ -1031,7 +1034,11 @@ WindowListener {
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ChartMainFrame ChartDesigner = new ChartMainFrame();
+			ArrayList<Model> model = new ArrayList<Model>();
+			for(int i=0;i<graph.size();i++){
+				model.add(graph.get(i).model);
+			}
+			ChartMainFrame ChartDesigner = new ChartMainFrame(model);
 			
 		}
 		
@@ -1515,7 +1522,7 @@ WindowListener {
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
 					newSubmodelAction.setEnabled(true);
-
+					chartDesignerAction.setEnabled(true);
 					try {
 						int i=0;
 						for (SystemDynamicsGraph subGraph : graph) {

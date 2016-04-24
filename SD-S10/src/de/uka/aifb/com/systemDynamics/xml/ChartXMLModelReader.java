@@ -3,6 +3,7 @@ package de.uka.aifb.com.systemDynamics.xml;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,7 +69,7 @@ public class ChartXMLModelReader {
 			document = builder.parse(new File(fileString));  // can throw IOException
 			// can throw SAXException
 		} catch (Exception e) {
-
+			JOptionPane.showMessageDialog(null, "You are missing one or more elements from your chart");
 			e.printStackTrace();
 		}		
 		XPath xpath = XPathFactory.newInstance().newXPath();

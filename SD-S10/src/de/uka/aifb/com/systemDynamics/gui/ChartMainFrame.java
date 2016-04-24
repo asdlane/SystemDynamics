@@ -38,6 +38,8 @@ import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGrap
 import de.uka.aifb.com.systemDynamics.model.ChartLevelNode;
 import de.uka.aifb.com.systemDynamics.model.ChartModel;
 import de.uka.aifb.com.systemDynamics.model.ChartPlanNode;
+import de.uka.aifb.com.systemDynamics.model.LevelNode;
+import de.uka.aifb.com.systemDynamics.model.Model;
 import de.uka.aifb.com.systemDynamics.model.PlanNode;
 import de.uka.aifb.com.systemDynamics.model.PlanNodeIncrement;
 import de.uka.aifb.com.systemDynamics.xml.ChartXMLModelReader;
@@ -71,8 +73,9 @@ public class ChartMainFrame extends JFrame{
 
 
 	private static final String FILE_NEW_ICON = "resources/page_white.png";
-	public ChartMainFrame(){		
-
+	private ArrayList<Model> localModel;
+	public ChartMainFrame(ArrayList<Model> model){		
+		localModel =  model;
 		fileChooser = new JFileChooser();
 
 		//allows JFileChooser to select both files and directories.
@@ -393,8 +396,10 @@ public class ChartMainFrame extends JFrame{
 			}
 			try {
 				ChartXMLModelWriter.writeXMLModel(chart, file.getAbsolutePath());
+				JOptionPane.showMessageDialog(null, "Save Successful!");
 			} catch (XMLModelReaderWriterException e1) {
 				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "Save error");
 				e1.printStackTrace();
 			}
 		}
@@ -411,8 +416,21 @@ public class ChartMainFrame extends JFrame{
 			for(int i=1;i<=chartPanels.size();i++){
 				chartNumbers.add(i);
 			}
+			HashSet<LevelNode> allLevel = new HashSet<LevelNode>();
+			for(int i=0;i<localModel.size();i++){
+				allLevel.addAll(localModel.get(i).getLevelNodes());
+			}
+			
+				String[] options = new String[allLevel.size()];
+				int i=0;
+			for(LevelNode node:allLevel){
+				options[i] = node.getStringRepresentation();
+				i++;
+			}
+			i=0;
 			if(chartPanels.size()==1){
-				String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
+				
+				String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 				String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
 				chart.get(0).createChartLevelNode(levelNodeIdRef, Label);
 				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);
