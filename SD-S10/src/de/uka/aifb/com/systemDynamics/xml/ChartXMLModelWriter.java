@@ -188,6 +188,11 @@ public class ChartXMLModelWriter {
 		modelElement.setAttribute("file",model.getfile());
 		modelElement.setAttribute("yAxisLabel", model.getyAxisLabel());
 		modelElement.setAttribute("xAxisLabel", model.getxAxisLabel());
+		modelElement.setAttribute("global", model.getGlobal());
+		String PR = model.getPr();
+		if(PR != ""){
+			modelElement.setAttribute("pr", PR);
+		}
 		document.appendChild(modelElement);
 		
 		Element ChartLevelNodes = document.createElement("ChartLevelNodes");

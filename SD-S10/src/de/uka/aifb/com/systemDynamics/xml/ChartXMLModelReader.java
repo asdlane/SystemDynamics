@@ -90,8 +90,16 @@ public class ChartXMLModelReader {
 			String file=chartElement.getAttribute("file");
 			String xAxisLabel=chartElement.getAttribute("xAxisLabel");
 			String yAxisLabel=chartElement.getAttribute("yAxisLabel");
+			String global=chartElement.getAttribute("global");
+			String pr = "";
+			try{
+				pr = chartElement.getAttribute("pr");
+			}
+			catch(Exception e){
+				
+			}
 
-			ChartModel blankModel = new ChartModel(name, id, file, xAxisLabel, yAxisLabel);
+			ChartModel blankModel = new ChartModel(name, id, file, xAxisLabel, yAxisLabel, global, pr);
 
 			NodeList ChartlevelNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartLevelNodes/ChartLevelNode", document,
 					XPathConstants.NODESET);

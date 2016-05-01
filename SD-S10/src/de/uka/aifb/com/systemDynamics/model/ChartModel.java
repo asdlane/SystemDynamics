@@ -43,6 +43,7 @@ public class ChartModel {
    private String Fstep;
    private String global;
    
+   
    protected HashSet<ChartLevelNode> ChartlevelNodes;
    protected HashSet<ChartPlanNode> ChartplanNodes;
    protected HashSet<PlanNode> PlanNodes;
@@ -53,16 +54,19 @@ public class ChartModel {
    /**
     * Constructor.
     */
-   public ChartModel(String chartname, String chartId, String file, String xAxisLabel, String yAxisLabel) {
+   public ChartModel(String chartname, String chartId, String file, String xAxisLabel, String yAxisLabel, String global, String pr) {
       ChartlevelNodes = new HashSet<ChartLevelNode>(); 
       ChartplanNodes = new HashSet<ChartPlanNode>();
       PlanNodes = new HashSet<PlanNode>();
       isChangeable = true;
-      chartName = chartname;
+      this.chartName = chartname;
+      
       this.chartId = chartId;
       this.file = file;
       this.xAxisLabel = xAxisLabel;
       this.yAxisLabel = yAxisLabel;
+      this.global = global;
+      this.pr = pr;
    }
    
    /**

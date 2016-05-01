@@ -86,6 +86,7 @@ public class ChartMainFrame extends JFrame{
 		setTitle("Chart Designer");
 
 		// set frame size and location
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize((int)(dimension.getWidth() * 0.75), (int)(dimension.getHeight() * 0.75));
 		setLocation((int)(dimension.getWidth() * 0.125), (int)(dimension.getHeight() * 0.125));
@@ -217,8 +218,14 @@ public class ChartMainFrame extends JFrame{
 			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
 			String xAxisLabel = JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE);
 			String yAxisLabel = JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE);
-
-			chart.add(new ChartModel(name,id,file,xAxisLabel,yAxisLabel));
+			String global = JOptionPane.showInputDialog(null,"global","global",JOptionPane.PLAIN_MESSAGE);
+			int PRChoice = JOptionPane.showConfirmDialog(null, "Add a PR?");
+			String pr = "";
+			if(PRChoice == JOptionPane.YES_OPTION){
+				pr = JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE);
+			}
+			
+			chart.add(new ChartModel(name,id,file,xAxisLabel,yAxisLabel, global, pr));
 			chartScrollPanel = new JScrollPane(panel1);
 			contentPanel.add(chartScrollPanel);
 			chartScrollPanel.setVisible(true);
@@ -724,8 +731,15 @@ public class ChartMainFrame extends JFrame{
 			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
 			String xAxisLabel = JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE);
 			String yAxisLabel = JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE);
+			String global = JOptionPane.showInputDialog(null,"global","global",JOptionPane.PLAIN_MESSAGE);
+			int PRChoice = JOptionPane.showConfirmDialog(null, "Add a PR?");
+			String pr = "";
+			if(PRChoice == JOptionPane.YES_OPTION){
+				pr = JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE);
+			}
 
-			chart.add(new ChartModel(name, id, file, xAxisLabel, yAxisLabel));
+			chart.add(new ChartModel(name, id, file, xAxisLabel, yAxisLabel, global, pr));
+			
 
 			newTextArea.addMouseListener(new MouseListener(){
 

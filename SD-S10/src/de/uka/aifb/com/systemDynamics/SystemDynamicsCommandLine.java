@@ -88,6 +88,7 @@ public class SystemDynamicsCommandLine {
 		ArrayList<Model> model = null;
 		try {
 			model = XMLModelReader.readXMLModel(xmlModelFileName);
+			
 			levelNodeMap = XMLModelReader.getLevelNodes(); 
 		} catch (AuxiliaryNodesCycleDependencyException e) {
 			System.out.println("ERROR: Invalid XML file: The model's auxiliary nodes have a cycle dependency.");

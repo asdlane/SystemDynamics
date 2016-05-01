@@ -478,6 +478,34 @@ public class XMLModelWriter {
 
 			}
 		}
+		// (1d) auxiliary nodes
+				if (!model.getAuxiliaryNodes().isEmpty()) {
+					Element auxiliaryNodesElement = document.createElement("AuxiliaryNodes");
+					nodesElement.appendChild(auxiliaryNodesElement);
+					for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
+						String id = createId("AN", nextAuxiliaryNodeId++);
+						node2Id.put(auxiliaryNode, id);
+
+						Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
+						auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
+						auxiliaryNodeElement.setAttribute("id", id);
+						//split number from name
+
+						if(auxiliaryNode.getShared()){
+							if(archive){
+								String name= auxiliaryNode.getNodeName();
+								String[] nameSeparated = name.split(".*[^0-9].");
+								auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
+							}
+							else{
+								auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+							}
+						}else{
+							auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+						}
+						auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
+					}
+				}
 		// (1e) constant nodes
 		if (!model.getConstantNodes().isEmpty()) {
 			Element constantNodesElement = document.createElement("ConstantNodes");
@@ -538,34 +566,7 @@ public class XMLModelWriter {
 				rateNodeElement.appendChild(formulaElement);
 			}
 		}
-		// (1d) auxiliary nodes
-		if (!model.getAuxiliaryNodes().isEmpty()) {
-			Element auxiliaryNodesElement = document.createElement("AuxiliaryNodes");
-			nodesElement.appendChild(auxiliaryNodesElement);
-			for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
-				String id = createId("AN", nextAuxiliaryNodeId++);
-				node2Id.put(auxiliaryNode, id);
-
-				Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
-				auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
-				auxiliaryNodeElement.setAttribute("id", id);
-				//split number from name
-
-				if(auxiliaryNode.getShared()){
-					if(archive){
-						String name= auxiliaryNode.getNodeName();
-						String[] nameSeparated = name.split(".*[^0-9].");
-						auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
-					}
-					else{
-						auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
-					}
-				}else{
-					auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
-				}
-				auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
-			}
-		}
+		
 
 		//shared nodes
 		if(!model.getSharedNodes().isEmpty()) {
@@ -647,9 +648,14 @@ public class XMLModelWriter {
 						(Element)xpath.evaluate("/Model/Nodes/AuxiliaryNodes/AuxiliaryNode[@id='" + id + "']",
 								document, XPathConstants.NODE);
 				Element formulaElement = document.createElement("Formula");
+				try{
 				formulaElement.appendChild(createXMLForFormula(document, auxiliaryNode.getFormula(),
 						node2Id));
 				auxiliaryNodeElement.appendChild(formulaElement);
+				}
+				catch(Exception e){
+					
+				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
 				throw new XMLModelReaderWriterException(e);
@@ -1283,6 +1289,7 @@ public class XMLModelWriter {
 		if (node instanceof ConstantNode) {
 			Element astConstantNodeElement = document.createElement("ASTConstantNode");
 			astConstantNodeElement.setAttribute("constantNodeIdRef", node2Id.get(node));
+			
 			return astConstantNodeElement;
 		}
 		if (node instanceof LevelNode) {
