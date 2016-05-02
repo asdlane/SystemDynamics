@@ -830,7 +830,7 @@ public class XMLModelWriter {
 				continue;
 			}
 			String modelNodeId = node2Id.get(graph.getModelNode(node));
-
+			
 
 			if (node instanceof AuxiliaryNodeGraphCell) {
 				try {
@@ -900,8 +900,10 @@ public class XMLModelWriter {
 					Element sourceSinkNodeElement =
 							(Element)xpath.evaluate("/SubModel/Nodes/SourceSinkNodes/SourceSinkNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
+					
 					sourceSinkNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					sourceSinkNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));
+					
 				} catch (XPathExpressionException e) {
 					// correct xpath expression -> no exception
 					throw new XMLModelReaderWriterException(e);

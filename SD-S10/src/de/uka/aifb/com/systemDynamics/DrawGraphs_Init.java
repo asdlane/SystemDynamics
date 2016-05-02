@@ -204,6 +204,7 @@ public class DrawGraphs_Init {
 				for (LevelNodeGraphInfo lnode : levelVector) {
 					if(iter == 0){
 						String records  = products.getRawRecord();
+						System.out.println("RECORDS "+records);
 						String[] recordEntries = records.split(";");
 
 						cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 

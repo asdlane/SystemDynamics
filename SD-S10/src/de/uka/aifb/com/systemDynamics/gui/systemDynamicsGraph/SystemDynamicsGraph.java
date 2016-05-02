@@ -391,12 +391,12 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 * @param leaernerChangeable 
 	 * @return created graph vertex
 	 */
-	public SourceSinkNodeGraphCell createSourceSinkNodeGraphCell(double x, double y, boolean shared) {
+	public SourceSinkNodeGraphCell createSourceSinkNodeGraphCell(double x, double y, boolean shared, String id) {
 		// create node
 		AttributeMap vals = new AttributeMap();
 		vals.put("shared", shared);
-		
-		SourceSinkNode sourceSinkNode = model.createSourceSinkNode(shared);
+		vals.put("id", id);
+		SourceSinkNode sourceSinkNode = model.createSourceSinkNode(shared, id);
 		SourceSinkNodeGraphCell sourceSinkNodeGraphCell = new SourceSinkNodeGraphCell(x, y, shared);
 
 		// insert vertex to graph

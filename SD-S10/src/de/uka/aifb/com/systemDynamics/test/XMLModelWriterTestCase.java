@@ -84,7 +84,7 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       RateNode rateNode = model.createRateNode("Rate node", false, false);
       AuxiliaryNode auxiliaryNode1 = model.createAuxiliaryNode("Auxiliary node 1", false, false);
       AuxiliaryNode auxiliaryNode2 = model.createAuxiliaryNode("Auxiliary node 2", false, false);
@@ -133,7 +133,7 @@ public class XMLModelWriterTestCase extends TestCase {
       Model model = new Model();
       model.setModelName("Model name");
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       RateNode rateNode = model.createRateNode("Rate node", false, false);
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
@@ -239,7 +239,7 @@ public class XMLModelWriterTestCase extends TestCase {
       
       LevelNode levelNodeA = model.createLevelNode("Level node A", 1, 0, 0, 3, false, false);
       LevelNode levelNodeB = model.createLevelNode("Level node B", -1.234, 0, 0, 3, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       RateNode rateNode1 = model.createRateNode("Rate node 1", false, false);
       RateNode rateNode2 = model.createRateNode("Rate node 2", false, false);
       AuxiliaryNode auxiliaryNodeA = model.createAuxiliaryNode("Auxiliary node A", false, false);
@@ -394,8 +394,8 @@ public class XMLModelWriterTestCase extends TestCase {
       SystemDynamicsGraph graph = new SystemDynamicsGraph(start, new JFrame());
       ArrayList<SystemDynamicsGraph> graphList = new ArrayList<SystemDynamicsGraph>();
       graphList.add(graph);
-      SourceSinkNodeGraphCell sourceSinkNode1 = graph.createSourceSinkNodeGraphCell(20, 20, false);
-      SourceSinkNodeGraphCell sourceSinkNode2 = graph.createSourceSinkNodeGraphCell(500, 20, false);
+      SourceSinkNodeGraphCell sourceSinkNode1 = graph.createSourceSinkNodeGraphCell(20, 20, false, "test");
+      SourceSinkNodeGraphCell sourceSinkNode2 = graph.createSourceSinkNodeGraphCell(500, 20, false, "test");
       LevelNodeGraphCell levelNode = graph.createLevelNodeGraphCell("LevelNode", 0, 260, 40, 0, 0, 3, false, false);
       RateNodeGraphCell rateNode1 = graph.createRateNodeGraphCell("Rate node 1", 170, 40, false, false);
       RateNodeGraphCell rateNode2 = graph.createRateNodeGraphCell("Rate node 2", 400, 40, false, false);

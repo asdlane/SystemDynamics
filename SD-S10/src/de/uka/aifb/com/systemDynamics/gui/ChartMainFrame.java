@@ -60,6 +60,7 @@ public class ChartMainFrame extends JFrame{
 	private Action newPlanNodeAction;
 	private Action newPlanNodeIncrementAction;
 	private Action addChartAction;
+	private Action editChartAction;
 	private JPanel contentPanel;
 	private JScrollPane chartScrollPanel;
 	private JPanel panel1;
@@ -166,6 +167,7 @@ public class ChartMainFrame extends JFrame{
 				"Add Chart");
 		saveAction = new saveAction("Save", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_SAVE_ICON)),
 				"Save Chart");
+		editChartAction = new editChartAction("Edit Chart", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_SAVE_ICON)), "Edit Chart");
 		addChartAction.setEnabled(false);
 		newChartLevelNodeAction.setEnabled(false);
 		newChartPlanNodeAction.setEnabled(false);
@@ -188,7 +190,7 @@ public class ChartMainFrame extends JFrame{
 		toolBar.add(newChartPlanNodeAction);
 		toolBar.add(newPlanNodeAction);
 		toolBar.add(newPlanNodeIncrementAction);
-
+		toolBar.add(editChartAction);
 		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
 		toolBar.add(GraphNumber);
 
@@ -224,7 +226,10 @@ public class ChartMainFrame extends JFrame{
 			if(PRChoice == JOptionPane.YES_OPTION){
 				pr = JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE);
 			}
-			
+			for(int i=0;i<chart.size();i++){
+				chart.remove(i);
+			}
+			contentPanel.removeAll();
 			chart.add(new ChartModel(name,id,file,xAxisLabel,yAxisLabel, global, pr));
 			chartScrollPanel = new JScrollPane(panel1);
 			contentPanel.add(chartScrollPanel);
@@ -711,6 +716,49 @@ public class ChartMainFrame extends JFrame{
 					ex.printStackTrace();
 				}
 			}*/			
+		}
+	}
+	private class editChartAction extends AbstractAction{
+		public editChartAction(String name, Icon icon, String toolTipText){
+			super(name, icon);
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+		@Override
+		
+		public void actionPerformed(ActionEvent e){
+			String[] options = new String[chart.size()];
+			for(int i=0;i<chart.size();i++){
+				options[i] = Integer.toString(i+1);
+			}
+			int chartNum= Integer.parseInt((String) JOptionPane.showInputDialog(null, "Which Chart would you like to edit?", "Edit Chart", JOptionPane.PLAIN_MESSAGE, null, options, options[0]));
+			String name = (String) JOptionPane.showInputDialog(null,"Chart Name:","Name",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getchartName());
+			String id = (String) JOptionPane.showInputDialog(null,"Chart Id: ","Id",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getchartId());
+			String file = (String) JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getfile());
+			String xAxisLabel = (String) JOptionPane.showInputDialog(null,"X Axis Label","X Axis Label",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getxAxisLabel());
+			String yAxisLabel = (String) JOptionPane.showInputDialog(null,"Y Axis Label","Y Axis Label",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getyAxisLabel());
+			String global = (String) JOptionPane.showInputDialog(null,"global","global",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getGlobal());
+			String pr = "";
+			if(chart.get(chartNum-1).getPr() == ""){
+				int PRChoice = JOptionPane.showConfirmDialog(null, "Add a PR?");
+				if(PRChoice == JOptionPane.YES_OPTION){
+					pr = JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+			else{
+				pr = (String) JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE, null, null, chart.get(chartNum-1).getPr());
+			}
+			try{
+				chart.get(chartNum-1).setChartName(name);
+				chart.get(chartNum-1).setChartId(id);
+				chart.get(chartNum-1).setChartFile(file);
+				chart.get(chartNum-1).setxAxisLabel(xAxisLabel);
+				chart.get(chartNum-1).setyAxisLabel(yAxisLabel);
+				chart.get(chartNum-1).setPR(pr);
+				chart.get(chartNum-1).setglobal(global);
+			}
+			catch(Exception e2){
+				
+			}
 		}
 	}
 	private class addChartAction extends AbstractAction{

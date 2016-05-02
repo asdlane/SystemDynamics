@@ -311,7 +311,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(model.getSourceSinkNodes().isEmpty());
       
       // (2) create first source/sink node
-      SourceSinkNode sourceSinkNode1 = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode1 = model.createSourceSinkNode(false, "test");
       
       // (3) check that first source/sink node is in set of source/sink nodes
       assertTrue(model.getSourceSinkNodes().size() == 1);
@@ -330,7 +330,7 @@ public class ModelTestCase extends TestCase {
       assertTrue(model.getSourceSinkNodes().size() == 1);
       
       // (5) create second source/sink node
-      SourceSinkNode sourceSinkNode2 = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode2 = model.createSourceSinkNode(false, "test");
       
       // (6) check that first and second source/sink nodes are in set of source/sink nodes
       assertTrue(model.getSourceSinkNodes().size() == 2);
@@ -345,7 +345,7 @@ public class ModelTestCase extends TestCase {
       }
       
       try {
-         model.createSourceSinkNode(false);
+         model.createSourceSinkNode(false, "test");
          fail();
       } catch (ModelNotChangeableException e) {
          // do nothing
@@ -475,7 +475,7 @@ public class ModelTestCase extends TestCase {
       RateNode rateNode2 = model.createRateNode("Rate node 2", false, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0, false, false);
       AuxiliaryNode auxiliaryNode = model.createAuxiliaryNode("Auxiliary node", false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "TEST");
       
       model.addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode1);
       model.addFlowFromRateNode2LevelNode(rateNode1, levelNode);
@@ -1020,8 +1020,8 @@ public class ModelTestCase extends TestCase {
     *
     */
    public void testFlowFromSourceSinkNode2RateNode() {
-      SourceSinkNode sourceSinkNodeA = model.createSourceSinkNode(false); 
-      SourceSinkNode sourceSinkNodeB = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNodeA = model.createSourceSinkNode(false, "test"); 
+      SourceSinkNode sourceSinkNodeB = model.createSourceSinkNode(false, "test");
       RateNode rateNodeA = model.createRateNode("Rate node A", false, false);
       RateNode rateNodeB = model.createRateNode("Rate node B", false, false);
       
@@ -1178,8 +1178,8 @@ public class ModelTestCase extends TestCase {
    public void testFlowFromRateNode2SourceSinkNode() {
       RateNode rateNodeA = model.createRateNode("Rate node A", false, false);
       RateNode rateNodeB = model.createRateNode("Rate node B", false, false);
-      SourceSinkNode sourceSinkNodeA = model.createSourceSinkNode(false);
-      SourceSinkNode sourceSinkNodeB = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNodeA = model.createSourceSinkNode(false, "test");
+      SourceSinkNode sourceSinkNodeB = model.createSourceSinkNode(false, "test");
       
       assertTrue(rateNodeA.getFlowSink() == null);
       assertTrue(rateNodeB.getFlowSink() == null);
@@ -1347,7 +1347,7 @@ public class ModelTestCase extends TestCase {
       LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false, false);
       LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 0, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       
       // 'rateNode1' without any flow -> WRONG
       RateNode rateNode1 = model.createRateNode("Rate node 1", false, false);
@@ -1445,7 +1445,7 @@ public class ModelTestCase extends TestCase {
    public void testValidateModel3() {
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       ConstantNode constantNode = model.createConstantNode("ConstantNode", 0, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       
       // (1) rate node without formula -> WRONG
       RateNode rateNode = model.createRateNode("Rate node", false, false);
@@ -1677,7 +1677,7 @@ public class ModelTestCase extends TestCase {
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       RateNode rateNode = model.createRateNode("Rate node", false, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 1, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       model.addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNode);
       model.addFlowFromRateNode2LevelNode(rateNode, levelNode);
       model.setFormula(rateNode, constantNode);
@@ -1719,7 +1719,7 @@ public class ModelTestCase extends TestCase {
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       RateNode rateNode = model.createRateNode("Rate node", false, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 1, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       model.setFormula(rateNode, constantNode);
@@ -1761,7 +1761,7 @@ public class ModelTestCase extends TestCase {
       LevelNode levelNode = model.createLevelNode("Level node", 0, 0, 0, 3, false, false);
       RateNode rateNode = model.createRateNode("Rate node", false, false);
       ConstantNode constantNode = model.createConstantNode("Constant node", 1, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
       model.addFlowFromLevelNode2RateNode(levelNode, rateNode);
       model.addFlowFromRateNode2SourceSinkNode(rateNode, sourceSinkNode);
       model.setFormula(rateNode, constantNode);
@@ -1871,7 +1871,7 @@ public class ModelTestCase extends TestCase {
       ConstantNode constantNodeRatioWomen = model.createConstantNode("RatioWomen", 0.5, false, false);
       ConstantNode constantNodeDurationChildren = model.createConstantNode("Duration children", 1.0/16, false, false);
       ConstantNode constantNodeDurationParents = model.createConstantNode("Duration parents", 1.0/29, false, false);
-      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false);
+      SourceSinkNode sourceSinkNode = model.createSourceSinkNode(false, "test");
             
       model.addFlowFromSourceSinkNode2RateNode(sourceSinkNode, rateNodeBirths);
       model.addFlowFromRateNode2LevelNode(rateNodeBirths, levelNodeChildren);

@@ -174,12 +174,12 @@ public class Model {
     * 
     * @return created source/sink node
     */
-   public SourceSinkNode createSourceSinkNode(boolean shared) {
+   public SourceSinkNode createSourceSinkNode(boolean shared, String id) {
       if (!isChangeable) {
          throw new ModelNotChangeableException();
       }
       
-      SourceSinkNode sourceSinkNode = new SourceSinkNode(shared);
+      SourceSinkNode sourceSinkNode = new SourceSinkNode(shared, id);
       sourceSinkNodes.add(sourceSinkNode);
       return sourceSinkNode;
    }

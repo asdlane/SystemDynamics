@@ -378,8 +378,9 @@ public class XMLModelReader {
 					Element sourceSinkNodeElement = (Element)sourceSinkNodeElements.item(i);
 					String id = sourceSinkNodeElement.getAttribute("id");
 
-					SourceSinkNode sourceSinkNode = model.get(k).createSourceSinkNode(false);
+					SourceSinkNode sourceSinkNode = model.get(k).createSourceSinkNode(false, id);
 					id2sourceSinkNode.put(id, sourceSinkNode);
+					
 				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
@@ -856,7 +857,7 @@ public class XMLModelReader {
 					boolean shared = new Boolean(sourceSinkNodeElement.getAttribute("shared"));
 
 					SourceSinkNodeGraphCell sourceSinkNode = graph.get(k).createSourceSinkNodeGraphCell(xCoordinate,
-							yCoordinate, shared);
+							yCoordinate, shared, id);
 					id2sourceSinkNodeGraphCell.put(id, sourceSinkNode);
 					AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
 					graphCell2Vertex.put(sourceSinkNode, vertex);

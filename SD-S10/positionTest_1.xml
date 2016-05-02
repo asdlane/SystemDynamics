@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Model name="test 2016/05/01 18:49:42 EDT" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
+<SubModel SubmodelId="0" color="54, 86, 253">
+  <Nodes>
+    <LevelNodes>
+      <LevelNode curve="3.0" id="LN0000" learnerChangeable="false" maxValue="99.0" minValue="8.0" name="test" shared="9" startValue="9.0" xCoordinate="532.0" yCoordinate="238.0"/>
+    </LevelNodes>
+  </Nodes>
+</SubModel>
+</Model>

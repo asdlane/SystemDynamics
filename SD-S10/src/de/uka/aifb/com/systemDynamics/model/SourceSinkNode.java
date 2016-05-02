@@ -40,25 +40,32 @@ public class SourceSinkNode extends AbstractNode {
 	private HashSet<RateNode> incomingFlows;
 	private HashSet<RateNode> outgoingFlows;
 	private boolean shared;
+	private String id1;
 	/**
 	 * Constructor.
 	 */
-	protected SourceSinkNode(boolean Shared) {
+	protected SourceSinkNode(boolean Shared, String id2) {
 		incomingFlows = new HashSet<RateNode>();
 		outgoingFlows = new HashSet<RateNode>();
 		setShared(Shared);
+		setID(id2);
+		
 	}
 	private void setShared(boolean shared) {
 		// TODO Auto-generated method stub
 		this.shared = shared;
+	}
+	private void setID(String id2) {
+		// TODO Auto-generated method stub
+		this.id1 = id2;
 	}
 	/**
 	 * Helper method for creating new instances of this class. Called by JUnit test cases.
 	 * 
 	 * @return created new instance
 	 */
-	private static SourceSinkNode createSourceSinkNode(boolean Shared) {
-		return new SourceSinkNode(Shared);
+	private static SourceSinkNode createSourceSinkNode(boolean Shared, String id) {
+		return new SourceSinkNode(Shared, id);
 	}
 
 	/**

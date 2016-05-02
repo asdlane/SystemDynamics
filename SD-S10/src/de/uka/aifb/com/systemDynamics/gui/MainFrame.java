@@ -2377,7 +2377,7 @@ WindowListener {
 			}
 
 			if(graph.size()==1){
-				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+				graph.get(0).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, "SN");
 			}
 			else{
 				//accounts for if user cancels the insert
@@ -2385,7 +2385,7 @@ WindowListener {
 					JFrame frame = new JFrame("InputDialog");
 					Object[] choices = SubmodelNumbers.toArray();
 					int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"To which submodel?","Add SourceSink Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false);
+					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE, MainFrame.DEFAULT_COORDINATE, false, "SN");
 				}catch(Exception ex){
 
 				}
@@ -3032,7 +3032,7 @@ WindowListener {
 
 				}
 				else if(pasteCells.get(i).contains("SourceSink")){
-					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false);
+					graph.get(subModelIndex-1).createSourceSinkNodeGraphCell(MainFrame.DEFAULT_COORDINATE* (1+i), MainFrame.DEFAULT_COORDINATE* (1+i), false, "SN");
 				}
 
 				else if(pasteCells.get(i).contains("Constant")){

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Model name="Phase-2-Init/Phase-2 2014/01/16" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
-  <SubModel>    
+  <SubModel color="120,120,120" SubmodelId="test">    
   <Nodes>
     <LevelNodes>
       <LevelNode id="LN0001" name="SW_Errors_P2_Detected_S1" startValue="0.0" minValue="0.0" maxValue="0.0" curve="3.0" xCoordinate="3951.0" yCoordinate="1637.0" />
