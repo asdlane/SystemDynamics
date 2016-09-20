@@ -72,7 +72,7 @@ import org.xml.sax.SAXException;
 public class XMLModelReader {
 
 	private static HashMap<String,String> levelNodeInfo;
-	private static final String XSD_FILE_NAME = "xsd/model1.xsd";
+	private static final String XSD_FILE_NAME = "xsd/model1_new.xsd";
 
 	/**
 	 * Reads a System Dynamics model stored in an XML file. The method checks whether the XML file
@@ -187,7 +187,7 @@ public class XMLModelReader {
 
 		Thread.currentThread();
 
-		graph = createGraphFromXML(fileName, "xsd/model1.xsd", graph, id2auxiliaryNode, id2constantNode,
+		graph = createGraphFromXML(fileName, "xsd/model1_new.xsd", graph, id2auxiliaryNode, id2constantNode,
 				id2levelNode, id2rateNode, id2sourceSinkNode, id2SharedNode, start, frame);
 
 		System.out.println("ID TO LEVEL SIZE" + id2levelNode.size());
@@ -319,9 +319,16 @@ public class XMLModelReader {
 
 			e1.printStackTrace();
 		}
-		for(int i=1;i<Submodels.getLength();i++){
-			Model blankModel = new Model();
-			model.add(blankModel);
+		
+		
+		for(int i=0;i<Submodels.getLength();i++){
+			
+				Element submodel = (Element)Submodels.item(i);
+			if(i != 0){
+				Model blankModel = new Model();
+				model.add(blankModel);
+			}
+				model.get(i).setModelDescription(submodel.getAttribute("description"));
 		}
 
 		for(int k=0;k<Submodels.getLength();k++){
@@ -794,7 +801,7 @@ public class XMLModelReader {
 					try {
 
 						levelNode = graph.get(k).createLevelNodeGraphCell(nodeName, startValue, minValue, maxValue, curve, xCoordinate, yCoordinate, learnerDecidable, shared);
-						graph.get(k).model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, shared);
+//						graph.get(k).model.createLevelNode(nodeName, startValue, minValue, maxValue, curve, learnerDecidable, shared);
 					} catch (NodeParameterOutOfRangeException e) {
 						throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
 					}
@@ -1436,6 +1443,43 @@ public class XMLModelReader {
 				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
+				throw new XMLModelReaderWriterException(e);
+			}
+			
+			//validate graph's model
+			try {
+				graph.get(k).model.validateModel(0);
+			} catch (RateNodeFlowException e) {
+				// search problematic rate node ID
+				RateNode problematicRateNode = e.getProblematicRateNode();
+				for (String id : id2rateNode.keySet()) {
+					if (id2rateNode.get(id) == problematicRateNode) {
+						throw new XMLRateNodeFlowException(id);
+					}
+				}
+			} catch (UselessNodeException e) {
+				// search problematic node ID (only constant, auxiliary or source/sink node possible!)
+				AbstractNode problematicNode = e.getUselessNode();
+				for (String id : id2constantNode.keySet()) {
+					if (id2constantNode.get(id) == problematicNode) {
+						throw new XMLUselessNodeException(id);
+					}
+				}
+				for (String id : id2auxiliaryNode.keySet()) {
+					if (id2auxiliaryNode.get(id) == problematicNode) {
+						throw new XMLUselessNodeException(id);
+					}
+				}
+				for (String id : id2sourceSinkNode.keySet()) {
+					if (id2sourceSinkNode.get(id) == problematicNode) {
+						throw new XMLUselessNodeException(id);
+					}
+				}
+			} catch (NoFormulaException e) {
+				// that must not happen -> SAXException is thrown earlier
+				throw new XMLModelReaderWriterException(e);
+			} catch (NoLevelNodeException e) {
+				// that must not happen -> SAXException is thrown earlier
 				throw new XMLModelReaderWriterException(e);
 			}
 		}

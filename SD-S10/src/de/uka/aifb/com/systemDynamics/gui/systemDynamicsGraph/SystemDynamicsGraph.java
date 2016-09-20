@@ -67,6 +67,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	public Color borderColor;
 	private LinkedList<SystemDynamicsGraphModifiedEventListener> listeners;
 	
+	
 	/**
 	 * Constructor.
 	 * 
@@ -164,7 +165,37 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	public String getModelName() {
 		return model.getModelName();
 	}
+	
+	
+	
+	
+	/**
+	 * Gets the model description.
+	 * 
+	 * @return model name
+	 */
+	public String getModelDescription() {
+		return model.getModelDescription();
+	}
 
+	/**
+	 * Sets the model description.
+	 * 
+	 * @param modelName model description
+	 */
+	public void setModelDescription(String modelDescription) {
+		if (modelDescription == null) {
+			modelDescription = "";
+		}
+		model.setModelDescription(modelDescription);
+
+		// inform listeners
+		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
+			listener.performGraphModifiedEvent();
+		}
+	}
+	
+	
 	/**
 	 * Gets the corresponding model node for the specified graph node.
 	 * 
@@ -223,6 +254,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		// insert mappings
 		modelNode2graphNode.put(levelNode, levelNodeGraphCell);
 		graphNode2modelNode.put(levelNodeGraphCell, levelNode);
+	    System.out.println("this is a newly mapped levelnode "+levelNode.toString());
 
 		// inform listeners
 		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
@@ -333,6 +365,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		// insert mappings
 		modelNode2graphNode.put(constantNode, constantNodeGraphCell);
 		graphNode2modelNode.put(constantNodeGraphCell, constantNode);
+	    System.out.println("this is a newly mapped constantnode "+constantNode.toString());
 
 		// inform listeners
 		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
@@ -405,6 +438,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		// insert mappings
 		modelNode2graphNode.put(sourceSinkNode, sourceSinkNodeGraphCell);
 		graphNode2modelNode.put(sourceSinkNodeGraphCell, sourceSinkNode);
+	    System.out.println("this is a newly mapped sourceSinknode "+sourceSinkNode.toString());
 
 		// inform listeners
 		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {

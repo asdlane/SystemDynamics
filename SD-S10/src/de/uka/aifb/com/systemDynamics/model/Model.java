@@ -34,6 +34,7 @@ import java.util.*;
 public class Model {
    
    private String modelName;
+   private String modelDescription;
    
    protected HashSet<LevelNode> levelNodes;
    protected HashSet<RateNode> rateNodes;
@@ -80,6 +81,7 @@ public class Model {
       this.modelName = modelName;
    }
    
+   
    /**
     * Gets the model name.
     * 
@@ -87,6 +89,32 @@ public class Model {
     */
    public String getModelName() {
       return modelName;
+   }
+   
+   
+   /**
+    * Gets the model description.
+    * 
+    * @return model description
+    */
+   public String getModelDescription() {
+      return modelDescription;
+   }
+   
+   /**
+    * Sets the model description.
+    * 
+    * @param model description
+    */
+   public void setModelDescription(String modelDescription) {
+      if (!isChangeable) {
+         throw new ModelNotChangeableException();
+      }
+      if (modelDescription == null) {
+         modelDescription = "";
+      }
+      
+      this.modelDescription = modelDescription;
    }
    
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +137,7 @@ public class Model {
       
       LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable, shared);
       levelNodes.add(levelNode);
+      System.out.println("this is a newly created levelnode "+levelNode.toString());
       return levelNode;
    }
    public SharedNode createSharedNode(String sharedPointer, double nodeVal) {
@@ -150,6 +179,7 @@ public class Model {
       
       ConstantNode constantNode = new ConstantNode(nodeName, constantValue, learnerDecidable, shared);
       constantNodes.add(constantNode);
+      System.out.println("this is a newly created constantnode "+constantNode.toString());
       return constantNode;
    }
    
@@ -181,6 +211,7 @@ public class Model {
       
       SourceSinkNode sourceSinkNode = new SourceSinkNode(shared, id);
       sourceSinkNodes.add(sourceSinkNode);
+      System.out.println("this is a newly created sourcenode "+sourceSinkNode.toString());
       return sourceSinkNode;
    }
    public ColoredSourceSinkNode createColoredSourceSinkNode(Color nodeColor, int linksTo) {

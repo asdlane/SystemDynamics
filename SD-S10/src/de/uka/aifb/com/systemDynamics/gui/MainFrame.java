@@ -128,6 +128,8 @@ WindowListener {
 	private static final String LANGUAGE_ENGLISH = "English";
 	private static final String LANGUAGE_GERMAN = "Deutsch";
 	private static final String LANGUAGE_SPANISH = "Español";
+	
+	private static final String ADD_DESCRIPTION_ICON = "resources/description.png";
 
 	private SystemDynamics start;
 
@@ -173,6 +175,7 @@ WindowListener {
 	private Action newSubmodelAction;
 	private Action importAction;
 	private Action shareAction;
+	private Action addDescriptionAction;
 	private Action chartDesignerAction;
 	private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
 	private JRadioButtonMenuItem rbMenuItemEnglish;
@@ -424,6 +427,9 @@ WindowListener {
 				new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(FILE_ZOOM_OUT_ICON)),
 				messages.getString("MainFrame.MenuBar.View.ZoomOut"));
 		zoomOutAction.setEnabled(false);
+
+		addDescriptionAction = new AddDescriptionAction("Add description", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ADD_DESCRIPTION_ICON)),"Add description to submodel");
+		addDescriptionAction.setEnabled(false);
 	}
 
 	/**
@@ -726,6 +732,11 @@ WindowListener {
 		toolBar.add(pasteAction);
 		toolBar.add(shareAction);
 		toolBar.addSeparator();
+		
+		toolBar.add(addDescriptionAction);
+		
+		toolBar.addSeparator();
+		
 		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
 		toolBar.add(GraphNumber);
 
@@ -1021,6 +1032,7 @@ WindowListener {
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
 					chartDesignerAction.setEnabled(true);
+					addDescriptionAction.setEnabled(true);
 				}
 			}
 			modelPanel.add(scrollPane);
@@ -1386,12 +1398,12 @@ WindowListener {
 						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						System.out.println("FINISHED READING GRAPH");
 						
-						ArrayList<Model> graphModels = new ArrayList<Model>();
-						graphModels = XMLModelReader.readXMLModel(file.getAbsolutePath());
-						
-						for(int i=0;i<graphModels.size();i++){
-							graph.get(i).model = graphModels.get(i);
-						}
+//						ArrayList<Model> graphModels = new ArrayList<Model>();
+//						graphModels = XMLModelReader.readXMLModel(file.getAbsolutePath());
+//						
+//						for(int i=0;i<graphModels.size();i++){
+//							graph.get(i).model = graphModels.get(i);
+//						}
 						
 						for(int i=0;i<graph.size();i++){
 							graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
@@ -1523,6 +1535,7 @@ WindowListener {
 					pasteAction.setEnabled(true);
 					newSubmodelAction.setEnabled(true);
 					chartDesignerAction.setEnabled(true);
+					addDescriptionAction.setEnabled(true);
 					try {
 						int i=0;
 						for (SystemDynamicsGraph subGraph : graph) {
@@ -3127,6 +3140,40 @@ WindowListener {
 
 	}
 
+	private class AddDescriptionAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		
+		private AddDescriptionAction(String name, Icon icon, String toolTipText){
+			super(name, icon);
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+		public void actionPerformed(ActionEvent e){
+			
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			Object subModelIndex = JOptionPane.showInputDialog(frame,"Add description into which submodel?","Add",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+			if(subModelIndex != null){
+				subModelIndex = (Integer) subModelIndex;
+				String description =
+						SubModelDescriptionDialog.showNodeNameDialog(start, MainFrame.this,
+								messages.getString("MainFrame.ToolBar.Add.Description"),
+								graph.get((Integer) subModelIndex - 1).getModelDescription());
+				graph.get((Integer) subModelIndex - 1).setModelDescription(description);
+				System.out.println(description+"   "+subModelIndex);
+			}
+
+		}
+
+	}
+	
+	
+	
+	
+	
 	// This will change the source of the actionevent to graph.
 	public class EventRedirector extends AbstractAction {
 

@@ -414,6 +414,7 @@ public class XMLModelWriter {
 		//modelElement.setAttribute("schemaVersion", SCHEMA_VERSION);
 		modelElement.setAttribute("color", submodelColor.getRed() + ", " + submodelColor.getGreen() + ", " + submodelColor.getBlue());
 		modelElement.setAttribute("SubmodelId", Integer.toString(SubmodelID));
+		modelElement.setAttribute("description", model.getModelDescription());
 		document.appendChild(modelElement);
 
 
@@ -478,34 +479,7 @@ public class XMLModelWriter {
 
 			}
 		}
-		// (1d) auxiliary nodes
-				if (!model.getAuxiliaryNodes().isEmpty()) {
-					Element auxiliaryNodesElement = document.createElement("AuxiliaryNodes");
-					nodesElement.appendChild(auxiliaryNodesElement);
-					for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
-						String id = createId("AN", nextAuxiliaryNodeId++);
-						node2Id.put(auxiliaryNode, id);
-
-						Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
-						auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
-						auxiliaryNodeElement.setAttribute("id", id);
-						//split number from name
-
-						if(auxiliaryNode.getShared()){
-							if(archive){
-								String name= auxiliaryNode.getNodeName();
-								String[] nameSeparated = name.split(".*[^0-9].");
-								auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
-							}
-							else{
-								auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
-							}
-						}else{
-							auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
-						}
-						auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
-					}
-				}
+		
 		// (1e) constant nodes
 		if (!model.getConstantNodes().isEmpty()) {
 			Element constantNodesElement = document.createElement("ConstantNodes");
@@ -534,6 +508,45 @@ public class XMLModelWriter {
 
 			}
 		}
+		
+		// (1d) auxiliary nodes
+				if (!model.getAuxiliaryNodes().isEmpty()) {
+					Element auxiliaryNodesElement = document.createElement("AuxiliaryNodes");
+					nodesElement.appendChild(auxiliaryNodesElement);
+					for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
+						String id = createId("AN", nextAuxiliaryNodeId++);
+						node2Id.put(auxiliaryNode, id);
+
+						Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
+						auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
+						auxiliaryNodeElement.setAttribute("id", id);
+						//split number from name
+
+						if(auxiliaryNode.getShared()){
+							if(archive){
+								String name= auxiliaryNode.getNodeName();
+								String[] nameSeparated = name.split(".*[^0-9].");
+								auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
+							}
+							else{
+								auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+							}
+						}else{
+							auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+						}
+						auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
+						/////////////////////////////////////////////////////////////
+						/////////////////////   change      /////////////////////////
+						/////////////////////////////////////////////////////////////
+						if(auxiliaryNode.hasFormula()){
+							Element formulaElement = document.createElement("Formula");
+							formulaElement.appendChild(createXMLForFormula(document, auxiliaryNode.getFormula(),
+									node2Id));
+							auxiliaryNodeElement.appendChild(formulaElement);
+						}
+					}
+				}
+		
 		// (1c) rate nodes
 		if (!model.getRateNodes().isEmpty()) {
 			Element rateNodesElement = document.createElement("RateNodes");
@@ -830,6 +843,7 @@ public class XMLModelWriter {
 				continue;
 			}
 			String modelNodeId = node2Id.get(graph.getModelNode(node));
+			System.out.println("this is node get from graph map cell "+graph.getModelNode(node).toString());
 			
 
 			if (node instanceof AuxiliaryNodeGraphCell) {

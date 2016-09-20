@@ -28,14 +28,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardXYSeriesLabelGenerator;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.RangeType;
 import org.jfree.data.xy.*;
 import org.jfree.ui.*;
@@ -386,6 +390,7 @@ private JFreeChart chart2;
       sharedNodes = new SharedNode[list2.getSelectedIndices().length];
       String[] SelectedNames = new String[list.getSelectedIndices().length];
       String[] SelectedNames2 = new String[list2.getSelectedIndices().length];
+      HashMap<LevelNode,HashSet<AbstractNode>> dependencies = new HashMap<LevelNode,HashSet<AbstractNode>>();
       int j=0;
       int z=0;
       for (int index : list.getSelectedIndices()){
@@ -397,6 +402,7 @@ private JFreeChart chart2;
       for (LevelNode levelNode : model.getLevelNodes()) {
     	 for(int f=0;f<SelectedNames.length;f++){
     		 if(SelectedNames[f] == levelNode.getNodeName()){
+    			 getAllDependencyNodes(levelNode,dependencies);
     			 levelNodes[i++] = levelNode;
     			 
     		 }
@@ -409,6 +415,7 @@ private JFreeChart chart2;
     		  }
     	  }
       }
+
       
       // sort level nodes alphabetically
       //Arrays.sort(levelNodes);
@@ -439,7 +446,7 @@ private JFreeChart chart2;
                                              messages.getString("ModelExecutionChartPanel.Value"), 
                                              data,
                                              PlotOrientation.VERTICAL,
-                                             true, false, false);
+                                             true, true, false);
       chart2 = ChartFactory.createXYLineChart(null, 
     		  								messages.getString("ModelExecutionChartPanel.Round"), 
     		  								messages.getString("ModelExecutionChartPanel.Value"), 
@@ -448,6 +455,29 @@ private JFreeChart chart2;
     		  								true, false, false);
       XYPlot plot = chart.getXYPlot();
       XYPlot plot2 = chart2.getXYPlot();
+      
+      // add tooltip to each point
+      /*XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+      renderer.setBaseToolTipGenerator(
+          new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0")));
+      renderer.setSeriesStroke(i, new BasicStroke(3.0f));
+      renderer.setSeriesShape(0, new Rectangle(-2, -2, 4, 4));
+      renderer.setSeriesShapesVisible(0, true);
+      
+      XYLineAndShapeRenderer renderer2 = (XYLineAndShapeRenderer) plot2.getRenderer();
+      renderer2.setBaseToolTipGenerator(
+          new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0")));
+      renderer2.setSeriesStroke(i, new BasicStroke(3.0f));
+      renderer2.setSeriesShape(0, new Rectangle(-2, -2, 4, 4));
+      renderer2.setSeriesShapesVisible(0, true);*/
+      
+      String text = getDependencies(dependencies);
+      
+      
+      TextTitle legendText = new TextTitle(text);
+      legendText.setPosition(RectangleEdge.TOP);
+      chart.addSubtitle(legendText);
+      
       
       // horizontal axis range: 0 ... maximal rounds
       ((NumberAxis)(chart.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
@@ -467,12 +497,61 @@ private JFreeChart chart2;
       ((NumberAxis)(plot2.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
       
       // legend at top position
-      chart.getLegend().setPosition(RectangleEdge.TOP);
+      chart.getLegend().setPosition(RectangleEdge.RIGHT);
       chart2.getLegend().setPosition(RectangleEdge.TOP);
       
       JFreeChart[] allCharts = {chart, chart2};
       
       return allCharts;
+   }
+   
+   private String getDependencies(HashMap<LevelNode,HashSet<AbstractNode>> m){
+
+	   String dependency = "Dependency :   ";
+	   
+	   for (Entry<LevelNode, HashSet<AbstractNode>> entry : m.entrySet()) {
+		   dependency += entry.getKey().getNodeName();
+		   dependency += " : ";
+		   for(AbstractNode node: entry.getValue()){
+			   dependency += node.getNodeName();
+		   }
+		   dependency += "  ->  ";
+	   }
+	   
+	   return dependency;
+   }
+   
+   private void getAllDependencyNodes(LevelNode ln, HashMap<LevelNode,HashSet<AbstractNode>> m){
+	   if(m.containsKey(ln))
+		   return;
+	   
+	   HashSet<AbstractNode> dependencyNodes = new HashSet<AbstractNode>();
+	   
+	   HashSet<RateNode> dependencyRateNodes = ln.getIncomingFlows();   
+	   for(RateNode rn: dependencyRateNodes){
+		   AbstractNode source  = rn.getFlowSource();
+		   if(source instanceof LevelNode){
+			   getAllDependencyNodes((LevelNode)source, m);
+			   dependencyNodes.add(source);
+		   }
+		   HashSet<AbstractNode> nodes = rn.getAllNodesThisOneDependsOn();
+		   for(AbstractNode node: nodes){
+			   if(node instanceof ConstantNode){
+				   dependencyNodes.add(node);
+			   }
+			   else if(node instanceof AuxiliaryNode){
+				   AuxiliaryNode an = (AuxiliaryNode) node;
+				   HashSet<AbstractNode> dependencyNodesOfAuxiliaryNodes = an.getAllNodesThisOneDependsOn();
+				   for(AbstractNode n: dependencyNodesOfAuxiliaryNodes){
+					   if(n instanceof ConstantNode){
+						   dependencyNodes.add(n);
+					   }
+				   }
+			   }
+		   }
+	   }
+	   m.put(ln, dependencyNodes);
+	   
    }
    
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -688,4 +767,21 @@ private JFreeChart chart2;
          executionButton.setEnabled(true);
       }
    }
+   
+   
+//   private class LineLegendItemSource implements LegendItemSource {
+//	    public LegendItemCollection getLegendItems() {
+//	        LegendItemCollection itemCollection = new LegendItemCollection();
+//	        for (Comparable comparable : legendKeys) {
+//	           Paint paint = // get the paint you want
+//	           LegendItem item = new LegendItem("string to display", 
+//	                                            "description", 
+//	                                            "tooltip", 
+//	                                            "url", 
+//	                                            new Line2D.Double(0, 5, 10, 5), paint);
+//	           itemCollection.add(item);
+//	        }
+//	        return itemCollection; 
+//	     }
+//	   }
 }
