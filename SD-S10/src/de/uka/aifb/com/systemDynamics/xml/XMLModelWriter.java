@@ -435,7 +435,7 @@ public class XMLModelWriter {
 
 		for (LevelNode levelNode : model.getLevelNodes()) {
 
-			String id = createId("LN", SubmodelID);
+			String id = createId("LN", nextLevelNodeId++);
 			node2Id.put(levelNode, id);
 
 			Element levelNodeElement = document.createElement("LevelNode");
@@ -595,12 +595,14 @@ public class XMLModelWriter {
 				boolean levelNodeShared = false;
 				boolean constantNodeShared = false;
 				boolean auxiliaryNodeShared = false;
+				int levelCounter = 0;
 				int constantCounter = 0;
 				int auxiliaryCounter = 0;
 
 				for(LevelNode levelnode : model.getLevelNodes()){
-					if(levelnode.getNodeName()==sharednode.getSharedPointer()){
+					if(levelnode.getNodeName().equals(sharednode.getSharedPointer())){
 						levelNodeShared = true;
+						levelCounter++;
 						break;
 					}
 				}
@@ -619,7 +621,7 @@ public class XMLModelWriter {
 					}
 				}
 				if(levelNodeShared){
-					tempid = createId("LN", SubmodelID);
+					tempid = createId("LN", levelCounter);
 				}
 				else if(constantNodeShared){
 					tempid = createId("CN", constantCounter);
@@ -888,7 +890,7 @@ public class XMLModelWriter {
 				try {
 					System.out.println(modelNodeId);
 					Element levelNodeElement =
-							(Element)xpath.evaluate("/SubModel/Nodes/LevelNodes/LevelNode",
+							(Element)xpath.evaluate("/SubModel/Nodes/LevelNodes/LevelNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);
 					levelNodeElement.setAttribute("xCoordinate", String.valueOf(xCoordinate));
 					levelNodeElement.setAttribute("yCoordinate", String.valueOf(yCoordinate));

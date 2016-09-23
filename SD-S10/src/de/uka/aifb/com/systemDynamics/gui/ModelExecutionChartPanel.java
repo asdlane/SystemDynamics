@@ -511,11 +511,11 @@ private JFreeChart chart2;
 	   
 	   for (Entry<LevelNode, HashSet<AbstractNode>> entry : m.entrySet()) {
 		   dependency += entry.getKey().getNodeName();
-		   dependency += " : ";
+		   dependency += " -> ";
 		   for(AbstractNode node: entry.getValue()){
 			   dependency += node.getNodeName();
 		   }
-		   dependency += "  ->  ";
+		   dependency += "  |  ";
 	   }
 	   
 	   return dependency;
