@@ -334,6 +334,8 @@ public class Model {
       if (node instanceof LevelNode) {
          levelNodes.remove(node);
       }
+      
+      //  (4) remove shared node
    }
    
    /**

@@ -489,7 +489,11 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-
+		
+		// remove node from node and cell mapping
+		graphNode2modelNode.remove(vertex);
+		modelNode2graphNode.remove(node);
+		
 		// model node (and possibly some flows) was/were removed
 		// => remove corresponding vertex (and possibly some flow edges) from the graph 
 		Set edges = ((DefaultPort)vertex.getChildAt(0)).getEdges();

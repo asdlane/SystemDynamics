@@ -269,6 +269,39 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
       return (HashSet<RateNode>)outgoingFlows.clone();
    }
    
+   /**
+    * check if the level node is decreasing or increasing
+    * 
+    */
+   public boolean isIncreasing(){
+	   if(curve == 1){   // non-decreasing
+		   return true;
+	   }
+	   else if(curve == 2){  // non-increasing
+		   return false;
+	   } 
+	   else{  // null
+		   double pre = currentValue;
+		   double cur = currentValue;
+		   
+		   // add incoming flows...
+	      for (RateNode incomingFlow : incomingFlows) {
+	         cur += incomingFlow.getCurrentValue();
+	      }
+	      
+	      // ... and subtract outgoing flows
+	      for (RateNode outgoingFlow : outgoingFlows) {
+	         cur -= outgoingFlow.getCurrentValue();
+	      }
+	      if(cur >= pre)
+	    	  return true;
+	      else
+	    	  return false;
+	   }
+   }
+   
+   
+   
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods from abstract class AbstractNode
    /////////////////////////////////////////////////////////////////////////////////////////////////

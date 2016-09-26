@@ -508,12 +508,17 @@ private JFreeChart chart2;
    private String getDependencies(HashMap<LevelNode,HashSet<AbstractNode>> m){
 
 	   String dependency = "Dependency :   ";
-	   
 	   for (Entry<LevelNode, HashSet<AbstractNode>> entry : m.entrySet()) {
+		   boolean isIncreasing = entry.getKey().isIncreasing();
 		   dependency += entry.getKey().getNodeName();
+		   if(isIncreasing)
+			   dependency += "(+)";
+		   else
+			   dependency += "(-)";
 		   dependency += " -> ";
 		   for(AbstractNode node: entry.getValue()){
 			   dependency += node.getNodeName();
+			   dependency += " ";
 		   }
 		   dependency += "  |  ";
 	   }

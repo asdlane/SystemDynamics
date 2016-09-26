@@ -621,7 +621,7 @@ public class XMLModelWriter {
 					}
 				}
 				if(levelNodeShared){
-					tempid = createId("LN", levelCounter);
+					tempid = createId("LN", SubmodelID);   //   ********************************* needs change
 				}
 				else if(constantNodeShared){
 					tempid = createId("CN", constantCounter);
