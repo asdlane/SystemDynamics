@@ -336,6 +336,18 @@ public class Model {
       }
       
       //  (4) remove shared node
+      if(node instanceof SharedNode){
+    	  SharedNode sharedNode = (SharedNode) node;
+          // remove incoming flows
+          for (RateNode rateNode : sharedNode.getIncomingFlows()) {
+             removeFlowFromRateNode2SharedNode(rateNode, sharedNode);
+          }
+          
+          // remove outgoing flows
+          for (RateNode rateNode : sharedNode.getOutgoingFlows()) {
+             removeFlowFromSharedNode2RateNode(sharedNode, rateNode);
+          }
+      }
    }
    
    /**
