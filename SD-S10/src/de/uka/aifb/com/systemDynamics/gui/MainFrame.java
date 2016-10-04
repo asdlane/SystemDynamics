@@ -3101,14 +3101,14 @@ WindowListener {
 				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
 					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Auxiliary", -1);
+					graph.get(subModelIndex).createSharedNodeGraphCell(shareSubModel,sharedPointerLocal, "Auxiliary", -1);
 					
 				}
 				else if (cells[i] instanceof LevelNodeGraphCell){
 					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					Double startVal = (Double)((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal");
 					
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Level", startVal);
+					graph.get(subModelIndex).createSharedNodeGraphCell(shareSubModel,sharedPointerLocal, "Level", startVal);
 
 				}
 				/*else if(cells[i] instanceof SourceSinkNodeGraphCell){					
@@ -3127,7 +3127,7 @@ WindowListener {
 				else if(cells[i] instanceof ConstantNodeGraphCell){
 					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
 					double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "Constant", constVal);
+					graph.get(subModelIndex).createSharedNodeGraphCell(shareSubModel,sharedPointerLocal, "Constant", constVal);
 				}/*
 				else if(cells[i] instanceof RateNodeGraphCell){
 					sharedPointerLocal = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();

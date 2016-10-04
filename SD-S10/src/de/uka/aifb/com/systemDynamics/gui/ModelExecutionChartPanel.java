@@ -509,15 +509,24 @@ private JFreeChart chart2;
 
 	   String dependency = "Dependency :   ";
 	   for (Entry<LevelNode, HashSet<AbstractNode>> entry : m.entrySet()) {
-		   boolean isIncreasing = entry.getKey().isIncreasing();
 		   dependency += entry.getKey().getNodeName();
-		   if(isIncreasing)
-			   dependency += "(+)";
-		   else
-			   dependency += "(-)";
 		   dependency += " -> ";
 		   for(AbstractNode node: entry.getValue()){
+		   
 			   dependency += node.getNodeName();
+			   dependency += " ";
+			   boolean isIncreasing = false;
+			   if(node instanceof LevelNode){
+				   isIncreasing = !(((LevelNode)node).isIncreasing() ^ ((LevelNode)entry.getKey()).isIncreasing());
+			   }
+			   else{
+
+				   isIncreasing = ((ConstantNode)node).isIncreasing();
+			   }
+			   if(isIncreasing)
+				   dependency += "(+)";
+			   else
+				   dependency += "(-)";
 			   dependency += " ";
 		   }
 		   dependency += "  |  ";
@@ -551,7 +560,19 @@ private JFreeChart chart2;
 					   if(n instanceof ConstantNode){
 						   dependencyNodes.add(n);
 					   }
+					   else if(node instanceof LevelNode){
+						   dependencyNodes.add(node);
+						   getAllDependencyNodes((LevelNode)node,m);
+//						   dependencyNodes.addAll(m.get(node));
+						   
+					   }
 				   }
+			   }
+			   else if(node instanceof LevelNode){
+				   dependencyNodes.add(node);
+				   getAllDependencyNodes((LevelNode)node,m);
+//				   dependencyNodes.addAll(m.get(node));
+				   
 			   }
 		   }
 	   }

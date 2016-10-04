@@ -263,14 +263,15 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		return levelNodeGraphCell;
 	}
-	public SharedNodeGraphCell createSharedNodeGraphCell(String SharedPointer, String SharedName, double nodeVal) {
+	public SharedNodeGraphCell createSharedNodeGraphCell(int shareSubModel, String SharedPointer, String SharedName, double nodeVal) {
 		
 		//create a new attribute map to store all the values that pertain to the node trying to be created.
 		AttributeMap vals = new AttributeMap();
+		vals.put("shareSubModel", shareSubModel);
 		vals.put("SharedPointer", SharedPointer);
 		vals.put("SharedName", SharedName);
 		// create node
-		SharedNode sharedNode = model.createSharedNode(SharedPointer, nodeVal);
+		SharedNode sharedNode = model.createSharedNode(shareSubModel,SharedPointer, nodeVal);
 
 		//create graph cell with the attribute map attached to it.
 		SharedNodeGraphCell sharedNodeGraphCell = new SharedNodeGraphCell(0,0,vals,SharedPointer);
@@ -1716,7 +1717,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 						menu.add(changeConstantValueMenuItem);
 					}
 
-					if (cell instanceof AuxiliaryNodeGraphCell || cell instanceof RateNodeGraphCell || cell instanceof SharedNodeGraphCell) {
+					if (cell instanceof AuxiliaryNodeGraphCell || cell instanceof RateNodeGraphCell) {
+//					if (cell instanceof AuxiliaryNodeGraphCell || cell instanceof RateNodeGraphCell || cell instanceof SharedNodeGraphCell) {
 						// change formula
 						JMenuItem changeFormulaMenuItem =
 								new JMenuItem(messages.getString("SystemDynamicsGraph.PopupMenu.ChangeFormula"));

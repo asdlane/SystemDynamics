@@ -402,7 +402,8 @@ public class XMLModelReader {
 					Element SharedElement = (Element)sharedNodeElements.item(i);
 					String id = SharedElement.getAttribute("sharedPointer");
 					String value = SharedElement.getAttribute("value");
-					SharedNode sharedNode = model.get(k).createSharedNode(id, Double.parseDouble(value));
+					int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
+					SharedNode sharedNode = model.get(k).createSharedNode(shareSubModel,id, Double.parseDouble(value));
 					id2SharedNode.put(id, sharedNode);
 				}
 			} catch (XPathExpressionException e) {
@@ -831,20 +832,21 @@ public class XMLModelReader {
 								String id = SharedElement.getAttribute("sharedPointer");
 								String NodeType = SharedElement.getAttribute("sharedPointerid");
 								String value = SharedElement.getAttribute("value");
+								int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
 								SharedNodeGraphCell sharedNode = null;
 								if(NodeType.contains("LN")) {
-									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Level", Double.parseDouble(value));
+									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "Level", Double.parseDouble(value));
 								}
 								else if(NodeType.contains("CN")) {
-									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Constant", Double.parseDouble(value));
+									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "Constant", Double.parseDouble(value));
 								}
 								else if(NodeType.contains("AN")) {
-									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "Auxiliary", Double.parseDouble(value));
+									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "Auxiliary", Double.parseDouble(value));
 								}
 								else{
-									sharedNode = graph.get(k).createSharedNodeGraphCell(id, "other", Double.parseDouble(value));
+									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "other", Double.parseDouble(value));
 								}
-								graph.get(k).model.createSharedNode(id, Double.parseDouble(value));
+								graph.get(k).model.createSharedNode(shareSubModel,id, Double.parseDouble(value));
 								id2SharedNodeGraphCell.put(id, sharedNode);
 							}
 						} catch (XPathExpressionException e) {

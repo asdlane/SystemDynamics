@@ -629,6 +629,8 @@ public class XMLModelWriter {
 				else if(auxiliaryNodeShared){
 					tempid = createId("AN", auxiliaryCounter);
 				}
+				
+				sharedNodeElement.setAttribute("shareSubModel", String.valueOf(sharednode.getShareSubModel()));
 				sharedNodeElement.setAttribute("sharedPointer", sharednode.getSharedPointer());
 				sharedNodeElement.setAttribute("id", id);
 				sharedNodeElement.setAttribute("sharedPointerid", tempid);

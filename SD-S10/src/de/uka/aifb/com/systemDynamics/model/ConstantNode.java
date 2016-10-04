@@ -266,4 +266,9 @@ public boolean getShared() {
 	// TODO Auto-generated method stub
 	return shared;
 }
+
+
+public boolean isIncreasing(){
+	return constantValue > 0 ? true: false;
+}
 }

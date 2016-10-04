@@ -48,7 +48,7 @@ public class FormulaParserTestCase extends TestCase {
    private ConstantNode constantNode2 = model.createConstantNode("Constant node 2", 0, false, false);
    private LevelNode levelNode1 = model.createLevelNode("Level node 1", 0, 0, 0, 3, false, false);
    private LevelNode levelNode2 = model.createLevelNode("Level node 2", 0, 0, 0, 3, false, false);
-   private SharedNode sharedNode1 = model.createSharedNode("sharedNode", -1);
+   private SharedNode sharedNode1 = model.createSharedNode(1,"sharedNode", -1);
    
    public static Test suite() {  
       return new TestSuite(FormulaParserTestCase.class);

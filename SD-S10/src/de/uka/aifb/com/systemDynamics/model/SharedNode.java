@@ -23,6 +23,7 @@ public class SharedNode extends AbstractNode implements ASTElement{
    private HashSet<RateNode> incomingFlows;
    private HashSet<RateNode> outgoingFlows;
    private String LocalSharedPointer;
+   private int shareSubModel;
    /**
     * Constructor.
     * 
@@ -32,12 +33,13 @@ public class SharedNode extends AbstractNode implements ASTElement{
     * @param maxValue max value allowed across the entire simulation
     * @param curve characteristic behaviour of this LevelNode
     */
-   protected SharedNode(String sharedPointer, double nodeVal) {
+   protected SharedNode(int shareSubModel,String sharedPointer, double nodeVal) {
 	  
 	  setsharedPointer(sharedPointer);
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();
       currentValue = nodeVal;
+      this.shareSubModel = shareSubModel;
    }
    void setsharedPointer(String sharedPointer){
 	   LocalSharedPointer = sharedPointer;
@@ -46,6 +48,13 @@ public class SharedNode extends AbstractNode implements ASTElement{
 	   return LocalSharedPointer;
    }
 
+   void setShareSubModel(int shareSubModel){
+	   this.shareSubModel = shareSubModel;
+   }
+   public int getShareSubModel(){
+	   return shareSubModel;
+   }
+   
 /**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
     * 
@@ -53,8 +62,8 @@ public class SharedNode extends AbstractNode implements ASTElement{
     * @param startValue start value
     * @return created new instance
     */
-   private static SharedNode createSharedNode(String sharedPointer, int nodeVal) {
-      return new SharedNode(sharedPointer, nodeVal);
+   private static SharedNode createSharedNode(int shareSubModel,String sharedPointer, int nodeVal) {
+      return new SharedNode(shareSubModel,sharedPointer, nodeVal);
    }
    
    

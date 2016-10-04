@@ -140,11 +140,11 @@ public class Model {
       System.out.println("this is a newly created levelnode "+levelNode.toString());
       return levelNode;
    }
-   public SharedNode createSharedNode(String sharedPointer, double nodeVal) {
+   public SharedNode createSharedNode(int shareSubModel, String sharedPointer, double nodeVal) {
 	   if(!isChangeable){
 		   throw new ModelNotChangeableException();
 	   }
-	   SharedNode sharedNode = new SharedNode(sharedPointer, nodeVal);
+	   SharedNode sharedNode = new SharedNode(shareSubModel,sharedPointer, nodeVal);
 	   SharedNodes.add(sharedNode);
 		// TODO Auto-generated method stub
 		return sharedNode;
