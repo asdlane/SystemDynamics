@@ -24,6 +24,7 @@ public class SharedNode extends AbstractNode implements ASTElement{
    private HashSet<RateNode> outgoingFlows;
    private String LocalSharedPointer;
    private int shareSubModel;
+   private AbstractNode source;
    /**
     * Constructor.
     * 
@@ -53,6 +54,14 @@ public class SharedNode extends AbstractNode implements ASTElement{
    }
    public int getShareSubModel(){
 	   return shareSubModel;
+   }
+   
+   public void setSource(AbstractNode source){
+	   this.source = source;
+   }
+   
+   public AbstractNode getSource(){
+	   return source;
    }
    
 /**
@@ -225,7 +234,7 @@ public HashSet<AbstractNode> getAllNodesInASTSubtree() {
  * @return <code>String</code> representation of the node's formula
  */
 public String getStringRepresentation() {
-   return getNodeName() + "(AN)";
+   return "M"+(shareSubModel+1)+"_"+LocalSharedPointer+ "_SH" + "(SN)";
 }
 
 /**
@@ -238,8 +247,16 @@ public String getStringRepresentation() {
  */
 public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                            HashMap<ConstantNode, Integer> constantNode2id,
-                                           HashMap<LevelNode, Integer> levelNode2id) {
-  return "";
+                                           HashMap<LevelNode, Integer> levelNode2id,
+                                           HashMap<SharedNode, Integer> sharedNode2id) {
+	if (sharedNode2id == null) {
+        throw new IllegalArgumentException("'sharedNode2id' must not be null.");
+     }
+     if (sharedNode2id.isEmpty()) {
+        throw new IllegalArgumentException("'sharedNode2id' must not be empty.");
+     }
+     
+     return "SN(" + sharedNode2id.get(this) + ")";
 }
 
 /**
@@ -268,7 +285,6 @@ public Iterator<ASTElement> iterator() {
  */
 private class SharedNodeIterator implements Iterator<ASTElement> {
    
-   private AuxiliaryNode auxiliaryNode;
 private SharedNode sharedNode;
    
    /**
@@ -277,8 +293,8 @@ private SharedNode sharedNode;
     * @param auxiliaryNode {@link de.uka.aifb.com.systemDynamics.model.AuxiliaryNode} instance
     */
    private SharedNodeIterator(SharedNode sharedNode) {
-      if (auxiliaryNode == null) {
-         throw new IllegalArgumentException("'auxiliaryNode' must not be null.");
+      if (sharedNode == null) {
+         throw new IllegalArgumentException("'sharedNode' must not be null.");
       }
       
       this.sharedNode = sharedNode;

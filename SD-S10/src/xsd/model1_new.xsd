@@ -77,7 +77,7 @@
 															<xsd:attribute name="id" use="required">
 																<xsd:simpleType>
 																	<xsd:restriction base="xsd:string">
-																		<xsd:pattern value="SN[0-9]{4}" />
+																		<xsd:pattern value="SSN[0-9]{4}" />
 																	</xsd:restriction>
 																</xsd:simpleType>
 															</xsd:attribute>
@@ -102,28 +102,7 @@
 												</xsd:sequence>
 											</xsd:complexType>
 										</xsd:element>
-										<xsd:element name="SharedNodes" minOccurs="0">
-											<xsd:complexType>
-												<xsd:sequence>
-													<xsd:element name="SharedNode" maxOccurs="unbounded">
-														<xsd:complexType>
-															<xsd:attribute name="sharedPointer" use="required">
-															</xsd:attribute>
-															<xsd:attribute name="id">
-															</xsd:attribute>
-															<xsd:attribute name="sharedPointerid">
-															</xsd:attribute>
-															<xsd:attribute name="value">
-															</xsd:attribute>
-															<xsd:attribute name="xCoordinate">
-															</xsd:attribute>
-															<xsd:attribute name="yCoordinate">
-															</xsd:attribute>
-														</xsd:complexType>
-													</xsd:element>
-												</xsd:sequence>
-											</xsd:complexType>
-										</xsd:element>
+										
 
 										<xsd:element name="ConstantNodes" minOccurs="0">
 											<xsd:complexType>
@@ -152,6 +131,46 @@
 																</xsd:simpleType>
 															</xsd:attribute>
 															<xsd:attribute name="yCoordinate" default="10.0">
+																<xsd:simpleType>
+																	<xsd:restriction base="xsd:double">
+																		<xsd:minInclusive value="0.0" />
+																	</xsd:restriction>
+																</xsd:simpleType>
+															</xsd:attribute>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										
+										<xsd:element name="SharedNodes" minOccurs="0">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="SharedNode" maxOccurs="unbounded">
+														<xsd:complexType>
+															<xsd:attribute name="shareSubModel" use="required">
+															</xsd:attribute>
+															<xsd:attribute name="sharedPointer" use="required">
+															</xsd:attribute>
+															<xsd:attribute name="id" use="required">
+																<xsd:simpleType>
+																	<xsd:restriction base="xsd:string">
+																		<xsd:pattern value="SN[0-9]{4}" />
+																	</xsd:restriction>
+																</xsd:simpleType>
+															</xsd:attribute>
+															<xsd:attribute name="sharedPointerid">
+															</xsd:attribute>
+															<xsd:attribute name="value">
+															</xsd:attribute>
+															<xsd:attribute name="xCoordinate">
+																<xsd:simpleType>
+																	<xsd:restriction base="xsd:double">
+																		<xsd:minInclusive value="0.0" />
+																	</xsd:restriction>
+																</xsd:simpleType>
+															</xsd:attribute>
+															<xsd:attribute name="yCoordinate">
 																<xsd:simpleType>
 																	<xsd:restriction base="xsd:double">
 																		<xsd:minInclusive value="0.0" />
@@ -390,6 +409,10 @@
 						<xsd:field xpath="@id" />
 					</xsd:key>
 					<xsd:key name="snId">
+						<xsd:selector xpath="./Nodes/SharedNodes/SharedNode" />
+						<xsd:field xpath="@id" />
+					</xsd:key>
+					<xsd:key name="ssnId">
 						<xsd:selector xpath="./Nodes/SourceSinkNodes/SourceSinkNode" />
 						<xsd:field xpath="@id" />
 					</xsd:key>
@@ -427,11 +450,11 @@
 						<xsd:selector xpath="./Flows/RateNode2SourceSinkNodeFlow" />
 						<xsd:field xpath="@fromRateNodeIdRef" />
 					</xsd:keyref>
-					<xsd:keyref name="F-R2StoSnIdRef" refer="snId">
+					<xsd:keyref name="F-R2StoSnIdRef" refer="ssnId">
 						<xsd:selector xpath="./Flows/RateNode2SourceSinkNodeFlow" />
 						<xsd:field xpath="@toSourceSinkNodeIdRef" />
 					</xsd:keyref>
-					<xsd:keyref name="F-S2RfromSnIdRef" refer="snId">
+					<xsd:keyref name="F-S2RfromSnIdRef" refer="ssnId">
 						<xsd:selector xpath="./Flows/SourceSinkNode2RateNodeFlow" />
 						<xsd:field xpath="@fromSourceSinkNodeIdRef" />
 					</xsd:keyref>
@@ -505,6 +528,12 @@
 					<xsd:keyref name="levelNodeIdRef" refer="lnId">
 						<xsd:selector xpath=".//ASTLevelNode" />
 						<xsd:field xpath="@levelNodeIdRef" />
+						
+					</xsd:keyref>
+					<xsd:keyref name="sharedNodeIdRef" refer="snId">
+						<xsd:selector xpath=".//ASTSharedNode" />
+						<xsd:field xpath="@sharedNodeIdRef" />
+						
 					</xsd:keyref>
 				</xsd:element>
 			</xsd:sequence>
@@ -530,6 +559,7 @@
 			<xsd:element name="ASTAuxiliaryNode" type="ASTAuxiliaryNode" />
 			<xsd:element name="ASTConstantNode" type="ASTConstantNode" />
 			<xsd:element name="ASTLevelNode" type="ASTLevelNode" />
+			<xsd:element name="ASTSharedNode" type="ASTSharedNode" />
 		</xsd:choice>
 	</xsd:complexType>
 
@@ -546,6 +576,7 @@
 				<xsd:element name="ASTAuxiliaryNode" type="ASTAuxiliaryNode" />
 				<xsd:element name="ASTConstantNode" type="ASTConstantNode" />
 				<xsd:element name="ASTLevelNode" type="ASTLevelNode" />
+				<xsd:element name="ASTSharedNode" type="ASTSharedNode" />
 			</xsd:choice>
 			<xsd:choice>
 				<xsd:element name="ASTPlus" type="BinaryOperation" />
@@ -558,6 +589,7 @@
 				<xsd:element name="ASTAuxiliaryNode" type="ASTAuxiliaryNode" />
 				<xsd:element name="ASTConstantNode" type="ASTConstantNode" />
 				<xsd:element name="ASTLevelNode" type="ASTLevelNode" />
+				<xsd:element name="ASTSharedNode" type="ASTSharedNode" />
 			</xsd:choice>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -577,6 +609,11 @@
 			use="required" />
 	</xsd:complexType>
 
+	<xsd:complexType name="ASTSharedNode">
+		<xsd:attribute name="sharedNodeIdRef" type="xsd:string"
+			use="required" />
+	</xsd:complexType>
+	
 	<!-- definition of additional control points for edges -->
 	<xsd:complexType name="additionalControlPoints">
 		<xsd:sequence>

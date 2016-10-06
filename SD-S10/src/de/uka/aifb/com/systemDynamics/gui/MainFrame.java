@@ -29,6 +29,7 @@ import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.ConstantNodeGraphC
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.FlowEdge;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.LevelNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.RateNodeGraphCell;
+import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SharedNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SourceSinkNodeGraphCell;
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
 import de.uka.aifb.com.systemDynamics.model.*;
@@ -3098,44 +3099,14 @@ WindowListener {
 			}
 			String sharedPointerLocal = "";
 			for(int i=0; i<cells.length;i++){
-				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
-					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					
-					graph.get(subModelIndex).createSharedNodeGraphCell(shareSubModel,sharedPointerLocal, "Auxiliary", -1);
-					
-				}
-				else if (cells[i] instanceof LevelNodeGraphCell){
-					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					Double startVal = (Double)((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal");
-					
-					graph.get(subModelIndex).createSharedNodeGraphCell(shareSubModel,sharedPointerLocal, "Level", startVal);
-
-				}
-				/*else if(cells[i] instanceof SourceSinkNodeGraphCell){					
-					sharedPointerLocal = "SourceSink";
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal, "SourceSink");
-				}
-				else if(cells[i] instanceof ColoredSourceSinkNodeGraphCell){					
-					
-					
-					String[] color = ((ColoredSourceSinkNodeGraphCell)cells[i]).getAttributes().get("color").toString().split(", ");
-					Color truecolor = new Color(Integer.parseInt(color[0]),Integer.parseInt(color[1]),Integer.parseInt(color[2]));
-					sharedPointerLocal = "Colored" + truecolor.getRed() + truecolor.getGreen() + truecolor.getBlue();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
-
-				}*/
-				else if(cells[i] instanceof ConstantNodeGraphCell){
-					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
-					graph.get(subModelIndex).createSharedNodeGraphCell(shareSubModel,sharedPointerLocal, "Constant", constVal);
-				}/*
-				else if(cells[i] instanceof RateNodeGraphCell){
-					sharedPointerLocal = ((RateNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					graph.get(subModelIndex).createSharedNodeGraphCell(sharedPointerLocal);
-					
-				}*/
+				SharedNodeGraphCell cell = null;
+				DefaultGraphCell source = (DefaultGraphCell) cells[i];
+				sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+				double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
+				cell = graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Constant", constVal, graph.get(shareSubModel).getModelNode(source));
+			
+				
 			}
-
 		}
 
 	}

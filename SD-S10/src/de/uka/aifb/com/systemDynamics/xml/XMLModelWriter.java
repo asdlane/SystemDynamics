@@ -469,7 +469,7 @@ public class XMLModelWriter {
 			Element sourceSinkNodesElement = document.createElement("SourceSinkNodes");
 			nodesElement.appendChild(sourceSinkNodesElement);
 			for (SourceSinkNode sourceSinkNode : model.getSourceSinkNodes()) {
-				String id = createId("SN", nextSourceSinkNodeId++);
+				String id = createId("SSN", nextSourceSinkNodeId++);
 				node2Id.put(sourceSinkNode, id);
 
 				Element sourceSinkNodeElement = document.createElement("SourceSinkNode");
@@ -508,85 +508,12 @@ public class XMLModelWriter {
 
 			}
 		}
-		
-		// (1d) auxiliary nodes
-				if (!model.getAuxiliaryNodes().isEmpty()) {
-					Element auxiliaryNodesElement = document.createElement("AuxiliaryNodes");
-					nodesElement.appendChild(auxiliaryNodesElement);
-					for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
-						String id = createId("AN", nextAuxiliaryNodeId++);
-						node2Id.put(auxiliaryNode, id);
-
-						Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
-						auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
-						auxiliaryNodeElement.setAttribute("id", id);
-						//split number from name
-
-						if(auxiliaryNode.getShared()){
-							if(archive){
-								String name= auxiliaryNode.getNodeName();
-								String[] nameSeparated = name.split(".*[^0-9].");
-								auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
-							}
-							else{
-								auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
-							}
-						}else{
-							auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
-						}
-						auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
-						/////////////////////////////////////////////////////////////
-						/////////////////////   change      /////////////////////////
-						/////////////////////////////////////////////////////////////
-						if(auxiliaryNode.hasFormula()){
-							Element formulaElement = document.createElement("Formula");
-							formulaElement.appendChild(createXMLForFormula(document, auxiliaryNode.getFormula(),
-									node2Id));
-							auxiliaryNodeElement.appendChild(formulaElement);
-						}
-					}
-				}
-		
-		// (1c) rate nodes
-		if (!model.getRateNodes().isEmpty()) {
-			Element rateNodesElement = document.createElement("RateNodes");
-			nodesElement.appendChild(rateNodesElement);
-			for (RateNode rateNode : model.getRateNodes()) {
-				String id = createId("RN", nextRateNodeId++);
-				node2Id.put(rateNode, id);
-
-				Element rateNodeElement = document.createElement("RateNode");
-				rateNodesElement.appendChild(rateNodeElement);
-				rateNodeElement.setAttribute("id", id);
-				if(rateNode.getShared()){
-					if(archive){
-						String name= rateNode.getNodeName();
-						String[] nameSeparated = name.split("[(0-9)*]");
-						rateNodeElement.setAttribute("name", nameSeparated[0] + "?");
-					}
-					else{
-						rateNodeElement.setAttribute("name", rateNode.getNodeName());
-					}
-				}else{
-					rateNodeElement.setAttribute("name", rateNode.getNodeName());
-				}
-
-				rateNodeElement.setAttribute("learnerChangeable", String.valueOf(rateNode.getLearnerChangeable()));
-				rateNodeElement.setAttribute("shared", String.valueOf(rateNode.getShared()));
-				Element formulaElement = document.createElement("Formula");
-				formulaElement.appendChild(createXMLForFormula(document, rateNode.getFormula(),
-						node2Id));
-				rateNodeElement.appendChild(formulaElement);
-			}
-		}
-		
-
 		//shared nodes
 		if(!model.getSharedNodes().isEmpty()) {
 			Element SharedNodesElement = document.createElement("SharedNodes");
 			nodesElement.appendChild(SharedNodesElement);
 			for(SharedNode sharednode : model.getSharedNodes()) {
-				String id = createId("SH", nextSharedNodeId++);
+				String id = createId("SN", nextSharedNodeId++);
 				node2Id.put(sharednode, id);
 				Element sharedNodeElement = document.createElement("SharedNode");
 				SharedNodesElement.appendChild(sharedNodeElement);
@@ -637,6 +564,79 @@ public class XMLModelWriter {
 				sharedNodeElement.setAttribute("value", Double.toString(sharednode.getCurrentValue()));
 			}
 		}
+		// (1d) auxiliary nodes
+				if (!model.getAuxiliaryNodes().isEmpty()) {
+					Element auxiliaryNodesElement = document.createElement("AuxiliaryNodes");
+					nodesElement.appendChild(auxiliaryNodesElement);
+					for (AuxiliaryNode auxiliaryNode : model.getAuxiliaryNodes()) {
+						String id = createId("AN", nextAuxiliaryNodeId++);
+						node2Id.put(auxiliaryNode, id);
+
+						Element auxiliaryNodeElement = document.createElement("AuxiliaryNode");
+						auxiliaryNodesElement.appendChild(auxiliaryNodeElement);
+						auxiliaryNodeElement.setAttribute("id", id);
+						//split number from name
+
+						if(auxiliaryNode.getShared()){
+							if(archive){
+								String name= auxiliaryNode.getNodeName();
+								String[] nameSeparated = name.split(".*[^0-9].");
+								auxiliaryNodeElement.setAttribute("name", nameSeparated[0] + "?");
+							}
+							else{
+								auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+							}
+						}else{
+							auxiliaryNodeElement.setAttribute("name", auxiliaryNode.getNodeName());
+						}
+						auxiliaryNodeElement.setAttribute("shared", String.valueOf(auxiliaryNode.getShared()));
+						/////////////////////////////////////////////////////////////
+						/////////////////////   change      /////////////////////////
+						/////////////////////////////////////////////////////////////
+//						if(auxiliaryNode.hasFormula()){
+//							Element formulaElement = document.createElement("Formula");
+//							formulaElement.appendChild(createXMLForFormula(document, auxiliaryNode.getFormula(),
+//									node2Id));
+//							auxiliaryNodeElement.appendChild(formulaElement);
+//						}
+					}
+				}
+		
+		// (1c) rate nodes
+		if (!model.getRateNodes().isEmpty()) {
+			Element rateNodesElement = document.createElement("RateNodes");
+			nodesElement.appendChild(rateNodesElement);
+			for (RateNode rateNode : model.getRateNodes()) {
+				String id = createId("RN", nextRateNodeId++);
+				node2Id.put(rateNode, id);
+
+				Element rateNodeElement = document.createElement("RateNode");
+				rateNodesElement.appendChild(rateNodeElement);
+				rateNodeElement.setAttribute("id", id);
+				if(rateNode.getShared()){
+					if(archive){
+						String name= rateNode.getNodeName();
+						String[] nameSeparated = name.split("[(0-9)*]");
+						rateNodeElement.setAttribute("name", nameSeparated[0] + "?");
+					}
+					else{
+						rateNodeElement.setAttribute("name", rateNode.getNodeName());
+					}
+				}else{
+					rateNodeElement.setAttribute("name", rateNode.getNodeName());
+				}
+
+				rateNodeElement.setAttribute("learnerChangeable", String.valueOf(rateNode.getLearnerChangeable()));
+				rateNodeElement.setAttribute("shared", String.valueOf(rateNode.getShared()));
+//				Element formulaElement = document.createElement("Formula");
+//				formulaElement.appendChild(createXMLForFormula(document, rateNode.getFormula(),
+//						node2Id));
+//				rateNodeElement.appendChild(formulaElement);
+			}
+		}
+		
+
+		
 		if(!model.getColoredSourceSinkNodes().isEmpty()){
 			Element ColoredSourceSinkNodesElement = document.createElement("ColoredSourceSinkNodes");    	  
 			nodesElement.appendChild(ColoredSourceSinkNodesElement);
@@ -662,7 +662,7 @@ public class XMLModelWriter {
 			String id = node2Id.get(auxiliaryNode);
 			try {
 				Element auxiliaryNodeElement =
-						(Element)xpath.evaluate("/Model/Nodes/AuxiliaryNodes/AuxiliaryNode[@id='" + id + "']",
+						(Element)xpath.evaluate("/SubModel/Nodes/AuxiliaryNodes/AuxiliaryNode[@id='" + id + "']",
 								document, XPathConstants.NODE);
 				Element formulaElement = document.createElement("Formula");
 				try{
@@ -683,7 +683,7 @@ public class XMLModelWriter {
 			String id = node2Id.get(rateNode);
 			try {
 				Element rateNodeElement =
-						(Element)xpath.evaluate("/Model/Nodes/RateNodes/RateNode[@id='" + id + "']",
+						(Element)xpath.evaluate("/SubModel/Nodes/RateNodes/RateNode[@id='" + id + "']",
 								document, XPathConstants.NODE);
 				Element formulaElement = document.createElement("Formula");
 
@@ -1317,7 +1317,14 @@ public class XMLModelWriter {
 			astLevelNodeElement.setAttribute("levelNodeIdRef", node2Id.get(node));
 			return astLevelNodeElement;
 		}
-
+		if(node instanceof SharedNode) {
+			Element astSharedNodeElement = document.createElement("ASTSharedNode");
+			astSharedNodeElement.setAttribute("sharedNodeIdRef", node2Id.get(node));
+			return astSharedNodeElement;
+		}
+		
+		
+		
 		// not reachable -> just for compiler!
 		return null;
 	}

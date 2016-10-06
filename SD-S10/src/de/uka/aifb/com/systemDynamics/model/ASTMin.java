@@ -69,7 +69,8 @@ public class ASTMin implements ASTElement{
 	    */
 	   public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
 	                                              HashMap<ConstantNode, Integer> constantNode2id,
-	                                              HashMap<LevelNode, Integer> levelNode2id) {
+	                                              HashMap<LevelNode, Integer> levelNode2id,
+	                                              HashMap<SharedNode, Integer> sharedNode2id) {
 	      if (auxiliaryNode2id == null) {
 	         throw new IllegalArgumentException("'auxiliaryNode2id' must not be null.");
 	      }
@@ -80,9 +81,9 @@ public class ASTMin implements ASTElement{
 	         throw new IllegalArgumentException("'levelNode2id' must not be null.");
 	      }
 	     if ((leftElement instanceof AbstractNode || leftElement instanceof ASTMax) && rightElement instanceof AbstractNode) {
-		         return "MIN(" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + " , " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ")";
+		         return "MIN(" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + " , " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ")";
 		      }
-             return "MIN( (" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ") , (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ") )";
+             return "MIN( (" + leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ") , (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ") )";
 	   }
 	   
 	   /**

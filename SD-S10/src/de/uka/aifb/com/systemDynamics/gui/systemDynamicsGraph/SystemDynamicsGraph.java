@@ -263,18 +263,19 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 		return levelNodeGraphCell;
 	}
-	public SharedNodeGraphCell createSharedNodeGraphCell(int shareSubModel, String SharedPointer, String SharedName, double nodeVal) {
+	public SharedNodeGraphCell createSharedNodeGraphCell(double x, double y, int shareSubModel, String SharedPointer, String SharedName, double nodeVal, AbstractNode source) {
 		
 		//create a new attribute map to store all the values that pertain to the node trying to be created.
 		AttributeMap vals = new AttributeMap();
 		vals.put("shareSubModel", shareSubModel);
 		vals.put("SharedPointer", SharedPointer);
 		vals.put("SharedName", SharedName);
+		
 		// create node
 		SharedNode sharedNode = model.createSharedNode(shareSubModel,SharedPointer, nodeVal);
-
+		sharedNode.setSource(source);
 		//create graph cell with the attribute map attached to it.
-		SharedNodeGraphCell sharedNodeGraphCell = new SharedNodeGraphCell(0,0,vals,SharedPointer);
+		SharedNodeGraphCell sharedNodeGraphCell = new SharedNodeGraphCell(x,y,vals,SharedPointer);
 
 		// insert vertex to graph
 		getGraphLayoutCache().insert(sharedNodeGraphCell);
@@ -986,7 +987,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		}
 		if (!(edgeSource instanceof AuxiliaryNodeGraphCell)
 				&& !(edgeSource instanceof ConstantNodeGraphCell)
-				&& !(edgeSource instanceof LevelNodeGraphCell)) {
+				&& !(edgeSource instanceof LevelNodeGraphCell)
+				&& !(edgeSource instanceof SharedNodeGraphCell)) {
 			throw new IllegalArgumentException("'edgeSource' does not have the correct type.");
 		}
 		if (!(edgeTarget instanceof AuxiliaryNodeGraphCell)
@@ -2102,5 +2104,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 				}
 			}
 		}
+	}
+
+	public void addSource(SharedNodeGraphCell sharedcell, Object source) {
+		// TODO Auto-generated method stub
+		((SharedNode)graphNode2modelNode.get(sharedcell)).setSource(graphNode2modelNode.get(source));
 	}
 }

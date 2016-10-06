@@ -222,7 +222,7 @@ public class XMLModelReader {
 			HashMap<String, LevelNode> id2levelNode,
 			HashMap<String, RateNode> id2rateNode,
 			HashMap<String, SourceSinkNode> id2sourceSinkNode,
-			HashMap<String, SharedNode> id2SharedNode)
+			HashMap<String, SharedNode> id2sharedNode)
 					throws AuxiliaryNodesCycleDependencyException,
 					XMLModelReaderWriterException,
 					XMLNodeParameterOutOfRangeException,
@@ -404,7 +404,7 @@ public class XMLModelReader {
 					String value = SharedElement.getAttribute("value");
 					int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
 					SharedNode sharedNode = model.get(k).createSharedNode(shareSubModel,id, Double.parseDouble(value));
-					id2SharedNode.put(id, sharedNode);
+					id2sharedNode.put(id, sharedNode);
 				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
@@ -483,7 +483,7 @@ public class XMLModelReader {
 					Element formulaElement = (Element)xpath.evaluate("./Formula", auxiliaryNodeElement,
 							XPathConstants.NODE);
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode);
+							id2levelNode, id2rateNode,id2sharedNode);
 					model.get(k).setFormula(id2auxiliaryNode.get(id), formula);
 				}
 			} catch (XPathExpressionException e) {
@@ -502,7 +502,7 @@ public class XMLModelReader {
 					Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
 							XPathConstants.NODE);
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode);
+							id2levelNode, id2rateNode, id2sharedNode);
 					model.get(k).setFormula(id2rateNode.get(id), formula);
 				}
 			} catch (XPathExpressionException e) {
@@ -829,24 +829,19 @@ public class XMLModelReader {
 											XPathConstants.NODESET);
 							for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
 								Element SharedElement = (Element)sourceSinkNodeElements.item(i);
-								String id = SharedElement.getAttribute("sharedPointer");
-								String NodeType = SharedElement.getAttribute("sharedPointerid");
+								String id = SharedElement.getAttribute("id");
+								String NodeType = SharedElement.getAttribute("sharedPointer");
 								String value = SharedElement.getAttribute("value");
+								double xCoordinate = new Double(SharedElement.getAttribute("xCoordinate"));
+								double yCoordinate = new Double(SharedElement.getAttribute("yCoordinate"));
 								int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
 								SharedNodeGraphCell sharedNode = null;
-								if(NodeType.contains("LN")) {
-									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "Level", Double.parseDouble(value));
-								}
-								else if(NodeType.contains("CN")) {
-									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "Constant", Double.parseDouble(value));
-								}
-								else if(NodeType.contains("AN")) {
-									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "Auxiliary", Double.parseDouble(value));
-								}
-								else{
-									sharedNode = graph.get(k).createSharedNodeGraphCell(shareSubModel,id, "other", Double.parseDouble(value));
-								}
-								graph.get(k).model.createSharedNode(shareSubModel,id, Double.parseDouble(value));
+								sharedNode = graph.get(k).createSharedNodeGraphCell(xCoordinate, yCoordinate,shareSubModel,NodeType, "", Double.parseDouble(value), null);
+								
+//								graph.get(k).model.createSharedNode(shareSubModel,id, Double.parseDouble(value));
+								AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
+								graphCell2Vertex.put(sharedNode, vertex);
+								abstractNode2Vertex.put(graph.get(k).getModelNode(sharedNode), vertex);
 								id2SharedNodeGraphCell.put(id, sharedNode);
 							}
 						} catch (XPathExpressionException e) {
@@ -994,6 +989,10 @@ public class XMLModelReader {
 			for (String id : id2sourceSinkNodeGraphCell.keySet()) {
 				id2sourceSinkNode.put(id, (SourceSinkNode)graph.get(k).getModelNode(id2sourceSinkNodeGraphCell.get(id)));
 			}
+			HashMap<String, SharedNode> id2sharedNode = new HashMap<String, SharedNode>();
+			for (String id : id2SharedNodeGraphCell.keySet()) {
+				id2sharedNode.put(id, (SharedNode)graph.get(k).getModelNode(id2SharedNodeGraphCell.get(id)));
+			}
 
 			// (2) set formulas (and dependency edges)
 			// (2a) set formulas of auxiliary nodes
@@ -1007,7 +1006,7 @@ public class XMLModelReader {
 					Element formulaElement = (Element)xpath.evaluate("./Formula", auxiliaryNodeElement,
 							XPathConstants.NODE);
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode);
+							id2levelNode, id2rateNode, id2sharedNode);
 					graph.get(k).setFormula(id2auxiliaryNodeGraphCell.get(id), formula, false);
 					for (AbstractNode node : formula.getAllNodesInASTSubtree()) {
 						graphLayout.createEdge(abstractNode2Vertex.get(node), graphCell2Vertex.get(id2auxiliaryNodeGraphCell.get(id)));
@@ -1029,7 +1028,7 @@ public class XMLModelReader {
 					Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
 							XPathConstants.NODE);
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode);
+							id2levelNode, id2rateNode, id2sharedNode);
 					graph.get(k).setFormula(id2rateNodeGraphCell.get(id), formula, false);
 					for (AbstractNode node : formula.getAllNodesInASTSubtree()) {
 						graphLayout.createEdge(abstractNode2Vertex.get(node), graphCell2Vertex.get(id2rateNodeGraphCell.get(id)));
@@ -1486,6 +1485,28 @@ public class XMLModelReader {
 			}
 		}
 		
+		for(int i=0; i<graph.size(); i++){
+			Model m = graph.get(i).model;
+			for(SharedNode sn : m.getSharedNodes()){
+				String sharedPointer = sn.getSharedPointer();
+				for(AuxiliaryNode an: graph.get(sn.getShareSubModel()).model.getAuxiliaryNodes()){
+					if(an.getNodeName().equals(sharedPointer)){
+						sn.setSource(an);
+					}
+				}
+				for(ConstantNode cn: graph.get(sn.getShareSubModel()).model.getConstantNodes()){
+					if(cn.getNodeName().equals(sharedPointer)){
+						sn.setSource(cn);
+					}
+				}
+				for(LevelNode ln: graph.get(sn.getShareSubModel()).model.getLevelNodes()){
+					if(ln.getNodeName().equals(sharedPointer)){
+						sn.setSource(ln);
+					}
+				}
+			}
+		}
+		
 		return graph;
 
 
@@ -1504,7 +1525,8 @@ public class XMLModelReader {
 			HashMap<String, AuxiliaryNode> id2auxiliaryNode,
 			HashMap<String, ConstantNode> id2constantNode,
 			HashMap<String, LevelNode> id2levelNode,
-			HashMap<String, RateNode> id2rateNode) {
+			HashMap<String, RateNode> id2rateNode,
+			HashMap<String, SharedNode> id2sharedNode) {
 		if (formulaElement == null) {
 			throw new IllegalArgumentException("'formulaElement' must not be null.");
 		}
@@ -1520,6 +1542,9 @@ public class XMLModelReader {
 		if (id2rateNode == null) {
 			throw new IllegalArgumentException ("'id2rateNode' must not be null.");
 		}
+		if (id2sharedNode == null){
+			throw new IllegalArgumentException ("'id2sharedNode' must not be null.");
+		}
 
 		NodeList children = formulaElement.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
@@ -1531,12 +1556,12 @@ public class XMLModelReader {
 				// what kind of child?
 				if (tagName.endsWith("Node")) {
 					return createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode);
+							id2levelNode, id2rateNode,id2sharedNode);
 				}
 				else {
 					// ASTPlus, ASTMinus,ASTMultiply, ASTDivide, ASTRound, ASTMax, ASTMin -> binary operation
 					return createBinaryOperationFormula(childElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode);
+							id2levelNode, id2rateNode,id2sharedNode);
 				}
 			}
 		}
@@ -1559,7 +1584,8 @@ public class XMLModelReader {
 			HashMap<String, AuxiliaryNode> id2auxiliaryNode,
 			HashMap<String, ConstantNode> id2constantNode,
 			HashMap<String, LevelNode> id2levelNode,
-			HashMap<String, RateNode> id2rateNode) {
+			HashMap<String, RateNode> id2rateNode,
+			HashMap<String, SharedNode> id2sharedNode) {
 		if (nodeElement == null) {
 			throw new IllegalArgumentException("'nodeElement' must not be null.");
 		}
@@ -1590,7 +1616,10 @@ public class XMLModelReader {
 			String id = nodeElement.getAttribute("levelNodeIdRef");
 			return id2levelNode.get(id);
 		}
-
+		if (tagName.equals("ASTSharedNode")) {
+			String id = nodeElement.getAttribute("sharedNodeIdRef");
+			return id2sharedNode.get(id);
+		}
 		// will never be reached -> only for compiler!
 		return null;
 	}
@@ -1611,7 +1640,8 @@ public class XMLModelReader {
 			HashMap<String, AuxiliaryNode> id2auxiliaryNode,
 			HashMap<String, ConstantNode> id2constantNode,
 			HashMap<String, LevelNode> id2levelNode,
-			HashMap<String, RateNode> id2rateNode) {
+			HashMap<String, RateNode> id2rateNode,
+			HashMap<String, SharedNode> id2sharedNode) {
 		if (binaryOperationElement == null) {
 			throw new IllegalArgumentException("'binaryOperationElement' must not be null.");
 		}
@@ -1644,21 +1674,21 @@ public class XMLModelReader {
 				if (tagName.endsWith("Node")) {
 					if (!firstOperandCreated) {
 						firstOperand = createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
-								id2levelNode, id2rateNode);
+								id2levelNode, id2rateNode, id2sharedNode);
 					} else {
 						secondOperand = createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,
-								id2levelNode, id2rateNode);
+								id2levelNode, id2rateNode, id2sharedNode);
 					}
 				} else {
 					// ASTPlus, ASTMinus, ASTMultiply or ASTRound-> binary operation
 					if (!firstOperandCreated) {
 						firstOperand = createBinaryOperationFormula(childElement, id2auxiliaryNode,
 								id2constantNode, id2levelNode,
-								id2rateNode);
+								id2rateNode, id2sharedNode);
 					} else {
 						secondOperand = createBinaryOperationFormula(childElement, id2auxiliaryNode,
 								id2constantNode, id2levelNode,
-								id2rateNode);
+								id2rateNode, id2sharedNode);
 					}
 				}
 

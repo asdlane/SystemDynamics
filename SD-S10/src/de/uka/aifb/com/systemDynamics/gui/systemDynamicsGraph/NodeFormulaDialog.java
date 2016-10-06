@@ -55,6 +55,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
    private HashMap<Integer, AuxiliaryNode> id2auxiliaryNode;
    private HashMap<Integer, ConstantNode> id2constantNode;
    private HashMap<Integer, LevelNode> id2levelNode;
+   private HashMap<Integer, SharedNode> id2sharedNode;
    
    
    private ASTElement initialFormula;
@@ -71,12 +72,13 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
     * @param id2auxiliaryNode id to auxiliary node mapping
     * @param id2constantNode id to constant node mapping
     * @param id2levelNode id to level node mapping
+ * @param id2sharedNode 
     */
    private NodeFormulaDialog(SystemDynamics start, JFrame owner, String title,
                              ASTElement initialFormula,
                              HashMap<Integer, AuxiliaryNode> id2auxiliaryNode,
                              HashMap<Integer, ConstantNode> id2constantNode,
-                             HashMap<Integer, LevelNode> id2levelNode) {
+                             HashMap<Integer, LevelNode> id2levelNode, HashMap<Integer, SharedNode> id2sharedNode) {
       // call constructor of super class
       super(owner, true);
       
@@ -98,14 +100,16 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       if (id2levelNode == null) {
          throw new IllegalArgumentException("'id2levelNode' must not be null.");
       }
-
+      if (id2sharedNode == null){
+    	  throw new IllegalArgumentException("'id2sharedNode' must not be null.");
+      }
       messages = start.getMessages();
       
       this.id2auxiliaryNode = id2auxiliaryNode;
       this.id2constantNode = id2constantNode;
       this.id2levelNode = id2levelNode;
       this.initialFormula = initialFormula;
-      
+      this.id2sharedNode = id2sharedNode;
       newFormula = new Formula(null, false);
       
       setTitle(title);
@@ -174,7 +178,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       
       NodeFormulaDialog nodeFormulaDialog =
          new NodeFormulaDialog(start, owner, title, initialFormula, id2auxiliaryNode,
-                               id2constantNode, id2levelNode);
+                               id2constantNode, id2levelNode, id2sharedNode);
       
       // null if new node formula was not successfully verified
       return nodeFormulaDialog.newFormula;
@@ -210,15 +214,15 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       HashMap<AuxiliaryNode, Integer> auxiliaryNode2id = new HashMap<AuxiliaryNode, Integer>();
       HashMap<ConstantNode, Integer> constantNode2id = new HashMap<ConstantNode, Integer>();
       HashMap<LevelNode, Integer> levelNode2id = new HashMap<LevelNode, Integer>();
+      HashMap<SharedNode, Integer> sharedNode2id = new HashMap<SharedNode, Integer> ();
       
-      
-      createNode2IdMappings(id2auxiliaryNode, id2constantNode, id2levelNode, auxiliaryNode2id, constantNode2id, levelNode2id);
+      createNode2IdMappings(id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode, auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id);
       
       innerInputPanel.add(new JLabel(messages.getString("NodeFormulaDialog.FormulaInputShort")));
       formulaInputField = new JTextField(50);
       formulaInputField.requestFocusInWindow();
       if (initialFormula != null) {
-         formulaInputField.setText(initialFormula.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id));
+         formulaInputField.setText(initialFormula.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id));
       }
       formulaInputField.addFocusListener(this);
       innerInputPanel.add(formulaInputField);
@@ -231,7 +235,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       
       String[] columnNames = { messages.getString("NodeFormulaDialog.MappingTable.Abbreviation"),
                                messages.getString("NodeFormulaDialog.MappingTable.NodeName") };
-      String[][] data = new String[id2auxiliaryNode.size() + id2constantNode.size() + id2levelNode.size()][2];
+      String[][] data = new String[id2auxiliaryNode.size() + id2constantNode.size() + id2levelNode.size() + id2sharedNode.size()][2];
       int row = 0;
                 
       for (int i = 1; i <= id2auxiliaryNode.size(); i++) {
@@ -249,6 +253,11 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
          data[row][1] = id2levelNode.get(i).getStringRepresentation();
          row++;
       }
+      for (int i = 1; i <= id2sharedNode.size(); i++) {
+          data[row][0] = "SN(" + i + ")";
+          data[row][1] = id2sharedNode.get(i).getStringRepresentation();
+          row++;
+       }
       
       MyTableModel tableModel = new MyTableModel(data, columnNames);
       JTable mappingTable = new JTable(tableModel);
@@ -334,10 +343,12 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
     */
    private void createNode2IdMappings(HashMap<Integer, AuxiliaryNode> id2auxiliaryNode,
                                       HashMap<Integer, ConstantNode> id2constantNode,
-                                      HashMap<Integer, LevelNode> id2levelNode,                              
+                                      HashMap<Integer, LevelNode> id2levelNode,
+                                      HashMap<Integer, SharedNode> id2sharedNode,
                                       HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                       HashMap<ConstantNode, Integer> constantNode2id,
-                                      HashMap<LevelNode, Integer> levelNode2id) {
+                                      HashMap<LevelNode, Integer> levelNode2id,
+                                      HashMap<SharedNode, Integer> sharedNode2id) {
       if (id2auxiliaryNode == null) {
          throw new IllegalArgumentException("'id2auxiliaryNode' must not be null.");
       }
@@ -347,9 +358,15 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       if (id2levelNode == null) {
          throw new IllegalArgumentException("'id2levelNode' must not be null.");
       }
-      
-      if (auxiliaryNode2id == null) {
-         throw new IllegalArgumentException("'auxiliaryNode2id' must not be null.");
+      if (id2sharedNode == null) {
+          throw new IllegalArgumentException("'id2sharedNode' must not be null.");
+       }
+       
+       if (auxiliaryNode2id == null) {
+          throw new IllegalArgumentException("'auxiliaryNode2id' must not be null.");
+       }
+      if (sharedNode2id == null) {
+         throw new IllegalArgumentException("'sharedNode2id' must not be null.");
       }
       if (!auxiliaryNode2id.isEmpty()) {
          throw new IllegalArgumentException("'auxiliaryNode2id' must be empty.");
@@ -378,6 +395,11 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       for (Integer id : id2levelNode.keySet()) {
          levelNode2id.put(id2levelNode.get(id), id);
       }
+
+      for (Integer id : id2sharedNode.keySet()) {
+          sharedNode2id.put(id2sharedNode.get(id), id);
+       }
+      
    }
    
    /**
@@ -399,7 +421,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       // parse formula string
       ASTElement formula = null;
       try {
-         formula = FormulaParser.parseFormula(formulaString, id2auxiliaryNode, id2constantNode, id2levelNode);
+         formula = FormulaParser.parseFormula(formulaString, id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
       } catch (ParseException e) {
          formulaInputField.setBackground(COLOR_WRONG_FIELDS);
          formulaOutputArea.setText("");
@@ -450,7 +472,7 @@ public class NodeFormulaDialog extends JDialog implements ActionListener, FocusL
       // parse formula string
       ASTElement formula = null;
       try {
-         formula = FormulaParser.parseFormula(formulaString, id2auxiliaryNode, id2constantNode, id2levelNode);
+         formula = FormulaParser.parseFormula(formulaString, id2auxiliaryNode, id2constantNode, id2levelNode, id2sharedNode);
       } catch (ParseException e) {
          formulaInputField.setBackground(COLOR_WRONG_FIELDS);
          formulaOutputArea.setText("");

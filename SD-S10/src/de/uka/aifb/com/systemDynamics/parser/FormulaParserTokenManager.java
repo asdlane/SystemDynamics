@@ -56,6 +56,8 @@ private int jjMoveStringLiteralDfa0_0()
          return jjMoveStringLiteralDfa1_0(0xc000L);
       case 82:
          return jjMoveStringLiteralDfa1_0(0x1000L);
+      case 83:
+    	 return jjMoveStringLiteralDfa1_0(0x800L);
       case 102:
          return jjMoveStringLiteralDfa1_0(0x2000L);
       default :
@@ -88,6 +90,8 @@ private int jjMoveStringLiteralDfa1_0(long active0)
             return jjStopAtPos(1, 9);
          else if ((active0 & 0x400L) != 0L)
             return jjStopAtPos(1, 10);
+         else if((active0 & 0x800L) != 0L)
+        	return jjStopAtPos(1,16);
          break;
       default :
          break;
@@ -206,14 +210,14 @@ static final int[] jjnextStates = {
 /** Token literal values. */
 public static final String[] jjstrLiteralImages = {
 "", null, "\53", "\55", "\52", "\57", "\50", "\51", "\101\116", "\103\116", 
-"\114\116", null, "\122\104", "\146\50\51", "\115\111\116", "\115\101\130", };
+"\114\116", null, "\122\104", "\146\50\51", "\115\111\116", "\115\101\130", "\123\106" };
 
 /** Lexer state names. */
 public static final String[] lexStateNames = {
    "DEFAULT",
 };
 static final long[] jjtoToken = {
-   0xfffdL, 
+   0xffffdL, 
 };
 static final long[] jjtoSkip = {
    0x2L, 

@@ -95,7 +95,8 @@ public class ASTMinus implements ASTElement {
     */
    public String getShortStringRepresentation(HashMap<AuxiliaryNode, Integer> auxiliaryNode2id,
                                               HashMap<ConstantNode, Integer> constantNode2id,
-                                              HashMap<LevelNode, Integer> levelNode2id) {
+                                              HashMap<LevelNode, Integer> levelNode2id,
+                                              HashMap<SharedNode, Integer> sharedNode2id) {
       if (auxiliaryNode2id == null) {
          throw new IllegalArgumentException("'auxiliaryNode2id' must not be null.");
       }
@@ -107,9 +108,9 @@ public class ASTMinus implements ASTElement {
       }
       
       if (rightElement instanceof ASTPlus || rightElement instanceof ASTMinus) {
-         return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + " - (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + ")";
+         return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + " - (" + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + ")";
       } else {
-         return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id) + " - " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id);
+         return leftElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id) + " - " + rightElement.getShortStringRepresentation(auxiliaryNode2id, constantNode2id, levelNode2id, sharedNode2id);
       }
    }
    
