@@ -116,6 +116,9 @@ public class DrawGraphs_Init {
 			LevelNodeGraphInfo levelNodeInfo = new LevelNodeGraphInfo();
 			levelNodeInfo.setId(lNode.getLevelIdRef());
 			levelNodeInfo.setNodeName(levelNodes.get(lNode.getLevelIdRef()));
+			System.out.println("__________________"+lNode.getLevelIdRef());
+			
+			System.out.println("__________________"+levelNodes.get(lNode.getLevelIdRef()));
 			if(lNode.getLevelIdRef().equals(chartObj.getpr()))
 				prNodeName = levelNodeInfo.getNodeName();
 			levelNodeInfo.setSeries(new XYSeries(lNode.getLabel()));
@@ -221,8 +224,8 @@ public class DrawGraphs_Init {
 
 						iter +=1;
 					}
+					System.out.println(lnode.getNodeName());
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
-
 					if(chartObj.getFStep() == 1)
 					{
 						int j;

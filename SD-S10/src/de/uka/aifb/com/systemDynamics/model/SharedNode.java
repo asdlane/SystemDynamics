@@ -193,7 +193,7 @@ public class SharedNode extends AbstractNode implements ASTElement{
 @Override
 public double getCurrentValue() {
 	// TODO Auto-generated method stub
-	return currentValue;
+	return source.getCurrentValue();
 }
 public void setCurrentValue(Double newVal){
 	currentValue = newVal;

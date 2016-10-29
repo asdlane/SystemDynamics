@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Model name="new 2016/10/13 14:57:31 EDT" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0">
+<SubModel SubmodelId="0" color="140, 134, 133" description="">
+  <Nodes>
+    <LevelNodes>
+      <LevelNode curve="3.0" id="LN0001" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="LN" shared="910" startValue="10.0" xCoordinate="337.0" yCoordinate="81.0"/>
+    </LevelNodes>
+    <SourceSinkNodes>
+      <SourceSinkNode id="SSN0001" shared="false" xCoordinate="57.0" yCoordinate="176.0"/>
+    </SourceSinkNodes>
+    <ConstantNodes>
+      <ConstantNode constantValue="10.0" id="CN0001" name="CN" shared="false" xCoordinate="175.0" yCoordinate="92.0"/>
+    </ConstantNodes>
+    <AuxiliaryNodes>
+      <AuxiliaryNode id="AN0001" name="AN" shared="false" xCoordinate="304.0" yCoordinate="181.0">
+        <Formula>
+          <ASTConstantNode constantNodeIdRef="CN0001"/>
+        </Formula>
+      </AuxiliaryNode>
+    </AuxiliaryNodes>
+    <RateNodes>
+      <RateNode id="RN0001" learnerChangeable="false" name="RN1" shared="false" xCoordinate="20.0" yCoordinate="20.0">
+        <Formula>
+          <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0001"/>
+        </Formula>
+      </RateNode>
+    </RateNodes>
+  </Nodes>
+  <Flows>
+    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0001" toLevelNodeIdRef="LN0001"/>
+    <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SSN0001" toRateNodeIdRef="RN0001"/>
+  </Flows>
+  <Dependencies>
+    <ConstantNode2AuxiliaryNodeDependency fromConstantNodeIdRef="CN0001" toAuxiliaryNodeIdRef="AN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="220.27416657102557" yCoordinate="124.53755447884477"/>
+      </AdditionalControlPoints>
+    </ConstantNode2AuxiliaryNodeDependency>
+    <AuxiliaryNode2RateNodeDependency fromAuxiliaryNodeIdRef="AN0001" toRateNodeIdRef="RN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="103.43857758588886" yCoordinate="166.337305081245"/>
+      </AdditionalControlPoints>
+    </AuxiliaryNode2RateNodeDependency>
+  </Dependencies>
+</SubModel>
+</Model>

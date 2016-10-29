@@ -3099,12 +3099,28 @@ WindowListener {
 			}
 			String sharedPointerLocal = "";
 			for(int i=0; i<cells.length;i++){
-				SharedNodeGraphCell cell = null;
+//				SharedNodeGraphCell cell = null;
 				DefaultGraphCell source = (DefaultGraphCell) cells[i];
-				sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-				double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
-				cell = graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Constant", constVal, graph.get(shareSubModel).getModelNode(source));
-			
+				
+				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					
+					graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Auxiliary", -1,graph.get(shareSubModel).getModelNode(source));
+					
+				}
+				else if (cells[i] instanceof LevelNodeGraphCell){
+					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					Double startVal = (Double)((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal");
+					
+					graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Level", startVal, graph.get(shareSubModel).getModelNode(source));
+
+				}
+				
+				else if(cells[i] instanceof ConstantNodeGraphCell){
+					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+					double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
+					graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Constant", constVal, graph.get(shareSubModel).getModelNode(source));
+				}
 				
 			}
 		}

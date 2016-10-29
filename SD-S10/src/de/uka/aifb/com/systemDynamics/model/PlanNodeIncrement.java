@@ -17,4 +17,14 @@ public class PlanNodeIncrement {
 	public double getSlope(){
 		return slope;
 	}
+
+	public void setId(String id){
+		this.id=id;
+	}
+	public void setLength(double length){
+		this.length=length;
+	}
+	public void setSlope(double slope){
+		this.slope=slope;
+	}
 }

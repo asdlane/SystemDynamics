@@ -1,10 +1,14 @@
 package de.uka.aifb.com.systemDynamics.gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,24 +19,34 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import de.uka.aifb.com.systemDynamics.gui.systemDynamicsGraph.SystemDynamicsGraph;
 import de.uka.aifb.com.systemDynamics.model.ChartLevelNode;
@@ -62,6 +76,7 @@ public class ChartMainFrame extends JFrame{
 	private Action addChartAction;
 	private Action editChartAction;
 	private JPanel contentPanel;
+	private JPanel chartsPanel;
 	private JScrollPane chartScrollPanel;
 	private JPanel panel1;
 	private static final String FILE_NEW_LN_ICON = "resources/new_level_node_en_US.png";
@@ -70,9 +85,13 @@ public class ChartMainFrame extends JFrame{
 	private static final String PNI_ICON = "resources/PlanNodeIncrementIcon.png";
 	private ArrayList<ChartModel> chart;
 	private ArrayList<JPanel> chartPanels;
+	private ArrayList<JList> pnlists;
+	private ArrayList<JList> lnlists;
+	private JList pnlist;
+	private JList pnilist;
 	private JLabel GraphNumber = new JLabel("");
-
-
+	private GridBagConstraints gbc;
+	private String SPACE="     ";
 	private static final String FILE_NEW_ICON = "resources/page_white.png";
 	private ArrayList<Model> localModel;
 	public ChartMainFrame(ArrayList<Model> model){		
@@ -83,7 +102,9 @@ public class ChartMainFrame extends JFrame{
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chart = new ArrayList<ChartModel>();
 		chartPanels = new ArrayList<JPanel>();
-
+		pnlists = new ArrayList<JList>();
+		lnlists = new ArrayList<JList>();
+		
 		setTitle("Chart Designer");
 
 		// set frame size and location
@@ -105,40 +126,12 @@ public class ChartMainFrame extends JFrame{
 		Border chartBorder = BorderFactory.createLineBorder(Color.black,5);
 
 		panel1 = new JPanel(new BorderLayout());
-		JTextArea newTextArea = new JTextArea(10,5);
-		newTextArea.addMouseListener(new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent e) {}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				//Change label on toolbar to show graph number
-				for(int i=0;i<chartPanels.size();i++){
-					if(chartPanels.get(i).equals(panel1)){
-						GraphNumber.setText(Integer.toString(i+1));
-					}
-				}
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {}
-
-			@Override
-			public void mousePressed(MouseEvent e) {}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-
-		});
-		panel1.add(newTextArea);
 		panel1.setBorder(chartBorder);
-		chartPanels.add(panel1);
+//		chartPanels.add(panel1);
 
-		contentPanel = new JPanel(new GridLayout(1,4));
-
-
+		
+		contentPanel = new JPanel(new GridBagLayout());
+		gbc = new GridBagConstraints();
 		chartScrollPanel = new JScrollPane(panel1);
 
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -230,10 +223,37 @@ public class ChartMainFrame extends JFrame{
 				chart.remove(i);
 			}
 			contentPanel.removeAll();
-			chart.add(new ChartModel(name,id,file,xAxisLabel,yAxisLabel, global, pr));
+			ChartModel cm = new ChartModel(name,id,file,xAxisLabel,yAxisLabel, global, pr);
+			chart.add(cm);
+
+			chartsPanel = new JPanel(new GridLayout(0,2));
+			
+			gbc.fill=GridBagConstraints.BOTH;
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			gbc.gridheight=1;
+			gbc.gridwidth=1;
+			gbc.weightx=0.1;
+			gbc.weighty=1.0;
+			gbc.insets=new Insets(0,0,10,20);
+			gbc.anchor = GridBagConstraints.NORTHWEST;
+			contentPanel.add(createPlanNodesPanel(cm),gbc);
+			
+			panel1.add(createChartPanel(cm));
+			chartPanels.add(panel1);
 			chartScrollPanel = new JScrollPane(panel1);
-			contentPanel.add(chartScrollPanel);
 			chartScrollPanel.setVisible(true);
+
+			gbc.gridx = 1;
+			gbc.gridy = 0;
+			gbc.gridheight=1;
+			gbc.gridwidth=2;
+			gbc.weightx=1.0;
+			gbc.weighty=1.0;
+			gbc.insets=new Insets(0,0,10,0);
+			chartsPanel.add(chartScrollPanel);
+			contentPanel.add(chartsPanel,gbc);
+			
 			GraphNumber.setText("1");
 			contentPanel.setVisible(true);
 			addChartAction.setEnabled(true);
@@ -253,7 +273,8 @@ public class ChartMainFrame extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			chartPanels.remove(0);
+//			chartPanels.remove(0);
+			contentPanel.removeAll();
 			int returnVal = fileChooser.showOpenDialog(ChartMainFrame.this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// file was selected and 'OK' was pressed
@@ -265,12 +286,41 @@ public class ChartMainFrame extends JFrame{
 				catch(Exception e3){
 					e3.printStackTrace();
 				}
+				chartsPanel = new JPanel(new GridLayout(0,2));
+					
+				gbc.fill=GridBagConstraints.BOTH;
+				gbc.gridx = 0;
+				gbc.gridy = 0;
+				gbc.gridheight=1;
+				gbc.gridwidth=1;
+				gbc.weightx=0.1;
+				gbc.weighty=1.0;
+				gbc.insets=new Insets(0,0,10,20);
+				gbc.anchor = GridBagConstraints.NORTHWEST;
+				contentPanel.add(createPlanNodesPanel(chart.get(0)),gbc);
 
+				gbc.gridx = 1;
+				gbc.gridy = 0;
+				gbc.gridheight=1;
+				gbc.gridwidth=2;
+				gbc.weightx=1.0;
+				gbc.weighty=1.0;
+				gbc.insets=new Insets(0,0,10,0);
+				contentPanel.add(chartsPanel,gbc);
+				
+				contentPanel.setVisible(true);
+				addChartAction.setEnabled(true);
+				newChartLevelNodeAction.setEnabled(true);
+				newPlanNodeAction.setEnabled(true);
+
+				contentPanel.revalidate();
+				
 				for(int i=0;i<chart.size();i++){
 
 					Border chartBorder = BorderFactory.createLineBorder(Color.black,5);
 
 					final JPanel panel2 = new JPanel(new BorderLayout());
+					/*
 					JTextArea newTextArea = new JTextArea(10,5);
 
 					newTextArea.addMouseListener(new MouseListener(){
@@ -299,43 +349,17 @@ public class ChartMainFrame extends JFrame{
 						public void mouseReleased(MouseEvent e) {}
 
 					});
-					panel2.add(newTextArea);
+					panel2.add(newTextArea);*/
+					
+					
+					
+					panel2.add(createChartPanel(chart.get(i)));
 					panel2.setBorder(chartBorder);
 					chartPanels.add(panel2);
 
 					JScrollPane submodelScroll = new JScrollPane(chartPanels.get(chartPanels.size()-1));
 					GraphNumber.setText(Integer.toString(chartPanels.size()));
-					contentPanel.add(submodelScroll);
-					HashSet<ChartLevelNode> ChartLevelNodes = chart.get(i).getChartLevelNodes();
-					for(ChartLevelNode node: ChartLevelNodes){
-						String levelNodeIdRef = node.getLevelNodeIdRef();
-						String Label = node.getLabel();
-						if(ChartLevelNodes.size()>1){
-							newTextArea.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
-						}
-						else{
-							newTextArea.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
-						}
-					}
-					HashSet<ChartPlanNode>ChartPlanNodes = chart.get(i).getChartPlanNodes();
-					HashSet<PlanNode> PlanNodes = chart.get(0).getPlanNodes();
-					
-					for(ChartPlanNode node : ChartPlanNodes){
-						
-						for(PlanNode planNode : PlanNodes){								
-							if(node.getchartPlanNodeIdRef().equals(planNode.getName())){
-								System.out.println("GOT HERTE");		
-								newTextArea.append("\n ChartPlanNode(planNodeIdRef: \""+planNode.getName()+"\", Label: \""+node.getLabel()+")");
-								newTextArea.append("\n \tPlanNode(Name: \""+planNode.getName()+"\", Id=\""+planNode.getId()+"\")");
-								HashSet<PlanNodeIncrement> planNodeIncrements= planNode.getPlanNodeIncrements();
-								for(PlanNodeIncrement increment: planNodeIncrements){
-									newTextArea.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
-								}
-							}
-						}
-						
-					}
-					
+					chartsPanel.add(submodelScroll);
 					
 					
 					newChartPlanNodeAction.setEnabled(true);
@@ -343,8 +367,8 @@ public class ChartMainFrame extends JFrame{
 					newPlanNodeIncrementAction.setEnabled(true);
 					newChartLevelNodeAction.setEnabled(true);
 				}
-				if(chartPanels.size()>=4){
-					contentPanel.setLayout(new GridLayout(2,4));
+				if(chartPanels.size()>4){
+					contentPanel.setLayout(new GridLayout(chartPanels.size()/4+1,4));
 				}
 				//force layout to recalculate now that a new component has been added.
 				contentPanel.revalidate();
@@ -445,23 +469,30 @@ public class ChartMainFrame extends JFrame{
 				String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 				String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
 				chart.get(0).createChartLevelNode(levelNodeIdRef, Label);
-				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);
+
+				((DefaultListModel)lnlists.get(0).getModel()).addElement(Label+"("+levelNodeIdRef+")");
+				
+				/*JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);
 				HashSet<ChartLevelNode> levelNodes = chart.get(0).getChartLevelNodes();
 				if(levelNodes.size()>1){
 					chartText.append("\nChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
 				}
 				else{
 					chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+"\")");
-				}
+				}*/
 			}
 			else{
 				try{
 					JFrame frame = new JFrame("InputDialog");
 					Object[] choices = chartNumbers.toArray();
 					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-					String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
+					String levelNodeIdRef = (String)JOptionPane.showInputDialog(null, "LevelNodeIdRef:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 					String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new ChartLevelNode", JOptionPane.PLAIN_MESSAGE);
 					chart.get(chartIndex-1).createChartLevelNode(levelNodeIdRef, Label);
+
+					((DefaultListModel)lnlists.get(chartIndex-1).getModel()).addElement(Label+"("+levelNodeIdRef+")");
+
+					/*
 					JTextArea chartText = (JTextArea)chartPanels.get(chartIndex-1).getComponent(0);
 					HashSet<ChartLevelNode> levelNodes = chart.get(chartIndex-1).getChartLevelNodes();
 					if(levelNodes.size()>1){
@@ -469,7 +500,7 @@ public class ChartMainFrame extends JFrame{
 					}
 					else{
 						chartText.append("ChartLevelNode(LevelNodeIdRef: \""+levelNodeIdRef+"\", Label: \""+Label+")");
-					}
+					}*/
 
 				}catch(Exception ex){
 
@@ -506,7 +537,9 @@ public class ChartMainFrame extends JFrame{
 				String chosenPlanNode = (String)JOptionPane.showInputDialog(frame,"Which Plan Node Would you Like to add?","Chart PlanNode",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 				String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new chart PlanNode", JOptionPane.PLAIN_MESSAGE);
 				chart.get(0).createChartPlanNode(chosenPlanNode, Label);
-				JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);				
+				((DefaultListModel)pnlists.get(0).getModel()).addElement(Label+"("+chosenPlanNode+")");
+				
+				/*JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);				
 				chartText.append("\n ChartPlanNode(planNodeIdRef: \""+chosenPlanNode+"\", Label: \""+Label+")");
 
 				//display plan node and plannode increments too.
@@ -530,7 +563,7 @@ public class ChartMainFrame extends JFrame{
 						}
 					}
 				}
-
+				*/
 
 			}
 			else{
@@ -552,6 +585,10 @@ public class ChartMainFrame extends JFrame{
 					String chosenPlanNode = (String)JOptionPane.showInputDialog(frame2,"Which Plan Node Would you Like to add?","Chart PlanNode",JOptionPane.PLAIN_MESSAGE,null,choices2,choices2[0]);
 					String Label = (String)JOptionPane.showInputDialog(null, "Label:", "new chart PlanNode", JOptionPane.PLAIN_MESSAGE);
 					chart.get(chartIndex-1).createChartPlanNode(chosenPlanNode, Label);
+
+					((DefaultListModel)pnlists.get(chartIndex-1).getModel()).addElement(Label+"("+chosenPlanNode+")");
+					
+					/*
 					JTextArea chartText = (JTextArea)chartPanels.get(chartIndex-1).getComponent(0);				
 					chartText.append("\n ChartPlanNode(planNodeIdRef: \""+chosenPlanNode+"\", Label: \""+Label+")");
 
@@ -575,7 +612,7 @@ public class ChartMainFrame extends JFrame{
 								chartText.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
 							}
 						}
-					}
+					}*/
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
@@ -602,6 +639,15 @@ public class ChartMainFrame extends JFrame{
 
 				chart.get(0).createPlanNode(id, name, startValue);
 				JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Plan Node Library");
+				((DefaultListModel) pnlist.getModel()).addElement(name);
+				
+				
+				
+				
+				newChartPlanNodeAction.setEnabled(true);
+				newPlanNodeIncrementAction.setEnabled(true);
+			
+			
 			}
 			catch(Exception e3){
 				JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
@@ -631,8 +677,6 @@ public class ChartMainFrame extends JFrame{
 				}
 			}
 			 */
-			newChartPlanNodeAction.setEnabled(true);
-			newPlanNodeIncrementAction.setEnabled(true);
 		}
 	}
 	private class newPlanNodeIncrementAction extends AbstractAction{
@@ -667,6 +711,8 @@ public class ChartMainFrame extends JFrame{
 				for(PlanNode t: PlanNodes){
 					if(t.getName()==chosenPlanNode){
 						t.createPlanNodeIncrement(id, length, slope);
+						if(((String)pnlist.getSelectedValue()).equals(chosenPlanNode))
+							((DefaultListModel) pnilist.getModel()).addElement(id);
 					}
 				}
 				JOptionPane.showMessageDialog(null, "PlanNodeIncrement Sucessfully created");
@@ -773,7 +819,7 @@ public class ChartMainFrame extends JFrame{
 			Border chartBorder = BorderFactory.createLineBorder(Color.black,5);
 
 			final JPanel panel2 = new JPanel(new BorderLayout());
-			JTextArea newTextArea = new JTextArea(10,5);
+//			JTextArea newTextArea = new JTextArea(10,5);
 			String name = JOptionPane.showInputDialog(null,"Chart Name:","Name",JOptionPane.PLAIN_MESSAGE);
 			String id = JOptionPane.showInputDialog(null,"Chart Id: ","Id",JOptionPane.PLAIN_MESSAGE);
 			String file = JOptionPane.showInputDialog(null,"Chart File","Chart File",JOptionPane.PLAIN_MESSAGE);
@@ -786,9 +832,9 @@ public class ChartMainFrame extends JFrame{
 				pr = JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE);
 			}
 
-			chart.add(new ChartModel(name, id, file, xAxisLabel, yAxisLabel, global, pr));
-			
-
+			ChartModel cm = new ChartModel(name, id, file, xAxisLabel, yAxisLabel, global, pr);
+			chart.add(cm);
+/*
 			newTextArea.addMouseListener(new MouseListener(){
 
 				@Override
@@ -815,19 +861,533 @@ public class ChartMainFrame extends JFrame{
 				public void mouseReleased(MouseEvent e) {}
 
 			});
-			panel2.add(newTextArea);
+			panel2.add(newTextArea);*/
 			panel2.setBorder(chartBorder);
+
+			panel2.add(createChartPanel(cm));
+			
 			chartPanels.add(panel2);
 
 			JScrollPane submodelScroll = new JScrollPane(chartPanels.get(chartPanels.size()-1));
 			GraphNumber.setText(Integer.toString(chartPanels.size()));
-			contentPanel.add(submodelScroll);
-			if(chartPanels.size()>=4){
-				contentPanel.setLayout(new GridLayout(2,4));
-			}
+			chartsPanel.add(submodelScroll);
+//			if(chartPanels.size()>2){
+//				chartsPanel.setLayout(new GridLayout(chartPanels.size()/3+1,2));
+//			}
 			//force layout to recalculate now that a new component has been added.
 			contentPanel.revalidate();
 		}
 	}
+	
+	
+	private JPanel createChartPanel(final ChartModel cm){
+		
+		final JPanel chartPanel = new JPanel();
+		chartPanel.setLayout(new BorderLayout());//new GridLayout(1,2));
+		final int idx = chartPanels.size()+1;
+		chartPanel.addMouseListener(new MouseListener(){
+		
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+
+				
+				GraphNumber.setText(String.valueOf(idx));
+					
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		final JPanel chartInfoPanel = new JPanel(new GridLayout(2,8));
+		
+		TitledBorder border = BorderFactory.createTitledBorder("Chart Information");
+		border.setTitleColor(Color.gray);
+		border.setTitleFont(new Font(border.getTitleFont().getFontName(),Font.PLAIN,11));
+		chartInfoPanel.setBorder(border);
+		
+
+		final ArrayList<JTextField> textFields = new ArrayList<JTextField>();
+		JPanel editPanel = new JPanel();
+		String [] titles = {"Name","ID","File","X Axis","Y Axis","GLobal","PR"};
+		final String [] texts = {cm.getchartName(),cm.getchartId(),cm.getfile(),cm.getxAxisLabel(),cm.getyAxisLabel(),cm.getGlobal(),cm.getPr()};
+		
+		editPanel.setLayout(new GridLayout(titles.length,2));
+		for(int i=0;i<titles.length;i++){
+			JLabel label = new JLabel(titles[i]);
+			JTextField text = new JTextField(texts[i]);
+			text.setEditable(false);
+			textFields.add(text);
+			editPanel.add(label);
+			editPanel.add(text);
+		}
+		
+	      final JPanel buttonPanel = new JPanel();
+	      final JPanel buttonPanel2 = new JPanel();
+	      final CardLayout card = new CardLayout();
+	      final JPanel buttonsPanel = new JPanel(card);
+	      
+	      JButton okButton = new JButton("OK");
+	      okButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					for(int i=0;i<textFields.size();i++){
+						textFields.get(i).setEditable(false);
+						String str = textFields.get(i).getText();
+						switch(i){
+							case 0: {cm.setChartName(str); texts[0]=str;}
+							case 1: {cm.setChartId(str); texts[1]=str;}
+							case 2: {cm.setChartFile(str);texts[2]=str;}
+							case 3: {cm.setxAxisLabel(str);texts[3]=str;}
+							case 4: {cm.setyAxisLabel(str);texts[4]=str;}
+							case 5: {cm.setglobal(str);texts[5]=str;}
+							case 6: {cm.setPR(str);texts[6]=str;}
+						}
+					}
+
+					card.previous(buttonsPanel);      
+				}
+			});
+		
+	      buttonPanel.add(okButton);
+	      JButton cancelButton = new JButton("Cancel");
+	      cancelButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					for(int i=0;i<textFields.size();i++){
+						textFields.get(i).setEditable(false);
+						textFields.get(i).setText(texts[i]);
+					}
+
+
+					card.previous(buttonsPanel);
+				}
+			});
+	      buttonPanel.add(cancelButton);
+		
+
+	      JButton editButton = new JButton("Edit");
+	      editButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					for(int i=0;i<textFields.size();i++){
+						textFields.get(i).setEditable(true);
+					}
+
+					card.next(buttonsPanel);
+				}
+			});
+	      
+	    buttonPanel2.add(editButton);
+	    buttonsPanel.add("bp2",buttonPanel2);
+	    buttonsPanel.add("bp1",buttonPanel);
+	    
+	    
+		chartInfoPanel.add(editPanel);
+		chartInfoPanel.add(buttonsPanel);
+		
+
+		chartPanel.add(chartInfoPanel,BorderLayout.CENTER);
+
+		JPanel listsPanel = new JPanel(new GridLayout(1,2));
+		
+		JPanel pnListPanel = new JPanel();
+		
+		TitledBorder border2 = BorderFactory.createTitledBorder("Plan Node List");
+		border2.setTitleColor(Color.gray);
+		border2.setTitleFont(new Font(border.getTitleFont().getFontName(),Font.PLAIN,11));
+		pnListPanel.setBorder(border2);
+		
+		DefaultListModel pnmodel = new DefaultListModel();
+		HashSet<ChartPlanNode> pnSet = cm.getChartPlanNodes();
+		for(ChartPlanNode cpn:pnSet){
+			pnmodel.addElement(cpn.getchartPlanNodeIdRef());
+		}
+
+		JList pns = new JList(pnmodel);
+		pnlists.add(pns);
+		pnListPanel.add(pns);
+		listsPanel.add(pnListPanel);
+
+		JPanel lnPanel = new JPanel();
+
+		TitledBorder border3 = BorderFactory.createTitledBorder("Level Node List");
+		border3.setTitleColor(Color.gray);
+		border3.setTitleFont(new Font(border.getTitleFont().getFontName(),Font.PLAIN,11));
+		lnPanel.setBorder(border3);
+		
+		DefaultListModel lnmodel = new DefaultListModel();
+		HashSet<ChartLevelNode> lnSet = cm.getChartLevelNodes();
+		for(ChartLevelNode cln:lnSet){
+			lnmodel.addElement(cln.getLevelNodeIdRef());
+		}
+
+		JList lns = new JList(lnmodel);
+		lnlists.add(lns);
+		lnPanel.add(lns);
+		listsPanel.add(lnPanel);
+		
+		chartPanel.add(listsPanel,BorderLayout.SOUTH);
+		return chartPanel;
+	}
+
+private JPanel createPlanNodesPanel(final ChartModel cm){
+
+	final JPanel pnsPanel = new JPanel();
+	pnsPanel.setLayout(new GridLayout(2,2));
+	
+	final ArrayList<PlanNode> pns = new ArrayList<PlanNode>(cm.getPlanNodes());
+	DefaultListModel pnNames = new DefaultListModel();
+	final DefaultListModel pniNames = new DefaultListModel();
+	
+	for(int i=0;i<pns.size();i++){
+		pnNames.addElement(pns.get(i).getName());
+	}
+	
+//	pnNames.addElement("Plan Node 1");
+//	pnNames.addElement("Plan Node 2");
+//	pniNames.addElement("Plan Node Increment 1");
+//	pniNames.addElement("Plan Node Increment 2");
+	pnlist = new JList(pnNames);
+	pnilist = new JList(pniNames);
+
+	final JPanel pnPanel = new JPanel();
+	final JPanel pniPanel = new JPanel();
+	TitledBorder border = BorderFactory.createTitledBorder("Plan Node");
+	border.setTitleColor(Color.gray);
+	border.setTitleFont(new Font(border.getTitleFont().getFontName(),Font.PLAIN,11));
+	pnPanel.setBorder(border);
+	pnPanel.add(createPlanNodePanel());
+	
+	
+	TitledBorder border2 = BorderFactory.createTitledBorder("Plan Node Increment");
+	border2.setTitleColor(Color.gray);
+	border2.setTitleFont(new Font(border.getTitleFont().getFontName(),Font.PLAIN,11));
+	pniPanel.setBorder(border2);
+	pniPanel.add(createPlanNodeIncrementPanel());
+	
+	pnsPanel.add(new JScrollPane(pnlist));
+	pnsPanel.add(new JScrollPane(pnilist));
+	
+	pnlist.addListSelectionListener(new ListSelectionListener(){
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			String pnName = (String) pnlist.getSelectedValue();
+			if(pnName!=null){
+				for(PlanNode pn:chart.get(0).getPlanNodes()){
+					if(pnName.equals(pn.getName())){
+						HashSet<PlanNodeIncrement> pnis = pn.getPlanNodeIncrements();
+						pniNames.removeAllElements();
+						for(PlanNodeIncrement pni : pnis){
+							pniNames.addElement(pni.getId());
+						}
+						
+						JTextField name = (JTextField) ((JPanel)((JPanel)pnPanel.getComponent(0)).getComponent(0)).getComponent(1);
+						JTextField id = (JTextField) ((JPanel)((JPanel)pnPanel.getComponent(0)).getComponent(0)).getComponent(3);
+						JTextField sv = (JTextField) ((JPanel)((JPanel)pnPanel.getComponent(0)).getComponent(0)).getComponent(5);
+						name.setText(pnName);
+						id.setText(pn.getId());
+						sv.setText(pn.getStartValue().toString());
+						
+	
+						JTextField pniId = (JTextField) ((JPanel)((JPanel)pniPanel.getComponent(0)).getComponent(0)).getComponent(1);
+						JTextField length = (JTextField) ((JPanel)((JPanel)pniPanel.getComponent(0)).getComponent(0)).getComponent(3);
+						JTextField slope = (JTextField) ((JPanel)((JPanel)pniPanel.getComponent(0)).getComponent(0)).getComponent(5);
+						pniId.setText("");
+						length.setText("");
+						slope.setText("");
+						
+						break;
+					}
+				}
+			}
+		}
+		
+	});
+	
+	pnilist.addListSelectionListener(new ListSelectionListener(){
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			String pnName = (String) pnlist.getSelectedValue();
+			String pniName = (String) pnilist.getSelectedValue();
+			if(pniName!=null){
+				for(PlanNode pn:chart.get(0).getPlanNodes()){
+					if(pnName.equals(pn.getName())){
+						HashSet<PlanNodeIncrement> pnis = pn.getPlanNodeIncrements();
+						for(PlanNodeIncrement pni : pnis){
+							if(pni.getId().equals(pniName)){
+	
+							JTextField id = (JTextField) ((JPanel)((JPanel)pniPanel.getComponent(0)).getComponent(0)).getComponent(1);
+							JTextField length = (JTextField) ((JPanel)((JPanel)pniPanel.getComponent(0)).getComponent(0)).getComponent(3);
+							JTextField slope = (JTextField) ((JPanel)((JPanel)pniPanel.getComponent(0)).getComponent(0)).getComponent(5);
+							id.setText(pni.getId());
+							length.setText(String.valueOf(pni.getLength()));
+							slope.setText(String.valueOf(pni.getSlope()));
+							
+							break;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+	});
+	
+	pnsPanel.add(pnPanel);
+	pnsPanel.add(pniPanel);
+	
+	return pnsPanel;
+	
 }
 
+private JPanel createPlanNodePanel(){ 
+	
+	final JPanel pnPanel = new JPanel(new GridLayout(2,1));
+	final JPanel editPanel = new JPanel();
+	editPanel.setLayout(new GridLayout(4,2));
+	JLabel label = new JLabel("Name");
+	final JTextField text = new JTextField();
+	JLabel label2 = new JLabel("Id");
+	final JTextField text2 = new JTextField();
+	JLabel label3 = new JLabel("Start Value"+SPACE);
+	final JTextField text3 = new JTextField();
+	
+	
+	final String[] attrs ={"","",""};
+	
+	text.setEditable(false);
+	text2.setEditable(false);
+	text3.setEditable(false);
+	
+	editPanel.add(label);
+	editPanel.add(text);
+	editPanel.add(label2);
+	editPanel.add(text2);
+	editPanel.add(label3);
+	editPanel.add(text3);
+
+	pnPanel.add(editPanel);
+	
+	
+	final JPanel buttonPanel = new JPanel();
+    final JPanel buttonPanel2 = new JPanel();
+    final CardLayout card = new CardLayout();
+    final JPanel buttonsPanel = new JPanel(card);
+      
+    JButton okButton = new JButton("OK");
+    okButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+			String name=text.getText();
+			String id=text2.getText();
+			double sv=Double.parseDouble(text3.getText());
+			
+			String pnName = (String) pnlist.getSelectedValue();
+			
+			for(PlanNode pn:chart.get(0).getPlanNodes()){
+				if(pnName.equals(pn.getName())){
+					pn.setId(id);
+					pn.setName(name);;
+					pn.setStartValue(sv);
+					break;
+				}
+			}
+			
+			DefaultListModel model = ((DefaultListModel)pnlist.getModel());
+			model.removeElement(attrs[0]);
+			model.addElement(name);
+			text.setEditable(false);
+			text2.setEditable(false);
+			text3.setEditable(false);
+			card.previous(buttonsPanel);
+		}
+
+	});
+	
+    buttonPanel.add(okButton);
+    
+    JButton cancelButton = new JButton("Cancel");
+    cancelButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+			text.setText(attrs[0]);
+			text2.setText(attrs[1]);
+			text3.setText(attrs[2]);
+			text.setEditable(false);
+			text2.setEditable(false);
+			text3.setEditable(false);
+			card.previous(buttonsPanel);
+		}
+
+    });
+    buttonPanel.add(cancelButton);
+	
+
+    JButton editButton = new JButton("Edit");
+    editButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+			attrs[0]=text.getText();
+			attrs[1]=text2.getText();
+			attrs[2]=text3.getText();
+			text.setEditable(true);
+			text2.setEditable(true);
+			text3.setEditable(true);
+			card.next(buttonsPanel);
+		}
+
+    });
+
+    buttonPanel2.add(editButton);
+    
+
+    buttonsPanel.add("bp2",buttonPanel2);
+    buttonsPanel.add("bp1",buttonPanel);
+    pnPanel.add(buttonsPanel);
+	
+	return pnPanel;
+
+}
+
+
+private JPanel createPlanNodeIncrementPanel(){ 
+	
+	final JPanel pniPanel = new JPanel(new GridLayout(2,1));
+	final JPanel editPanel = new JPanel();
+	
+	editPanel.setLayout(new GridLayout(4,2));
+	
+	JLabel id = new JLabel("Id");
+	final JTextField idfield = new JTextField();
+	JLabel length = new JLabel("Length");
+	final JTextField lengthfield = new JTextField();
+	JLabel slope = new JLabel("Slope Value"+SPACE);
+	final JTextField slopefield = new JTextField();
+	editPanel.add(id);
+	editPanel.add(idfield);
+	editPanel.add(length);
+	editPanel.add(lengthfield);
+	editPanel.add(slope);
+	editPanel.add(slopefield);
+
+	idfield.setEditable(false);
+	lengthfield.setEditable(false);
+	slopefield.setEditable(false);
+	
+	pniPanel.add(editPanel);
+	
+	final JPanel buttonPanel = new JPanel();
+    final JPanel buttonPanel2 = new JPanel();
+    final CardLayout card = new CardLayout();
+    final JPanel buttonsPanel = new JPanel(card);
+	
+	final String[] attrs ={"","",""};
+      
+    JButton okButton = new JButton("OK");
+    okButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+			String id=idfield.getText();
+			double length=Double.parseDouble(lengthfield.getText());
+			double slope=Double.parseDouble(slopefield.getText());
+			
+			String pnName = (String) pnlist.getSelectedValue();
+			String pniName = (String) pnilist.getSelectedValue();
+			
+			for(PlanNode pn:chart.get(0).getPlanNodes()){
+				if(pnName.equals(pn.getName())){
+					for(PlanNodeIncrement pni:pn.getPlanNodeIncrements()){
+						pni.setId(id);
+						pni.setLength(length);
+						pni.setSlope(slope);
+						break;
+					}
+				}
+			}
+			
+			DefaultListModel model = ((DefaultListModel)pnilist.getModel());
+			model.removeElement(attrs[0]);
+			model.addElement(id);
+
+			idfield.setEditable(false);
+			lengthfield.setEditable(false);
+			slopefield.setEditable(false);
+			
+			card.previous(buttonsPanel);
+			
+		}
+
+	});
+	
+    buttonPanel.add(okButton);
+    
+    JButton cancelButton = new JButton("Cancel");
+    cancelButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+
+			idfield.setText(attrs[0]);
+			lengthfield.setText(attrs[1]);
+			slopefield.setText(attrs[2]);
+			
+			idfield.setEditable(false);
+			lengthfield.setEditable(false);
+			slopefield.setEditable(false);
+			
+			card.previous(buttonsPanel);
+		}
+
+    });
+    buttonPanel.add(cancelButton);
+	
+
+    JButton editButton = new JButton("Edit");
+    editButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+
+			attrs[0]=idfield.getText();
+			attrs[1]=lengthfield.getText();
+			attrs[2]=slopefield.getText();
+			idfield.setEditable(true);
+			lengthfield.setEditable(true);
+			slopefield.setEditable(true);
+			card.next(buttonsPanel);
+
+			
+		}
+
+    });
+
+    buttonPanel2.add(editButton);
+    
+    
+    buttonsPanel.add("bp2",buttonPanel2);
+    buttonsPanel.add("bp1",buttonPanel);
+
+    pniPanel.add(buttonsPanel);
+    
+	return pniPanel;
+}
+}

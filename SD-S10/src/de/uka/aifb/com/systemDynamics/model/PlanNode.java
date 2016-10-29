@@ -28,4 +28,13 @@ public class PlanNode {
 	public Double getStartValue(){
 		return startValue;
 	}
+	public void setId(String id){
+		this.id=id;
+	}
+	public void setName(String name){
+		this.name=name;
+	}
+	public void setStartValue(double startValue){
+		this.startValue = startValue;
+	}
 }

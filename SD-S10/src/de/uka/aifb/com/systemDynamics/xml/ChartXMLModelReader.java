@@ -137,7 +137,7 @@ public class ChartXMLModelReader {
 					double startValue = Double.parseDouble(PlanNodeElement.getAttribute("startValue"));
 
 					PlanNode add = new PlanNode(PlanNodeid, PlanNodename, startValue);
-					NodeList PlanNodeIncrementElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode[@id='"+id+"']/PlanNodeIncrement", document,
+					NodeList PlanNodeIncrementElements = (NodeList)xpath.evaluate("/Charts/PlanNodes/PlanNode[@id='"+PlanNodeid+"']/PlanNodeIncrement", document,
 							XPathConstants.NODESET);
 					for(int k=0;k<PlanNodeIncrementElements.getLength();k++){
 						Element PlanNodeIncrementElement = (Element)PlanNodeIncrementElements.item(k);
