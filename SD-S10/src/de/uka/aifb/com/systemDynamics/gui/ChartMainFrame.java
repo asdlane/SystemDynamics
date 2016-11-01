@@ -460,7 +460,7 @@ public class ChartMainFrame extends JFrame{
 				String[] options = new String[allLevel.size()];
 				int i=0;
 			for(LevelNode node:allLevel){
-				options[i] = node.getStringRepresentation();
+				options[i] = node.getNodeName();
 				i++;
 			}
 			i=0;
@@ -529,7 +529,7 @@ public class ChartMainFrame extends JFrame{
 				ArrayList<String> chartPlanNodeNames = new ArrayList<String>();
 
 				for(PlanNode t: PlanNodes){
-					chartPlanNodeNames.add(t.getName());
+					chartPlanNodeNames.add(t.getId());
 				}
 
 				JFrame frame = new JFrame("InputDialog");

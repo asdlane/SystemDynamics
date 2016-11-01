@@ -115,7 +115,7 @@ public class DrawGraphs_Init {
 		for (ChartLevelNode lNode : levelNodesVector) {
 			LevelNodeGraphInfo levelNodeInfo = new LevelNodeGraphInfo();
 			levelNodeInfo.setId(lNode.getLevelIdRef());
-			levelNodeInfo.setNodeName(levelNodes.get(lNode.getLevelIdRef()));
+			levelNodeInfo.setNodeName(lNode.getLevelIdRef());
 			System.out.println("__________________"+lNode.getLevelIdRef());
 			
 			System.out.println("__________________"+levelNodes.get(lNode.getLevelIdRef()));
@@ -170,6 +170,7 @@ public class DrawGraphs_Init {
 
 		for (int i = -1; i < run; i++) {
 			String outputFile = getFileName(i, fname);
+			System.out.println("___________outputfile   "+outputFile);
 			CsvReader products = new CsvReader(outputFile, ';');
 			products.skipLine();
 			products.readHeaders();
@@ -180,6 +181,7 @@ public class DrawGraphs_Init {
 
 			if(iter ==0){
 				for (int j=0;j<productHeaders.length;j++) {
+					System.out.println("___________product headers   "+productHeaders[j]);
 					if(productHeaders[j].equalsIgnoreCase("pdr_date")){
 						pdr_date_index = j;
 					}

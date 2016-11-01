@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><Charts><Chart file="cf" global="g" id="1" name="cn" xAxisLabel="x" yAxisLabel="y">
+  <ChartLevelNodes>
+    <ChartLevelNode label="cln" levelNodeIdRef="LN(LN)"/>
+  </ChartLevelNodes>
+  <ChartPlanNodes>
+    <ChartPlanNode label="cpn" planNodeIdRef="pnn"/>
+  </ChartPlanNodes>
+</Chart>
+<PlanNodes>
+	<PlanNode id="pn1" name="pnn" startValue="10.0">
+		<PlanNodeIncrement id="pni1" length="20.0" slope="1.9"/>
+	</PlanNode></PlanNodes>
+</Charts>

@@ -153,7 +153,7 @@ public class DrawGraphs {
 		for (ChartLevelNode lNode : levelNodesVector) {
 			LevelNodeGraphInfo levelNodeInfo = new LevelNodeGraphInfo();
 			levelNodeInfo.setId(lNode.getLevelIdRef());
-			levelNodeInfo.setNodeName(levelNodes.get(lNode.getLevelIdRef()));
+			levelNodeInfo.setNodeName(lNode.getLevelIdRef());
 			if(lNode.getLevelIdRef().equals(chartObj.getpr()))
 				prNodeName = levelNodeInfo.getNodeName();
 			levelNodeInfo.setSeries(new XYSeries(lNode.getLabel()));

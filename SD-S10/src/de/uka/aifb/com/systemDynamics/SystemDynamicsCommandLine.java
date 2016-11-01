@@ -329,7 +329,7 @@ public class SystemDynamicsCommandLine {
 			System.out.println("HERE3");
 			PostProcess.postProcess(numberRounds, modelName, exportFileName, 0);
 			System.out.println("HERE4");
-			DrawGraphs_Init graphs = new DrawGraphs_Init(levelNodeMap,"chart.xml");
+			DrawGraphs_Init graphs = new DrawGraphs_Init(levelNodeMap,"new_3_chart.xml");
 			System.out.println("HERE5");
 			System.out.println("Generating Graphs");
 			graphs.drawGraphs(0, exportFileName,"phase2");
@@ -350,25 +350,25 @@ public class SystemDynamicsCommandLine {
 		if(args[12].equals("2"))
 		{
 			PostProcess.postProcess(numberRounds, modelName, exportFileName, phaseCycle);
-			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"chart2.xml");
+			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"new_3_chart.xml");
 			graphs.drawGraphs(phaseCycle, exportFileName,"phase2");
 		}
 		else if(args[12].equals("3"))
 		{
 			PostProcess.postProcess(numberRounds, modelName, exportFileName, phaseCycle);
-			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"chart3.xml");
+			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"new_3_chart.xml");
 			graphs.drawGraphs(phaseCycle, exportFileName,"phase3");
 		}
 		else if(args[12].equals("4"))
 		{
 			PostProcess.postProcess(numberRounds, modelName, exportFileName, phaseCycle);
-			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"chart4.xml");
+			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"new_3_chart.xml");
 			graphs.drawGraphs(phaseCycle, exportFileName,"phase4");
 		}
 		else if(args[12].equals("5"))
 		{
 			PostProcess.postProcess(numberRounds, modelName, exportFileName, phaseCycle);
-			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"chart5.xml");
+			DrawGraphs graphs = new DrawGraphs(levelNodeMap,"new_3_chart.xml");
 			graphs.drawGraphs(phaseCycle, exportFileName,"phase5");
 		}
 		System.out.println("Graphs Generated");
