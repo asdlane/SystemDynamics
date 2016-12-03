@@ -2628,6 +2628,7 @@ WindowListener {
 				ExportPanel exportPanel = graph.get(j).getExportPanel();	
 				chartPanelAllSubmodels.add(chartPanelIndividual);
 				exportPanelAllSubmodels.add(exportPanel);
+				graph.get(j).setExecutionChartPanel(chartPanelIndividual);
 			}
 			JPanel overallExecutePanel = new JPanel();
 			
@@ -2637,8 +2638,10 @@ WindowListener {
 			JButton ResetButton = new JButton ("Reset");
 			ResetButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e){
-						reset();
-						//reset everything.  Remove the tabbedPane and scrollPane
+						//reset();
+					for(int i=0;i<chartPanelAllSubmodels.size();i++){
+						chartPanelAllSubmodels.get(i).reset();
+					}
 						
 				}
 			});

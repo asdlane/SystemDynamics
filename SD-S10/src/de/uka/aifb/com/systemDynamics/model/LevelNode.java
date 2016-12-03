@@ -150,6 +150,11 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    void setCurveValue(double curve) {
 	      this.curve = curve;
    }
+   
+   public void reset(){
+	   this.currentValue = this.startValue;
+   }
+   
 
    /**
     * Gets the level node's start value.

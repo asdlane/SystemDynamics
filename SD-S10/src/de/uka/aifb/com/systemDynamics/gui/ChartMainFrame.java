@@ -183,7 +183,7 @@ public class ChartMainFrame extends JFrame{
 		toolBar.add(newChartPlanNodeAction);
 		toolBar.add(newPlanNodeAction);
 		toolBar.add(newPlanNodeIncrementAction);
-		toolBar.add(editChartAction);
+//		toolBar.add(editChartAction);
 		GraphNumber.setFont(new Font(GraphNumber.getFont().getName(), Font.PLAIN, 30));
 		toolBar.add(GraphNumber);
 

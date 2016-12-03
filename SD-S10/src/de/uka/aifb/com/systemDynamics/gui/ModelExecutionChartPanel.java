@@ -80,6 +80,8 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    private JButton executionButton;
    private JButton changeValueButton;
    public int submodelNumber;
+   
+   private JPanel chartsPanel;
 
 private JFreeChart chart2;
    /**
@@ -132,7 +134,13 @@ private JFreeChart chart2;
       // not zoomable
       chartPanel.setMouseZoomable(false);
       chartPanel2.setMouseZoomable(false);
-      add(chartPanel, BorderLayout.CENTER);
+      
+      chartsPanel = new JPanel();
+      JScrollPane scroll = new JScrollPane(chartsPanel);
+      add(scroll, BorderLayout.CENTER);
+      chartsPanel.setLayout(new GridLayout(0,1));
+      chartsPanel.add(chartPanel);
+      
       if(model.getSharedNodes().size()>0) {
     	  add(chartPanel2, BorderLayout.WEST);
       }
@@ -346,6 +354,29 @@ private JFreeChart chart2;
       commandPanel.add(executionButton);
       add(commandPanel, BorderLayout.PAGE_END);
    }
+   
+   /**
+    * Create a new chart above the original one when changing the levelnode value
+    * 
+    * @return
+    */
+   public void addNewChartPanel(){
+
+	      JFreeChart[] charts = createChart();
+	      // CENTER: chart
+	      ChartPanel chartPanel = new ChartPanel(charts[0]);
+	      
+	      // no context menu
+	      chartPanel.setPopupMenu(null);
+	      
+	      // not zoomable
+	      chartPanel.setMouseZoomable(false);
+	      
+	      chartsPanel.add(chartPanel);
+	      
+   }
+   
+   
    
    /**
     * Creates the XY line chart.
@@ -793,6 +824,24 @@ private JFreeChart chart2;
          executionButton.setEnabled(true);
       }
    }
+
+public void reset() {
+	nextRound=1;
+	for(int i=0;i<levelNodes.length;i++){
+		levelNodes[i].reset();
+	}
+	
+	
+	for (int j = 0; j < xySeriesArray.length; j++) {
+        xySeriesArray[j].clear();
+        xySeriesArray[j].add(0.0, levelNodes[j].getCurrentValue());
+     }
+	
+	for (int j = 0; j < xySeriesArray2.length; j++) {
+        xySeriesArray2[j].clear();
+        xySeriesArray2[j].add(0.0, sharedNodes[j].getCurrentValue());
+     }
+}
    
    
 //   private class LineLegendItemSource implements LegendItemSource {

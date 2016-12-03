@@ -66,7 +66,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	private HashMap<DefaultGraphCell, AbstractNode> graphNode2modelNode;
 	public Color borderColor;
 	private LinkedList<SystemDynamicsGraphModifiedEventListener> listeners;
-	
+	private ModelExecutionChartPanel executionChartPanel;
 	
 	/**
 	 * Constructor.
@@ -1622,8 +1622,11 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 												messages.getString("SystemDynamicsGraph.PopupMenu.ChangeStartValue"),
 												messages.getString("SystemDynamicsGraph.PopupMenu.ChangeStartValue.Message"),
 												initialStartValue, minParameter, maxParameter);
-								if (newStartValue != null) {
+								if (newStartValue != null && newStartValue != initialStartValue) {
 									setStartValue((LevelNodeGraphCell)cell, newStartValue);
+									if(executionChartPanel != null){
+										executionChartPanel.addNewChartPanel();
+									}
 								}
 							}
 						});
@@ -2109,5 +2112,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	public void addSource(SharedNodeGraphCell sharedcell, Object source) {
 		// TODO Auto-generated method stub
 		((SharedNode)graphNode2modelNode.get(sharedcell)).setSource(graphNode2modelNode.get(source));
+	}
+
+	public void setExecutionChartPanel(ModelExecutionChartPanel executionChartPanel) {
+		this.executionChartPanel = executionChartPanel;
+		
 	}
 }
