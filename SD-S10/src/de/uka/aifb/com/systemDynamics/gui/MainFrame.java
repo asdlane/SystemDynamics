@@ -44,6 +44,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.*;
@@ -55,8 +56,6 @@ import org.jgraph.*;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferable;
-
-import java.util.Random;
 
 /*
  * Changes:
@@ -2648,19 +2647,110 @@ WindowListener {
 			JButton ModelExecButton = new JButton("Execute Model");
 			 ModelExecButton.addActionListener(new ActionListener() {
 		         public void actionPerformed(ActionEvent e) {
-		        	 for(int i=0;i<chartPanelAllSubmodels.size();i++){
+		        	 
+		        	 executeInOrder(chartPanelAllSubmodels);
+		         }
+		         
+		         private void executeInOrder(ArrayList<ModelExecutionChartPanel> chartPanelAllSubmodels){
+		        	 ArrayList<ModelExecutionChartPanel> orderedChartPanels = new ArrayList<ModelExecutionChartPanel>();
+		        	 HashMap<ModelExecutionChartPanel, HashSet<ModelExecutionChartPanel>> adjacentList = getAdjacentListOfModelExecutionChartPanel(chartPanelAllSubmodels);
+		        	 HashMap<ModelExecutionChartPanel, Integer> numberOfPredecessorsMap = getNumberOfPredecessorsMap(chartPanelAllSubmodels);
+		        	      
+		        	      while (!numberOfPredecessorsMap.isEmpty()) {
+		        	         for (ModelExecutionChartPanel ecp : numberOfPredecessorsMap.keySet()) {
+		        	            if (numberOfPredecessorsMap.get(ecp) == 0) {
+		        	            	orderedChartPanels.add(ecp);
+		        
+		        	               HashSet<ModelExecutionChartPanel> dependantModelExecutionChartPanel = adjacentList.get(ecp);
+		        	               if (dependantModelExecutionChartPanel != null) {
+		        	                  for (ModelExecutionChartPanel chartPanel : dependantModelExecutionChartPanel) {
+		        	                     int numberOfPredecessors = numberOfPredecessorsMap.get(chartPanel);
+		        	                     numberOfPredecessors--;
+		        	                     numberOfPredecessorsMap.put(chartPanel, numberOfPredecessors);
+		        	                  }
+		        	               }
+		        	               
+		        	               numberOfPredecessorsMap.remove(ecp);
+		        	               
+		        	               break;
+		        	            }
+		        	         }
+		        	      }
+		        	      
+		        	 
+		        	 for(int i=0;i<orderedChartPanels.size();i++){
 		        		 JPanel roundsPanel;
 		        		try {
-		        		roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(3);
+		        		roundsPanel = (JPanel)orderedChartPanels.get(i).getComponent(3);
 		        		}
 		        		catch(Exception e2) {
-		        			roundsPanel = (JPanel)chartPanelAllSubmodels.get(i).getComponent(2);
+		        			roundsPanel = (JPanel)orderedChartPanels.get(i).getComponent(2);
 		        		}
 		 				JTextField roundsText = (JTextField)roundsPanel.getComponent(1);		 				
 		 				roundsText.setText(roundsTextModel.getText());
-		        		chartPanelAllSubmodels.get(i).getExecutionButton().doClick(); 
+		 				
+		 				orderedChartPanels.get(i).getExecutionButton().doClick();
 		        	 }
 		         }
+
+				private HashMap<ModelExecutionChartPanel, Integer> getNumberOfPredecessorsMap(ArrayList<ModelExecutionChartPanel> chartPanelAllSubmodels) {
+					HashMap<ModelExecutionChartPanel, Integer> map = new HashMap<ModelExecutionChartPanel, Integer>();
+					
+					for (ModelExecutionChartPanel chartPanel : chartPanelAllSubmodels) {
+				    	  
+				    	  HashSet<ModelExecutionChartPanel> allChartPanelsThisDependsOn= new HashSet<ModelExecutionChartPanel>();
+				    	  
+				    	  for(SharedNode sn: chartPanel.getModel().getSharedNodes()){
+				    		  for(int i=0;i<chartPanelAllSubmodels.size();i++){
+				    				for(AuxiliaryNode an: chartPanelAllSubmodels.get(i).getModel().getAuxiliaryNodes()){
+				    		 	  	  if(sn.getSource() == an){
+				    		 	  		allChartPanelsThisDependsOn.add(chartPanelAllSubmodels.get(i));
+				    		 	  	  }
+				    		 	  	  break;
+				    				 }
+				    				for(LevelNode ln: chartPanelAllSubmodels.get(i).getModel().getLevelNodes()){
+					    		 	  if(sn.getSource() == ln){
+					    		 	  		allChartPanelsThisDependsOn.add(chartPanelAllSubmodels.get(i));
+					    		 	  }
+					    		 	  break;
+				    				}
+				    		  }
+				    	  }
+				    	  
+				    	  map.put(chartPanel, allChartPanelsThisDependsOn.size());
+				      }
+					
+					return map;
+				}
+
+				private HashMap<ModelExecutionChartPanel, HashSet<ModelExecutionChartPanel>> getAdjacentListOfModelExecutionChartPanel(ArrayList<ModelExecutionChartPanel> chartPanelAllSubmodels) {
+					HashMap<ModelExecutionChartPanel, HashSet<ModelExecutionChartPanel>> adjacentList =
+					         new HashMap<ModelExecutionChartPanel, HashSet<ModelExecutionChartPanel>>();
+					      
+					      for (ModelExecutionChartPanel chartPanel : chartPanelAllSubmodels) {
+					    	  HashSet<ModelExecutionChartPanel> allChartPanelsDependOnThis= new HashSet<ModelExecutionChartPanel>();
+					    	  
+					    	  for(int i=0;i<chartPanelAllSubmodels.size();i++){	
+					    		  for(SharedNode sn: chartPanelAllSubmodels.get(i).getModel().getSharedNodes()){
+					    				for(AuxiliaryNode an: chartPanel.getModel().getAuxiliaryNodes()){
+					    		 	  	  if(sn.getSource() == an){
+					    		 	  		allChartPanelsDependOnThis.add(chartPanelAllSubmodels.get(i));
+					    		 	  	  }
+					    		 	  	  break;
+					    				 }
+					    				for(LevelNode ln: chartPanel.getModel().getLevelNodes()){
+						    		 	  if(sn.getSource() == ln){
+						    		 	  	allChartPanelsDependOnThis.add(chartPanelAllSubmodels.get(i));
+						    		 	  }
+						    		 	  break;
+					    				}
+					    		  }
+					    	  }
+					    	  
+					    	  adjacentList.put(chartPanel, allChartPanelsDependOnThis);
+					      }
+					return adjacentList;
+				}
 			 });
 			 		
 		      
@@ -3182,4 +3272,5 @@ WindowListener {
 			action.actionPerformed(e);
 		}
 	}
+	
 }

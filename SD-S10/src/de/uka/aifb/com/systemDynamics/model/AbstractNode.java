@@ -71,4 +71,5 @@ public abstract class AbstractNode {
     * Computes the node's next value.
     */
    abstract void computeNextValue();
+
 }

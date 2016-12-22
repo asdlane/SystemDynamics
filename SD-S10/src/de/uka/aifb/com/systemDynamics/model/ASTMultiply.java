@@ -143,6 +143,7 @@ public Object clone() {
       
       return new ASTMultiply(leftClone, rightClone);
    }
+
    
    /**
     * Returns an iterator over the subtree of this node (output in preorder).

@@ -25,6 +25,7 @@ public class SharedNode extends AbstractNode implements ASTElement{
    private String LocalSharedPointer;
    private int shareSubModel;
    private AbstractNode source;
+   private ArrayList<Double> executionCache;
    /**
     * Constructor.
     * 
@@ -41,6 +42,7 @@ public class SharedNode extends AbstractNode implements ASTElement{
       outgoingFlows = new HashSet<RateNode>();
       currentValue = nodeVal;
       this.shareSubModel = shareSubModel;
+      this.executionCache = new ArrayList<Double>();
    }
    void setsharedPointer(String sharedPointer){
 	   LocalSharedPointer = sharedPointer;
@@ -63,6 +65,18 @@ public class SharedNode extends AbstractNode implements ASTElement{
    public AbstractNode getSource(){
 	   return source;
    }
+   
+
+	public void addCurrentValueToExecutionCache() {
+		executionCache.add(this.currentValue);
+	}
+	
+	public void setCurrentValueFromExecutionCache(int rounds){
+		if(rounds<=executionCache.size())
+			this.currentValue = executionCache.get(rounds-1);
+	}
+   
+   
    
 /**
     * Helper method for creating new instances of this class. Called by JUnit test cases.
@@ -193,7 +207,8 @@ public class SharedNode extends AbstractNode implements ASTElement{
 @Override
 public double getCurrentValue() {
 	// TODO Auto-generated method stub
-	return source.getCurrentValue();
+//	return source.getCurrentValue();
+	return this.currentValue;
 }
 public void setCurrentValue(Double newVal){
 	currentValue = newVal;
@@ -202,8 +217,19 @@ public void setCurrentValue(Double newVal){
 
 @Override
 void computeNextValue() {
-	currentValue = formula.evaluate();
+//	currentValue = formula.evaluate();
 	
+//	if(source instanceof LevelNode){
+//		for(RateNode incomingFlow : ((LevelNode) source).getIncomingFlows()){
+//			incomingFlow.computeNextValue();
+//		}
+//		
+//
+//		for(RateNode outgoingFlow : ((LevelNode) source).getOutgoingFlows()){
+//			outgoingFlow.computeNextValue();
+//		}
+//	}
+//	source.computeNextValue();
 }
 
 
@@ -214,7 +240,8 @@ void computeNextValue() {
  * @return ASTElement value
  */
 public double evaluate() {
-   return currentValue;
+//   return source.getCurrentValue();
+	return this.currentValue;
 }
 
 /**
@@ -270,6 +297,7 @@ public Object clone() {
    // return 'this' AuxiliaryNode, no clone!
    return this;
 }
+
 
 /**
  * Returns an iterator over the subtree of this node (here: only this node).
@@ -331,6 +359,13 @@ private SharedNode sharedNode;
       throw new UnsupportedOperationException();
    }
 }
+
+public void clearExecutionCache() {
+	executionCache.clear();
+	
+}
+
+
 
 
    

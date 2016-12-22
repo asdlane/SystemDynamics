@@ -175,4 +175,5 @@ public class ASTMax implements ASTElement {
 	         throw new UnsupportedOperationException();
 	      }
 	   }
+
 }

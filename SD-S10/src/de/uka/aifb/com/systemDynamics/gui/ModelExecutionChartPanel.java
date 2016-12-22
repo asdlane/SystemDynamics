@@ -69,10 +69,10 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    
    private Model model;
    private LevelNode[] levelNodes;
-   private SharedNode[] sharedNodes;
+   private SharedNode[] sharedLevelNodes;
    
    private XYSeries[] xySeriesArray;
-   private XYSeries[] xySeriesArray2;
+//   private XYSeries[] xySeriesArray2;
    private JFreeChart chart;
    private int nextRound;
    
@@ -83,7 +83,8 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    
    private JPanel chartsPanel;
 
-private JFreeChart chart2;
+
+//private JFreeChart chart2;
    /**
     * Constructor.
     * 
@@ -110,6 +111,11 @@ private JFreeChart chart2;
       createPanel();
    }
    
+   public Model getModel(){
+	   return this.model;
+   }
+   
+   
    /**
     * Gets the execution button.
     * 
@@ -124,16 +130,15 @@ private JFreeChart chart2;
     */
    private void createPanel() {
       setLayout(new BorderLayout());
-      JFreeChart[] charts = createChart();
+      JFreeChart newchart = createChart();
       // CENTER: chart
-      ChartPanel chartPanel = new ChartPanel(charts[0]);
-      ChartPanel chartPanel2 = new ChartPanel(charts[1]);
+      ChartPanel chartPanel = new ChartPanel(newchart);
+
       // no context menu
       chartPanel.setPopupMenu(null);
-      chartPanel2.setPopupMenu(null);
+
       // not zoomable
       chartPanel.setMouseZoomable(false);
-      chartPanel2.setMouseZoomable(false);
       
       chartsPanel = new JPanel();
       JScrollPane scroll = new JScrollPane(chartsPanel);
@@ -141,9 +146,6 @@ private JFreeChart chart2;
       chartsPanel.setLayout(new GridLayout(0,1));
       chartsPanel.add(chartPanel);
       
-      if(model.getSharedNodes().size()>0) {
-    	  add(chartPanel2, BorderLayout.WEST);
-      }
       
       // LINE_END: series table
       JPanel tablePanel = new JPanel(new GridBagLayout());
@@ -341,8 +343,17 @@ private JFreeChart chart2;
             }
             
             if (correctNumber) {
+            	// execute using thread
                ModelExecutionThread executionThread = new ModelExecutionThread(numberRounds);
-               executionThread.start();              
+               executionThread.start(); 
+               try {
+            	   executionThread.join();
+               } catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+               }
+            	
+//            	execute(numberRounds);
             } else {
                JOptionPane.showMessageDialog(null,
                                              messages.getString("ModelExecutionChartPanel.Error.Message"),
@@ -350,6 +361,47 @@ private JFreeChart chart2;
                                              JOptionPane.ERROR_MESSAGE);
             }
          }
+         
+         private void execute(int numberRounds ){
+        	 NumberFormat numberFormatter = NumberFormat.getIntegerInstance(locale);
+             executionButton.setEnabled(false);
+             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+             
+             ProgressMonitor progressMonitor = new ProgressMonitor(ModelExecutionChartPanel.this,
+                                                                   messages.getString("ModelExecutionThread.ProgressMonitor.Text"),
+                                                                   "",
+                                                                   0, numberRounds);
+             for (int i = 0; i < numberRounds; i++) {
+                if (progressMonitor.isCanceled()) {
+                   // stop execution (i.e. for loop)
+                   break;
+                }
+                progressMonitor.setNote(numberFormatter.format(i) + " " + messages.getString("ModelExecutionThread.ProgressMonitor.Note.Text1") + " " + numberFormatter.format(numberRounds) + " " + messages.getString("ModelExecutionThread.ProgressMonitor.Note.Text2"));
+                progressMonitor.setProgress(i);
+                
+                for(SharedNode sn: model.getSharedLevelNodes()){
+                	sn.setCurrentValueFromExecutionCache(nextRound);
+                }
+                
+                model.computeNextValues();
+                
+                
+                for (int j = 0; j < xySeriesArray.length; j++) {              
+                	if(j<levelNodes.length){
+                		xySeriesArray[j].add(nextRound, levelNodes[j].getCurrentValue());
+                	}
+                	else {
+                		xySeriesArray[j].add(nextRound, sharedLevelNodes[j-levelNodes.length].getCurrentValue());
+                	}
+                }
+                nextRound++;
+             }
+             progressMonitor.close();
+             
+             setCursor(null);
+             executionButton.setEnabled(true);
+          }
+         
       });
       commandPanel.add(executionButton);
       add(commandPanel, BorderLayout.PAGE_END);
@@ -362,9 +414,9 @@ private JFreeChart chart2;
     */
    public void addNewChartPanel(){
 
-	      JFreeChart[] charts = createChart();
+	      JFreeChart newchart = createChart();
 	      // CENTER: chart
-	      ChartPanel chartPanel = new ChartPanel(charts[0]);
+	      ChartPanel chartPanel = new ChartPanel(newchart);
 	      
 	      // no context menu
 	      chartPanel.setPopupMenu(null);
@@ -383,24 +435,24 @@ private JFreeChart chart2;
     * 
     * @return XY line chart
     */
-   private JFreeChart[] createChart() {
+   private JFreeChart createChart() {
       
       
       int i = 0;
       String[] levelNodeList = new String[model.getLevelNodes().size()];
-      String[] sharedNodeList = new String[model.getSharedNodes().size()];
+      String[] sharedLevelNodeList = new String[model.getSharedNodes().size()];
       
       int k=0;
       int t=0;
       for (LevelNode levelNode : model.getLevelNodes()) {
     	  levelNodeList[k++] = levelNode.getNodeName();
       }
-      for(SharedNode sharedNode: model.getSharedNodes()){
-    	  sharedNodeList[t++] = sharedNode.getSharedPointer();
+      for(SharedNode sharedNode: model.getSharedLevelNodes()){
+    	  sharedLevelNodeList[t++] = sharedNode.getSharedPointer();
       }
       JPanel listPanel = new JPanel();
       JList list = new JList(levelNodeList);
-      JList list2 = new JList(sharedNodeList);
+      JList list2 = new JList(sharedLevelNodeList);
       GridLayout layout = new GridLayout(3,1);
       listPanel.setLayout(layout);
       JLabel label = new JLabel("which variables would you like to graph? (Submodel " + this.submodelCounter + ")");
@@ -418,7 +470,7 @@ private JFreeChart chart2;
 		//String levelNodeOption = (String) JOptionPane.showInputDialog(frame,"Which variables would you like to graph?","Select Variables",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 		//System.out.println(levelNodeOption);
       levelNodes = new LevelNode[list.getSelectedIndices().length];
-      sharedNodes = new SharedNode[list2.getSelectedIndices().length];
+      sharedLevelNodes = new SharedNode[list2.getSelectedIndices().length];
       String[] SelectedNames = new String[list.getSelectedIndices().length];
       String[] SelectedNames2 = new String[list2.getSelectedIndices().length];
       HashMap<LevelNode,HashSet<AbstractNode>> dependencies = new HashMap<LevelNode,HashSet<AbstractNode>>();
@@ -428,7 +480,7 @@ private JFreeChart chart2;
     	 SelectedNames[j++] = levelNodeList[index]; 
       }
       for(int index2 : list2.getSelectedIndices()){
-    	  SelectedNames2[z++] = sharedNodeList[index2];
+    	  SelectedNames2[z++] = sharedLevelNodeList[index2];
       }
       for (LevelNode levelNode : model.getLevelNodes()) {
     	 for(int f=0;f<SelectedNames.length;f++){
@@ -442,7 +494,7 @@ private JFreeChart chart2;
       for(SharedNode sharedNode : model.getSharedNodes()){
     	  for(int f=0;f<SelectedNames2.length;f++){
     		  if(SelectedNames2[f] == sharedNode.getSharedPointer()){
-    			  sharedNodes[f++] = sharedNode;
+    			  sharedLevelNodes[f++] = sharedNode;
     		  }
     	  }
       }
@@ -451,25 +503,27 @@ private JFreeChart chart2;
       // sort level nodes alphabetically
       //Arrays.sort(levelNodes);
       
-      xySeriesArray = new XYSeries[levelNodes.length];
-      xySeriesArray2 = new XYSeries[sharedNodes.length];
+      xySeriesArray = new XYSeries[levelNodes.length+sharedLevelNodes.length];
+//      xySeriesArray2 = new XYSeries[sharedNodes.length];
       
       XYSeriesCollection data = new XYSeriesCollection();
-      XYSeriesCollection data2 = new XYSeriesCollection();
-      for (i = 0; i < xySeriesArray.length; i++) {
+//      XYSeriesCollection data2 = new XYSeriesCollection();
+      
+      for (i = 0; i < levelNodes.length; i++) {
     	 
          XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
          xySeries.add(0.0, levelNodes[i].getCurrentValue());
          data.addSeries(xySeries);
          xySeriesArray[i] = xySeries;
       }
-      for (i = 0; i < xySeriesArray2.length; i++) {
+      for (i = 0; i < sharedLevelNodes.length; i++) {
      	 
-          XYSeries xySeries = new XYSeries(sharedNodes[i].getSharedPointer());
-          xySeries.add(0.0, sharedNodes[i].getCurrentValue());
-          data2.addSeries(xySeries);
-          xySeriesArray2[i] = xySeries;
+          XYSeries xySeries = new XYSeries(sharedLevelNodes[i].getSharedPointer());
+          xySeries.add(0.0, ((LevelNode)sharedLevelNodes[i].getSource()).getStartValue());
+          data.addSeries(xySeries);
+          xySeriesArray[i+levelNodes.length] = xySeries;
        }
+      
       nextRound = 1;
       
       chart = ChartFactory.createXYLineChart(null,
@@ -478,14 +532,14 @@ private JFreeChart chart2;
                                              data,
                                              PlotOrientation.VERTICAL,
                                              true, true, false);
-      chart2 = ChartFactory.createXYLineChart(null, 
-    		  								messages.getString("ModelExecutionChartPanel.Round"), 
-    		  								messages.getString("ModelExecutionChartPanel.Value"), 
-    		  								data2, 
-    		  								PlotOrientation.VERTICAL,
-    		  								true, false, false);
+//      chart2 = ChartFactory.createXYLineChart(null, 
+//    		  								messages.getString("ModelExecutionChartPanel.Round"), 
+//    		  								messages.getString("ModelExecutionChartPanel.Value"), 
+//    		  								data2, 
+//    		  								PlotOrientation.VERTICAL,
+//    		  								true, false, false);
       XYPlot plot = chart.getXYPlot();
-      XYPlot plot2 = chart2.getXYPlot();
+//      XYPlot plot2 = chart2.getXYPlot();
       
       // add tooltip to each point
       /*XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
@@ -514,27 +568,29 @@ private JFreeChart chart2;
       ((NumberAxis)(chart.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
       plot.getDomainAxis().setAutoRangeMinimumSize(20);
       
-      ((NumberAxis)(chart2.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
-      plot2.getDomainAxis().setAutoRangeMinimumSize(20);
+//      ((NumberAxis)(chart2.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
+//      plot2.getDomainAxis().setAutoRangeMinimumSize(20);
       
       // only integer values as labels for horizontal axis
       plot.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-      plot2.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+//      plot2.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
       
       // number formatting according to current locale
       ((NumberAxis)(plot.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
       ((NumberAxis)(plot.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
-      ((NumberAxis)(plot2.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
-      ((NumberAxis)(plot2.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
-      
+//      ((NumberAxis)(plot2.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
+//      ((NumberAxis)(plot2.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
+//      
       // legend at top position
       chart.getLegend().setPosition(RectangleEdge.RIGHT);
-      chart2.getLegend().setPosition(RectangleEdge.TOP);
+//      chart2.getLegend().setPosition(RectangleEdge.TOP);
       
-      JFreeChart[] allCharts = {chart, chart2};
+//      JFreeChart[] allCharts = {chart, chart2};
       
-      return allCharts;
+      return chart;
    }
+   
+
    
    private String getDependencies(HashMap<LevelNode,HashSet<AbstractNode>> m){
 
@@ -806,15 +862,21 @@ private JFreeChart chart2;
             }
             progressMonitor.setNote(numberFormatter.format(i) + " " + messages.getString("ModelExecutionThread.ProgressMonitor.Note.Text1") + " " + numberFormatter.format(numberRounds) + " " + messages.getString("ModelExecutionThread.ProgressMonitor.Note.Text2"));
             progressMonitor.setProgress(i);
+            
+            for(SharedNode sn: model.getSharedLevelNodes()){
+            	sn.setCurrentValueFromExecutionCache(nextRound);
+            }
+            
             model.computeNextValues();
-            for (int j = 0; j < xySeriesArray.length; j++) {
-               xySeriesArray[j].add(nextRound, levelNodes[j].getCurrentValue());
-               try {
-               xySeriesArray2[j].add(nextRound, sharedNodes[j].getCurrentValue());
-               }
-               catch(Exception e) {
-            	   
-               }
+            
+            
+            for (int j = 0; j < xySeriesArray.length; j++) {              
+            	if(j<levelNodes.length){
+            		xySeriesArray[j].add(nextRound, levelNodes[j].getCurrentValue());
+            	}
+            	else {
+            		xySeriesArray[j].add(nextRound, sharedLevelNodes[j-levelNodes.length].getCurrentValue());
+            	}
             }
             nextRound++;
          }
@@ -830,19 +892,22 @@ public void reset() {
 	for(int i=0;i<levelNodes.length;i++){
 		levelNodes[i].reset();
 	}
+
+	for(SharedNode sn: model.getSharedLevelNodes()){
+    	sn.clearExecutionCache();
+    }
 	
-	
-	for (int j = 0; j < xySeriesArray.length; j++) {
+	for (int j = 0; j < levelNodes.length; j++) {
         xySeriesArray[j].clear();
-        xySeriesArray[j].add(0.0, levelNodes[j].getCurrentValue());
+        xySeriesArray[j].add(0.0, levelNodes[j].getStartValue());
      }
 	
-	for (int j = 0; j < xySeriesArray2.length; j++) {
-        xySeriesArray2[j].clear();
-        xySeriesArray2[j].add(0.0, sharedNodes[j].getCurrentValue());
+	for (int j = levelNodes.length; j < xySeriesArray.length; j++) {
+        xySeriesArray[j].clear();
+        xySeriesArray[j].add(0.0, ((LevelNode)sharedLevelNodes[j-levelNodes.length].getSource()).getStartValue());
      }
 }
-   
+
    
 //   private class LineLegendItemSource implements LegendItemSource {
 //	    public LegendItemCollection getLegendItems() {

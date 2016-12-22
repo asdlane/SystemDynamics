@@ -1116,6 +1116,8 @@ public class Model {
          }
       }
       
+
+      
       // compute next values for rate nodes
       for (RateNode rateNode : rateNodes) {
          rateNode.computeNextValue();
@@ -1315,5 +1317,11 @@ public class Model {
 	      return (HashSet<SharedNode>)SharedNodes.clone();
    }
 
-
+   public HashSet<SharedNode> getSharedLevelNodes() {
+	   HashSet<SharedNode> sharedLevelNodes = new HashSet<SharedNode>();
+	   for(SharedNode sn: SharedNodes)
+		   if(sn.getSource() instanceof LevelNode)
+			   sharedLevelNodes.add(sn);
+	   return sharedLevelNodes;
+}
 }

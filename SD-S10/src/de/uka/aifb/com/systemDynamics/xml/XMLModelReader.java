@@ -1492,6 +1492,7 @@ public class XMLModelReader {
 				for(AuxiliaryNode an: graph.get(sn.getShareSubModel()).model.getAuxiliaryNodes()){
 					if(an.getNodeName().equals(sharedPointer)){
 						sn.setSource(an);
+						an.addSharedNode(sn);
 					}
 				}
 				for(ConstantNode cn: graph.get(sn.getShareSubModel()).model.getConstantNodes()){
@@ -1502,6 +1503,7 @@ public class XMLModelReader {
 				for(LevelNode ln: graph.get(sn.getShareSubModel()).model.getLevelNodes()){
 					if(ln.getNodeName().equals(sharedPointer)){
 						sn.setSource(ln);
+						ln.addSharedNode(sn);
 					}
 				}
 			}

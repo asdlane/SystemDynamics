@@ -52,6 +52,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
    private HashSet<RateNode> outgoingFlows;
    private boolean learnerChangeable;
    private boolean shared;
+   private HashSet<SharedNode> sharedList;
    /**
     * Constructor.
     * 
@@ -88,6 +89,7 @@ public class LevelNode extends AbstractNode implements ASTElement, Comparable<Le
       setShared(shared);
       incomingFlows = new HashSet<RateNode>();
       outgoingFlows = new HashSet<RateNode>();
+      sharedList = new HashSet<SharedNode>();
    }
    
 
@@ -373,7 +375,13 @@ void computeNextValue() {
 			}
 		}
 	}
-   }
+	
+	for(SharedNode sn: sharedList){
+		sn.setCurrentValue(currentValue);
+		sn.addCurrentValueToExecutionCache();
+	}
+	
+}
 
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods from interface ASTElement
@@ -440,6 +448,14 @@ void computeNextValue() {
 public Object clone() {
       // return 'this' LevelNode, no clone!
       return this;
+   }
+
+   public void addSharedNode(SharedNode sn){
+	   sharedList.add(sn);
+   }
+   
+   public HashSet<SharedNode> getSharedNodeList(){
+	   return sharedList;
    }
    
    /**

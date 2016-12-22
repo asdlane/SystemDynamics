@@ -42,6 +42,8 @@ public class AuxiliaryNode extends AbstractNode implements ASTElement {
    private ASTElement formula;
    private boolean learnerDecidable;
    private boolean shared;
+   private HashSet<SharedNode> sharedList;
+   
    /**
     * Constructor.
     * 
@@ -55,6 +57,7 @@ public class AuxiliaryNode extends AbstractNode implements ASTElement {
       setNodeName(nodeName);
       setlearnerDecidable(learnerChangeable);
       setShared(Shared);
+      sharedList = new HashSet<SharedNode>();
    }
 
    private void setlearnerDecidable(boolean learnerChangeable) {
@@ -143,7 +146,11 @@ public double getCurrentValue() {
    @Override
 void computeNextValue() {
       currentValue = formula.evaluate();
-   }
+	for(SharedNode sn: sharedList){
+		sn.setCurrentValue(currentValue);
+		sn.addCurrentValueToExecutionCache();
+	}
+}
    
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods from interface ASTElement
@@ -210,6 +217,15 @@ void computeNextValue() {
 public Object clone() {
       // return 'this' AuxiliaryNode, no clone!
       return this;
+   }
+
+
+   public void addSharedNode(SharedNode sn){
+	   sharedList.add(sn);
+   }
+   
+   public HashSet<SharedNode> getSharedNodeList(){
+	   return sharedList;
    }
    
    /**

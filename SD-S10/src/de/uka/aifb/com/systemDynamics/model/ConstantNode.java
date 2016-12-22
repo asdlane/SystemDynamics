@@ -201,7 +201,7 @@ public Object clone() {
       // return 'this' ConstantNode, no clone!
       return this;
    }
-   
+     
    /**
     * Returns an iterator over the subtree of this node (here: only this node).
     * 

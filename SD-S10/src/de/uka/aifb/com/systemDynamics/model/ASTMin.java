@@ -99,6 +99,7 @@ public class ASTMin implements ASTElement{
 	      
 	      return new ASTMin(leftClone, rightClone);
 	   }
+	      
 	   
 	   /**
 	    * Returns an iterator over the subtree of this node (output in preorder).
