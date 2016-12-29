@@ -292,7 +292,7 @@ public class SystemDynamicsCommandLine {
 	public static void main(String[] args) throws Exception {
 
 		HashMap<String,String> levelNodeMap;
-		if(args.length==8){
+		if(args.length==8){ // stop before '-h'
 			System.out.println("Simulating default System Dynamics");
 			SystemDynamicsCommandLine.numberRounds = getNumberRounds(args);
 			exportCSV(args);
@@ -307,7 +307,7 @@ public class SystemDynamicsCommandLine {
 			System.exit(1);
 
 		}
-		//Read Cycle
+		//Read Cycle  
 		int phaseCycle = Integer.parseInt(args[11]);
 		String phase = "phase"+args[12];
 		String [] targs = new String[args.length];

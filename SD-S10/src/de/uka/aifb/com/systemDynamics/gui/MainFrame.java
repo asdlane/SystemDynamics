@@ -3177,44 +3177,70 @@ WindowListener {
 			Object[] choices = SubmodelNumbers.toArray();
 			int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Share with which submodel?","Share",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
 			subModelIndex = subModelIndex-1;
+			
+			// share node from shareSubModel to subModelIndex
 			int shareSubModel = 0;
 			for(int j=0;j<graph.size();j++){
 				if(cells.length == 0){
 					cells = graph.get(j).getSelectionCells();
-					if(cells.length==0){
+					if(cells.length!=0){
 						shareSubModel = j;
-					}
-						
+					}	
 				}
-				
-
-
 			}
-			String sharedPointerLocal = "";
-			for(int i=0; i<cells.length;i++){
-//				SharedNodeGraphCell cell = null;
-				DefaultGraphCell source = (DefaultGraphCell) cells[i];
-				
-				if (cells[i] instanceof AuxiliaryNodeGraphCell) {
-					sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+			
+			boolean noShareCircle = true;
+			for(SharedNode sn: graph.get(shareSubModel).model.getSharedNodes()){
+				for(AuxiliaryNode an: graph.get(subModelIndex).model.getAuxiliaryNodes()){
+					if(sn.getSource() == an){
+						noShareCircle = false;
+						break;
+					}
+				}
+//				for(ConstantNode cn: graph.get(subModelIndex).model.getConstantNodes()){
+//					if(sn.getSource() == cn){
+//						noShareCircle = false;
+//						break;
+//					}
+//				}
+				for(LevelNode ln: graph.get(subModelIndex).model.getLevelNodes()){
+					if(sn.getSource() == ln){
+						noShareCircle = false;
+						break;
+					}
+				}
+			}
+			
+			if(!noShareCircle){
+				JOptionPane.showMessageDialog(null, "Cannot share this Node: Submodel "+(shareSubModel+1)+" already has sharedNodes from Submodel "+(subModelIndex+1)+".");
+			}
+			else{
+				String sharedPointerLocal = "";
+				for(int i=0; i<cells.length;i++){
+	//				SharedNodeGraphCell cell = null;
+					DefaultGraphCell source = (DefaultGraphCell) cells[i];
 					
-					graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Auxiliary", -1,graph.get(shareSubModel).getModelNode(source));
+					if (cells[i] instanceof AuxiliaryNodeGraphCell) {
+						sharedPointerLocal = ((AuxiliaryNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						
+						graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Auxiliary", -1,graph.get(shareSubModel).getModelNode(source));
+						
+					}
+					else if (cells[i] instanceof LevelNodeGraphCell){
+						sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						Double startVal = (Double)((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal");
+						
+						graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Level", startVal, graph.get(shareSubModel).getModelNode(source));
+	
+					}
+					
+					else if(cells[i] instanceof ConstantNodeGraphCell){
+						sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
+						double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
+						graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Constant", constVal, graph.get(shareSubModel).getModelNode(source));
+					}
 					
 				}
-				else if (cells[i] instanceof LevelNodeGraphCell){
-					sharedPointerLocal = ((LevelNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					Double startVal = (Double)((LevelNodeGraphCell)cells[i]).getAttributes().get("startVal");
-					
-					graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Level", startVal, graph.get(shareSubModel).getModelNode(source));
-
-				}
-				
-				else if(cells[i] instanceof ConstantNodeGraphCell){
-					sharedPointerLocal = ((ConstantNodeGraphCell)cells[i]).getAttributes().get("name").toString();
-					double constVal = (Double)((ConstantNodeGraphCell)cells[i]).getAttributes().get("constval");
-					graph.get(subModelIndex).createSharedNodeGraphCell(MainFrame.DEFAULT_COORDINATE,MainFrame.DEFAULT_COORDINATE,shareSubModel,sharedPointerLocal, "Constant", constVal, graph.get(shareSubModel).getModelNode(source));
-				}
-				
 			}
 		}
 
