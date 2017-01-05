@@ -197,7 +197,7 @@ public static void writeInput(String outputFileName, int nRounds, int phase) thr
 	  }
 	  modelOutput.readRecord();
 	  phase = phase + 1;
-	  BufferedWriter writer= new BufferedWriter(new FileWriter("input_" +phase +".txt"));
+	  BufferedWriter writer= new BufferedWriter(new FileWriter("input_tmp_" +phase +".txt"));
 	  phase--;
 	  if(phase==5)
 	  {

@@ -35,7 +35,7 @@ public class Model {
    
    private String modelName;
    private String modelDescription;
-   
+   private String modelID;
    protected HashSet<LevelNode> levelNodes;
    protected HashSet<RateNode> rateNodes;
    protected HashSet<ConstantNode> constantNodes;
@@ -117,6 +117,24 @@ public class Model {
       this.modelDescription = modelDescription;
    }
    
+   
+   /**
+    * Gets the model id.
+    * 
+    * @return model id
+    */
+   public String getModelID() {
+      return modelID;
+   }
+
+   /**
+    * Sets the model id.
+    * 
+    * @return 
+    */
+   public void setModelID(String modelID) {
+      this.modelID = modelID;
+   }
    /////////////////////////////////////////////////////////////////////////////////////////////////
    // methods for creating new nodes
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -349,6 +367,13 @@ public class Model {
 //          }
     	  
     	  SharedNodes.remove(node);
+    	  if(((SharedNode) node).getSource() instanceof LevelNode){
+    		  ((LevelNode) ((SharedNode) node).getSource()).getSharedNodeList().remove(node);
+    	  }
+
+    	  if(((SharedNode) node).getSource() instanceof AuxiliaryNode){
+    		  ((AuxiliaryNode) ((SharedNode) node).getSource()).getSharedNodeList().remove(node);
+    	  }
       }
    }
    

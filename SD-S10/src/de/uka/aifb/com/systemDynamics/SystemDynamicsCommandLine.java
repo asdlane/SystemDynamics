@@ -78,7 +78,6 @@ public class SystemDynamicsCommandLine {
 	 */
 	public HashMap<String,String> executeCommand() {
 		HashMap<String,String> levelNodeMap = new HashMap<String,String>();
-
 		// (1) check if export file already exists
 		if (new File(exportFileName).exists()) {
 			System.out.println("ERROR: Export file already exists.");
@@ -108,7 +107,14 @@ public class SystemDynamicsCommandLine {
 		}
 
 		System.out.println("Model successfully read from XML file.");
-
+		CSVExport csvExport = null;
+		try {
+			csvExport = new CSVExport(exportFileName, model.get(0).getModelName(), null);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+						
 		// (3) validate model and set unchangeable
 		for(int k=0;k<model.size();k++){
 			try {
@@ -134,7 +140,8 @@ public class SystemDynamicsCommandLine {
 						columnNames[i] = levelNodes[i].getNodeName();
 					}
 					System.out.println("EXPORTERRORPOTENTIAL");
-					CSVExport csvExport = new CSVExport(exportFileName, model.get(k).getModelName(), columnNames);
+					csvExport.writeComment(CSVExport.COMMENT_START_SYMBOL+"SubModel ID : "+model.get(k).getModelID());
+					csvExport.writeColumns(columnNames);
 					System.out.println("AFTEREXPORTERRORPOTENTIAL");
 					int percent = 0;
 					System.out.print("Export: 00%");
@@ -162,7 +169,6 @@ public class SystemDynamicsCommandLine {
 						}
 						csvExport.write(values);
 					}
-					csvExport.close();
 				} else {
 					// (2b) XML export
 					String[] nodeNames = new String[levelNodes.length];
@@ -207,7 +213,15 @@ public class SystemDynamicsCommandLine {
 
 			System.out.println();
 			System.out.println("Export finished successfully.");
-			return levelNodeMap;
+//			return levelNodeMap;
+		}
+		if(csvExport != null){
+			try {
+				csvExport.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return levelNodeMap;
 	}

@@ -325,7 +325,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     		 
     	 }
       });
-      commandPanel.add(changeValueButton);
+//      commandPanel.add(changeValueButton);
       executionButton = new JButton(messages.getString("ModelExecutionChartPanel.ExecutionButton.Text"));
       executionButton.setToolTipText(messages.getString("ModelExecutionChartPanel.ExecutionButton.ToolTipText"));
       executionButton.addActionListener(new ActionListener() {
@@ -512,7 +512,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       for (i = 0; i < levelNodes.length; i++) {
     	 
          XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
-         xySeries.add(0.0, levelNodes[i].getCurrentValue());
+         xySeries.add(0.0, levelNodes[i].getStartValue());
          data.addSeries(xySeries);
          xySeriesArray[i] = xySeries;
       }
@@ -906,6 +906,11 @@ public void reset() {
         xySeriesArray[j].clear();
         xySeriesArray[j].add(0.0, ((LevelNode)sharedLevelNodes[j-levelNodes.length].getSource()).getStartValue());
      }
+}
+
+public SharedNode[] getSharedLevelNodes() {
+	
+	return sharedLevelNodes;
 }
 
    

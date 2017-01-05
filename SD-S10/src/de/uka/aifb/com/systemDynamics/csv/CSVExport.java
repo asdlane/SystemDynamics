@@ -63,14 +63,6 @@ public class CSVExport {
       if (modelName == null) {
          throw new IllegalArgumentException("'modelName' must not be null.");
       }
-      if (columnNames == null) {
-         throw new IllegalArgumentException("'columnNames' must not be null.");
-      }
-      if (columnNames.length < 1) {
-         throw new IllegalArgumentException("'columnNames' must have at least length 1.");
-      }
-	  
-      numberColumns = columnNames.length;
       
       // double values for formatted with nine positions after decimal point
       myFormatter = new DecimalFormat("#.#########");
@@ -84,18 +76,33 @@ public class CSVExport {
       // write model name to file
       bufferedWriter.write(COMMENT_START_SYMBOL + " " + modelName);
       
-      bufferedWriter.newLine();
       
-      // write column names to file
+      
+   }
+   public void writeColumns(String[] columnNames){
+      if (columnNames == null) {
+         throw new IllegalArgumentException("'columnNames' must not be null.");
+      }
+      if (columnNames.length < 1) {
+         throw new IllegalArgumentException("'columnNames' must have at least length 1.");
+      }
+	  
+      numberColumns = columnNames.length;
+	   // write column names to file
       StringBuffer columnNamesString = new StringBuffer();
       for (int i = 0; i < columnNames.length - 1; i++) {
          columnNamesString.append(columnNames[i]);
          columnNamesString.append(SEPARATOR);
       }
       columnNamesString.append(columnNames[columnNames.length - 1]);
-      bufferedWriter.write(columnNamesString.toString());
+      try {
+        bufferedWriter.newLine();
+		bufferedWriter.write(columnNamesString.toString());
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
    }
-   
    /**
     * Writes the values into a separat line. The <code>double</code> values are formatted using the
     * system's standard locale decimal dot and maximal nine decimal places.
@@ -130,4 +137,15 @@ public class CSVExport {
       bufferedWriter.close();
       fileWriter.close();
    }
+
+public void writeComment(String string) {
+	// TODO Auto-generated method stub
+	try {
+		bufferedWriter.newLine();
+		bufferedWriter.write(string);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 }

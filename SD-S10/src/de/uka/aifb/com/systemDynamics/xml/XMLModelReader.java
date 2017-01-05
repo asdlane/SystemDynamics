@@ -329,6 +329,7 @@ public class XMLModelReader {
 				model.add(blankModel);
 			}
 				model.get(i).setModelDescription(submodel.getAttribute("description"));
+				model.get(i).setModelID(submodel.getAttribute("SubmodelId"));
 		}
 
 		for(int k=0;k<Submodels.getLength();k++){

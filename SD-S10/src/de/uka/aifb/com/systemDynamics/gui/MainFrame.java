@@ -2629,6 +2629,12 @@ WindowListener {
 				exportPanelAllSubmodels.add(exportPanel);
 				graph.get(j).setExecutionChartPanel(chartPanelIndividual);
 			}
+			
+			for(int j=0;j<graph.size();j++){
+				graph.get(j).setExecutionChartPanels(chartPanelAllSubmodels);
+			}
+			
+			
 			JPanel overallExecutePanel = new JPanel();
 			
 			final JTextField roundsTextModel = new JTextField("1");
@@ -2829,6 +2835,10 @@ WindowListener {
 			exitExecuteModelAction.setEnabled(false);
 
 			MainFrame.this.getContentPane().validate();
+			
+			for(int i=0;i<graph.size();i++){
+				graph.get(i).getExecutionChartPanel().reset();
+			}
 		}
 	}
 

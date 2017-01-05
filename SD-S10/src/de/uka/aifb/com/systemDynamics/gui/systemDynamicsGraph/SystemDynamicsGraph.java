@@ -67,6 +67,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	public Color borderColor;
 	private LinkedList<SystemDynamicsGraphModifiedEventListener> listeners;
 	private ModelExecutionChartPanel executionChartPanel;
+
+	private ArrayList<ModelExecutionChartPanel> executionChartPanels;
 	
 	/**
 	 * Constructor.
@@ -1638,6 +1640,27 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 									setStartValue((LevelNodeGraphCell)cell, newStartValue);
 									if(executionChartPanel != null){
 										executionChartPanel.addNewChartPanel();
+										executionChartPanel.reset();
+									}
+									
+									HashSet<ModelExecutionChartPanel> ecps = new HashSet<ModelExecutionChartPanel>();
+									for(SharedNode sn: ((LevelNode)graphNode2modelNode.get(cell)).getSharedNodeList()){
+										for(int i=0;i<executionChartPanels.size();i++){
+											SharedNode[] sharedLevelNodes = executionChartPanels.get(i).getSharedLevelNodes();
+											for(int j=0;j<sharedLevelNodes.length;j++){
+												if(sharedLevelNodes[j]==sn){
+													ecps.add(executionChartPanels.get(i));
+													break;
+												}
+											}
+										}
+									}
+									
+									for(ModelExecutionChartPanel ecp:ecps){
+										if(ecp!=executionChartPanel){
+											ecp.addNewChartPanel();
+											ecp.reset();
+										}
 									}
 								}
 							}
@@ -2128,6 +2151,16 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 
 	public void setExecutionChartPanel(ModelExecutionChartPanel executionChartPanel) {
 		this.executionChartPanel = executionChartPanel;
+		
+	}
+	
+	public ModelExecutionChartPanel getExecutionChartPanel() {
+		return this.executionChartPanel;
+		
+	}
+	
+	public void setExecutionChartPanels(ArrayList<ModelExecutionChartPanel> executionChartPanels) {
+		this.executionChartPanels = executionChartPanels;
 		
 	}
 }
