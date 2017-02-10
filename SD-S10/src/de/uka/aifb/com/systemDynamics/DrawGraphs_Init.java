@@ -117,8 +117,14 @@ public class DrawGraphs_Init {
 			levelNodeInfo.setId(lNode.getLevelIdRef());
 			levelNodeInfo.setNodeName(lNode.getLevelIdRef());
 			System.out.println("__________________"+lNode.getLevelIdRef());
-			
-			System.out.println("__________________"+levelNodes.get(lNode.getLevelIdRef()));
+
+//			System.out.println("*+++++++++++++++++++++++++++++   levelnodes entrySet in drawgraph_init");
+//			for(Map.Entry<String, String> e : levelNodes.entrySet() ){
+//				System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//			}
+//			System.out.println("*+++++++++++++++++++++++++++++");
+//			
+//			System.out.println("__________________"+levelNodes.get(lNode.getLevelIdRef()));
 			if(lNode.getLevelIdRef().equals(chartObj.getpr()))
 				prNodeName = levelNodeInfo.getNodeName();
 			levelNodeInfo.setSeries(new XYSeries(lNode.getLabel()));
@@ -152,7 +158,12 @@ public class DrawGraphs_Init {
 			max_xIntercept = 1890;
 		else
 			max_xIntercept = 810;
+		
+		
 
+		System.out.println("+++++++++++++++++++++++++++++ init  max interceptpn cal in draw_graphs");
+		System.out.println(max_xIntercept+"    global: "+chartObj.getGlobal());
+		System.out.println("+++++++++++++++++++++++++++++");
 
 		//Initialization of the new values required to store the configurable dates
 		double initValue = 0.001;
@@ -162,11 +173,12 @@ public class DrawGraphs_Init {
 		double cdr_date = 0.0;
 		double frr_date = 0.0;
 
-		int pdr_date_index = 0;
-		int prr_date_index = 0;
-		int isr_date_index = 0;
-		int cdr_date_index = 0;
-		int frr_date_index = 0;
+		
+		int pdr_date_index = -1; // 0;
+		int prr_date_index = -1; // 0;
+		int isr_date_index = -1; // 0;
+		int cdr_date_index = -1; // 0;
+		int frr_date_index = -1; // 0;
 
 		for (int i = -1; i < run; i++) {
 			String outputFile = getFileName(i, fname);
@@ -203,6 +215,16 @@ public class DrawGraphs_Init {
 
 				}
 			}
+			
+			
+
+			System.out.println("+++++++++++++++++++++++++++++  isr_date or cdr_date index in draw_graphs");
+			System.out.println( pdr_date_index );
+			System.out.println( prr_date_index );
+			System.out.println( isr_date_index );
+			System.out.println( cdr_date_index );
+			System.out.println( frr_date_index );
+			System.out.println("+++++++++++++++++++++++++++++");
 
 			while (products.readRecord()) {
 
@@ -212,11 +234,32 @@ public class DrawGraphs_Init {
 						System.out.println("RECORDS "+records);
 						String[] recordEntries = records.split(";");
 
-						cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 
-						prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE 
-						pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
-						isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
-						frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+
+						
+						if(cdr_date_index!=-1)
+							cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE
+						else
+							cdr_date=810;
+						
+						if(prr_date_index!=-1)
+							prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE
+						else
+							prr_date = 1530;
+						
+						if(pdr_date_index!=-1) 
+							pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
+						else
+							pdr_date = 0;
+						
+						if(isr_date_index!=-1)
+							isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
+						else
+							isr_date = 1890;
+						
+						if(frr_date_index!=-1)
+							frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+						else
+							frr_date = 1170;
 
 						if(chartObj.getGlobal() == 1)
 							max_xIntercept = (int)isr_date;
@@ -224,6 +267,12 @@ public class DrawGraphs_Init {
 							max_xIntercept = (int)cdr_date;
 
 
+						System.out.println("+++++++++++++++++++++++++++++  isr_date or cdr_date max interceptpn cal in draw_graphs");
+						System.out.println(max_xIntercept+"    cdr: "+(int)cdr_date+"   isr:"+(int)isr_date);
+						System.out.println("+++++++++++++++++++++++++++++");
+						
+						
+						
 						iter +=1;
 					}
 					System.out.println(lnode.getNodeName());
@@ -300,9 +349,18 @@ public class DrawGraphs_Init {
 		int x1 = 0, x2 = 0;
 		double y1, y2;
 		Vector<XYTextAnnotation> xytextannotationList = new Vector<XYTextAnnotation>();
+		
+
+		
+		
 		for (PlannedVariableExt plannedExt : planVector) {
 			double [] planValues = new double[1891];
 			int planValueIndex = 0;
+			
+		System.out.println("+++++++++++++++++++++++++++++  max interceptpn cal in draw_graphs");
+		System.out.println(max_xIntercept+"    x2: "+x2);
+		System.out.println("+++++++++++++++++++++++++++++");
+		
 			if (x2 >= max_xIntercept)
 				break;
 			XYSeries planSeries = new XYSeries(plannedExt.getLabel());

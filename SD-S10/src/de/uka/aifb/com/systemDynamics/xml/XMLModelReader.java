@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.geom.*;
 import java.io.File;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -121,6 +122,13 @@ public class XMLModelReader {
 	public static void setLevelNodes(HashMap<String, LevelNode> id2levelNode){
 		HashMap<String,String> levelNodes = new HashMap<String,String>();
 		Iterator itMap= id2levelNode.entrySet().iterator();
+		
+		System.out.println("*+++++++++++++++++++++++++++++   levelnodes size in reader");
+		for(Entry<String, LevelNode> e : id2levelNode.entrySet() ){
+			System.out.println("key  "+e.getKey()+"   size  "+id2levelNode.size());
+		}
+		System.out.println("*+++++++++++++++++++++++++++++");
+		
 		while(itMap.hasNext()){
 			Map.Entry pairs = (Map.Entry)itMap.next();
 			LevelNode lNode = (LevelNode)pairs.getValue();
@@ -133,7 +141,13 @@ public class XMLModelReader {
 	 * Added by Pradeep
 	 */
 	public static HashMap<String,String> getLevelNodes(){
-
+		
+		System.out.println("*+++++++++++++++++++++++++++++   levelnodeInfo entrySet in reader");
+		for(Map.Entry<String, String> e : levelNodeInfo.entrySet() ){
+			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+		}
+		System.out.println("*+++++++++++++++++++++++++++++");
+		
 		return levelNodeInfo;
 	}
 

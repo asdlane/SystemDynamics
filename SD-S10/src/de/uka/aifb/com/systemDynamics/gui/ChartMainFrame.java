@@ -219,48 +219,51 @@ public class ChartMainFrame extends JFrame{
 			if(PRChoice == JOptionPane.YES_OPTION){
 				pr = JOptionPane.showInputDialog(null,"enter PR","PR",JOptionPane.PLAIN_MESSAGE);
 			}
-			for(int i=0;i<chart.size();i++){
-				chart.remove(i);
+			
+			if(name!=null && id!=null && file!=null && xAxisLabel!=null && yAxisLabel!=null && global!=null && pr!=null){
+				for(int i=0;i<chart.size();i++){
+					chart.remove(i);
+				}
+				contentPanel.removeAll();
+				ChartModel cm = new ChartModel(name,id,file,xAxisLabel,yAxisLabel, global, pr);
+				chart.add(cm);
+	
+				chartsPanel = new JPanel(new GridLayout(0,2));
+				
+				gbc.fill=GridBagConstraints.BOTH;
+				gbc.gridx = 0;
+				gbc.gridy = 0;
+				gbc.gridheight=1;
+				gbc.gridwidth=1;
+				gbc.weightx=0.1;
+				gbc.weighty=1.0;
+				gbc.insets=new Insets(0,0,10,20);
+				gbc.anchor = GridBagConstraints.NORTHWEST;
+				contentPanel.add(createPlanNodesPanel(cm),gbc);
+				
+				panel1.add(createChartPanel(cm));
+				chartPanels.add(panel1);
+				chartScrollPanel = new JScrollPane(panel1);
+				chartScrollPanel.setVisible(true);
+	
+				gbc.gridx = 1;
+				gbc.gridy = 0;
+				gbc.gridheight=1;
+				gbc.gridwidth=2;
+				gbc.weightx=1.0;
+				gbc.weighty=1.0;
+				gbc.insets=new Insets(0,0,10,0);
+				chartsPanel.add(chartScrollPanel);
+				contentPanel.add(chartsPanel,gbc);
+				
+				GraphNumber.setText("1");
+				contentPanel.setVisible(true);
+				addChartAction.setEnabled(true);
+				newChartLevelNodeAction.setEnabled(true);
+				newPlanNodeAction.setEnabled(true);
+	
+				contentPanel.revalidate();
 			}
-			contentPanel.removeAll();
-			ChartModel cm = new ChartModel(name,id,file,xAxisLabel,yAxisLabel, global, pr);
-			chart.add(cm);
-
-			chartsPanel = new JPanel(new GridLayout(0,2));
-			
-			gbc.fill=GridBagConstraints.BOTH;
-			gbc.gridx = 0;
-			gbc.gridy = 0;
-			gbc.gridheight=1;
-			gbc.gridwidth=1;
-			gbc.weightx=0.1;
-			gbc.weighty=1.0;
-			gbc.insets=new Insets(0,0,10,20);
-			gbc.anchor = GridBagConstraints.NORTHWEST;
-			contentPanel.add(createPlanNodesPanel(cm),gbc);
-			
-			panel1.add(createChartPanel(cm));
-			chartPanels.add(panel1);
-			chartScrollPanel = new JScrollPane(panel1);
-			chartScrollPanel.setVisible(true);
-
-			gbc.gridx = 1;
-			gbc.gridy = 0;
-			gbc.gridheight=1;
-			gbc.gridwidth=2;
-			gbc.weightx=1.0;
-			gbc.weighty=1.0;
-			gbc.insets=new Insets(0,0,10,0);
-			chartsPanel.add(chartScrollPanel);
-			contentPanel.add(chartsPanel,gbc);
-			
-			GraphNumber.setText("1");
-			contentPanel.setVisible(true);
-			addChartAction.setEnabled(true);
-			newChartLevelNodeAction.setEnabled(true);
-			newPlanNodeAction.setEnabled(true);
-
-			contentPanel.revalidate();
 		}
 
 	}
@@ -457,12 +460,18 @@ public class ChartMainFrame extends JFrame{
 				allLevel.addAll(localModel.get(i).getLevelNodes());
 			}
 			
-				String[] options = new String[allLevel.size()];
-				int i=0;
-			for(LevelNode node:allLevel){
-				options[i] = node.getNodeName();
-				i++;
+			String[] options = new String[allLevel.size()];
+			
+			
+			int i=0;
+			for(int j=0;i<localModel.size();j++){
+				for(LevelNode node:localModel.get(j).getLevelNodes()){
+					options[i] = "SM"+j+":"+node.getNodeName();
+					i++;
+				}
 			}
+			
+			
 			i=0;
 			if(chartPanels.size()==1){
 				

@@ -29,7 +29,8 @@ public class CommandLineHelper {
 		CsvReader globalFile = new CsvReader(globalFileName,',');
 		while(globalFile.readRecord())
 		{
-			gl_map.put(globalFile.get(0),"");
+//			gl_map.put(globalFile.get(0),"");
+			gl_map.put(globalFile.get(0),globalFile.get(1));
 		}
 		globalFile.close();
 		return gl_map;

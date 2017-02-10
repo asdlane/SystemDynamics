@@ -143,11 +143,11 @@ public class DrawGraphs {
 		double cdr_date = 0.0;
 		double frr_date = 0.0;
 
-		int pdr_date_index = 0;
-		int prr_date_index = 0;
-		int isr_date_index = 0;
-		int cdr_date_index = 0;
-		int frr_date_index = 0;
+		int pdr_date_index = -1; // 0;
+		int prr_date_index = -1; // 0;
+		int isr_date_index = -1; // 0;
+		int cdr_date_index = -1; // 0;
+		int frr_date_index = -1; // 0;
 
 		String prNodeName = null;
 		for (ChartLevelNode lNode : levelNodesVector) {
@@ -257,12 +257,44 @@ public class DrawGraphs {
 
 						if(iter == 0){
 
-							cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 
-							prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE 
-							pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
-							isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
-							frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+//							cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 
+//							prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE 
+//							pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
+//							isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
+//							frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
 
+
+							
+							if(cdr_date_index!=-1)
+								cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE
+							else
+								cdr_date=810;
+							
+							if(prr_date_index!=-1)
+								prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE
+							else
+								prr_date = 1530;
+							
+							if(pdr_date_index!=-1) 
+								pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
+							else
+								pdr_date = 0;
+							
+							if(isr_date_index!=-1)
+								isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
+							else
+								isr_date = 1890;
+							
+							if(frr_date_index!=-1)
+								frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+							else
+								frr_date = 1170;
+
+							if(chartObj.getGlobal() == 1)
+								max_xIntercept = (int)isr_date;
+							else
+								max_xIntercept = (int)cdr_date;
+							
 							iter +=1;
 						}
 
@@ -672,12 +704,44 @@ public class DrawGraphs {
 					String[] recordEntries = records.split(";");
 
 					if(iter == 0){
+						
 
-						cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 
-						prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE 
-						pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
-						isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
-						frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+						
+						if(cdr_date_index!=-1)
+							cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE
+						else
+							cdr_date=810;
+						
+						if(prr_date_index!=-1)
+							prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE
+						else
+							prr_date = 1530;
+						
+						if(pdr_date_index!=-1) 
+							pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
+						else
+							pdr_date = 0;
+						
+						if(isr_date_index!=-1)
+							isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
+						else
+							isr_date = 1890;
+						
+						if(frr_date_index!=-1)
+							frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
+						else
+							frr_date = 1170;
+
+						if(chartObj.getGlobal() == 1)
+							max_xIntercept = (int)isr_date;
+						else
+							max_xIntercept = (int)cdr_date;
+						
+//						cdr_date = Double.valueOf(recordEntries[cdr_date_index]);   //810 - CDR_DATE 
+//						prr_date = Double.valueOf(recordEntries[prr_date_index]);   //1530 - PRR_DATE 
+//						pdr_date = Double.valueOf(recordEntries[pdr_date_index]);   //0 - PDR_DATE
+//						isr_date = Double.valueOf(recordEntries[isr_date_index]);   //1890 - ISR_DATE
+//						frr_date = Double.valueOf(recordEntries[frr_date_index]);   //1170 - FRR_Date
 
 						if(chartObj.getGlobal() == 1)
 							max_xIntercept = (int)isr_date;

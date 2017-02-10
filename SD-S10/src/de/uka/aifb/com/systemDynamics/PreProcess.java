@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class PreProcess {
@@ -62,10 +63,14 @@ public class PreProcess {
 		modelOutput.readRecord();
 		int nHeader = modelOutput.getColumnCount();
 		String headers[] = new String[nHeader];
-
+		
 		for (int index = 0; index < nHeader; index++) {
 			headers[index] = modelOutput.get(index);
+//			System.out.println("+++++++++++++++++++++++++++++");
+//			System.out.println(headers[index]);
+//			System.out.println("+++++++++++++++++++++++++++++");
 		}
+		
 		int index = 0;
 		//Read last run length from Xtime file
 		BufferedReader br = new BufferedReader(new FileReader("xTime.txt"));
@@ -83,7 +88,14 @@ public class PreProcess {
 		for (index = 0; index < nHeader; index++) {
 			map.put(headers[index], modelOutput.get(index));
 		}
-
+		
+//
+//		System.out.println("+++++++++++++++++++++++++++++   map entrySet in phase2preprocess for 0 2");
+//		for(Map.Entry<String, String> e : map.entrySet() ){
+//			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//		}
+//		System.out.println("+++++++++++++++++++++++++++++");
+		
 		return map;
 	}
 
@@ -94,7 +106,7 @@ public class PreProcess {
 	 * @return
 	 * @throws Exception
 	 */
-	public String preprocess(String fname, HashMap<String, String> clist, HashMap<String, String> prelist, int run, int flag) throws Exception {
+	public String preprocess(String fname, HashMap<String, String> clist, HashMap<String, String> glist, HashMap<String, String> prelist, int run, int flag) throws Exception {
 
 		// Check run
 		checkRun(fname, run);
@@ -107,25 +119,67 @@ public class PreProcess {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(fXmlFile);
 		doc.getDocumentElement().normalize();
+		
+		HashMap<String, String> tmplist = new HashMap(glist);
+		
+		for(Map.Entry<String, String> e : clist.entrySet() ){
+			if(e.getValue()!="")
+				tmplist.put(e.getKey(), e.getValue());
+		}
+		
 
+		System.out.println("+++++++++++++++++++++++++++++   tmp_map entrySet in preprocess");
+		for(Map.Entry<String, String> e : tmplist.entrySet() ){
+			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+		}
+		System.out.println("+++++++++++++++++++++++++++++");
+		
 		// System.out.println("Root element :"
 		// + doc.getDocumentElement().getNodeName());
 		// Preprocess Constant nodes
 		NodeList nList = doc.getElementsByTagName("ConstantNode");
+		
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 
 			Node nNode = nList.item(temp);
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				setAttributeValue(clist, nNode);
+				setAttributeValue(tmplist, nNode);
 			}
 		}
+		
+		
 		// Prerocess level nodes
 		NodeList lnList = doc.getElementsByTagName("LevelNode");
+
+		Map<String,Double> oldValueMap = new HashMap<String,Double>();
+		for (int temp = 0; temp < lnList.getLength(); temp++) {
+			Node nNode = lnList.item(temp);
+			Node submodel = nNode.getParentNode().getParentNode().getParentNode();
+			int submodelId = -1;
+			for (int i = 0; i < submodel.getAttributes().getLength(); i++) {
+				Attr attr = (Attr) submodel.getAttributes().item(i);
+				if(attr.getName().equals("SubmodelId"))
+					submodelId = Integer.parseInt(attr.getValue())+1;
+			}
+			
+			double oldvalue = 0;
+			String name = "";
+			for (int i = 0; i < nNode.getAttributes().getLength(); i++) {
+				Attr attr = (Attr) nNode.getAttributes().item(i);
+				if(attr.getName().equals("startValue"))
+					oldvalue = Double.parseDouble(attr.getValue());
+				if(attr.getName().equals("name"))
+					name = attr.getValue();
+			}
+			
+			oldValueMap.put("SM"+submodelId+":"+name,oldvalue);
+		}
+		
 		for (int temp = 0; temp < lnList.getLength(); temp++) {
 
 			Node nNode = lnList.item(temp);
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				setAttributeValue1(clist, nNode, prelist, flag);
+				setAttributeValue1(tmplist, nNode, prelist, flag, oldValueMap);
 			}
 		}
 		// new_filename = "inter_model.xml";
@@ -165,12 +219,12 @@ public class PreProcess {
 	private void setAttributeValue(HashMap<String, String> cl_map, Node nNode) {
 
 		NamedNodeMap attrs = nNode.getAttributes();
-
+		
 		for (int i = 0; i < attrs.getLength(); i++) {
 			Attr attribute = (Attr) attrs.item(i);
-
+			
 //			if(flag == 0)
-	//		{
+	//		{	
 				if (attribute.getName().equals("name")
 						&& (cl_map.get(attribute.getValue()) != null)) {
 					// System.out.println(attribute.getValue());
@@ -231,67 +285,181 @@ public class PreProcess {
 	 * @param cl_map
 	 * @param nNode
 	 */
-	private void setAttributeValue1(HashMap<String, String> cl_map, Node nNode, HashMap<String, String> pre_map, int flag) {
+	private void setAttributeValue1(HashMap<String, String> cl_map, Node nNode, HashMap<String, String> pre_map, int flag, Map<String, Double> oldValueMap) {
 
 		NamedNodeMap attrs = nNode.getAttributes();
 
+		System.out.println("+++++++++++++++++++++++++++++   cl_map entrySet in setAttr1");
+		for(Map.Entry<String, String> e : cl_map.entrySet() ){
+			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+		}
+		System.out.println("+++++++++++++++++++++++++++++");
+		
+
+		System.out.println("+++++++++++++++++++++++++++++   pre_map entrySet in setAttr1");
+		for(Map.Entry<String, String> e : pre_map.entrySet() ){
+			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+		}
+		System.out.println("+++++++++++++++++++++++++++++");
+		
+		
+		
+		Node submodel = nNode.getParentNode().getParentNode().getParentNode();
+		int submodelId = -1;
+		for (int i = 0; i < submodel.getAttributes().getLength(); i++) {
+			Attr attr = (Attr) submodel.getAttributes().item(i);
+			if(attr.getName().equals("SubmodelId"))
+				submodelId = Integer.parseInt(attr.getValue())+1;
+		}
+		
 		for (int i = 0; i < attrs.getLength(); i++) {
 			Attr attribute = (Attr) attrs.item(i);
+			String attr = "SM"+submodelId+":"+attribute.getValue();
 
+		
+			int offset = 2;
 			if(flag == 0)
 			{
+				System.out.println("========================== enter here 0 1");
 				if (attribute.getName().equals("name")
-						&& (cl_map.get(attribute.getValue()) != null)) {
+						&& (cl_map.get(attr) != null)) {
 					// System.out.println(attribute.getValue());
-					
-					String processing = cl_map.get(attribute.getValue());
+
+
+					System.out.println("========================== enter here 0 2");
+					String processing = cl_map.get(attr);
 					if(processing.endsWith("%"))
 					{
-						Attr tempAttr = (Attr) attrs.item(i + 1);
+						Attr tempAttr = (Attr) attrs.item(i + offset);
 						double oldValue = Double.parseDouble(tempAttr.getValue());
 						String changeString = processing.substring(0, processing.length()-1);
 						double change = (Double.parseDouble(changeString)/100)*oldValue;
 						double newValue = oldValue + change;
 						tempAttr.setValue(Double.toString(newValue));
 					}
-					else
+					else if(!processing.equals(""))
 					{
-						Attr tempAttr = (Attr) attrs.item(i + 1);
-						tempAttr.setValue(cl_map.get(attribute.getValue()));					
+
+						System.out.println("========================== enter here 0 3");
+						Attr tempAttr = (Attr) attrs.item(i + offset);
+						tempAttr.setValue(calculate(cl_map.get(attr),Double.parseDouble(tempAttr.getValue()),oldValueMap));					
 					}
 				}				
 			}
 			else
-			{
+			{// enter when 0 2
 				if (attribute.getName().equals("name")
-						&& (pre_map.get(attribute.getValue()) != null)) {
+						&& (pre_map.get(attr) != null)) {
 					// System.out.println(attribute.getValue());
+
+					System.out.println("========================== enter here");
 					
-					if(cl_map.get(attribute.getValue()) != null)
+					if(cl_map.get(attr) != null)
 					{
-						String processing = cl_map.get(attribute.getValue());
+						System.out.println("========================== enter here 2 "+cl_map.get(attr));
+						String processing = cl_map.get(attr);
 						if(processing.endsWith("%"))
 						{
-							Attr tempAttr = (Attr) attrs.item(i + 1);
+							Attr tempAttr = (Attr) attrs.item(i + offset);
 							double oldValue = Double.parseDouble(pre_map.get(attribute.getValue()));
 							String changeString = processing.substring(0, processing.length()-1);
 							double change = (Double.parseDouble(changeString)/100)*oldValue;
 							double newValue = oldValue + change;
 							tempAttr.setValue(Double.toString(newValue));
 						}
-						else
-						{
-							Attr tempAttr = (Attr) attrs.item(i + 1);
-							tempAttr.setValue(cl_map.get(attribute.getValue()));					
+						else if(!processing.equals(""))
+						{	
+
+							System.out.println("========================== enter here 3");
+							Attr tempAttr = (Attr) attrs.item(i + offset);
+							tempAttr.setValue(calculate(cl_map.get(attr),Double.parseDouble(tempAttr.getValue()),oldValueMap));				
 						}						
 					}
-					else
+					else if(!pre_map.get(attr).equals(""))
 					{
 						Attr tempAttr = (Attr) attrs.item(i + 1);
-						tempAttr.setValue(pre_map.get(attribute.getValue()));											
+						tempAttr.setValue(pre_map.get(attr));											
 					}
 				}				
 			}
 		}
+	}
+	
+	
+	private String calculate(String expr, double oldValue, Map<String,Double> oldValueMap){
+		double newValue= oldValue;
+		
+		double change = 0;
+		if(expr.startsWith("+")){
+			change = Double.parseDouble(expr.substring(1, expr.length()));
+			newValue +=change;
+		}
+		else if(expr.startsWith("IF(")){	//VAR1, IF(VAR2 < CONST1, CONST2, CONST3)
+			String temp = expr.substring(3,expr.length()-1);
+			String[] vars = temp.split(";");
+			String[] compare = vars[0].split("<");
+			System.out.println(temp+ " vars "+ vars[0]+" compare "+compare[0]);
+			Double var2 = oldValueMap.get(compare[0].trim());
+			System.out.println(temp+ " vars "+ vars[0]+" var2 "+var2);
+			Double const1 = Double.parseDouble(compare[1].trim());
+			Double const2 = Double.parseDouble(vars[1].trim());
+			Double const3 = Double.parseDouble(vars[2].trim());
+			
+			if(var2 < const1)
+				newValue = const2;
+			else
+				newValue = const3;
+		}
+		else if(expr.contains("+")){
+			String[] vars = expr.split("\\+");
+			newValue = oldValueMap.get(vars[0])+oldValueMap.get(vars[1]);
+		}
+		else if(expr.contains("-")){
+			String[] vars = expr.split("-");
+			newValue = oldValueMap.get(vars[0])-oldValueMap.get(vars[1]);
+		}
+		else if(expr.contains("*")){
+			String[] vars = expr.split("\\*");
+			newValue = oldValueMap.get(vars[0])*oldValueMap.get(vars[1]);
+		}
+		else if(expr.contains("/")){
+			String[] vars = expr.split("/");
+			newValue = oldValueMap.get(vars[0])/oldValueMap.get(vars[1]);
+		}
+		else{
+			newValue = Double.parseDouble(expr);
+		}
+		return String.valueOf(newValue);
+	}
+}
+
+
+class CommandProcessor{
+	
+	public CommandProcessor(){
+		
+	}
+	
+	public String process(String expr, double oldValue){
+		String res = null;
+		
+		return res;
+	}
+	
+	private String calculate(String expr, double oldValue){
+		double newValue= oldValue;
+		
+		double change = 0;
+		if(expr.startsWith("+")){
+			change = Double.parseDouble(expr.substring(1, expr.length()));
+			newValue +=change;
+		}
+		else{
+			newValue = Double.parseDouble(expr);
+		}
+		
+		
+		
+		return String.valueOf(newValue);
 	}
 }

@@ -155,23 +155,51 @@ public static void writeInputPhase(String inputFile, String outputFileName, int 
 	  modelOutput.skipLine();
 	  modelOutput.readHeaders();
 	  int index = 0;
-	  while(index!=nRounds)
+	  while(index<=nRounds)
 	  {
 		  modelOutput.readRecord();
 		  index++;
 	  }
 	  BufferedWriter writer= new BufferedWriter(new FileWriter("input_" +phase +".txt"));
 	  
+	  
+	  int nextphase = phase+1;
+	  
+	  HashMap<String,String>  glist = CommandLineHelper.convertGl("global" +phase +".txt");
+			
+	  Iterator<Entry<String, String>> mapIterator2 = glist.entrySet().iterator();
+	  BufferedWriter writer2= new BufferedWriter(new FileWriter(new File("global" +nextphase +".txt")));
+	  
+	  
 	  while(mapIterator.hasNext())
 	 {
 		  Map.Entry pairs = mapIterator.next();
-		  if(modelOutput.get((String)pairs.getKey())!="")
+		  
+		  
+		  if(modelOutput.get((String)pairs.getKey())!=""){
 			  writer.write(pairs.getKey() + "," + modelOutput.get((String)pairs.getKey()));
-		  else
+		  }
+		  else{
 			  writer.write(pairs.getKey() + "," + pairs.getValue());
+		  }
 		  writer.newLine();
 	 } 
 	  writer.close();
+	  
+	  
+
+	  while(mapIterator2.hasNext())
+	  {
+			  Map.Entry pairs = mapIterator2.next();
+			  if(modelOutput.get((String)pairs.getKey())!="")
+				  writer2.write(pairs.getKey() + "," + modelOutput.get((String)pairs.getKey()));
+			  else
+				  writer2.write(pairs.getKey() + "," + pairs.getValue());
+			  writer2.newLine();
+	  } 
+  
+	  writer2.close();
+	  
  }
  
  /**

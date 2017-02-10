@@ -29,6 +29,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -107,15 +108,18 @@ public class SystemDynamicsCommandLine {
 		}
 
 		System.out.println("Model successfully read from XML file.");
-		CSVExport csvExport = null;
-		try {
-			csvExport = new CSVExport(exportFileName, model.get(0).getModelName(), null);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-						
+		
+		
+				
 		// (3) validate model and set unchangeable
+		
+		ArrayList<String> headers = new ArrayList<String>();
+		ArrayList<ArrayList<Double>> values = new ArrayList<ArrayList<Double>>();
+		
+		for(int k=0;k<numberRounds+1;k++){
+			values.add(new ArrayList<Double>());
+		}
+		
 		for(int k=0;k<model.size();k++){
 			try {
 				model.get(k).validateModelAndSetUnchangeable(0);
@@ -131,100 +135,130 @@ public class SystemDynamicsCommandLine {
 			// sort level nodes alphabetically
 
 			Arrays.sort(levelNodes);
-
-			try {
-				if (exportCSV) {
-					// (2a) CSV export
-					String[] columnNames = new String[levelNodes.length];
-					for (int i = 0; i < columnNames.length; i++) {
-						columnNames[i] = levelNodes[i].getNodeName();
-					}
-					System.out.println("EXPORTERRORPOTENTIAL");
-					csvExport.writeComment(CSVExport.COMMENT_START_SYMBOL+"SubModel ID : "+model.get(k).getModelID());
-					csvExport.writeColumns(columnNames);
-					System.out.println("AFTEREXPORTERRORPOTENTIAL");
-					int percent = 0;
-					System.out.print("Export: 00%");
-
-					double[] values = new double[levelNodes.length];
-					for (int j = 0; j < values.length; j++) {
-						values[j] = levelNodes[j].getCurrentValue();
-					}
-					csvExport.write(values);
-					for (int i = 0; i < numberRounds; i++) {
-						int newPercent = 100 * i / numberRounds;
-						if (newPercent > percent) {
-							percent = newPercent;
-							// Backspaces do not work within Eclipse IDE - but on normal console!
-							System.out.print("\b\b\b");
-							if (percent < 10) {
-								System.out.print("0");
-							}
-							System.out.print(percent + "%");
-						}
-						model.get(k).computeNextValues();
-						values = new double[levelNodes.length];
-						for (int j = 0; j < values.length; j++) {
-							values[j] = levelNodes[j].getCurrentValue();
-						}
-						csvExport.write(values);
-					}
-				} else {
-					// (2b) XML export
-					String[] nodeNames = new String[levelNodes.length];
-					for (int i = 0; i < nodeNames.length; i++) {
-						nodeNames[i] = levelNodes[i].getNodeName();
-					}
-
-					XMLExport xmlExport = new XMLExport(exportFileName, model.get(k).getModelName(), numberRounds, nodeNames);
-
-					int percent = 0;
-					System.out.print("Export: 00%");
-
-					double[] values = new double[levelNodes.length];
-					for (int j = 0; j < values.length; j++) {
-						values[j] = levelNodes[j].getCurrentValue();
-					}
-					xmlExport.write(values);
-					for (int i = 0; i < numberRounds; i++) {
-						int newPercent = 100 * i / numberRounds;
-						if (newPercent > percent) {
-							percent = newPercent;
-							// Backspaces do not work within Eclipse IDE - but on normal console!
-							System.out.print("\b\b\b");
-							if (percent < 10) {
-								System.out.print("0");
-							}
-							System.out.print(percent + "%");
-						}
-						model.get(k).computeNextValues();
-						values = new double[levelNodes.length];
-						for (int j = 0; j < values.length; j++) {
-							values[j] = levelNodes[j].getCurrentValue();
-						}
-						xmlExport.write(values);
-					}
-					xmlExport.close();
-				}
-			} catch (IOException e) {
-				System.out.println("ERROR: An IOException occured during export.");
-				System.exit(1);
+			
+			for(int i=0;i<levelNodes.length;i++){
+//				if(i==0)
+					headers.add("SM"+(k+1)+":"+levelNodes[i].getNodeName());
+//				else
+//					headers.add(levelNodes[i].getNodeName());
 			}
+			
+			for (int j = 0; j < levelNodes.length; j++) {
+				values.get(0).add(levelNodes[j].getCurrentValue());
+			}
+			
+			for (int i = 0; i < numberRounds; i++) {
+				
+				model.get(k).computeNextValues();
+				
+				for (int j = 0; j < levelNodes.length; j++) {
+					values.get(i+1).add(levelNodes[j].getCurrentValue());
+				}
+
+			}
+			
+			
 
 			System.out.println();
 			System.out.println("Export finished successfully.");
 //			return levelNodeMap;
 		}
-		if(csvExport != null){
-			try {
+		
+		try {
+			if (exportCSV) {
+				// (2a) CSV export
+//				String[] columnNames = new String[levelNodes.length];
+//				for (int i = 0; i < columnNames.length; i++) {
+//					columnNames[i] = ;
+//				}
+				CSVExport csvExport =  new CSVExport(exportFileName, model.get(0).getModelName(), null);
+				
+				System.out.println("EXPORTERRORPOTENTIAL");
+//				csvExport.writeComment(CSVExport.COMMENT_START_SYMBOL+"SubModel ID : "+model.get(k).getModelID());
+				csvExport.writeColumns(headers.toArray(new String[0]));
+				System.out.println("AFTEREXPORTERRORPOTENTIAL");
+				int percent = 0;
+				System.out.print("Export: 00%");
+
+//				double[] values = new double[levelNodes.length];
+//				for (int j = 0; j < values.length; j++) {
+//					values[j] = levelNodes[j].getCurrentValue();
+//				}
+				
+				for(int i=0;i<values.size();i++)
+					csvExport.write(toArray(values.get(i)));
 				csvExport.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				for (int i = 0; i < numberRounds; i++) {
+//					int newPercent = 100 * i / numberRounds;
+//					if (newPercent > percent) {
+//						percent = newPercent;
+//						// Backspaces do not work within Eclipse IDE - but on normal console!
+//						System.out.print("\b\b\b");
+//						if (percent < 10) {
+//							System.out.print("0");
+//						}
+//						System.out.print(percent + "%");
+//					}
+//					model.get(k).computeNextValues();
+//					values = new double[levelNodes.length];
+//					for (int j = 0; j < values.length; j++) {
+//						values[j] = levelNodes[j].getCurrentValue();
+//					}
+//					csvExport.write(values);
+//				}
+			} else {
+				// (2b) XML export
+//				String[] nodeNames = new String[levelNodes.length];
+//				for (int i = 0; i < nodeNames.length; i++) {
+//					nodeNames[i] = levelNodes[i].getNodeName();
+//				}
+
+				XMLExport xmlExport = new XMLExport(exportFileName, model.get(0).getModelName(), numberRounds, headers.toArray(new String[0]));
+
+				int percent = 0;
+				System.out.print("Export: 00%");
+
+//				double[] values = new double[levelNodes.length];
+//				for (int j = 0; j < values.length; j++) {
+//					values[j] = levelNodes[j].getCurrentValue();
+//				}
+//				xmlExport.write(values);
+				for (int i = 0; i < numberRounds; i++) {
+//					int newPercent = 100 * i / numberRounds;
+//					if (newPercent > percent) {
+//						percent = newPercent;
+//						// Backspaces do not work within Eclipse IDE - but on normal console!
+//						System.out.print("\b\b\b");
+//						if (percent < 10) {
+//							System.out.print("0");
+//						}
+//						System.out.print(percent + "%");
+//					}
+//					model.get(k).computeNextValues();
+//					values = new double[levelNodes.length];
+//					for (int j = 0; j < values.length; j++) {
+//						values[j] = levelNodes[j].getCurrentValue();
+//					}
+					xmlExport.write(toArray(values.get(i)));
+				}
+				xmlExport.close();
 			}
+		} catch (IOException e) {
+			System.out.println("ERROR: An IOException occured during export.");
+			System.exit(1);
 		}
+		
 		return levelNodeMap;
 	}
+	
+	private double[] toArray(ArrayList<Double> list){
+		double[] res = new double[list.size()];
+		for(int i=0;i<list.size();i++){
+			res[i]=list.get(i);
+		}
+		return res;
+	}
+		
 	public static String doMain(String[] args,int run)
 	{
 		String modelName = null;   
@@ -271,6 +305,9 @@ public class SystemDynamicsCommandLine {
 						PreProcess preProcess = new PreProcess();
 						HashMap<String,String> initMap = new HashMap<String,String>();
 						HashMap<String,String>  clist = CommandLineHelper.convertCl(args[9]);
+						
+						HashMap<String, String> glist = run != 0 ? new HashMap<String,String>() : CommandLineHelper.convertGl("global"+args[12]+".txt");
+						
 						HashMap<String,String> preList = new HashMap<String,String>();
 						int flag = 0;
 						if(args[12].equals("2")&& args[11].equals("0")){
@@ -280,7 +317,22 @@ public class SystemDynamicsCommandLine {
 							flag = 1;
 						}
 
-						modelName = preProcess.preprocess(modelFileName, clist, preList, run, flag);
+//
+//						System.out.println("+++++++++++++++++++++++++++++   clist entrySet");
+//						for(Map.Entry<String, String> e : clist.entrySet() ){
+//							System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//						}
+//						System.out.println("+++++++++++++++++++++++++++++");
+//						
+						
+						modelName = preProcess.preprocess(modelFileName, clist, glist, preList, run, flag);
+//					
+//						System.out.println("+++++++++++++++++++++++++++++   new transform file name in doMain");
+//						System.out.println(modelName);
+//						System.out.println("+++++++++++++++++++++++++++++");
+//						
+						
+					
 					} catch (Exception e) {
 
 						e.printStackTrace();
@@ -388,7 +440,7 @@ public class SystemDynamicsCommandLine {
 		System.out.println("Graphs Generated");
 		phaseCycle--;
 		PostProcess.writeInputPhase(args[9], exportFileName, numberRounds, Integer.parseInt(args[12]));
-		PostProcess.writeInput(exportFileName, numberRounds, Integer.parseInt(args[12]));
+//		PostProcess.writeInput(exportFileName, numberRounds, Integer.parseInt(args[12]));
 		//Graphs
 		// DrawGraphs graphs = new DrawGraphs();
 		//graphs.graphDriver(i, exportFileName);
