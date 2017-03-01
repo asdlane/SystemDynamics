@@ -394,16 +394,19 @@ public class PreProcess {
 			change = Double.parseDouble(expr.substring(1, expr.length()));
 			newValue +=change;
 		}
-		else if(expr.startsWith("IF(")){	//VAR1, IF(VAR2 < CONST1, CONST2, CONST3)
+		else if(expr.startsWith("IF(")){	//VAR1, IF(VAR2 < CONST1; CONST2; CONST3)
 			String temp = expr.substring(3,expr.length()-1);
 			String[] vars = temp.split(";");
 			String[] compare = vars[0].split("<");
 			System.out.println(temp+ " vars "+ vars[0]+" compare "+compare[0]);
+			
 			Double var2 = oldValueMap.get(compare[0].trim());
+			
 			System.out.println(temp+ " vars "+ vars[0]+" var2 "+var2);
-			Double const1 = Double.parseDouble(compare[1].trim());
-			Double const2 = Double.parseDouble(vars[1].trim());
-			Double const3 = Double.parseDouble(vars[2].trim());
+			
+			Double const1 = compare[1].trim().startsWith("SM")?oldValueMap.get(compare[1].trim()) : Double.parseDouble(compare[1].trim());
+			Double const2 = vars[1].trim().startsWith("SM")?oldValueMap.get(vars[1].trim()) : Double.parseDouble(vars[1].trim());
+			Double const3 = vars[2].trim().startsWith("SM")?oldValueMap.get(vars[2].trim()) : Double.parseDouble(vars[2].trim());
 			
 			if(var2 < const1)
 				newValue = const2;
