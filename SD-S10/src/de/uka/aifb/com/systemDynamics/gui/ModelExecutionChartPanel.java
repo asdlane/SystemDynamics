@@ -485,7 +485,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       for (LevelNode levelNode : model.getLevelNodes()) {
     	 for(int f=0;f<SelectedNames.length;f++){
     		 if(SelectedNames[f] == levelNode.getNodeName()){
-    			 getAllDependencyNodes(levelNode,dependencies);
+    			 getAllDependencyNodes(levelNode,dependencies, new HashSet<AbstractNode>());
     			 levelNodes[i++] = levelNode;
     			 
     		 }
@@ -622,19 +622,25 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 	   return dependency;
    }
    
-   private void getAllDependencyNodes(LevelNode ln, HashMap<LevelNode,HashSet<AbstractNode>> m){
+   private void getAllDependencyNodes(LevelNode ln, HashMap<LevelNode,HashSet<AbstractNode>> m, HashSet<AbstractNode> visitedLN){
 	   if(m.containsKey(ln))
 		   return;
+	   
+	   if(visitedLN.contains(ln))
+		   return;
+	   visitedLN.add(ln);
 	   
 	   HashSet<AbstractNode> dependencyNodes = new HashSet<AbstractNode>();
 	   
 	   HashSet<RateNode> dependencyRateNodes = ln.getIncomingFlows();   
 	   for(RateNode rn: dependencyRateNodes){
-		   AbstractNode source  = rn.getFlowSource();
+		   /*AbstractNode source  = rn.getFlowSource();
 		   if(source instanceof LevelNode){
-			   getAllDependencyNodes((LevelNode)source, m);
-			   dependencyNodes.add(source);
-		   }
+			   if(!dependencyNodes.contains(source)){
+				   getAllDependencyNodes((LevelNode)source, m);
+				   dependencyNodes.add(source);
+			   }
+		   }*/
 		   HashSet<AbstractNode> nodes = rn.getAllNodesThisOneDependsOn();
 		   for(AbstractNode node: nodes){
 			   if(node instanceof ConstantNode){
@@ -648,16 +654,19 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 						   dependencyNodes.add(n);
 					   }
 					   else if(node instanceof LevelNode){
-						   dependencyNodes.add(node);
-						   getAllDependencyNodes((LevelNode)node,m);
-//						   dependencyNodes.addAll(m.get(node));
-						   
+							   dependencyNodes.add(node);
+						   if(!visitedLN.contains(node)){
+							   getAllDependencyNodes((LevelNode)node,m,visitedLN);
+	//						   dependencyNodes.addAll(m.get(node));
+						   }
 					   }
 				   }
 			   }
 			   else if(node instanceof LevelNode){
-				   dependencyNodes.add(node);
-				   getAllDependencyNodes((LevelNode)node,m);
+					   dependencyNodes.add(node);
+				   if(!visitedLN.contains(node) || node == ln){
+					   getAllDependencyNodes((LevelNode)node,m,visitedLN);
+				   }
 //				   dependencyNodes.addAll(m.get(node));
 				   
 			   }

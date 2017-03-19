@@ -169,7 +169,7 @@ public class XMLModelReader {
 	 * @throws XMLUselessNodeException if a node has no influence on a level node
 	 */
 	public static ArrayList<SystemDynamicsGraph> readXMLSystemDynamicsGraph(String fileName, SystemDynamics start,
-			JFrame frame)
+			JFrame frame,HashMap<String, ConstantNodeGraphCell> sn2cn)
 					throws AuxiliaryNodesCycleDependencyException,
 					XMLModelReaderWriterException,
 					XMLNodeParameterOutOfRangeException,
@@ -198,11 +198,13 @@ public class XMLModelReader {
 				new HashMap<String, SourceSinkNodeGraphCell>();
 		HashMap<String, SharedNodeGraphCell> id2SharedNode =
 				new HashMap<String, SharedNodeGraphCell>();
-
+		
+		
+		
 		Thread.currentThread();
 
 		graph = createGraphFromXML(fileName, "xsd/model1_new.xsd", graph, id2auxiliaryNode, id2constantNode,
-				id2levelNode, id2rateNode, id2sourceSinkNode, id2SharedNode, start, frame);
+				id2levelNode, id2rateNode, id2sourceSinkNode, id2SharedNode, start, sn2cn, frame);
 
 		System.out.println("ID TO LEVEL SIZE" + id2levelNode.size());
 
@@ -418,6 +420,7 @@ public class XMLModelReader {
 					String id = SharedElement.getAttribute("sharedPointer");
 					String value = SharedElement.getAttribute("value");
 					int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
+//					boolean isArchived = Boolean.parseBoolean(SharedElement.getAttribute("archived"));
 					SharedNode sharedNode = model.get(k).createSharedNode(shareSubModel,id, Double.parseDouble(value));
 					id2sharedNode.put(id, sharedNode);
 				}
@@ -497,8 +500,9 @@ public class XMLModelReader {
 					String id = auxiliaryNodeElement.getAttribute("id");
 					Element formulaElement = (Element)xpath.evaluate("./Formula", auxiliaryNodeElement,
 							XPathConstants.NODE);
+					/** this method does not consider sharednode, may change later*/
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode,id2sharedNode);
+							id2levelNode, id2rateNode,id2sharedNode,null);
 					model.get(k).setFormula(id2auxiliaryNode.get(id), formula);
 				}
 			} catch (XPathExpressionException e) {
@@ -516,8 +520,10 @@ public class XMLModelReader {
 					String id = rateNodeElement.getAttribute("id");
 					Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
 							XPathConstants.NODE);
+					
+					/** this method does not consider sharednode, may change later if being used */
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode, id2sharedNode);
+							id2levelNode, id2rateNode, id2sharedNode,null);
 					model.get(k).setFormula(id2rateNode.get(id), formula);
 				}
 			} catch (XPathExpressionException e) {
@@ -668,6 +674,7 @@ public class XMLModelReader {
 			HashMap<String, RateNodeGraphCell> id2rateNodeGraphCell,
 			HashMap<String, SourceSinkNodeGraphCell> id2sourceSinkNodeGraphCell,
 			HashMap<String, SharedNodeGraphCell> id2SharedNodeGraphCell, SystemDynamics start,
+			HashMap<String, ConstantNodeGraphCell> sn2cn,
 			JFrame frame)
 					throws AuxiliaryNodesCycleDependencyException,
 					XMLModelReaderWriterException,
@@ -843,21 +850,46 @@ public class XMLModelReader {
 									(NodeList)xpath.evaluate("/Model/SubModel[@SubmodelId='"+Integer.toString(k)+"']/Nodes/SharedNodes/SharedNode", document,
 											XPathConstants.NODESET);
 							for (int i = 0; i < sourceSinkNodeElements.getLength(); i++) {
-								Element SharedElement = (Element)sourceSinkNodeElements.item(i);
+							Element SharedElement = (Element)sourceSinkNodeElements.item(i);
 								String id = SharedElement.getAttribute("id");
-								String NodeType = SharedElement.getAttribute("sharedPointer");
+								boolean isArchived = Boolean.parseBoolean(SharedElement.getAttribute("archived"));
 								String value = SharedElement.getAttribute("value");
-								double xCoordinate = new Double(SharedElement.getAttribute("xCoordinate"));
-								double yCoordinate = new Double(SharedElement.getAttribute("yCoordinate"));
-								int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
-								SharedNodeGraphCell sharedNode = null;
-								sharedNode = graph.get(k).createSharedNodeGraphCell(xCoordinate, yCoordinate,shareSubModel,NodeType, "", Double.parseDouble(value), null);
+									double xCoordinate = new Double(SharedElement.getAttribute("xCoordinate"));
+									double yCoordinate = new Double(SharedElement.getAttribute("yCoordinate"));
 								
-//								graph.get(k).model.createSharedNode(shareSubModel,id, Double.parseDouble(value));
-								AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
-								graphCell2Vertex.put(sharedNode, vertex);
-								abstractNode2Vertex.put(graph.get(k).getModelNode(sharedNode), vertex);
-								id2SharedNodeGraphCell.put(id, sharedNode);
+								if(!isArchived){
+								int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
+								String NodeType = SharedElement.getAttribute("sharedPointer");
+									SharedNodeGraphCell sharedNode = null;
+									sharedNode = graph.get(k).createSharedNodeGraphCell(xCoordinate, yCoordinate,shareSubModel,NodeType, "", Double.parseDouble(value), null);
+									
+	//								graph.get(k).model.createSharedNode(shareSubModel,id, Double.parseDouble(value));
+									AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
+									graphCell2Vertex.put(sharedNode, vertex);
+									abstractNode2Vertex.put(graph.get(k).getModelNode(sharedNode), vertex);
+									id2SharedNodeGraphCell.put(id, sharedNode);
+								}
+								else{
+//									String alert = "SharedNode "+id+"refers to nodes in other sub models, please view model description. ";
+//									alerts.add(alert);
+									ConstantNodeGraphCell constantNode = null;
+									try {
+
+										constantNode = graph.get(k).createConstantNodeGraphCell(id, Double.parseDouble(value),
+												xCoordinate, yCoordinate, false, false);
+									} catch (NodeParameterOutOfRangeException e) {
+										throw new XMLNodeParameterOutOfRangeException(id, e.getMinValue(), e.getMaxValue());
+									}
+									id2constantNodeGraphCell.put(id, constantNode);
+									AutomaticGraphLayout.Vertex vertex = graphLayout.createVertex();
+									graphCell2Vertex.put(constantNode, vertex);
+									abstractNode2Vertex.put(graph.get(k).getModelNode(constantNode), vertex);
+									if (xCoordinate != 10.0 && yCoordinate != 10.0) {
+										automaticGraphLayoutNecessary = false;
+									}
+									sn2cn.put(id, constantNode);
+									
+								}
 							}
 						} catch (XPathExpressionException e) {
 							// correct xpath expression -> no exception
@@ -1008,6 +1040,10 @@ public class XMLModelReader {
 			for (String id : id2SharedNodeGraphCell.keySet()) {
 				id2sharedNode.put(id, (SharedNode)graph.get(k).getModelNode(id2SharedNodeGraphCell.get(id)));
 			}
+			HashMap<String, ConstantNode> snid2cnNode = new HashMap<String, ConstantNode> ();
+			for(String id: sn2cn.keySet()){
+				snid2cnNode.put(id, (ConstantNode)graph.get(k).getModelNode(sn2cn.get(id)));
+			}
 
 			// (2) set formulas (and dependency edges)
 			// (2a) set formulas of auxiliary nodes
@@ -1021,7 +1057,7 @@ public class XMLModelReader {
 					Element formulaElement = (Element)xpath.evaluate("./Formula", auxiliaryNodeElement,
 							XPathConstants.NODE);
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode, id2sharedNode);
+							id2levelNode, id2rateNode, id2sharedNode,snid2cnNode);
 					graph.get(k).setFormula(id2auxiliaryNodeGraphCell.get(id), formula, false);
 					for (AbstractNode node : formula.getAllNodesInASTSubtree()) {
 						graphLayout.createEdge(abstractNode2Vertex.get(node), graphCell2Vertex.get(id2auxiliaryNodeGraphCell.get(id)));
@@ -1043,7 +1079,7 @@ public class XMLModelReader {
 					Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
 							XPathConstants.NODE);
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
-							id2levelNode, id2rateNode, id2sharedNode);
+							id2levelNode, id2rateNode, id2sharedNode,snid2cnNode);
 					graph.get(k).setFormula(id2rateNodeGraphCell.get(id), formula, false);
 					for (AbstractNode node : formula.getAllNodesInASTSubtree()) {
 						graphLayout.createEdge(abstractNode2Vertex.get(node), graphCell2Vertex.get(id2rateNodeGraphCell.get(id)));
@@ -1543,7 +1579,8 @@ public class XMLModelReader {
 			HashMap<String, ConstantNode> id2constantNode,
 			HashMap<String, LevelNode> id2levelNode,
 			HashMap<String, RateNode> id2rateNode,
-			HashMap<String, SharedNode> id2sharedNode) {
+			HashMap<String, SharedNode> id2sharedNode,
+			HashMap<String, ConstantNode> snid2cnNode) {
 		if (formulaElement == null) {
 			throw new IllegalArgumentException("'formulaElement' must not be null.");
 		}
@@ -1559,8 +1596,8 @@ public class XMLModelReader {
 		if (id2rateNode == null) {
 			throw new IllegalArgumentException ("'id2rateNode' must not be null.");
 		}
-		if (id2sharedNode == null){
-			throw new IllegalArgumentException ("'id2sharedNode' must not be null.");
+		if (snid2cnNode == null){
+			throw new IllegalArgumentException ("'sn2cn' must not be null.");
 		}
 
 		NodeList children = formulaElement.getChildNodes();
@@ -1635,6 +1672,8 @@ public class XMLModelReader {
 		}
 		if (tagName.equals("ASTSharedNode")) {
 			String id = nodeElement.getAttribute("sharedNodeIdRef");
+			if(id2constantNode.containsKey(id))
+				return id2constantNode.get(id);
 			return id2sharedNode.get(id);
 		}
 		// will never be reached -> only for compiler!

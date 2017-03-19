@@ -562,6 +562,7 @@ public class XMLModelWriter {
 				sharedNodeElement.setAttribute("id", id);
 				sharedNodeElement.setAttribute("sharedPointerid", tempid);
 				sharedNodeElement.setAttribute("value", Double.toString(sharednode.getCurrentValue()));
+				sharedNodeElement.setAttribute("archived", String.valueOf(archive));
 			}
 		}
 		// (1d) auxiliary nodes

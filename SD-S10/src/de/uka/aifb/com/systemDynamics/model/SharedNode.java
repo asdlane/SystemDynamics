@@ -26,6 +26,7 @@ public class SharedNode extends AbstractNode implements ASTElement{
    private int shareSubModel;
    private AbstractNode source;
    private ArrayList<Double> executionCache;
+   private boolean isArchived;
    /**
     * Constructor.
     * 
@@ -49,6 +50,12 @@ public class SharedNode extends AbstractNode implements ASTElement{
    }
    public String getSharedPointer(){
 	   return LocalSharedPointer;
+   }
+   void setIsArchived(boolean isArchived){
+	   this.isArchived = isArchived;
+   }
+   public boolean getIsArchived(){
+	   return isArchived;
    }
 
    void setShareSubModel(int shareSubModel){

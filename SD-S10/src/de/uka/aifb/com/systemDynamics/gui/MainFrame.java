@@ -98,6 +98,7 @@ WindowListener {
 	private static final String PASTE_ICON = "resources/paste.png";
 	private static final String FILE_SAVE_ICON = "resources/disk.png";
 	private static final String	CHART_ICON = "resources/chart.png";
+	private static final String	EDITOR_ICON = "resources/editor.png";
 	
 	private static final String FILE_NEW_AN_ICON = "resources/new_auxiliary_node_en_US.png";
 	private static final String FILE_NEW_AN_de_DE_ICON = "resources/new_auxiliary_node_de_DE.png";
@@ -177,6 +178,7 @@ WindowListener {
 	private Action shareAction;
 	private Action addDescriptionAction;
 	private Action chartDesignerAction;
+	private Action globalFileEditorAction;
 	private JCheckBoxMenuItem addFlowModeCheckBoxMenuItem;
 	private JRadioButtonMenuItem rbMenuItemEnglish;
 	private JRadioButtonMenuItem rbMenuItemGerman;
@@ -338,6 +340,10 @@ WindowListener {
 		
 		chartDesignerAction = new chartDesignerAction("ChartDesigner", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(CHART_ICON)), "Enter Chart Designer");
 		chartDesignerAction.setEnabled(false);
+
+		globalFileEditorAction = new globalFileEditorAction("Global File Editor", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(EDITOR_ICON)), "Enter Global File Editor");
+		globalFileEditorAction.setEnabled(false);
+		
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
 		importAction = new importAction("Import", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(IMPORT_ICON)), "Import Submodel");
@@ -703,6 +709,11 @@ WindowListener {
 		toolBar.add(importAction);
 		toolBar.add(saveAction);
 		toolBar.add(ArchiveSubmodelAction);
+		toolBar.addSeparator();
+		
+		toolBar.add(changeModelNameAction);
+		toolBar.add(addDescriptionAction);
+		toolBar.add(newSubmodelAction);
 
 		toolBar.addSeparator();
 
@@ -712,15 +723,14 @@ WindowListener {
 		toolBar.add(newRateNodeAction);
 		toolBar.add(newSourceSinkNodeAction);
 		toolBar.add(newColoredSourceSinkNodeAction);
-		toolBar.add(newSubmodelAction);
 		toolBar.add(toggleAddFlowAction);
-		toolBar.add(changeModelNameAction);
 
 		toolBar.addSeparator();
 
 		toolBar.add(executeModelAction);
 		toolBar.add(exitExecuteModelAction);
 		toolBar.add(chartDesignerAction);
+		toolBar.add(globalFileEditorAction);
 
 		toolBar.addSeparator();
 
@@ -731,9 +741,6 @@ WindowListener {
 		toolBar.add(copyAction);
 		toolBar.add(pasteAction);
 		toolBar.add(shareAction);
-		toolBar.addSeparator();
-		
-		toolBar.add(addDescriptionAction);
 		
 		toolBar.addSeparator();
 		
@@ -1032,6 +1039,7 @@ WindowListener {
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
 					chartDesignerAction.setEnabled(true);
+					globalFileEditorAction.setEnabled(true);
 					addDescriptionAction.setEnabled(true);
 				}
 			}
@@ -1055,6 +1063,21 @@ WindowListener {
 		}
 		
 	}
+	
+	private class globalFileEditorAction extends AbstractAction{
+		public globalFileEditorAction(String name, Icon icon, String toolTipText){
+			super(name, icon);
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			GlobalFileEditor globalFileEditor = new GlobalFileEditor();
+			
+		}
+		
+	}
+	
 	private class NewSubmodelAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -1162,12 +1185,13 @@ WindowListener {
 		public void actionPerformed(ActionEvent e) {
 			saveAction.setEnabled(false);
 			int returnVal = fileChooser.showOpenDialog(MainFrame.this);
+			HashMap<String, ConstantNodeGraphCell> sn2cn = new HashMap<String,ConstantNodeGraphCell>();
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// file was selected and 'OK' was pressed
 				File file = fileChooser.getSelectedFile();
 				try {
 					ArrayList<SystemDynamicsGraph> newGraphs = new ArrayList<SystemDynamicsGraph>();
-					newGraphs = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
+					newGraphs = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this,sn2cn);
 					modelPanel.removeAll();
 					modelPanel.revalidate();
 					for(int j=0;j<newGraphs.size();j++){
@@ -1175,13 +1199,13 @@ WindowListener {
 						SubmodelColors.add(newGraphs.get(j).borderColor);
 					}
 
-					ArrayList<Model> graphModels = new ArrayList<Model>();
-					graphModels = XMLModelReader.readXMLModel(file.getAbsolutePath());
-					
-					for(int i=0;i<graphModels.size();i++){
-						graph.get(i).model = graphModels.get(i);
-					}
-					System.out.println(graph.size());
+//					ArrayList<Model> graphModels = new ArrayList<Model>();
+//					graphModels = XMLModelReader.readXMLModel(file.getAbsolutePath());
+//					
+//					for(int i=0;i<graphModels.size();i++){
+//						graph.get(i).model = graphModels.get(i);
+//					}
+//					System.out.println(graph.size());
 					for(int i=0;i<graph.size();i++){
 
 						graph.get(i).addSystemDynamicsGraphModifiedEventListener(MainFrame.this);
@@ -1277,7 +1301,15 @@ WindowListener {
 
 				//force layout to recalculate now that a new component has been added.
 				modelPanel.revalidate();
-				JOptionPane.showMessageDialog(MainFrame.this, "SubModel Successfully imported.  Don't forget to change the names of shared variables (if any)");
+				
+				String str = "SubModel Successfully imported.  Don't forget to change the names of shared variables (if any)";
+				for(String id: sn2cn.keySet()){
+					str+="\n";
+					str+="SharedNode "+id+" is replaced by ConstantNode";
+				}
+					
+				
+				JOptionPane.showMessageDialog(MainFrame.this,str);
 				saveAction.setEnabled(true);
 				ArchiveSubmodelAction.setEnabled(true);
 
@@ -1394,8 +1426,8 @@ WindowListener {
 						//graph = XMLModelReader.readSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
 						//graph.get(0).addSystemDynamicsGraphModifiedEventLIstener(MainFrame.this);
 						//DELETE FOLLOWING 4 LINES
-						
-						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this);
+						HashMap<String, ConstantNodeGraphCell> sn2cn = new HashMap<String, ConstantNodeGraphCell>  ();
+						graph = XMLModelReader.readXMLSystemDynamicsGraph(file.getAbsolutePath(), start, MainFrame.this, sn2cn);
 						System.out.println("FINISHED READING GRAPH");
 						
 //						ArrayList<Model> graphModels = new ArrayList<Model>();
@@ -1643,7 +1675,7 @@ WindowListener {
 
 			// reset file chooser (otherwise, old selected file is pre-selected and could be overwritten!)
 			File currentDirectory = fileChooser.getCurrentDirectory();
-			fileChooser = new JFileChooser();
+//			fileChooser = new JFileChooser();
 			fileChooser.setFileFilter(new XMLFileFilter(start));
 			fileChooser.setCurrentDirectory(currentDirectory);
 

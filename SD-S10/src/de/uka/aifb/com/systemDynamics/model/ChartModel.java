@@ -221,6 +221,20 @@ public class ChartModel {
 	   ChartlevelNodes.add(chartlevelNode);
 	   return chartlevelNode;
    }
+   
+   public void removeChartLevelNode(String levelNodeIdRef, String Label){
+	   if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	   }
+	   ChartLevelNode remove = null;
+	   for(ChartLevelNode chartlevelNode :ChartlevelNodes){
+		  if(chartlevelNode.getLevelNodeIdRef().equals(levelNodeIdRef)){
+			  remove = chartlevelNode;
+		  }
+	   }
+	  ChartlevelNodes.remove(remove);
+   }
+   
    public ChartPlanNode createChartPlanNode(String ChartPlanNodeIdRef, String Label){
 	   if (!isChangeable) {
 	         throw new ModelNotChangeableException();
@@ -230,6 +244,24 @@ public class ChartModel {
 	   ChartplanNodes.add(chartplanNode);
 	   return chartplanNode;
    }
+   
+
+   public void removeChartPlanNode(String ChartPlanNodeIdRef, String Label){
+	   if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	   }
+	   ChartPlanNode remove = null;
+	   for(ChartPlanNode chartplanNode : ChartplanNodes){
+		   if(chartplanNode.getchartPlanNodeIdRef().equals(ChartPlanNodeIdRef)){
+			   remove = chartplanNode;
+		   }
+	   }
+	   ChartplanNodes.remove(remove);
+   }
+   
+   
+   
+   
    public PlanNode createPlanNode(String id, String name, double startValue){
 	   if (!isChangeable) {
 	         throw new ModelNotChangeableException();
@@ -238,7 +270,38 @@ public class ChartModel {
 	   PlanNode planNode = new PlanNode(id, name, startValue);
 	   PlanNodes.add(planNode);
 	   return planNode;
-   }   
+   }
+
+
+   public void removePlanNode(String name){
+	   if (!isChangeable) {
+	         throw new ModelNotChangeableException();
+	   }
+	   
+	   PlanNode remove = null;
+	   
+	   for(PlanNode planNode : PlanNodes){
+		   if(planNode.getName().equals(name)){
+			   remove = planNode;
+		   }
+	   }
+		   
+	   PlanNodes.remove(remove);
+   }
+   
+
+	public void removePlanNodeIncrement(String pnName, String pniId){
+
+
+		   for(PlanNode planNode : PlanNodes){
+			   if(planNode.getName().equals(pnName)){
+				   planNode.removePlanNodeIncrement(pniId);
+			   }
+		   }
+			   
+	}
+   
+   
    public HashSet<PlanNode> getPlanNodes(){
 	   return PlanNodes;
    }

@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
@@ -35,12 +36,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -548,31 +552,6 @@ public class ChartMainFrame extends JFrame{
 				chart.get(0).createChartPlanNode(chosenPlanNode, Label);
 				((DefaultListModel)pnlists.get(0).getModel()).addElement(Label+"("+chosenPlanNode+")");
 				
-				/*JTextArea chartText = (JTextArea)chartPanels.get(0).getComponent(0);				
-				chartText.append("\n ChartPlanNode(planNodeIdRef: \""+chosenPlanNode+"\", Label: \""+Label+")");
-
-				//display plan node and plannode increments too.
-				String PlanNodeName = "";
-				String PlanNodeId = "";
-				for(PlanNode t: PlanNodes){
-					if(t.getName()==chosenPlanNode){
-						PlanNodeName = t.getName();
-						PlanNodeId = t.getId();
-					}
-				}
-				if(PlanNodeName!=""){
-					chartText.append("\n \tPlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
-				}
-
-				for(PlanNode t: PlanNodes){
-					if(t.getName()==chosenPlanNode){
-						HashSet<PlanNodeIncrement> increments = t.getPlanNodeIncrements();
-						for(PlanNodeIncrement increment: increments){
-							chartText.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
-						}
-					}
-				}
-				*/
 
 			}
 			else{
@@ -597,31 +576,6 @@ public class ChartMainFrame extends JFrame{
 
 					((DefaultListModel)pnlists.get(chartIndex-1).getModel()).addElement(Label+"("+chosenPlanNode+")");
 					
-					/*
-					JTextArea chartText = (JTextArea)chartPanels.get(chartIndex-1).getComponent(0);				
-					chartText.append("\n ChartPlanNode(planNodeIdRef: \""+chosenPlanNode+"\", Label: \""+Label+")");
-
-					//display plan node and plannode increments too.
-					String PlanNodeName = "";
-					String PlanNodeId = "";
-					for(PlanNode t: PlanNodes){
-						if(t.getName()==chosenPlanNode){
-							PlanNodeName = t.getName();
-							PlanNodeId = t.getId();
-						}
-					}
-					if(PlanNodeName!=""){
-						chartText.append("\n \tPlanNode(Name: \""+PlanNodeName+"\", Id=\""+PlanNodeId+"\")");
-					}	
-
-					for(PlanNode t: PlanNodes){
-						if(t.getName()==chosenPlanNode){
-							HashSet<PlanNodeIncrement> increments = t.getPlanNodeIncrements();
-							for(PlanNodeIncrement increment: increments){
-								chartText.append("\n\t\tPlanNodeIncrement(Id=\""+increment.getId()+"\", Length=\""+increment.getLength()+"\", Slope=\""+increment.getSlope()+"\")");
-							}
-						}
-					}*/
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
@@ -662,30 +616,6 @@ public class ChartMainFrame extends JFrame{
 				JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
 			}
 
-			/*		else{
-				try{
-					JFrame frame = new JFrame("InputDialog");
-					Object[] choices = chartNumbers.toArray();
-					int chartIndex = (Integer)JOptionPane.showInputDialog(frame,"To which Chart?","Chart Level Node",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-
-					String id = (String)JOptionPane.showInputDialog(null, "Id:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
-					String name = (String)JOptionPane.showInputDialog(null, "Name:", "new PlanNode", JOptionPane.PLAIN_MESSAGE);
-					try{
-					Double startValue = Double.parseDouble(JOptionPane.showInputDialog(null, "Start Value:", "new PlanNode", JOptionPane.PLAIN_MESSAGE));
-
-					chart.get(chartIndex-1).createPlanNode(id, name, startValue);
-					JOptionPane.showMessageDialog(null, "Plan Node Successfully Added to Chart"+ chartIndex+ "'s Plan Node Library");
-					}
-					catch(Exception e4){
-						JOptionPane.showMessageDialog(null, "Start Value must be in decimal format");
-					}
-
-
-				}catch(Exception ex){
-
-				}
-			}
-			 */
 		}
 	}
 	private class newPlanNodeIncrementAction extends AbstractAction{
@@ -1033,6 +963,41 @@ public class ChartMainFrame extends JFrame{
 		}
 
 		JList pns = new JList(pnmodel);
+		final int chartIndex = pnlists.size();
+		
+		pns.addMouseListener( new MouseAdapter() {
+		    public void mousePressed(MouseEvent e){
+		        if (e.isPopupTrigger())
+		            doPop(e);
+		    }
+
+		    public void mouseReleased(MouseEvent e){
+		        if (e.isPopupTrigger())
+		            doPop(e);
+		    }
+
+		    private void doPop(MouseEvent e){
+		    	final JList list =(JList) e.getSource();
+		    	final int index = list.locationToIndex(e.getPoint());
+		        if (index >= 0) {
+		            String o = ((String) list.getModel().getElementAt(index));
+		            
+		            final String[] temp = o.split("\\(");
+		            
+		            JPopupMenu menu = new JPopupMenu();
+		            
+		            JMenuItem anItem = new JMenuItem("Delete");
+		            anItem.addActionListener(new ActionListener() {
+		    	       public void actionPerformed(ActionEvent e) {
+		    	    	   chart.get(chartIndex).removeChartPlanNode(temp[1].substring(0, temp[1].length()-1), temp[0]);
+		    	    	   ((DefaultListModel)list.getModel()).remove(index);
+		    	       }
+		            });
+		            menu.add(anItem);
+		            menu.show(e.getComponent(), e.getX(), e.getY());
+		        }
+		    }
+		});
 		pnlists.add(pns);
 		pnListPanel.add(pns);
 		listsPanel.add(pnListPanel);
@@ -1051,6 +1016,41 @@ public class ChartMainFrame extends JFrame{
 		}
 
 		JList lns = new JList(lnmodel);
+		
+		lns.addMouseListener( new MouseAdapter() {
+		    public void mousePressed(MouseEvent e){
+		        if (e.isPopupTrigger())
+		            doPop(e);
+		    }
+
+		    public void mouseReleased(MouseEvent e){
+		        if (e.isPopupTrigger())
+		            doPop(e);
+		    }
+
+		    private void doPop(MouseEvent e){
+		    	final JList list =(JList) e.getSource();
+		    	final int index = list.locationToIndex(e.getPoint());
+		        if (index >= 0) {
+		            String o = ((String) list.getModel().getElementAt(index));
+		            
+		            final String[] temp = o.split("\\(");
+		            
+		            JPopupMenu menu = new JPopupMenu();
+		            
+		            JMenuItem anItem = new JMenuItem("Delete");
+		            anItem.addActionListener(new ActionListener() {
+		    	       public void actionPerformed(ActionEvent e) {
+		    	    	   chart.get(chartIndex).removeChartLevelNode(temp[1].substring(0, temp[1].length()-1), temp[0]);
+		    	    	   ((DefaultListModel)list.getModel()).remove(index);
+		    	       }
+		            });
+		            menu.add(anItem);
+		            menu.show(e.getComponent(), e.getX(), e.getY());
+		        }
+		    }
+		});
+		
 		lnlists.add(lns);
 		lnPanel.add(lns);
 		listsPanel.add(lnPanel);
@@ -1077,6 +1077,7 @@ private JPanel createPlanNodesPanel(final ChartModel cm){
 //	pniNames.addElement("Plan Node Increment 1");
 //	pniNames.addElement("Plan Node Increment 2");
 	pnlist = new JList(pnNames);
+	
 	pnilist = new JList(pniNames);
 
 	final JPanel pnPanel = new JPanel();
@@ -1134,6 +1135,44 @@ private JPanel createPlanNodesPanel(final ChartModel cm){
 		
 	});
 	
+	pnlist.addMouseListener( new MouseAdapter() {
+	    public void mousePressed(MouseEvent e){
+	        if (e.isPopupTrigger())
+	            doPop(e);
+	    }
+
+	    public void mouseReleased(MouseEvent e){
+	        if (e.isPopupTrigger())
+	            doPop(e);
+	    }
+
+	    private void doPop(MouseEvent e){
+	    	final JList list =(JList) e.getSource();
+	    	final int index = list.locationToIndex(e.getPoint());
+	        if (index >= 0) {
+	            final String o = ((String) list.getModel().getElementAt(index));
+	            
+	            JPopupMenu menu = new JPopupMenu();
+	            
+	            JMenuItem anItem = new JMenuItem("Delete");
+	            anItem.addActionListener(new ActionListener() {
+	    	       public void actionPerformed(ActionEvent e) {
+	    	    	   chart.get(0).removePlanNode(o);
+	    	    	   ((DefaultListModel)list.getModel()).remove(index);
+	    	       }
+	            });
+	            menu.add(anItem);
+	            menu.show(e.getComponent(), e.getX(), e.getY());
+	            
+	            
+	            if(chart.get(0).getPlanNodes().size()==0){
+					newChartPlanNodeAction.setEnabled(false);
+					newPlanNodeIncrementAction.setEnabled(false);
+	            }
+	        }
+	    }
+	});
+	
 	pnilist.addListSelectionListener(new ListSelectionListener(){
 
 		@Override
@@ -1162,6 +1201,45 @@ private JPanel createPlanNodesPanel(final ChartModel cm){
 			}
 		}
 		
+	});
+	
+
+	pnilist.addMouseListener( new MouseAdapter() {
+	    public void mousePressed(MouseEvent e){
+	        if (e.isPopupTrigger())
+	            doPop(e);
+	    }
+
+	    public void mouseReleased(MouseEvent e){
+	        if (e.isPopupTrigger())
+	            doPop(e);
+	    }
+
+	    private void doPop(MouseEvent e){
+	    	
+
+			final String pnName = (String) pnlist.getSelectedValue();
+			
+			
+	    	final JList list =(JList) e.getSource();
+	    	final int index = list.locationToIndex(e.getPoint());
+	        if (index >= 0) {
+	            final String pniName = ((String) list.getModel().getElementAt(index));
+	            
+	            JPopupMenu menu = new JPopupMenu();
+	            
+	            JMenuItem anItem = new JMenuItem("Delete");
+	            anItem.addActionListener(new ActionListener() {
+	    	       public void actionPerformed(ActionEvent e) {
+	    	    	   chart.get(0).removePlanNodeIncrement(pnName,pniName);
+	    	    	   ((DefaultListModel)list.getModel()).remove(index);
+	    	       }
+	            });
+	            menu.add(anItem);
+	            menu.show(e.getComponent(), e.getX(), e.getY());
+	            
+	        }
+	    }
 	});
 	
 	pnsPanel.add(pnPanel);
@@ -1290,7 +1368,7 @@ private JPanel createPlanNodeIncrementPanel(){
 	
 	JLabel id = new JLabel("Id");
 	final JTextField idfield = new JTextField();
-	JLabel length = new JLabel("Length");
+	JLabel length = new JLabel("Number of Rounds");
 	final JTextField lengthfield = new JTextField();
 	JLabel slope = new JLabel("Slope Value"+SPACE);
 	final JTextField slopefield = new JTextField();
@@ -1399,4 +1477,34 @@ private JPanel createPlanNodeIncrementPanel(){
     
 	return pniPanel;
 }
+}
+
+class PopUpMenu extends JPopupMenu {
+    JMenuItem anItem;
+    public PopUpMenu(){
+        anItem = new JMenuItem("Delete");
+        anItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              System.out.println("Menu item Test1");
+            }
+          });
+        add(anItem);
+    }
+}
+
+class PopClickListener extends MouseAdapter {
+    public void mousePressed(MouseEvent e){
+        if (e.isPopupTrigger())
+            doPop(e);
+    }
+
+    public void mouseReleased(MouseEvent e){
+        if (e.isPopupTrigger())
+            doPop(e);
+    }
+
+    private void doPop(MouseEvent e){
+    	PopUpMenu menu = new PopUpMenu();
+        menu.show(e.getComponent(), e.getX(), e.getY());
+    }
 }

@@ -16,6 +16,19 @@ public class PlanNode {
 	public void createPlanNodeIncrement(String id, double length, double slope){
 		planNodeIncrements.add(new PlanNodeIncrement(id, length, slope));
 	}
+	public void removePlanNodeIncrement(String id){
+
+		PlanNodeIncrement remove = null;
+		   
+		   for(PlanNodeIncrement planNodeIncrement : planNodeIncrements){
+			   if(planNodeIncrement.getId().equals(id)){
+				   remove = planNodeIncrement;
+			   }
+		   }
+			   
+		   planNodeIncrements.remove(remove);
+	}
+	
 	public HashSet<PlanNodeIncrement> getPlanNodeIncrements(){
 		return planNodeIncrements;
 	}

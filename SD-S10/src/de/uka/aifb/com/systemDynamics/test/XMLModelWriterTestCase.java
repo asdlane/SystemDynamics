@@ -419,7 +419,7 @@ public class XMLModelWriterTestCase extends TestCase {
       
       // load graph from XML file
       try {
-         XMLModelReader.readXMLSystemDynamicsGraph(FILE_NAME, start, new JFrame());
+         XMLModelReader.readXMLSystemDynamicsGraph(FILE_NAME, start, new JFrame(), new HashMap<String, ConstantNodeGraphCell> ());
       } catch (Exception e) {
          fail();
       }

@@ -164,6 +164,7 @@ public class Model {
 	   }
 	   SharedNode sharedNode = new SharedNode(shareSubModel,sharedPointer, nodeVal);
 	   SharedNodes.add(sharedNode);
+//	   sharedNode.setIsArchived(isArchived);
 		// TODO Auto-generated method stub
 		return sharedNode;
    }
