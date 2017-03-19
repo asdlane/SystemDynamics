@@ -114,6 +114,7 @@ import java.util.HashMap;
       case ROUND:
       case MINIMUM:
       case MAXIMUM:
+      case COMMA:
         ;
         break;
       default:
@@ -143,9 +144,18 @@ import java.util.HashMap;
         break;
       case MAXIMUM:
         jj_consume_token(MAXIMUM);
-        tempFormula = Primary();
-                        formula = new ASTMax(formula, tempFormula);
+        jj_consume_token(OPEN_PAR);
+    	ASTElement leftformula = Expression();
+    	jj_consume_token(COMMA);
+    	ASTElement rightformula = Expression();
+        jj_consume_token(CLOSE_PAR);
+    	formula = new ASTMax(leftformula, rightformula);
+//        tempFormula = Primary();
+//                        formula = new ASTMax(formula, tempFormula);
         break;
+
+      case COMMA:
+    	  return formula;
       default:
         jj_la1[3] = jj_gen;
         jj_consume_token(-1);
@@ -157,7 +167,7 @@ import java.util.HashMap;
   }
 
   final public ASTElement Primary() throws ParseException {
-        ASTElement formula;
+        ASTElement formula = null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case AUXILIARY_NODE:
     case CONSTANT_NODE:
@@ -165,6 +175,8 @@ import java.util.HashMap;
     case SHARED_NODE:
       formula = Node();
       break;
+    case MAXIMUM:
+        break;
     case OPEN_PAR:
       jj_consume_token(OPEN_PAR);
       formula = Expression();

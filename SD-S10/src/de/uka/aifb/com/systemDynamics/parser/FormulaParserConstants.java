@@ -41,6 +41,8 @@ public interface FormulaParserConstants {
   
   int SHARED_NODE = 16;
   
+  int COMMA = 17;
+  
   /** Lexical state. */
   int DEFAULT = 0;
 
@@ -62,7 +64,8 @@ public interface FormulaParserConstants {
     "\"f()\"",
     "\"MIN\"",
     "\"MAX\"",
-    "\"SN\""
+    "\"SN\"",
+    "\",\""
   };
 
 }
