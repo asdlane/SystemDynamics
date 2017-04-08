@@ -1596,9 +1596,9 @@ public class XMLModelReader {
 		if (id2rateNode == null) {
 			throw new IllegalArgumentException ("'id2rateNode' must not be null.");
 		}
-		if (snid2cnNode == null){
-			throw new IllegalArgumentException ("'sn2cn' must not be null.");
-		}
+//		if (snid2cnNode == null){
+//			throw new IllegalArgumentException ("'sn2cn' must not be null.");
+//		}
 
 		NodeList children = formulaElement.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {

@@ -105,6 +105,9 @@ import java.util.HashMap;
   final public ASTElement Term() throws ParseException {
         ASTElement formula;
         ASTElement tempFormula;
+        ASTElement leftformula;
+        ASTElement rightformula;
+        
     formula = Primary();
     label_2:
     while (true) {
@@ -134,25 +137,32 @@ import java.util.HashMap;
         break;
       case ROUND:
         jj_consume_token(ROUND);
-        tempFormula = Primary();
-                        formula = new ASTRound(formula, tempFormula);
-        break;
+        jj_consume_token(OPEN_PAR);
+      	leftformula = Expression();
+      	jj_consume_token(COMMA);
+      	rightformula = Expression();
+        jj_consume_token(CLOSE_PAR);
+      	formula = new ASTRound(leftformula, rightformula);
+      	break;
       case MINIMUM:
         jj_consume_token(MINIMUM);
-        tempFormula = Primary();
-                        formula = new ASTMin(formula, tempFormula);
-        break;
+        jj_consume_token(OPEN_PAR);
+      	leftformula = Expression();
+      	jj_consume_token(COMMA);
+      	rightformula = Expression();
+        jj_consume_token(CLOSE_PAR);
+      	formula = new ASTMin(leftformula, rightformula);
+          break;
       case MAXIMUM:
         jj_consume_token(MAXIMUM);
         jj_consume_token(OPEN_PAR);
-    	ASTElement leftformula = Expression();
+    	leftformula = Expression();
     	jj_consume_token(COMMA);
-    	ASTElement rightformula = Expression();
+    	rightformula = Expression();
         jj_consume_token(CLOSE_PAR);
     	formula = new ASTMax(leftformula, rightformula);
-//        tempFormula = Primary();
-//                        formula = new ASTMax(formula, tempFormula);
         break;
+   
 
       case COMMA:
     	  return formula;
@@ -176,6 +186,10 @@ import java.util.HashMap;
       formula = Node();
       break;
     case MAXIMUM:
+        break;
+    case MINIMUM:
+        break;
+    case ROUND:
         break;
     case OPEN_PAR:
       jj_consume_token(OPEN_PAR);

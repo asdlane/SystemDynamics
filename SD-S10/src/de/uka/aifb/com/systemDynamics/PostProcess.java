@@ -50,10 +50,12 @@ public class PostProcess{
   //Get Variables
   HashMap<String,String> map = new HashMap<String,String>();
   modelOutput.readRecord();
+
   long line = modelOutput.getCurrentRecord();
   for(index = 0; index < nHeader ; index++)
   {
-	  map.put(headers[index], modelOutput.get(index));
+  	String nodeName = headers[index].split(":")[1];
+	  map.put(nodeName, modelOutput.get(index));
   }
  
   //
@@ -104,10 +106,12 @@ private static void setAttributeValue(HashMap<String,String> hiring_map, Node nN
 	      for (int i = 0; i < attrs.getLength(); i++) {
 	        Attr attribute = (Attr) attrs.item(i);
 		
+	        	
 	        if(attribute.getName().equals("name") && ( hiring_map.get(attribute.getValue()) != null )  )
 	        {
-		//	System.out.println(attribute.getValue());	        	
-			Attr tempAttr = (Attr) attrs.item(i + 1);
+			System.out.println(attribute.getValue());	        	
+			Attr tempAttr = (Attr) attrs.item(i + 2);
+			System.out.println(tempAttr.getName());
 	        	tempAttr.setValue(hiring_map.get(attribute.getValue()));
 	        }
 	      }

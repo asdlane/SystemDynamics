@@ -986,7 +986,11 @@ WindowListener {
 					graph.get(0).addMouseListener(new MouseListener(){
 
 						@Override
-						public void mouseClicked(MouseEvent e) {}
+						public void mouseClicked(MouseEvent e) {
+							if(e.getClickCount()==2){
+					        	TemporarySubmodelFrame tsf = new TemporarySubmodelFrame(start, graph.get(0), 1, scrollPane);
+					        }
+						}
 
 						@Override
 						public void mouseEntered(MouseEvent e) {
@@ -1092,11 +1096,22 @@ WindowListener {
 		public void actionPerformed(ActionEvent e) {
 			//create a new submodel graph
 			final SystemDynamicsGraph newSubmodel = new SystemDynamicsGraph(start,MainFrame.this);
+			final int subIndex = graph.size();
+			//add it to the model
+			graph.add(newSubmodel);
 
+			//create scroll pane for the new submodel
+
+			final JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
+			
 			newSubmodel.addMouseListener(new MouseListener(){
 
 				@Override
-				public void mouseClicked(MouseEvent e) {}
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount()==2){
+			        	TemporarySubmodelFrame tsf = new TemporarySubmodelFrame(start, newSubmodel, subIndex, submodelScroll);
+			        }
+				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -1120,13 +1135,6 @@ WindowListener {
 				public void mouseReleased(MouseEvent e) {}
 
 			});
-			//add it to the model
-			graph.add(newSubmodel);
-
-			//create scroll pane for the new submodel
-
-			JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
-
 			//random submodel color is created for the working session and then added to an overall list to be referenced later.
 
 
@@ -1144,6 +1152,7 @@ WindowListener {
 					green = rand.nextInt(256);
 				}
 			}
+			
 			Color randomColor = new Color(red, green, blue);
 
 			SubmodelColors.add(randomColor);
@@ -1485,8 +1494,9 @@ WindowListener {
 					modelPanel.removeAll();
 					modelPanel.revalidate();
 					for(int i=0;i<graph.size();i++){
-						JScrollPane submodelScroll = new JScrollPane(graph.get(i));
+						final JScrollPane submodelScroll = new JScrollPane(graph.get(i));
 						final SystemDynamicsGraph Submodel = graph.get(i);
+						final int idx = i;
 						modelPanel.add(submodelScroll);
 						graph.get(i).revalidate();
 						graph.get(i).repaint();
@@ -1494,7 +1504,11 @@ WindowListener {
 						graph.get(i).addMouseListener(new MouseListener(){
 						
 							@Override
-							public void mouseClicked(MouseEvent e) {}
+							public void mouseClicked(MouseEvent e) {
+								if(e.getClickCount()==2){
+						        	TemporarySubmodelFrame tsf = new TemporarySubmodelFrame(start, Submodel, idx, submodelScroll);
+						        }
+							}
 
 							@Override
 							public void mouseEntered(MouseEvent e) {

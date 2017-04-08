@@ -80,6 +80,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    private JButton executionButton;
    private JButton changeValueButton;
    public int submodelNumber;
+   private NumberFormat formatter;
    
    private JPanel chartsPanel;
 
@@ -107,7 +108,8 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       messages = start.getMessages();
       
       integerNumberFormatter = NumberFormat.getIntegerInstance(locale);
-      
+      formatter = DecimalFormat.getInstance();
+      formatter.setMinimumFractionDigits(10);
       createPanel();
    }
    
@@ -144,7 +146,7 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       JScrollPane scroll = new JScrollPane(chartsPanel);
       add(scroll, BorderLayout.CENTER);
       chartsPanel.setLayout(new GridLayout(0,1));
-      chartsPanel.add(chartPanel);
+      chartsPanel.add(new JScrollPane(chartPanel));
       
       
       // LINE_END: series table
@@ -453,13 +455,17 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       JPanel listPanel = new JPanel();
       JList list = new JList(levelNodeList);
       JList list2 = new JList(sharedLevelNodeList);
+      
+      
+      
       GridLayout layout = new GridLayout(3,1);
       listPanel.setLayout(layout);
       JLabel label = new JLabel("which variables would you like to graph? (Submodel " + this.submodelCounter + ")");
-      
+      JScrollPane scrollPane = new JScrollPane(list);
+      JScrollPane scrollPane2 = new JScrollPane(list2);
       listPanel.add(label);
-      listPanel.add(list);
-      listPanel.add(list2);
+      listPanel.add(scrollPane);
+      listPanel.add(scrollPane2);
       JOptionPane.showMessageDialog(
         null, listPanel, "Submodel", JOptionPane.PLAIN_MESSAGE);
       
@@ -539,13 +545,15 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 //    		  								PlotOrientation.VERTICAL,
 //    		  								true, false, false);
       XYPlot plot = chart.getXYPlot();
+      
+      
 //      XYPlot plot2 = chart2.getXYPlot();
       
       // add tooltip to each point
-      /*XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+      XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
       renderer.setBaseToolTipGenerator(
-          new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0")));
-      renderer.setSeriesStroke(i, new BasicStroke(3.0f));
+          new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0000000000")));
+      /*renderer.setSeriesStroke(i, new BasicStroke(3.0f));
       renderer.setSeriesShape(0, new Rectangle(-2, -2, 4, 4));
       renderer.setSeriesShapesVisible(0, true);
       
@@ -581,6 +589,9 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 //      ((NumberAxis)(plot2.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
 //      ((NumberAxis)(plot2.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
 //      
+//      NumberAxis range = (NumberAxis) plot.getRangeAxis();
+//      
+//      range.setNumberFormatOverride(formatter);
       // legend at top position
       chart.getLegend().setPosition(RectangleEdge.RIGHT);
 //      chart2.getLegend().setPosition(RectangleEdge.TOP);

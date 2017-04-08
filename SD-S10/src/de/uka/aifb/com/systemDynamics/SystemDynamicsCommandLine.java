@@ -326,11 +326,11 @@ public class SystemDynamicsCommandLine {
 //						
 						
 						modelName = preProcess.preprocess(modelFileName, clist, glist, preList, run, flag);
-//					
-//						System.out.println("+++++++++++++++++++++++++++++   new transform file name in doMain");
-//						System.out.println(modelName);
-//						System.out.println("+++++++++++++++++++++++++++++");
-//						
+					
+						System.out.println("+++++++++++++++++++++++++++++   new transform file name in doMain");
+						System.out.println(modelName);
+						System.out.println("+++++++++++++++++++++++++++++");
+						
 						
 					
 					} catch (Exception e) {
