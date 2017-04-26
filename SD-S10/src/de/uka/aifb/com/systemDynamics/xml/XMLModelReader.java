@@ -297,13 +297,11 @@ public class XMLModelReader {
 
 		// set own error handler that throws exception if XML file is not Schema compliant
 		builder.setErrorHandler(new MyErrorHandler());
-		System.out.println("GOT HERE");
 		Document document = null;
 		try {
 			document = builder.parse(new File(fileString));  // can throw IOException
 			// can throw SAXException
 		} catch (Exception e) {
-			System.out.println("GOT HERE");
 			throw new XMLModelReaderWriterException(e);
 		}		
 
@@ -361,6 +359,7 @@ public class XMLModelReader {
 					String id = levelNodeElement.getAttribute("id");
 					String nodeName = levelNodeElement.getAttribute("name");
 					double startValue = new Double(levelNodeElement.getAttribute("startValue"));
+		        	System.out.println("*************** sv "+startValue);
 					String minName, maxName, curveName;
 					double minValue, maxValue, curve;
 					minName = levelNodeElement.getAttribute("minValue");
@@ -417,11 +416,12 @@ public class XMLModelReader {
 								XPathConstants.NODESET);
 				for (int i = 0; i < sharedNodeElements.getLength(); i++) {
 					Element SharedElement = (Element)sharedNodeElements.item(i);
-					String id = SharedElement.getAttribute("sharedPointer");
+					String id = SharedElement.getAttribute("id");
+					String sharedPointer = SharedElement.getAttribute("sharedPointer");
 					String value = SharedElement.getAttribute("value");
 					int shareSubModel = Integer.parseInt(SharedElement.getAttribute("shareSubModel"));
 //					boolean isArchived = Boolean.parseBoolean(SharedElement.getAttribute("archived"));
-					SharedNode sharedNode = model.get(k).createSharedNode(shareSubModel,id, Double.parseDouble(value));
+					SharedNode sharedNode = model.get(k).createSharedNode(shareSubModel,sharedPointer, Double.parseDouble(value));
 					id2sharedNode.put(id, sharedNode);
 				}
 			} catch (XPathExpressionException e) {
@@ -520,11 +520,12 @@ public class XMLModelReader {
 					String id = rateNodeElement.getAttribute("id");
 					Element formulaElement = (Element)xpath.evaluate("./Formula", rateNodeElement,
 							XPathConstants.NODE);
-					
+
 					/** this method does not consider sharednode, may change later if being used */
 					ASTElement formula = createFormula(formulaElement, id2auxiliaryNode, id2constantNode,
 							id2levelNode, id2rateNode, id2sharedNode,null);
 					model.get(k).setFormula(id2rateNode.get(id), formula);
+					
 				}
 			} catch (XPathExpressionException e) {
 				// correct xpath expression -> no exception
@@ -643,6 +644,31 @@ public class XMLModelReader {
 			} catch (NoLevelNodeException e) {
 				// that must not happen -> SAXException is thrown earlier
 				throw new XMLModelReaderWriterException(e);
+			}
+		}
+		
+
+		for(int i=0; i<model.size(); i++){
+			Model m = model.get(i);
+			for(SharedNode sn : m.getSharedNodes()){
+				String sharedPointer = sn.getSharedPointer();
+				for(AuxiliaryNode an: model.get(sn.getShareSubModel()).getAuxiliaryNodes()){
+					if(an.getNodeName().equals(sharedPointer)){
+						sn.setSource(an);
+						an.addSharedNode(sn);
+					}
+				}
+				for(ConstantNode cn: model.get(sn.getShareSubModel()).getConstantNodes()){
+					if(cn.getNodeName().equals(sharedPointer)){
+						sn.setSource(cn);
+					}
+				}
+				for(LevelNode ln: model.get(sn.getShareSubModel()).getLevelNodes()){
+					if(ln.getNodeName().equals(sharedPointer)){
+						sn.setSource(ln);
+						ln.addSharedNode(sn);
+					}
+				}
 			}
 		}
 	}
@@ -1606,7 +1632,7 @@ public class XMLModelReader {
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				Element childElement = (Element)child;
 				String tagName = childElement.getTagName();
-
+				
 				// what kind of child?
 				if (tagName.endsWith("Node")) {
 					return createNodeFormula(childElement, id2auxiliaryNode, id2constantNode,

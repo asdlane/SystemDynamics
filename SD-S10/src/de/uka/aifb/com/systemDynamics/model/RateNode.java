@@ -237,6 +237,7 @@ public double getCurrentValue() {
    @Override
 void computeNextValue() {
       currentValue = formula.evaluate();
+  	System.out.println("*************** compute rate node values "+currentValue);
    }
 
 public boolean getShared() {

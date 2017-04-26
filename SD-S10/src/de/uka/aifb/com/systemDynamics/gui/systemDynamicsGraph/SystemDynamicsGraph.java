@@ -1619,6 +1619,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 								double initialStartValue = ((LevelNode)graphNode2modelNode.get(cell)).getStartValue();
 								double minValue = ((LevelNode)graphNode2modelNode.get(cell)).getMinValue();
 								double maxValue = ((LevelNode)graphNode2modelNode.get(cell)).getMaxValue();
+								String name = ((LevelNode)graphNode2modelNode.get(cell)).getNodeName();
+								
 								double minParameter, maxParameter;
 								if( (minValue == 0) && (maxValue == 0) )
 								{
@@ -1639,7 +1641,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 								if (newStartValue != null && newStartValue != initialStartValue) {
 									setStartValue((LevelNodeGraphCell)cell, newStartValue);
 									if(executionChartPanel != null){
-										executionChartPanel.addNewChartPanel();
+										executionChartPanel.addNewChartPanel(name);
 										executionChartPanel.reset();
 									}
 									
@@ -1658,7 +1660,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 									
 									for(ModelExecutionChartPanel ecp:ecps){
 										if(ecp!=executionChartPanel){
-											ecp.addNewChartPanel();
+//											ecp.addNewChartPanel();
 											ecp.reset();
 										}
 									}

@@ -378,6 +378,7 @@ void computeNextValue() {
 	
 	for(SharedNode sn: sharedList){
 		sn.setCurrentValue(currentValue);
+    	System.out.println("*************** set sn values "+currentValue);
 		sn.addCurrentValueToExecutionCache();
 	}
 	

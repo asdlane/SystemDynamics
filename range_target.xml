@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model name="Range 2017/03/02 11:24:23 EST" schema="http://www.aifb.uni-karlsruhe.de/com/systemDynamics/model-schema" schemaVersion="1.0"><SubModel SubmodelId="0" color="222, 137, 180" description="">
+  <Nodes>
+    <LevelNodes>
+      <LevelNode curve="3.0" id="LN0001" learnerChangeable="true" maxValue="0.0" minValue="0.0" name="Lift-To-Drag-Ratio_Target" shared="false" startValue="9.9" xCoordinate="176.0" yCoordinate="30.0"/>
+      <LevelNode curve="3.0" id="LN0002" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Weight_Empty" shared="false" startValue="860.0" xCoordinate="64.0" yCoordinate="411.0"/>
+      <LevelNode curve="3.0" id="LN0003" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Range_Target" shared="false" startValue="125.0" xCoordinate="504.0" yCoordinate="242.0"/>
+      <LevelNode curve="3.0" id="LN0004" learnerChangeable="true" maxValue="0.0" minValue="0.0" name="Lift_To_Drag_Ratio_Improvement_On" shared="false" startValue="1.0" xCoordinate="292.0" yCoordinate="31.0"/>
+      <LevelNode curve="3.0" id="LN0005" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Weight_Empty_Improvement_On" shared="false" startValue="0.0" xCoordinate="214.0" yCoordinate="493.0"/>
+      <LevelNode curve="3.0" id="LN0006" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="SFC" shared="false" startValue="0.02" xCoordinate="504.0" yCoordinate="307.0"/>
+      <LevelNode curve="3.0" id="LN0007" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Range" shared="false" startValue="102.065" xCoordinate="501.0" yCoordinate="190.0"/>
+      <LevelNode curve="3.0" id="LN0008" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Lift_To_Drag_Ratio" shared="false" startValue="8.3" xCoordinate="287.0" yCoordinate="109.0"/>
+      <LevelNode curve="3.0" id="LN0009" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Weight_Passengers" shared="false" startValue="350.0" xCoordinate="64.0" yCoordinate="187.0"/>
+      <LevelNode curve="3.0" id="LN0010" learnerChangeable="false" maxValue="0.0" minValue="0.0" name="Weight_Empty_Target" shared="false" startValue="800.0" xCoordinate="47.0" yCoordinate="493.0"/>
+    </LevelNodes>
+    <SourceSinkNodes>
+      <SourceSinkNode id="SSN0001" shared="false" xCoordinate="217.0" yCoordinate="396.0"/>
+      <SourceSinkNode id="SSN0002" shared="false" xCoordinate="322.0" yCoordinate="167.0"/>
+      <SourceSinkNode id="SSN0003" shared="false" xCoordinate="73.0" yCoordinate="91.0"/>
+    </SourceSinkNodes>
+    <ConstantNodes>
+      <ConstantNode constantValue="0.333" id="CN0001" name="C3" shared="false" xCoordinate="474.0" yCoordinate="496.0"/>
+      <ConstantNode constantValue="0.02" id="CN0002" name="Lift_To_Drag_Ratio_Increase_Factor" shared="false" xCoordinate="92.0" yCoordinate="29.0"/>
+      <ConstantNode constantValue="0.5" id="CN0003" name="C2" shared="false" xCoordinate="398.0" yCoordinate="496.0"/>
+      <ConstantNode constantValue="1.0" id="CN0004" name="C1" shared="false" xCoordinate="310.0" yCoordinate="495.0"/>
+      <ConstantNode constantValue="0.02" id="CN0005" name="Weight_Empty_Decrease_Factor" shared="false" xCoordinate="138.0" yCoordinate="493.0"/>
+      <ConstantNode constantValue="500.0" id="CN0006" name="Fuel_Weight" shared="false" xCoordinate="77.0" yCoordinate="258.0"/>
+      <ConstantNode constantValue="0.7" id="CN0007" name="Propeller_Efficiency" shared="false" xCoordinate="513.0" yCoordinate="368.0"/>
+    </ConstantNodes>
+    <AuxiliaryNodes>
+      <AuxiliaryNode id="AN0001" name="Range_Update" shared="false" xCoordinate="321.0" yCoordinate="308.0">
+        <Formula>
+          <ASTDivide>
+            <ASTMultiply>
+              <ASTMultiply>
+                <ASTConstantNode constantNodeIdRef="CN0007"/>
+                <ASTLevelNode levelNodeIdRef="LN0008"/>
+              </ASTMultiply>
+              <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0002"/>
+            </ASTMultiply>
+            <ASTLevelNode levelNodeIdRef="LN0006"/>
+          </ASTDivide>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0002" name="Weight_Ratio_Ln" shared="false" xCoordinate="333.0" yCoordinate="372.0">
+        <Formula>
+          <ASTPlus>
+            <ASTMinus>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0003"/>
+                <ASTConstantNode constantNodeIdRef="CN0004"/>
+              </ASTMinus>
+              <ASTMultiply>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0003"/>
+                  <ASTMinus>
+                    <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0003"/>
+                    <ASTConstantNode constantNodeIdRef="CN0004"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTMinus>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0003"/>
+                  <ASTConstantNode constantNodeIdRef="CN0004"/>
+                </ASTMinus>
+              </ASTMultiply>
+            </ASTMinus>
+            <ASTMultiply>
+              <ASTMultiply>
+                <ASTMultiply>
+                  <ASTConstantNode constantNodeIdRef="CN0001"/>
+                  <ASTMinus>
+                    <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0003"/>
+                    <ASTConstantNode constantNodeIdRef="CN0004"/>
+                  </ASTMinus>
+                </ASTMultiply>
+                <ASTMinus>
+                  <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0003"/>
+                  <ASTConstantNode constantNodeIdRef="CN0004"/>
+                </ASTMinus>
+              </ASTMultiply>
+              <ASTMinus>
+                <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0003"/>
+                <ASTConstantNode constantNodeIdRef="CN0004"/>
+              </ASTMinus>
+            </ASTMultiply>
+          </ASTPlus>
+        </Formula>
+      </AuxiliaryNode>
+      <AuxiliaryNode id="AN0003" name="Weight_Ratio" shared="false" xCoordinate="230.0" yCoordinate="272.0">
+        <Formula>
+          <ASTDivide>
+            <ASTPlus>
+              <ASTPlus>
+                <ASTConstantNode constantNodeIdRef="CN0006"/>
+                <ASTLevelNode levelNodeIdRef="LN0002"/>
+              </ASTPlus>
+              <ASTLevelNode levelNodeIdRef="LN0009"/>
+            </ASTPlus>
+            <ASTPlus>
+              <ASTLevelNode levelNodeIdRef="LN0002"/>
+              <ASTLevelNode levelNodeIdRef="LN0009"/>
+            </ASTPlus>
+          </ASTDivide>
+        </Formula>
+      </AuxiliaryNode>
+    </AuxiliaryNodes>
+    <RateNodes>
+      <RateNode id="RN0001" learnerChangeable="false" name="Range_Change_Rate" shared="false" xCoordinate="420.0" yCoordinate="190.0">
+        <Formula>
+          <ASTMinus>
+            <ASTAuxiliaryNode auxiliaryNodeIdRef="AN0001"/>
+            <ASTLevelNode levelNodeIdRef="LN0007"/>
+          </ASTMinus>
+        </Formula>
+      </RateNode>
+      <RateNode id="RN0002" learnerChangeable="false" name="Lift_To_Drag_Ratio_Change_Rate" shared="false" xCoordinate="194.0" yCoordinate="108.0">
+        <Formula>
+          <ASTMultiply>
+            <ASTMultiply>
+              <ASTConstantNode constantNodeIdRef="CN0002"/>
+              <ASTMinus>
+                <ASTLevelNode levelNodeIdRef="LN0001"/>
+                <ASTLevelNode levelNodeIdRef="LN0008"/>
+              </ASTMinus>
+            </ASTMultiply>
+            <ASTLevelNode levelNodeIdRef="LN0004"/>
+          </ASTMultiply>
+        </Formula>
+      </RateNode>
+      <RateNode id="RN0003" learnerChangeable="false" name="Weight_Empty_Decrease_Rate" shared="false" xCoordinate="166.0" yCoordinate="411.0">
+        <Formula>
+          <ASTMultiply>
+            <ASTMultiply>
+              <ASTConstantNode constantNodeIdRef="CN0005"/>
+              <ASTMinus>
+                <ASTLevelNode levelNodeIdRef="LN0002"/>
+                <ASTLevelNode levelNodeIdRef="LN0010"/>
+              </ASTMinus>
+            </ASTMultiply>
+            <ASTLevelNode levelNodeIdRef="LN0005"/>
+          </ASTMultiply>
+        </Formula>
+      </RateNode>
+    </RateNodes>
+  </Nodes>
+  <Flows>
+    <LevelNode2RateNodeFlow fromLevelNodeIdRef="LN0002" toRateNodeIdRef="RN0003"/>
+    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0001" toLevelNodeIdRef="LN0007"/>
+    <RateNode2LevelNodeFlow fromRateNodeIdRef="RN0002" toLevelNodeIdRef="LN0008"/>
+    <RateNode2SourceSinkNodeFlow fromRateNodeIdRef="RN0003" toSourceSinkNodeIdRef="SSN0001"/>
+    <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SSN0002" toRateNodeIdRef="RN0001"/>
+    <SourceSinkNode2RateNodeFlow fromSourceSinkNodeIdRef="SSN0003" toRateNodeIdRef="RN0002"/>
+  </Flows>
+  <Dependencies>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0010" toRateNodeIdRef="RN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="166.4677419354839" yCoordinate="494.35483870967744"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <ConstantNode2RateNodeDependency fromConstantNodeIdRef="CN0002" toRateNodeIdRef="RN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="192.70499706342113" yCoordinate="59.528517125311"/>
+      </AdditionalControlPoints>
+    </ConstantNode2RateNodeDependency>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0004" toRateNodeIdRef="RN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="240.4406779661017" yCoordinate="63.161016949152554"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0007" toRateNodeIdRef="RN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="450.1966292134831" yCoordinate="186.7116104868914"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <LevelNode2AuxiliaryNodeDependency fromLevelNodeIdRef="LN0008" toAuxiliaryNodeIdRef="AN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="307.0" yCoordinate="225.0"/>
+      </AdditionalControlPoints>
+    </LevelNode2AuxiliaryNodeDependency>
+    <LevelNode2AuxiliaryNodeDependency fromLevelNodeIdRef="LN0006" toAuxiliaryNodeIdRef="AN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="440.0" yCoordinate="333.0"/>
+      </AdditionalControlPoints>
+    </LevelNode2AuxiliaryNodeDependency>
+    <LevelNode2AuxiliaryNodeDependency fromLevelNodeIdRef="LN0009" toAuxiliaryNodeIdRef="AN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="201.0" yCoordinate="252.0"/>
+      </AdditionalControlPoints>
+    </LevelNode2AuxiliaryNodeDependency>
+    <ConstantNode2AuxiliaryNodeDependency fromConstantNodeIdRef="CN0004" toAuxiliaryNodeIdRef="AN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="374.40903214955404" yCoordinate="456.8968895767823"/>
+      </AdditionalControlPoints>
+    </ConstantNode2AuxiliaryNodeDependency>
+    <ConstantNode2AuxiliaryNodeDependency fromConstantNodeIdRef="CN0003" toAuxiliaryNodeIdRef="AN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="361.3606992529549" yCoordinate="472.4269964195824"/>
+      </AdditionalControlPoints>
+    </ConstantNode2AuxiliaryNodeDependency>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0008" toRateNodeIdRef="RN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="246.40855457227138" yCoordinate="117.52949852507376"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <ConstantNode2RateNodeDependency fromConstantNodeIdRef="CN0005" toRateNodeIdRef="RN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="194.26678593519944" yCoordinate="476.3704809735432"/>
+      </AdditionalControlPoints>
+    </ConstantNode2RateNodeDependency>
+    <AuxiliaryNode2AuxiliaryNodeDependency fromAuxiliaryNodeIdRef="AN0002" toAuxiliaryNodeIdRef="AN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="339.59925318497847" yCoordinate="361.98139001891025"/>
+      </AdditionalControlPoints>
+    </AuxiliaryNode2AuxiliaryNodeDependency>
+    <AuxiliaryNode2AuxiliaryNodeDependency fromAuxiliaryNodeIdRef="AN0003" toAuxiliaryNodeIdRef="AN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="325.81339484247167" yCoordinate="317.97220331225526"/>
+      </AdditionalControlPoints>
+    </AuxiliaryNode2AuxiliaryNodeDependency>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0005" toRateNodeIdRef="RN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="195.0322580645161" yCoordinate="487.35483870967744"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <ConstantNode2AuxiliaryNodeDependency fromConstantNodeIdRef="CN0007" toAuxiliaryNodeIdRef="AN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="442.0" yCoordinate="375.0"/>
+      </AdditionalControlPoints>
+    </ConstantNode2AuxiliaryNodeDependency>
+    <LevelNode2AuxiliaryNodeDependency fromLevelNodeIdRef="LN0002" toAuxiliaryNodeIdRef="AN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="236.0" yCoordinate="322.0"/>
+      </AdditionalControlPoints>
+    </LevelNode2AuxiliaryNodeDependency>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0001" toRateNodeIdRef="RN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="201.98850574712642" yCoordinate="88.56321839080461"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <ConstantNode2AuxiliaryNodeDependency fromConstantNodeIdRef="CN0006" toAuxiliaryNodeIdRef="AN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="163.0" yCoordinate="284.0"/>
+      </AdditionalControlPoints>
+    </ConstantNode2AuxiliaryNodeDependency>
+    <AuxiliaryNode2RateNodeDependency fromAuxiliaryNodeIdRef="AN0001" toRateNodeIdRef="RN0001">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="425.90994787154284" yCoordinate="285.10757985661553"/>
+      </AdditionalControlPoints>
+    </AuxiliaryNode2RateNodeDependency>
+    <LevelNode2RateNodeDependency fromLevelNodeIdRef="LN0002" toRateNodeIdRef="RN0003">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="168.41463414634148" yCoordinate="431.8780487804878"/>
+      </AdditionalControlPoints>
+    </LevelNode2RateNodeDependency>
+    <ConstantNode2AuxiliaryNodeDependency fromConstantNodeIdRef="CN0001" toAuxiliaryNodeIdRef="AN0002">
+      <AdditionalControlPoints>
+        <AdditionalControlPoint xCoordinate="396.33994709034613" yCoordinate="494.27151604320795"/>
+      </AdditionalControlPoints>
+    </ConstantNode2AuxiliaryNodeDependency>
+  </Dependencies>
+</SubModel>
+</Model>

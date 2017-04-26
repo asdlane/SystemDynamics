@@ -22,6 +22,7 @@
 package de.uka.aifb.com.systemDynamics;
 
 import de.uka.aifb.com.systemDynamics.csv.CSVExport;
+import de.uka.aifb.com.systemDynamics.gui.ModelExecutionChartPanel;
 import de.uka.aifb.com.systemDynamics.model.*;
 import de.uka.aifb.com.systemDynamics.xml.*;
 
@@ -29,8 +30,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * This class implements a command line command for model execution and value export.
@@ -114,15 +119,17 @@ public class SystemDynamicsCommandLine {
 		// (3) validate model and set unchangeable
 		
 		ArrayList<String> headers = new ArrayList<String>();
-		ArrayList<ArrayList<Double>> values = new ArrayList<ArrayList<Double>>();
+		ArrayList<double[]> values = new ArrayList<double[]>();
 		
 		for(int k=0;k<numberRounds+1;k++){
-			values.add(new ArrayList<Double>());
+			values.add(new double[model.size()]);
 		}
 		
-		for(int k=0;k<model.size();k++){
+		ArrayList<Model> orderedModels = executeInOrder(model);
+		
+		for(int k=0;k<orderedModels.size();k++){
 			try {
-				model.get(k).validateModelAndSetUnchangeable(0);
+				orderedModels.get(k).validateModelAndSetUnchangeable(0);
 			} catch (Exception e) {
 				// There should be no exceptions here because the model was already validated while
 				// reading from XML file.
@@ -131,7 +138,7 @@ public class SystemDynamicsCommandLine {
 			}
 
 			// (4) execute model and export values
-			LevelNode[] levelNodes = model.get(k).getLevelNodes().toArray(new LevelNode[0]);
+			LevelNode[] levelNodes = orderedModels.get(k).getLevelNodes().toArray(new LevelNode[0]);
 			// sort level nodes alphabetically
 
 			Arrays.sort(levelNodes);
@@ -139,20 +146,25 @@ public class SystemDynamicsCommandLine {
 			for(int i=0;i<levelNodes.length;i++){
 //				if(i==0)
 					headers.add("SM"+(k+1)+":"+levelNodes[i].getNodeName());
+		        	System.out.println("*************** execute values "+levelNodes[i].getNodeName()+" "+levelNodes[i].getStartValue()+" "+levelNodes[i].getCurrentValue());
 //				else
 //					headers.add(levelNodes[i].getNodeName());
 			}
 			
 			for (int j = 0; j < levelNodes.length; j++) {
-				values.get(0).add(levelNodes[j].getCurrentValue());
+				values.get(0)[model.indexOf(orderedModels.get(k))]=levelNodes[j].getCurrentValue();
 			}
 			
 			for (int i = 0; i < numberRounds; i++) {
 				
-				model.get(k).computeNextValues();
+				for(SharedNode sn: orderedModels.get(k).getSharedLevelNodes()){
+	            	sn.setCurrentValueFromExecutionCache(i+1);
+	            }
+				orderedModels.get(k).computeNextValues();
 				
 				for (int j = 0; j < levelNodes.length; j++) {
-					values.get(i+1).add(levelNodes[j].getCurrentValue());
+					values.get(i+1)[model.indexOf(orderedModels.get(k))]=levelNodes[j].getCurrentValue();
+		        	System.out.println("*************** compute next values "+levelNodes[j].getNodeName()+" "+levelNodes[j].getStartValue()+" "+levelNodes[j].getCurrentValue());
 				}
 
 			}
@@ -186,7 +198,7 @@ public class SystemDynamicsCommandLine {
 //				}
 				
 				for(int i=0;i<values.size();i++)
-					csvExport.write(toArray(values.get(i)));
+					csvExport.write(values.get(i));
 				csvExport.close();
 //				for (int i = 0; i < numberRounds; i++) {
 //					int newPercent = 100 * i / numberRounds;
@@ -239,7 +251,7 @@ public class SystemDynamicsCommandLine {
 //					for (int j = 0; j < values.length; j++) {
 //						values[j] = levelNodes[j].getCurrentValue();
 //					}
-					xmlExport.write(toArray(values.get(i)));
+					xmlExport.write(values.get(i));
 				}
 				xmlExport.close();
 			}
@@ -250,6 +262,97 @@ public class SystemDynamicsCommandLine {
 		
 		return levelNodeMap;
 	}
+	
+	
+	private ArrayList<Model> executeInOrder(ArrayList<Model> models){
+   	 ArrayList<Model> orderedModels = new ArrayList<Model>();
+   	 HashMap<Model, HashSet<Model>> adjacentList = getAdjacentListOfModel(models);
+   	 HashMap<Model, Integer> numberOfPredecessorsMap = getNumberOfPredecessorsMap(models);
+   	      
+   	      while (!numberOfPredecessorsMap.isEmpty()) {
+   	         for (Model m : numberOfPredecessorsMap.keySet()) {
+   	            if (numberOfPredecessorsMap.get(m) == 0) {
+   	            	orderedModels.add(m);
+   
+   	               HashSet<Model> dependantModel = adjacentList.get(m);
+   	               if (dependantModel != null) {
+   	                  for (Model model : dependantModel) {
+   	                     int numberOfPredecessors = numberOfPredecessorsMap.get(model);
+   	                     numberOfPredecessors--;
+   	                     numberOfPredecessorsMap.put(model, numberOfPredecessors);
+   	                  }
+   	               }
+   	               
+   	               numberOfPredecessorsMap.remove(m);
+   	               
+   	               break;
+   	            }
+   	         }
+   	      }
+   	      
+   	 return orderedModels;
+   	 
+    }
+
+	private HashMap<Model, Integer> getNumberOfPredecessorsMap(ArrayList<Model> submodels) {
+		HashMap<Model, Integer> map = new HashMap<Model, Integer>();
+		
+		for (Model model : submodels) {
+	    	  
+	    	  HashSet<Model> allChartPanelsThisDependsOn= new HashSet<Model>();
+	    	  
+	    	  for(SharedNode sn: model.getSharedNodes()){
+	    		  for(int i=0;i<submodels.size();i++){
+	    				for(AuxiliaryNode an: submodels.get(i).getAuxiliaryNodes()){
+	    		 	  	  if(sn.getSource() == an){
+	    		 	  		allChartPanelsThisDependsOn.add(submodels.get(i));
+	    		 	  	  }
+	    		 	  	  break;
+	    				 }
+	    				for(LevelNode ln: submodels.get(i).getLevelNodes()){
+		    		 	  if(sn.getSource() == ln){
+		    		 	  		allChartPanelsThisDependsOn.add(submodels.get(i));
+		    		 	  }
+		    		 	  break;
+	    				}
+	    		  }
+	    	  }
+	    	  
+	    	  map.put(model, allChartPanelsThisDependsOn.size());
+	      }
+		
+		return map;
+	}
+
+	private HashMap<Model, HashSet<Model>> getAdjacentListOfModel(ArrayList<Model> models) {
+		HashMap<Model, HashSet<Model>> adjacentList =
+		         new HashMap<Model, HashSet<Model>>();
+		      
+		      for (Model model : models) {
+		    	  HashSet<Model> allModelsDependOnThis= new HashSet<Model>();
+		    	  
+		    	  for(int i=0;i<models.size();i++){	
+		    		  for(SharedNode sn: models.get(i).getSharedNodes()){
+		    				for(AuxiliaryNode an: model.getAuxiliaryNodes()){
+		    		 	  	  if(sn.getSource() == an){
+		    		 	  		allModelsDependOnThis.add(models.get(i));
+		    		 	  	  }
+		    		 	  	  break;
+		    				 }
+		    				for(LevelNode ln: model.getLevelNodes()){
+			    		 	  if(sn.getSource() == ln){
+			    		 		 allModelsDependOnThis.add(models.get(i));
+			    		 	  }
+			    		 	  break;
+		    				}
+		    		  }
+		    	  }
+		    	  
+		    	  adjacentList.put(model, allModelsDependOnThis);
+		      }
+		return adjacentList;
+	}
+	
 	
 	private double[] toArray(ArrayList<Double> list){
 		double[] res = new double[list.size()];

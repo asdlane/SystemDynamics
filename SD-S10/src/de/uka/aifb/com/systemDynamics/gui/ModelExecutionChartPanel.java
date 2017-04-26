@@ -70,9 +70,12 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
    private Model model;
    private LevelNode[] levelNodes;
    private SharedNode[] sharedLevelNodes;
+
+   private String[] SelectedNames;
+   private String[] SelectedNames2;
    
    private XYSeries[] xySeriesArray;
-//   private XYSeries[] xySeriesArray2;
+
    private JFreeChart chart;
    private int nextRound;
    
@@ -414,9 +417,9 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
     * 
     * @return
     */
-   public void addNewChartPanel(){
+   public void addNewChartPanel(String name){
 
-	      JFreeChart newchart = createChart();
+	      JFreeChart newchart = createChartWithoutDialog(name);
 	      // CENTER: chart
 	      ChartPanel chartPanel = new ChartPanel(newchart);
 	      
@@ -430,7 +433,111 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 	      
    }
    
-   
+   private JFreeChart createChartWithoutDialog(String name){
+
+//	      
+//	      int i = 0;
+//	      int f = 0;
+//	      
+//	      String[] levelNodeList = new String[model.getLevelNodes().size()];
+//	      String[] sharedLevelNodeList = new String[model.getSharedNodes().size()];
+//	      
+//	      int k=0;
+//	      int t=0;
+//	      for (LevelNode levelNode : model.getLevelNodes()) {
+//	    	  levelNodeList[k++] = levelNode.getNodeName();
+//	      }
+//	      for(SharedNode sharedNode: model.getSharedLevelNodes()){
+//	    	  sharedLevelNodeList[t++] = sharedNode.getSharedPointer();
+//	      }
+//	      
+//	      HashMap<LevelNode,HashSet<AbstractNode>> dependencies = new HashMap<LevelNode,HashSet<AbstractNode>>();
+//	      int j=0;
+//	      int z=0;
+//	      
+//	      for (LevelNode levelNode : model.getLevelNodes()) {
+//	    		 if(name == levelNode.getNodeName()){
+//	    			 getAllDependencyNodes(levelNode,dependencies, new HashSet<AbstractNode>());
+//	    			 levelNodes[i++] = levelNode;
+//	    			 
+//	    		 }
+//	      }
+//	      
+//	      for(SharedNode sharedNode : model.getSharedNodes()){
+//	    		  if(name == sharedNode.getSharedPointer()){
+//	    			  sharedLevelNodes[f++] = sharedNode;
+//	    		  }
+//	      }
+//
+//
+	   
+
+//		for(LevelNode ln: model.getLevelNodes()){
+//			ln.reset();
+//		}
+//
+//		for(SharedNode sn: model.getSharedLevelNodes()){
+//	    	sn.clearExecutionCache();
+//	    }
+		
+	      // sort level nodes alphabetically
+	      
+	      xySeriesArray = new XYSeries[levelNodes.length+sharedLevelNodes.length];
+	      
+	      XYSeriesCollection data = new XYSeriesCollection();
+	      
+	      for (int i = 0; i < levelNodes.length; i++) {
+	    	 
+	         XYSeries xySeries = new XYSeries(levelNodes[i].getNodeName());
+	         xySeries.add(0.0, levelNodes[i].getStartValue());
+	         data.addSeries(xySeries);
+	         xySeriesArray[i] = xySeries;
+	      }
+	      for (int i = 0; i < sharedLevelNodes.length; i++) {
+	     	 
+	          XYSeries xySeries = new XYSeries(sharedLevelNodes[i].getSharedPointer());
+	          xySeries.add(0.0, ((LevelNode)sharedLevelNodes[i].getSource()).getStartValue());
+	          data.addSeries(xySeries);
+	          xySeriesArray[i+levelNodes.length] = xySeries;
+	       }
+	      
+	      nextRound = 1;
+	      
+	      chart = ChartFactory.createXYLineChart(null,
+	                                             messages.getString("ModelExecutionChartPanel.Round"), 
+	                                             messages.getString("ModelExecutionChartPanel.Value"), 
+	                                             data,
+	                                             PlotOrientation.VERTICAL,
+	                                             true, true, false);
+	      XYPlot plot = chart.getXYPlot();
+	      
+	      
+	      // add tooltip to each point
+	      XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+	      renderer.setBaseToolTipGenerator(
+	          new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0000000000")));
+	      
+//	      String text = getDependencies(dependencies);
+	      
+	      
+//	      TextTitle legendText = new TextTitle(text);
+//	      legendText.setPosition(RectangleEdge.TOP);
+//	      chart.addSubtitle(legendText);
+	      
+	      
+	      // horizontal axis range: 0 ... maximal rounds
+	      ((NumberAxis)(chart.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
+	      plot.getDomainAxis().setAutoRangeMinimumSize(20);
+	      
+	      // only integer values as labels for horizontal axis
+	      plot.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	      
+	      // number formatting according to current locale
+	      ((NumberAxis)(plot.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
+	      ((NumberAxis)(plot.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
+	      chart.getLegend().setPosition(RectangleEdge.RIGHT);
+	      return chart;
+   }
    
    /**
     * Creates the XY line chart.
@@ -470,15 +577,11 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
         null, listPanel, "Submodel", JOptionPane.PLAIN_MESSAGE);
       
       System.out.println(Arrays.toString(list.getSelectedIndices()));
-      	//JFrame frame = new JFrame("InputDialog");
-		//Object[] choices = levelNodeList.toArray();
-
-		//String levelNodeOption = (String) JOptionPane.showInputDialog(frame,"Which variables would you like to graph?","Select Variables",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
-		//System.out.println(levelNodeOption);
+      
       levelNodes = new LevelNode[list.getSelectedIndices().length];
       sharedLevelNodes = new SharedNode[list2.getSelectedIndices().length];
-      String[] SelectedNames = new String[list.getSelectedIndices().length];
-      String[] SelectedNames2 = new String[list2.getSelectedIndices().length];
+      SelectedNames = new String[list.getSelectedIndices().length];
+      SelectedNames2 = new String[list2.getSelectedIndices().length];
       HashMap<LevelNode,HashSet<AbstractNode>> dependencies = new HashMap<LevelNode,HashSet<AbstractNode>>();
       int j=0;
       int z=0;
@@ -507,13 +610,10 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 
       
       // sort level nodes alphabetically
-      //Arrays.sort(levelNodes);
       
       xySeriesArray = new XYSeries[levelNodes.length+sharedLevelNodes.length];
-//      xySeriesArray2 = new XYSeries[sharedNodes.length];
       
       XYSeriesCollection data = new XYSeriesCollection();
-//      XYSeriesCollection data2 = new XYSeriesCollection();
       
       for (i = 0; i < levelNodes.length; i++) {
     	 
@@ -538,31 +638,13 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
                                              data,
                                              PlotOrientation.VERTICAL,
                                              true, true, false);
-//      chart2 = ChartFactory.createXYLineChart(null, 
-//    		  								messages.getString("ModelExecutionChartPanel.Round"), 
-//    		  								messages.getString("ModelExecutionChartPanel.Value"), 
-//    		  								data2, 
-//    		  								PlotOrientation.VERTICAL,
-//    		  								true, false, false);
       XYPlot plot = chart.getXYPlot();
       
-      
-//      XYPlot plot2 = chart2.getXYPlot();
       
       // add tooltip to each point
       XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
       renderer.setBaseToolTipGenerator(
           new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0000000000")));
-      /*renderer.setSeriesStroke(i, new BasicStroke(3.0f));
-      renderer.setSeriesShape(0, new Rectangle(-2, -2, 4, 4));
-      renderer.setSeriesShapesVisible(0, true);
-      
-      XYLineAndShapeRenderer renderer2 = (XYLineAndShapeRenderer) plot2.getRenderer();
-      renderer2.setBaseToolTipGenerator(
-          new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,new DecimalFormat("0.0"),new DecimalFormat("0.0")));
-      renderer2.setSeriesStroke(i, new BasicStroke(3.0f));
-      renderer2.setSeriesShape(0, new Rectangle(-2, -2, 4, 4));
-      renderer2.setSeriesShapesVisible(0, true);*/
       
       String text = getDependencies(dependencies);
       
@@ -576,28 +658,13 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       ((NumberAxis)(chart.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
       plot.getDomainAxis().setAutoRangeMinimumSize(20);
       
-//      ((NumberAxis)(chart2.getXYPlot().getDomainAxis())).setRangeType(RangeType.POSITIVE);
-//      plot2.getDomainAxis().setAutoRangeMinimumSize(20);
-      
       // only integer values as labels for horizontal axis
       plot.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-//      plot2.getDomainAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
       
       // number formatting according to current locale
       ((NumberAxis)(plot.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
       ((NumberAxis)(plot.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
-//      ((NumberAxis)(plot2.getDomainAxis())).setNumberFormatOverride(NumberFormat.getIntegerInstance(locale));
-//      ((NumberAxis)(plot2.getRangeAxis())).setNumberFormatOverride(NumberFormat.getInstance(locale));
-//      
-//      NumberAxis range = (NumberAxis) plot.getRangeAxis();
-//      
-//      range.setNumberFormatOverride(formatter);
-      // legend at top position
       chart.getLegend().setPosition(RectangleEdge.RIGHT);
-//      chart2.getLegend().setPosition(RectangleEdge.TOP);
-      
-//      JFreeChart[] allCharts = {chart, chart2};
-      
       return chart;
    }
    
@@ -909,9 +976,13 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
 
 public void reset() {
 	nextRound=1;
-	for(int i=0;i<levelNodes.length;i++){
-		levelNodes[i].reset();
+	
+	for(LevelNode ln: model.getLevelNodes()){
+		ln.reset();
 	}
+//	for(int i=0;i<levelNodes.length;i++){
+//		levelNodes[i].reset();
+//	}
 
 	for(SharedNode sn: model.getSharedLevelNodes()){
     	sn.clearExecutionCache();

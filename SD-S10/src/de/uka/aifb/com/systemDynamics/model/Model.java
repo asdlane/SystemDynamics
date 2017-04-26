@@ -168,6 +168,7 @@ public class Model {
 		// TODO Auto-generated method stub
 		return sharedNode;
    }
+   
    /**
     * Creates a new rate node with the specified parameter and stores it in the model.
     * 
@@ -1065,11 +1066,13 @@ public class Model {
       // (i) c) rate nodes and auxiliary nodes must have formulas
       for (RateNode rateNode : rateNodes) {
          if (!rateNode.hasFormula()) {
+        	 System.out.println("*************** rate node "+rateNode.getNodeName());
             throw new NoFormulaException(rateNode, modelNumber+1);
          }
       }
       
       for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
+     	 System.out.println("*************** auxiliary node");
          if (!auxiliaryNode.hasFormula()) {
             throw new NoFormulaException(auxiliaryNode, modelNumber+1);
          }
