@@ -493,7 +493,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 * 
 	 * @param vertex vertex to remove
 	 */
-	private void removeGraphCell(DefaultGraphCell vertex) {
+	public void removeGraphCell(DefaultGraphCell vertex) {
 		AbstractNode node = graphNode2modelNode.get(vertex);
 
 		try {
@@ -1578,6 +1578,8 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 	 * @param e mouse event
 	 */
 	void createPopupMenu(MouseEvent e) {
+		
+		final SystemDynamicsGraph thisGraph = this;
 		if (model.isChangeable()) {
 			// model is changeable -> show popup menu
 
@@ -1806,6 +1808,29 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 						menu.add(changeFormulaMenuItem);
 					}
 
+					if (cell instanceof AuxiliaryNodeGraphCell || cell instanceof ConstantNodeGraphCell || cell instanceof LevelNodeGraphCell) {
+
+							JMenuItem shareNodeMenuItem =
+									new JMenuItem(messages.getString("SystemDynamicsGraph.PopupMenu.ShareNode"));
+							shareNodeMenuItem.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									int size = ((MainFrame)frame).getGraphSize();
+									ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+									for(int i=1;i<=size;i++){
+										SubmodelNumbers.add(i);
+									}
+									JFrame dialogFrame = new JFrame("InputDialog");
+									Object[] choices = SubmodelNumbers.toArray();
+									int subModelIndex = (Integer)JOptionPane.showInputDialog(dialogFrame,"Share with which submodel?","Share",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+									subModelIndex = subModelIndex-1;
+
+									((MainFrame)frame).shareNode(thisGraph, subModelIndex, cell);
+									
+								}
+							});
+							menu.add(shareNodeMenuItem);
+						}
+					
 					// remove node
 					JMenuItem removeNodeMenuItem =
 							new JMenuItem(messages.getString("SystemDynamicsGraph.PopupMenu.RemoveNode"));

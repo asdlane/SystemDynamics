@@ -559,6 +559,10 @@ public class ModelExecutionChartPanel extends JPanel implements FocusListener {
       for(SharedNode sharedNode: model.getSharedLevelNodes()){
     	  sharedLevelNodeList[t++] = sharedNode.getSharedPointer();
       }
+      
+      Arrays.sort(levelNodeList);
+      Arrays.sort(sharedLevelNodeList);
+      
       JPanel listPanel = new JPanel();
       JList list = new JList(levelNodeList);
       JList list2 = new JList(sharedLevelNodeList);

@@ -15,13 +15,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -41,12 +47,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import de.uka.aifb.com.systemDynamics.SystemDynamics;
+import de.uka.aifb.com.systemDynamics.model.PlanNode;
 
 
 public class GlobalFileEditor extends JFrame{
@@ -65,8 +75,23 @@ public class GlobalFileEditor extends JFrame{
 	private Action addVarAction;
 	private Action openHelpDocAction;
 	private JPanel contentPanel;
+
+	private ResourceBundle messages;
 	
-	public GlobalFileEditor(){		
+	private HashMap<String,String> vars;
+	
+	private boolean graphModified = false;
+//	   public static void main(String[] args) {
+//
+//			GlobalFileEditor globalFileEditor = new GlobalFileEditor();
+//
+//		   }
+	
+	public GlobalFileEditor(SystemDynamics start){		
+		
+
+		messages = start.getMessages();
+		vars = new HashMap<String,String>();
 		
 		fileChooser = new JFileChooser();
 
@@ -159,10 +184,9 @@ public class GlobalFileEditor extends JFrame{
 			contentPanel.removeAll();
 			
 			final JPanel varsPanel = new JPanel();
-			varsPanel.setLayout(new GridLayout());
 
-			JLabel heading = new JLabel("Variables");
-			varsPanel.add(heading);
+//			JLabel heading = new JLabel("Variables");
+//			varsPanel.add(heading);
 			
 
 			JScrollPane varScroll = new JScrollPane(varsPanel);
@@ -170,9 +194,127 @@ public class GlobalFileEditor extends JFrame{
 			contentPanel.add(varScroll,BorderLayout.CENTER);
 			
 			final JPanel commandsPanel = new JPanel();
-			varsPanel.setLayout(new GridLayout());
+//			commandsPanel.setLayout(new GridLayout(1,1));
+			contentPanel.add(commandsPanel,BorderLayout.SOUTH);
 			
+			varsPanel.setLayout(new GridLayout(0,4));
 
+		      JButton addButton = new JButton("Add new variable");
+		      addButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String name = JOptionPane.showInputDialog(null,"Variable Name:","Name",JOptionPane.PLAIN_MESSAGE);
+						String value = JOptionPane.showInputDialog(null,"Variable Value:","Value",JOptionPane.PLAIN_MESSAGE);
+						
+						JPanel varPanel = new JPanel();
+						varsPanel.add(varPanel);
+						varPanel.setLayout(new GridLayout(2,1));
+
+						vars.put(name, value);
+						
+
+						final JPanel editPanel = new JPanel();
+						editPanel.setLayout(new GridLayout(0,2));
+						JLabel label = new JLabel("Name");
+						final JTextField text = new JTextField(name);
+						JLabel label2 = new JLabel("Value");
+						final JTextField text2 = new JTextField(value);
+						
+						
+						final String[] attrs ={"",""};
+						
+						text.setEditable(false);
+						text2.setEditable(false);
+						
+						editPanel.add(label);
+						editPanel.add(text);
+						editPanel.add(label2);
+						editPanel.add(text2);
+						
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+						editPanel.add(new JLabel());
+
+						varPanel.add(editPanel);
+						
+						
+						final JPanel buttonPanel = new JPanel();
+					    final JPanel buttonPanel2 = new JPanel();
+					    final CardLayout card = new CardLayout();
+					    final JPanel buttonsPanel = new JPanel(card);
+					      
+					    JButton okButton = new JButton("OK");
+					    okButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+
+								String name=text.getText();
+								String value=text2.getText();
+								
+								vars.remove(attrs[0]);
+								vars.put(name, value);
+								
+								text.setEditable(false);
+								text2.setEditable(false);
+								card.previous(buttonsPanel);
+							}
+
+						});
+						
+					    buttonPanel.add(okButton);
+					    
+					    JButton cancelButton = new JButton("Cancel");
+					    cancelButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+
+								text.setText(attrs[0]);
+								text2.setText(attrs[1]);
+								
+								text.setEditable(false);
+								text2.setEditable(false);
+								
+								card.previous(buttonsPanel);
+							}
+
+					    });
+					    buttonPanel.add(cancelButton);
+						
+
+					    JButton editButton = new JButton("Edit");
+					    editButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+
+								attrs[0]=text.getText();
+								attrs[1]=text2.getText();
+								
+								text.setEditable(true);
+								text2.setEditable(true);
+								
+								card.next(buttonsPanel);
+							}
+
+					    });
+
+					    buttonPanel2.add(editButton);
+					    
+
+					    buttonsPanel.add("bp2",buttonPanel2);
+					    buttonsPanel.add("bp1",buttonPanel);
+					    varPanel.add(buttonsPanel);
+
+						TitledBorder border = BorderFactory.createTitledBorder("Plan Node");
+						varPanel.setBorder(border);
+						
+						graphModified = true;
+						contentPanel.revalidate();
+					}
+				});
+		    
+		      commandsPanel.add(addButton);  
+		      
 //			JLabel heading2 = new JLabel("Commands");
 //			commandsPanel.add(heading2);
 //			
@@ -199,13 +341,201 @@ public class GlobalFileEditor extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			int reply = JOptionPane.YES_OPTION;
+			if(graphModified != false){
+				reply = JOptionPane.showConfirmDialog(null, "Opening a new document will cause any unsaved changes to be lost. \n Are you sure you would like to open a new document?", "Open", JOptionPane.YES_NO_OPTION);
+			}
+			if(reply == JOptionPane.YES_OPTION){
+				int returnVal = fileChooser.showOpenDialog(GlobalFileEditor.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					// file was selected and 'OK' was pressed
+					File file = fileChooser.getSelectedFile();
+					if (file.exists()) {
+						Scanner scanner = null;
+	//					HashMap<String, String> nodes = new HashMap<String, String>();
+						vars.clear();
+						try {
+							scanner = new Scanner(file);
+							
+							while(scanner.hasNextLine()){
+					            String line = scanner.nextLine();
+					            String tmp[] = line.split(",");
+					            vars.put(tmp[0], tmp[1]);
+					            System.out.println("node " + tmp[0] + " :" + tmp[1]);
+					            
+					        } 
+	
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(GlobalFileEditor.this,
+									"Read File Exception",
+									"THe format of the file is not right",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						
+						scanner.close();
+					
+						
+						final JPanel varsPanel = new JPanel();
+						JScrollPane varScroll = new JScrollPane(varsPanel);
+						
+						contentPanel.removeAll();
+						contentPanel.add(varScroll,BorderLayout.CENTER);
+						
+						final JPanel commandsPanel = new JPanel();
+	
+						contentPanel.add(commandsPanel,BorderLayout.SOUTH);
+						
+						varsPanel.setLayout(new GridLayout(0,4));
+	
+						for(String var: vars.keySet()){
+	
+							JPanel varPanel = createVarPanel(var,vars.get(var));
+							varsPanel.add(varPanel);
+						}
+						
+					      JButton addButton = new JButton("Add new variable");
+					      addButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									String name = JOptionPane.showInputDialog(null,"Variable Name:","Name",JOptionPane.PLAIN_MESSAGE);
+									String value = JOptionPane.showInputDialog(null,"Variable Value:","Value",JOptionPane.PLAIN_MESSAGE);
+									
+									vars.put(name, value);
+									
+									JPanel varPanel = createVarPanel(name,value);
+									varsPanel.add(varPanel);
+									
+									graphModified = true;
+									
+									contentPanel.revalidate();
+								}
+							});
+					    
+					      commandsPanel.add(addButton);  
+					      
+						
+						addVarAction.setEnabled(true);
+						saveAction.setEnabled(true);
+						closeAction.setEnabled(true);
+	
+						contentPanel.revalidate();
+	
+						graphModified = false;
+						
 
+						addVarAction.setEnabled(true);
+						saveAction.setEnabled(true);
+						closeAction.setEnabled(true);
+					}
+				}
+			}
+		}
+		
+	}
+	private JPanel createVarPanel(String name, String value){
+			
+			JPanel varPanel = new JPanel();
+			varPanel.setLayout(new GridLayout(2,1));			
 
+			final JPanel editPanel = new JPanel();
+			editPanel.setLayout(new GridLayout(0,2));
+			JLabel label = new JLabel("Name");
+			final JTextField text = new JTextField(name);
+			JLabel label2 = new JLabel("Value");
+			final JTextField text2 = new JTextField(value);
+			
+			
+			final String[] attrs ={"",""};
+			
+			text.setEditable(false);
+			text2.setEditable(false);
+			
+			editPanel.add(label);
+			editPanel.add(text);
+			editPanel.add(label2);
+			editPanel.add(text2);
+			
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+			editPanel.add(new JLabel());
+
+			varPanel.add(editPanel);
+			
+			
+			final JPanel buttonPanel = new JPanel();
+		    final JPanel buttonPanel2 = new JPanel();
+		    final CardLayout card = new CardLayout();
+		    final JPanel buttonsPanel = new JPanel(card);
+		      
+		    JButton okButton = new JButton("OK");
+		    okButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					String name=text.getText();
+					String value=text2.getText();
+					
+					vars.remove(attrs[0]);
+					vars.put(name, value);
+					
+					text.setEditable(false);
+					text2.setEditable(false);
+					card.previous(buttonsPanel);
+				}
+
+			});
+			
+		    buttonPanel.add(okButton);
+		    
+		    JButton cancelButton = new JButton("Cancel");
+		    cancelButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					text.setText(attrs[0]);
+					text2.setText(attrs[1]);
+					
+					text.setEditable(false);
+					text2.setEditable(false);
+					
+					card.previous(buttonsPanel);
+				}
+
+		    });
+		    buttonPanel.add(cancelButton);
 			
 
-		}
+		    JButton editButton = new JButton("Edit");
+		    editButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
 
+					attrs[0]=text.getText();
+					attrs[1]=text2.getText();
+					
+					text.setEditable(true);
+					text2.setEditable(true);
+					
+					card.next(buttonsPanel);
+				}
+
+		    });
+
+		    buttonPanel2.add(editButton);
+		    
+
+		    buttonsPanel.add("bp2",buttonPanel2);
+		    buttonsPanel.add("bp1",buttonPanel);
+		    varPanel.add(buttonsPanel);
+
+			TitledBorder border = BorderFactory.createTitledBorder("Level Node");
+			varPanel.setBorder(border);
+			return varPanel;
 	}
+	
 	
 	private class saveAction extends AbstractAction{
 		public saveAction(String name, Icon icon, String toolTipText) {
@@ -219,7 +549,71 @@ public class GlobalFileEditor extends JFrame{
 			File file = null;
 			fileChooser.setDialogTitle("Save File As");
 			int returnVal = fileChooser.showSaveDialog(GlobalFileEditor.this);
+			int selectedOption = 0;
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				// file was selected and 'OK' was pressed
+				file = fileChooser.getSelectedFile();
+
+				// file name should end with ".xml"
+				if (!file.getName().toLowerCase().endsWith(".txt")) {
+					file = new File(file.getAbsolutePath() + ".txt");
+				}
+
+				// check if existing file should be overwritten -> ask for confirmation!
+				if (file.exists()) {
+					PrintWriter writer = null;
+					try {
+						writer = new PrintWriter(file);
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					writer.print("");
+					writer.close();
+					Object[] options = { messages.getString("MainFrame.Yes"), messages.getString("MainFrame.No") };
+					selectedOption = JOptionPane.showOptionDialog(null,
+							messages.getString("MainFrame.ConfirmOverwriting.Message"),
+							messages.getString("MainFrame.ConfirmOverwriting.Title"),
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null, // don't use a custom Icon
+							options,
+							options[1]); // default button title
+
+					if (selectedOption == 1) {
+						// do not save
+						return;
+					}
+				}
+			} else {
+				// no file selected
+				return;
+			}
 			
+			String filename = file.getAbsolutePath();
+			if(selectedOption==1){
+				file.delete();
+			}
+			FileOutputStream fos;
+			try {
+				fos = new FileOutputStream(new File(filename), true);
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+				
+				for(String name: vars.keySet()){
+					bw.write(name+','+vars.get(name));
+					bw.newLine();
+				}
+				bw.close();
+				
+				graphModified = false;
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 		}
 
 	}
@@ -232,8 +626,33 @@ public class GlobalFileEditor extends JFrame{
 		@Override
 
 		public void actionPerformed(ActionEvent e){
-
 			
+			if (graphModified) {
+				Object[] options = { messages.getString("MainFrame.Yes"), messages.getString("MainFrame.No") };
+				int selectedOption = JOptionPane.showOptionDialog(GlobalFileEditor.this,
+						messages.getString("MainFrame.ConfirmClosing.Message"),
+						messages.getString("MainFrame.ConfirmClosing.Title"),
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, // don't use a custom Icon
+						options,
+						options[1]); // default button title
+
+				if (selectedOption == 1) {
+					// do not close graph
+					return;
+				}
+			}
+			
+			contentPanel.removeAll();
+			contentPanel.add(new JPanel(), BorderLayout.CENTER);
+
+			addVarAction.setEnabled(false);
+			saveAction.setEnabled(false);
+			closeAction.setEnabled(false);
+
+			contentPanel.revalidate();
+			graphModified = false;
 		}
 	}
 	
@@ -256,8 +675,8 @@ public class GlobalFileEditor extends JFrame{
 		@Override
 
 		public void actionPerformed(ActionEvent e){
-
 			
+			HelpDocFrame helpDocFrame = new HelpDocFrame();
 		}
 	}
 	

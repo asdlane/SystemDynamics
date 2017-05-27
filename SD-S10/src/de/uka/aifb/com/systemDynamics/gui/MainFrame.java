@@ -53,6 +53,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
 import org.jgraph.*;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphTransferable;
@@ -310,6 +311,16 @@ WindowListener {
 		// Return the option chosen by the user either YES/NO
 		return JOptionPane.showConfirmDialog(this,"Are you sure want to delete this file?","Confirm",JOptionPane.YES_NO_OPTION);
 	}
+	
+
+	public Action getShareAction() {
+		return shareAction;
+	}
+	
+	public int getGraphSize(){
+		return graph.size();
+	}
+	
 	/**
 	 * Initializes the used actions.
 	 */
@@ -983,6 +994,72 @@ WindowListener {
 					graph.get(graph.size()-1).setBorder(SubmodelColor);
 					graph.get(0).setSize(400,400);
 					scrollPane.setPreferredSize(new Dimension(400,400));
+					
+					graph.get(0).addKeyListener(new KeyListener(){
+
+						@Override
+						public void keyTyped(KeyEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+							if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+								Object [] cells = {};
+								for(int j=0;j<graph.size();j++){
+									if(cells.length == 0){
+										cells = graph.get(j).getSelectionCells();
+										if(cells.length!=0){
+											if (cells[0] instanceof DefaultGraphCell && !(cells[0] instanceof DefaultEdge)) {
+												graph.get(0).removeGraphCell((DefaultGraphCell)cells[0]);
+											}
+
+											if (cells[0] instanceof FlowEdge) {
+
+												FlowEdge edge = (FlowEdge)cells[0];
+												GraphModel model = graph.get(0).getModel();
+												final Object edgeSource = model.getParent(model.getSource(edge));
+												final Object edgeTarget = model.getParent(model.getTarget(edge));
+											
+												if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(0).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof ColoredSourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(0).removeFlow((ColoredSourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+													graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(0).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+													graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof ColoredSourceSinkNodeGraphCell) {
+													graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (ColoredSourceSinkNodeGraphCell)edgeTarget);
+												}
+												if(edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SharedNodeGraphCell) {
+													graph.get(0).removeFlow((RateNodeGraphCell)edgeSource, (SharedNodeGraphCell)edgeTarget);
+												}
+												if(edgeSource instanceof SharedNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(0).removeFlow((SharedNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+											}
+										}	
+									}
+								}
+							}
+						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
 					graph.get(0).addMouseListener(new MouseListener(){
 
 						@Override
@@ -1003,7 +1080,48 @@ WindowListener {
 						public void mouseExited(MouseEvent e) {}
 
 						@Override
-						public void mousePressed(MouseEvent e) {}
+						public void mousePressed(MouseEvent e) {
+							final Object cell = graph.get(0).getFirstCellForLocation(e.getX(), e.getY());
+
+							if (cell == null) {
+									if (SwingUtilities.isRightMouseButton(e)) {
+										String [] popMenuItems = {"", "New Constant Node", "New Level Node", "New Rate Node", "New Source Sink Node", "Add Flow Mode"};
+										
+										JPopupMenu menu = new JPopupMenu();
+										JMenuItem newAuxiliaryNodeMenuItem =
+												new JMenuItem(newAuxiliaryNodeAction);
+										menu.add(newAuxiliaryNodeMenuItem);
+										
+	
+										JMenuItem newConstantNodeMenuItem =
+												new JMenuItem(newConstantNodeAction);
+										menu.add(newConstantNodeMenuItem);
+	
+	
+										JMenuItem newLevelNodeMenuItem =
+												new JMenuItem(newLevelNodeAction);
+										menu.add(newLevelNodeMenuItem);
+	
+	
+										JMenuItem newRateNodeMenuItem =
+												new JMenuItem(newRateNodeAction);
+										menu.add(newRateNodeMenuItem);
+	
+	
+										JMenuItem newSourceSinkNodeMenuItem =
+												new JMenuItem(newSourceSinkNodeAction);
+										menu.add(newSourceSinkNodeMenuItem);
+	
+										menu.addSeparator();
+	
+										JCheckBoxMenuItem addFlowModeCheckBoxMenuItem = new JCheckBoxMenuItem(toggleAddFlowAction);
+	
+										menu.add(addFlowModeCheckBoxMenuItem);
+										menu.show(graph.get(0), e.getX(), e.getY());  
+								      }
+									
+							}
+						}
 
 						@Override
 						public void mouseReleased(MouseEvent e) {}
@@ -1076,7 +1194,7 @@ WindowListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			GlobalFileEditor globalFileEditor = new GlobalFileEditor();
+			GlobalFileEditor globalFileEditor = new GlobalFileEditor(start);
 			
 		}
 		
@@ -1103,7 +1221,72 @@ WindowListener {
 			//create scroll pane for the new submodel
 
 			final JScrollPane submodelScroll = new JScrollPane(graph.get(graph.size()-1));
-			
+
+			newSubmodel.addKeyListener(new KeyListener(){
+
+				@Override
+				public void keyTyped(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+						Object [] cells = {};
+						for(int j=0;j<graph.size();j++){
+							if(cells.length == 0){
+								cells = graph.get(j).getSelectionCells();
+								if(cells.length!=0){
+									if (cells[0] instanceof DefaultGraphCell && !(cells[0] instanceof DefaultEdge)) {
+										graph.get(graph.size()-1).removeGraphCell((DefaultGraphCell)cells[0]);
+									}
+
+									if (cells[0] instanceof FlowEdge) {
+
+										FlowEdge edge = (FlowEdge)cells[0];
+										GraphModel model = graph.get(graph.size()-1).getModel();
+										final Object edgeSource = model.getParent(model.getSource(edge));
+										final Object edgeTarget = model.getParent(model.getTarget(edge));
+									
+										if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+										}
+										if (edgeSource instanceof ColoredSourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((ColoredSourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+										}
+										if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+										}
+										if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+										}
+										if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+										}
+										if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof ColoredSourceSinkNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((RateNodeGraphCell)edgeSource, (ColoredSourceSinkNodeGraphCell)edgeTarget);
+										}
+										if(edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SharedNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((RateNodeGraphCell)edgeSource, (SharedNodeGraphCell)edgeTarget);
+										}
+										if(edgeSource instanceof SharedNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+											graph.get(graph.size()-1).removeFlow((SharedNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+										}
+									}
+								}	
+							}
+						}
+					}
+				}
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
 			newSubmodel.addMouseListener(new MouseListener(){
 
 				@Override
@@ -1129,7 +1312,48 @@ WindowListener {
 				public void mouseExited(MouseEvent e) {}
 
 				@Override
-				public void mousePressed(MouseEvent e) {}
+				public void mousePressed(MouseEvent e) {
+					final Object cell = graph.get(graph.size()-1).getFirstCellForLocation(e.getX(), e.getY());
+
+					if (cell == null) {
+						if (SwingUtilities.isRightMouseButton(e)) {
+							String [] popMenuItems = {"", "New Constant Node", "New Level Node", "New Rate Node", "New Source Sink Node", "Add Flow Mode"};
+							
+							JPopupMenu menu = new JPopupMenu();
+							JMenuItem newAuxiliaryNodeMenuItem =
+									new JMenuItem(newAuxiliaryNodeAction);
+							menu.add(newAuxiliaryNodeMenuItem);
+							
+
+							JMenuItem newConstantNodeMenuItem =
+									new JMenuItem(newConstantNodeAction);
+							menu.add(newConstantNodeMenuItem);
+
+
+							JMenuItem newLevelNodeMenuItem =
+									new JMenuItem(newLevelNodeAction);
+							menu.add(newLevelNodeMenuItem);
+
+
+							JMenuItem newRateNodeMenuItem =
+									new JMenuItem(newRateNodeAction);
+							menu.add(newRateNodeMenuItem);
+
+
+							JMenuItem newSourceSinkNodeMenuItem =
+									new JMenuItem(newSourceSinkNodeAction);
+							menu.add(newSourceSinkNodeMenuItem);
+
+							menu.addSeparator();
+
+							JCheckBoxMenuItem addFlowModeCheckBoxMenuItem = new JCheckBoxMenuItem(toggleAddFlowAction);
+
+							menu.add(addFlowModeCheckBoxMenuItem);
+							menu.show(graph.get(graph.size()-1), e.getX(), e.getY());  
+					      }
+						
+				      }
+				}
 
 				@Override
 				public void mouseReleased(MouseEvent e) {}
@@ -1267,6 +1491,73 @@ WindowListener {
 					JScrollPane submodelScroll = new JScrollPane(graph.get(i));
 					final SystemDynamicsGraph Submodel = graph.get(i);
 					modelPanel.add(submodelScroll);
+					final int idx = i;
+					graph.get(i).addKeyListener(new KeyListener(){
+
+						@Override
+						public void keyTyped(KeyEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+							if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+								Object [] cells = {};
+								for(int j=0;j<graph.size();j++){
+									if(cells.length == 0){
+										cells = graph.get(j).getSelectionCells();
+										if(cells.length!=0){
+											if (cells[0] instanceof DefaultGraphCell && !(cells[0] instanceof DefaultEdge)) {
+												graph.get(idx).removeGraphCell((DefaultGraphCell)cells[0]);
+											}
+
+											if (cells[0] instanceof FlowEdge) {
+
+												FlowEdge edge = (FlowEdge)cells[0];
+												GraphModel model = graph.get(idx).getModel();
+												final Object edgeSource = model.getParent(model.getSource(edge));
+												final Object edgeTarget = model.getParent(model.getTarget(edge));
+											
+												if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(idx).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof ColoredSourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(idx).removeFlow((ColoredSourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+													graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(idx).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+													graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+												}
+												if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof ColoredSourceSinkNodeGraphCell) {
+													graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (ColoredSourceSinkNodeGraphCell)edgeTarget);
+												}
+												if(edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SharedNodeGraphCell) {
+													graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (SharedNodeGraphCell)edgeTarget);
+												}
+												if(edgeSource instanceof SharedNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+													graph.get(idx).removeFlow((SharedNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+												}
+											}
+										}	
+									}
+								}
+							}
+						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+					
 					graph.get(i).addMouseListener(new MouseListener(){
 
 						@Override
@@ -1289,7 +1580,47 @@ WindowListener {
 						public void mouseExited(MouseEvent e) {}
 
 						@Override
-						public void mousePressed(MouseEvent e) {}
+						public void mousePressed(MouseEvent e) {
+							final Object cell = graph.get(idx).getFirstCellForLocation(e.getX(), e.getY());
+
+							if (cell == null) {
+								if (SwingUtilities.isRightMouseButton(e)) {
+									String [] popMenuItems = {"", "New Constant Node", "New Level Node", "New Rate Node", "New Source Sink Node", "Add Flow Mode"};
+									
+									JPopupMenu menu = new JPopupMenu();
+									JMenuItem newAuxiliaryNodeMenuItem =
+											new JMenuItem(newAuxiliaryNodeAction);
+									menu.add(newAuxiliaryNodeMenuItem);
+									
+
+									JMenuItem newConstantNodeMenuItem =
+											new JMenuItem(newConstantNodeAction);
+									menu.add(newConstantNodeMenuItem);
+
+
+									JMenuItem newLevelNodeMenuItem =
+											new JMenuItem(newLevelNodeAction);
+									menu.add(newLevelNodeMenuItem);
+
+
+									JMenuItem newRateNodeMenuItem =
+											new JMenuItem(newRateNodeAction);
+									menu.add(newRateNodeMenuItem);
+
+
+									JMenuItem newSourceSinkNodeMenuItem =
+											new JMenuItem(newSourceSinkNodeAction);
+									menu.add(newSourceSinkNodeMenuItem);
+
+									menu.addSeparator();
+
+									JCheckBoxMenuItem addFlowModeCheckBoxMenuItem = new JCheckBoxMenuItem(toggleAddFlowAction);
+
+									menu.add(addFlowModeCheckBoxMenuItem);
+									menu.show(graph.get(idx), e.getX(), e.getY());  
+							      }
+								
+						      }}
 
 						@Override
 						public void mouseReleased(MouseEvent e) {}
@@ -1501,6 +1832,71 @@ WindowListener {
 						graph.get(i).revalidate();
 						graph.get(i).repaint();
 						graph.get(i).enableInputMethods(true);
+						graph.get(i).addKeyListener(new KeyListener(){
+
+							@Override
+							public void keyTyped(KeyEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void keyPressed(KeyEvent e) {
+								if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+									Object [] cells = {};
+									for(int j=0;j<graph.size();j++){
+										if(cells.length == 0){
+											cells = graph.get(j).getSelectionCells();
+											if(cells.length!=0){
+												if (cells[0] instanceof DefaultGraphCell && !(cells[0] instanceof DefaultEdge)) {
+													graph.get(idx).removeGraphCell((DefaultGraphCell)cells[0]);
+												}
+
+												if (cells[0] instanceof FlowEdge) {
+
+													FlowEdge edge = (FlowEdge)cells[0];
+													GraphModel model = graph.get(idx).getModel();
+													final Object edgeSource = model.getParent(model.getSource(edge));
+													final Object edgeTarget = model.getParent(model.getTarget(edge));
+												
+													if (edgeSource instanceof SourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+														graph.get(idx).removeFlow((SourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+													}
+													if (edgeSource instanceof ColoredSourceSinkNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+														graph.get(idx).removeFlow((ColoredSourceSinkNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+													}
+													if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof LevelNodeGraphCell) {
+														graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (LevelNodeGraphCell)edgeTarget);
+													}
+													if (edgeSource instanceof LevelNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+														graph.get(idx).removeFlow((LevelNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+													}
+													if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SourceSinkNodeGraphCell) {
+														graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (SourceSinkNodeGraphCell)edgeTarget);
+													}
+													if (edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof ColoredSourceSinkNodeGraphCell) {
+														graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (ColoredSourceSinkNodeGraphCell)edgeTarget);
+													}
+													if(edgeSource instanceof RateNodeGraphCell && edgeTarget instanceof SharedNodeGraphCell) {
+														graph.get(idx).removeFlow((RateNodeGraphCell)edgeSource, (SharedNodeGraphCell)edgeTarget);
+													}
+													if(edgeSource instanceof SharedNodeGraphCell && edgeTarget instanceof RateNodeGraphCell) {
+														graph.get(idx).removeFlow((SharedNodeGraphCell)edgeSource, (RateNodeGraphCell)edgeTarget);
+													}
+												}
+											}	
+										}
+									}
+								}
+							}
+
+							@Override
+							public void keyReleased(KeyEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+						});
 						graph.get(i).addMouseListener(new MouseListener(){
 						
 							@Override
@@ -1527,7 +1923,48 @@ WindowListener {
 							public void mouseExited(MouseEvent e) {}
 
 							@Override
-							public void mousePressed(MouseEvent e) {}
+							public void mousePressed(MouseEvent e) {
+								final Object cell = graph.get(idx).getFirstCellForLocation(e.getX(), e.getY());
+
+								if (cell == null) {
+									if (SwingUtilities.isRightMouseButton(e)) {
+										String [] popMenuItems = {"", "New Constant Node", "New Level Node", "New Rate Node", "New Source Sink Node", "Add Flow Mode"};
+										
+										JPopupMenu menu = new JPopupMenu();
+										JMenuItem newAuxiliaryNodeMenuItem =
+												new JMenuItem(newAuxiliaryNodeAction);
+										menu.add(newAuxiliaryNodeMenuItem);
+										
+
+										JMenuItem newConstantNodeMenuItem =
+												new JMenuItem(newConstantNodeAction);
+										menu.add(newConstantNodeMenuItem);
+
+
+										JMenuItem newLevelNodeMenuItem =
+												new JMenuItem(newLevelNodeAction);
+										menu.add(newLevelNodeMenuItem);
+
+
+										JMenuItem newRateNodeMenuItem =
+												new JMenuItem(newRateNodeAction);
+										menu.add(newRateNodeMenuItem);
+
+
+										JMenuItem newSourceSinkNodeMenuItem =
+												new JMenuItem(newSourceSinkNodeAction);
+										menu.add(newSourceSinkNodeMenuItem);
+
+										menu.addSeparator();
+
+										JCheckBoxMenuItem addFlowModeCheckBoxMenuItem = new JCheckBoxMenuItem(toggleAddFlowAction);
+
+										menu.add(addFlowModeCheckBoxMenuItem);
+										menu.show(graph.get(idx), e.getX(), e.getY());  
+								      }
+									
+							      }
+							}
 
 							@Override
 							public void mouseReleased(MouseEvent e) {}
@@ -1582,6 +2019,7 @@ WindowListener {
 					newSubmodelAction.setEnabled(true);
 					chartDesignerAction.setEnabled(true);
 					addDescriptionAction.setEnabled(true);
+					globalFileEditorAction.setEnabled(true);
 					try {
 						int i=0;
 						for (SystemDynamicsGraph subGraph : graph) {
@@ -2171,7 +2609,13 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			String nodeName =
+			addAuxiliaryNode();
+
+		}
+	}
+	
+	private void addAuxiliaryNode(){
+		String nodeName =
 					NodeNameDialog.showNodeNameDialog(start, MainFrame.this,
 							messages.getString("MainFrame.MenuBar.Edit.NewAuxiliaryNode"),
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
@@ -2208,8 +2652,6 @@ WindowListener {
 				}
 
 			}
-
-		}
 	}
 
 	private class NewConstantNodeAction extends AbstractAction {
@@ -2223,6 +2665,12 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			addConstantNode();
+		}
+	}
+
+	private void addConstantNode(){
+		
 			NodeNameParameterDialog.NodeNameParameter newNodeNameParameter =
 					NodeNameParameterDialog.showNodeNameDialog(start, MainFrame.this,
 							messages.getString("MainFrame.MenuBar.Edit.NewConstantNode"),
@@ -2276,9 +2724,9 @@ WindowListener {
 				}
 
 			}
-		}
 	}
-
+	
+	
 	private class NewLevelNodeAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -2290,7 +2738,12 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			NodeNameParameterDialogLN.NodeNameParameterLN newNodeNameParameter =
+			addLevelNode();
+		}
+	}
+
+	private void addLevelNode(){
+		NodeNameParameterDialogLN.NodeNameParameterLN newNodeNameParameter =
 					NodeNameParameterDialogLN.showNodeNameDialog(start, MainFrame.this,
 							messages.getString("MainFrame.MenuBar.Edit.NewLevelNode"),
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"),
@@ -2362,9 +2815,9 @@ WindowListener {
 
 
 			}
-		}
 	}
-
+	
+	
 	private class NewRateNodeAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -2376,7 +2829,12 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			String nodeName =
+			addRateNode();
+		}
+	}
+
+	private void addRateNode(){
+		String nodeName =
 					NodeNameDialog.showNodeNameDialog(start, MainFrame.this,
 							messages.getString("MainFrame.MenuBar.Edit.NewRateNode"),
 							messages.getString("MainFrame.MenuBar.Edit.NewNodeName"));
@@ -2415,9 +2873,9 @@ WindowListener {
 				}
 
 			}
-		}
 	}
-
+	
+	
 	private class NewSourceSinkNodeAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -2429,7 +2887,12 @@ WindowListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
+			addSourceSinkNode();
+		}
+	}
+	
+	private void addSourceSinkNode(){
+		//gets the reference numbers for all submodels and adds them an array to be translated to an object later (in the if portion of the if...else statement that follows).
 			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
 			for(int i=1;i<=graph.size();i++){
 				SubmodelNumbers.add(i);
@@ -2449,8 +2912,8 @@ WindowListener {
 
 				}
 			}
-		}
 	}
+	
 	private class NewColoredSourceSinkNodeAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -3214,6 +3677,8 @@ WindowListener {
 		}
 
 	}
+	
+	
 	private class shareAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 		
@@ -3241,11 +3706,24 @@ WindowListener {
 					cells = graph.get(j).getSelectionCells();
 					if(cells.length!=0){
 						shareSubModel = j;
+						break;
 					}	
 				}
 			}
+			shareNode(shareSubModel, subModelIndex, cells);
 			
-			boolean noShareCircle = true;
+		}
+
+	}
+	
+	public void shareNode(SystemDynamicsGraph shareFrom, int subModelIndex, Object cell){
+		Object[] cells = {cell};
+		shareNode(graph.indexOf(shareFrom), subModelIndex, cells);
+	}
+	
+	
+	private void shareNode(int shareSubModel, int subModelIndex, Object[] cells){
+		boolean noShareCircle = true;
 			for(SharedNode sn: graph.get(shareSubModel).model.getSharedNodes()){
 				for(AuxiliaryNode an: graph.get(subModelIndex).model.getAuxiliaryNodes()){
 					if(sn.getSource() == an){
@@ -3253,12 +3731,7 @@ WindowListener {
 						break;
 					}
 				}
-//				for(ConstantNode cn: graph.get(subModelIndex).model.getConstantNodes()){
-//					if(sn.getSource() == cn){
-//						noShareCircle = false;
-//						break;
-//					}
-//				}
+
 				for(LevelNode ln: graph.get(subModelIndex).model.getLevelNodes()){
 					if(sn.getSource() == ln){
 						noShareCircle = false;
@@ -3298,10 +3771,9 @@ WindowListener {
 					
 				}
 			}
-		}
-
 	}
-
+	
+	
 	private class AddDescriptionAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 		
