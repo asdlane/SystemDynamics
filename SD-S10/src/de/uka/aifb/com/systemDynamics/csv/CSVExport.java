@@ -114,7 +114,7 @@ public class CSVExport {
       if (values == null) {
          throw new IllegalArgumentException("'values' must not be null.");
       }
-      if (values.length != numberColumns) {
+      if (values.length < 1) {
          throw new IllegalArgumentException("'values' has not the correct length.");
       }
       

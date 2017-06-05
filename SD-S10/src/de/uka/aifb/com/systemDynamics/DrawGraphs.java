@@ -1181,6 +1181,12 @@ public class DrawGraphs {
 				double maxRange = ((xIntercept-1)*.10)+(xIntercept-1);
 				if(folder.equals("phase2"))
 					xAxis2.setRange(0+6, (maxRange/30)+6);
+				else if(folder.equals("phase3"))
+					xAxis2.setRange(0+33, (maxRange/30)+33);
+				else if(folder.equals("phase4"))
+					xAxis2.setRange(0+45, (maxRange/30)+45);
+				else if(folder.equals("phase5"))
+					xAxis2.setRange(0+57, (maxRange/30)+57);
 				else
 					xAxis2.setRange(0, (maxRange/30));
 			}
@@ -1190,6 +1196,12 @@ public class DrawGraphs {
 				double maxRange = ((max_xIntercept)*.10)+(max_xIntercept);
 				if(chartObj.getGlobal() == 1 || folder.equals("phase2"))
 					xAxis2.setRange(0+6, (maxRange/30)+6);
+				else if(folder.equals("phase3"))
+					xAxis2.setRange(0+33, (maxRange/30)+33);
+				else if(folder.equals("phase4"))
+					xAxis2.setRange(0+45, (maxRange/30)+45);
+				else if(folder.equals("phase5"))
+					xAxis2.setRange(0+57, (maxRange/30)+57);
 				else
 					xAxis2.setRange(0, (maxRange/30));
 			}
@@ -1224,6 +1236,12 @@ public class DrawGraphs {
 				double maxRange = ((xIntercept-1)*.10)+(xIntercept-1);
 				if(folder.equals("phase2"))
 					xAxis2.setRange(0+6, (maxRange/90)+6);
+				else if(folder.equals("phase3"))
+					xAxis2.setRange(0+33, (maxRange/90)+33);
+				else if(folder.equals("phase4"))
+					xAxis2.setRange(0+45, (maxRange/90)+45);
+				else if(folder.equals("phase5"))
+					xAxis2.setRange(0+57, (maxRange/90)+57);
 				else
 					xAxis2.setRange(0, (maxRange/90));
 			}
@@ -1233,6 +1251,12 @@ public class DrawGraphs {
 				double maxRange = ((max_xIntercept)*.10)+(max_xIntercept);
 				if(chartObj.getGlobal() == 1 || folder.equals("phase2"))
 					xAxis2.setRange(0+6, (maxRange/90)+6);
+				else if(chartObj.getGlobal() == 1 || folder.equals("phase3"))
+					xAxis2.setRange(0+33, (maxRange/90)+33);
+				else if(chartObj.getGlobal() == 1 || folder.equals("phase4"))
+					xAxis2.setRange(0+45, (maxRange/90)+45);
+				else if(chartObj.getGlobal() == 1 || folder.equals("phase5"))
+					xAxis2.setRange(0+57, (maxRange/90)+57);
 				else
 					xAxis2.setRange(0, (maxRange/90));
 			}

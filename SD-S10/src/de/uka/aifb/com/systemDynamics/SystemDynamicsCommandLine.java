@@ -29,6 +29,7 @@ import de.uka.aifb.com.systemDynamics.xml.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -121,11 +122,20 @@ public class SystemDynamicsCommandLine {
 		ArrayList<String> headers = new ArrayList<String>();
 		ArrayList<double[]> values = new ArrayList<double[]>();
 		
+		int numberOfLevelNodes = 0;
+		int [] start = new int[model.size()];
+		
+		for(int i=0;i<model.size();i++){
+			start[i]=numberOfLevelNodes;
+			numberOfLevelNodes+=model.get(i).getLevelNodes().size();
+		}
+		
 		for(int k=0;k<numberRounds+1;k++){
-			values.add(new double[model.size()]);
+			values.add(new double[numberOfLevelNodes]);
 		}
 		
 		ArrayList<Model> orderedModels = executeInOrder(model);
+		
 		
 		for(int k=0;k<orderedModels.size();k++){
 			try {
@@ -145,14 +155,15 @@ public class SystemDynamicsCommandLine {
 			
 			for(int i=0;i<levelNodes.length;i++){
 //				if(i==0)
-					headers.add("SM"+(k+1)+":"+levelNodes[i].getNodeName());
+					headers.add("SM"+(model.indexOf(orderedModels.get(k))+1)+":"+levelNodes[i].getNodeName());
 		        	System.out.println("*************** execute values "+levelNodes[i].getNodeName()+" "+levelNodes[i].getStartValue()+" "+levelNodes[i].getCurrentValue());
 //				else
 //					headers.add(levelNodes[i].getNodeName());
 			}
 			
+			
 			for (int j = 0; j < levelNodes.length; j++) {
-				values.get(0)[model.indexOf(orderedModels.get(k))]=levelNodes[j].getCurrentValue();
+				values.get(0)[start[model.indexOf(orderedModels.get(k))]+j]=levelNodes[j].getCurrentValue();
 			}
 			
 			for (int i = 0; i < numberRounds; i++) {
@@ -163,18 +174,20 @@ public class SystemDynamicsCommandLine {
 				orderedModels.get(k).computeNextValues();
 				
 				for (int j = 0; j < levelNodes.length; j++) {
-					values.get(i+1)[model.indexOf(orderedModels.get(k))]=levelNodes[j].getCurrentValue();
+					values.get(i+1)[start[model.indexOf(orderedModels.get(k))]+j]=levelNodes[j].getCurrentValue();
 		        	System.out.println("*************** compute next values "+levelNodes[j].getNodeName()+" "+levelNodes[j].getStartValue()+" "+levelNodes[j].getCurrentValue());
 				}
 
+				System.out.println("&&&&&&&&&&&&  "+values.get(i+1).length);
 			}
-			
 			
 
 			System.out.println();
 			System.out.println("Export finished successfully.");
 //			return levelNodeMap;
 		}
+			
+		Collections.sort(headers);
 		
 		try {
 			if (exportCSV) {
@@ -183,7 +196,7 @@ public class SystemDynamicsCommandLine {
 //				for (int i = 0; i < columnNames.length; i++) {
 //					columnNames[i] = ;
 //				}
-				CSVExport csvExport =  new CSVExport(exportFileName, model.get(0).getModelName(), null);
+				CSVExport csvExport =  new CSVExport(exportFileName, model.get(0).getModelName(), headers.toArray(new String[0]));
 				
 				System.out.println("EXPORTERRORPOTENTIAL");
 //				csvExport.writeComment(CSVExport.COMMENT_START_SYMBOL+"SubModel ID : "+model.get(k).getModelID());
@@ -197,8 +210,9 @@ public class SystemDynamicsCommandLine {
 //					values[j] = levelNodes[j].getCurrentValue();
 //				}
 				
-				for(int i=0;i<values.size();i++)
-					csvExport.write(values.get(i));
+				for(int i=0;i<values.size();i++){
+					System.out.println("&&&&&&&&&&&&&&&&&&&&&&    "+values.get(i).length);
+					csvExport.write(values.get(i));}
 				csvExport.close();
 //				for (int i = 0; i < numberRounds; i++) {
 //					int newPercent = 100 * i / numberRounds;
