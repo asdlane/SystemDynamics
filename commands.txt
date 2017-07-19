@@ -1,32 +1,32 @@
 Pre-Phase 2
 -----------
-java -jar systemdynamics.jar -m Phase-2-Init.xml -r 90 -t csv -o output -h input.txt -c -1 2
+java -jar systemdynamicsCommandLine.jar -m Phase-2-Init.xml -r 90 -t csv -o output -h input.txt -c -1 2
 
 Phase 2
 -------
 java -jar systemdynamics.jar -m Phase-2.xml -r 180 -t csv -o output -h input.txt -c 0 2
 java -jar systemdynamics.jar -m Phase-2.xml -r 180 -t csv -o output -h input_2.txt -c 1 2
-java -jar systemdynamics.jar -m Phase-2.xml -r 180 -t csv -o output -h input_2.txt -c 2 2
+java -jar systemdynamicsCommandLine.jar -m Phase-2.xml -r 180 -t csv -o output -h input_2.txt -c 2 2
 java -jar systemdynamics.jar -m Phase-2.xml -r 180 -t csv -o output -h input_2.txt -c 3 2
 
 
 Phase 3
 -------
-java -jar systemdynamics.jar -m Phase-3.xml -r 90 -t csv -o output -h input_3.txt -c 0 3
+java -jar systemdynamicsCommandLine.jar -m Phase-3.xml -r 90 -t csv -o output -h input_3.txt -c 0 3
 java -jar systemdynamics.jar -m Phase-3.xml -r 90 -t csv -o output -h input_3.txt -c 1 3
 java -jar systemdynamics.jar -m Phase-3.xml -r 90 -t csv -o output -h input_3.txt -c 2 3
 java -jar systemdynamics.jar -m Phase-3.xml -r 90 -t csv -o output -h input_3.txt -c 3 3
 
 Phase 4
 -------
-java -jar systemdynamics.jar -m Phase-4.xml -r 90 -t csv -o output -h input_4.txt -c 0 4
+java -jar systemdynamicsCommandLine.jar -m Phase-4.xml -r 90 -t csv -o output -h input_4.txt -c 0 4
 java -jar systemdynamics.jar -m Phase-4.xml -r 90 -t csv -o output -h input_4.txt -c 1 4
 java -jar systemdynamics.jar -m Phase-4.xml -r 90 -t csv -o output -h input_4.txt -c 2 4
 java -jar systemdynamics.jar -m Phase-4.xml -r 90 -t csv -o output -h input_4.txt -c 3 4
 
 Phase 5
 -------
-java -jar systemdynamics.jar -m Phase-5.xml -r 180 -t csv -o output -h input_5.txt -c 0 5
+java -jar systemdynamicsCommandLine.jar -m Phase-5.xml -r 180 -t csv -o output -h input_5.txt -c 0 5
 java -jar systemdynamics.jar -m Phase-5.xml -r 180 -t csv -o output -h input_5.txt -c 1 5
 
 GUI

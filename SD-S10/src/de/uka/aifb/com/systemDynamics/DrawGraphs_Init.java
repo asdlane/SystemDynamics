@@ -116,7 +116,7 @@ public class DrawGraphs_Init {
 			LevelNodeGraphInfo levelNodeInfo = new LevelNodeGraphInfo();
 			levelNodeInfo.setId(lNode.getLevelIdRef());
 			levelNodeInfo.setNodeName(lNode.getLevelIdRef());
-			System.out.println("__________________"+lNode.getLevelIdRef());
+//			System.out.println("__________________"+lNode.getLevelIdRef());
 
 //			System.out.println("*+++++++++++++++++++++++++++++   levelnodes entrySet in drawgraph_init");
 //			for(Map.Entry<String, String> e : levelNodes.entrySet() ){
@@ -161,9 +161,9 @@ public class DrawGraphs_Init {
 		
 		
 
-		System.out.println("+++++++++++++++++++++++++++++ init  max interceptpn cal in draw_graphs");
-		System.out.println(max_xIntercept+"    global: "+chartObj.getGlobal());
-		System.out.println("+++++++++++++++++++++++++++++");
+//		System.out.println("+++++++++++++++++++++++++++++ init  max interceptpn cal in draw_graphs");
+//		System.out.println(max_xIntercept+"    global: "+chartObj.getGlobal());
+//		System.out.println("+++++++++++++++++++++++++++++");
 
 		//Initialization of the new values required to store the configurable dates
 		double initValue = 0.001;
@@ -182,7 +182,7 @@ public class DrawGraphs_Init {
 
 		for (int i = -1; i < run; i++) {
 			String outputFile = getFileName(i, fname);
-			System.out.println("___________outputfile   "+outputFile);
+//			System.out.println("___________outputfile   "+outputFile);
 			CsvReader products = new CsvReader(outputFile, ';');
 			products.skipLine();
 			products.readHeaders();
@@ -193,7 +193,7 @@ public class DrawGraphs_Init {
 
 			if(iter ==0){
 				for (int j=0;j<productHeaders.length;j++) {
-					System.out.println("___________product headers   "+productHeaders[j]);
+//					System.out.println("___________product headers   "+productHeaders[j]);
 					if(productHeaders[j].equalsIgnoreCase("pdr_date")){
 						pdr_date_index = j;
 					}
@@ -218,20 +218,20 @@ public class DrawGraphs_Init {
 			
 			
 
-			System.out.println("+++++++++++++++++++++++++++++  isr_date or cdr_date index in draw_graphs");
-			System.out.println( pdr_date_index );
-			System.out.println( prr_date_index );
-			System.out.println( isr_date_index );
-			System.out.println( cdr_date_index );
-			System.out.println( frr_date_index );
-			System.out.println("+++++++++++++++++++++++++++++");
+//			System.out.println("+++++++++++++++++++++++++++++  isr_date or cdr_date index in draw_graphs");
+//			System.out.println( pdr_date_index );
+//			System.out.println( prr_date_index );
+//			System.out.println( isr_date_index );
+//			System.out.println( cdr_date_index );
+//			System.out.println( frr_date_index );
+//			System.out.println("+++++++++++++++++++++++++++++");
 
 			while (products.readRecord()) {
 
 				for (LevelNodeGraphInfo lnode : levelVector) {
 					if(iter == 0){
 						String records  = products.getRawRecord();
-						System.out.println("RECORDS "+records);
+//						System.out.println("RECORDS "+records);
 						String[] recordEntries = records.split(";");
 
 
@@ -267,15 +267,15 @@ public class DrawGraphs_Init {
 							max_xIntercept = (int)cdr_date;
 
 
-						System.out.println("+++++++++++++++++++++++++++++  isr_date or cdr_date max interceptpn cal in draw_graphs");
-						System.out.println(max_xIntercept+"    cdr: "+(int)cdr_date+"   isr:"+(int)isr_date);
-						System.out.println("+++++++++++++++++++++++++++++");
+//						System.out.println("+++++++++++++++++++++++++++++  isr_date or cdr_date max interceptpn cal in draw_graphs");
+//						System.out.println(max_xIntercept+"    cdr: "+(int)cdr_date+"   isr:"+(int)isr_date);
+//						System.out.println("+++++++++++++++++++++++++++++");
 						
 						
 						
 						iter +=1;
 					}
-					System.out.println(lnode.getNodeName());
+//					System.out.println(lnode.getNodeName());
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 					if(chartObj.getFStep() == 1)
 					{
@@ -357,9 +357,9 @@ public class DrawGraphs_Init {
 			double [] planValues = new double[1891];
 			int planValueIndex = 0;
 			
-		System.out.println("+++++++++++++++++++++++++++++  max interceptpn cal in draw_graphs");
-		System.out.println(max_xIntercept+"    x2: "+x2);
-		System.out.println("+++++++++++++++++++++++++++++");
+//		System.out.println("+++++++++++++++++++++++++++++  max interceptpn cal in draw_graphs");
+//		System.out.println(max_xIntercept+"    x2: "+x2);
+//		System.out.println("+++++++++++++++++++++++++++++");
 		
 			if (x2 >= max_xIntercept)
 				break;

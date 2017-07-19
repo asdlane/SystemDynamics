@@ -256,7 +256,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		// insert mappings
 		modelNode2graphNode.put(levelNode, levelNodeGraphCell);
 		graphNode2modelNode.put(levelNodeGraphCell, levelNode);
-	    System.out.println("this is a newly mapped levelnode "+levelNode.toString());
+//	    System.out.println("this is a newly mapped levelnode "+levelNode.toString());
 
 		// inform listeners
 		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
@@ -284,9 +284,10 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 			((LevelNode) source).addSharedNode(sharedNode);
 			sharedNode.setSource(source);
 		}
-		else
+		else{
+//			((ConstantNode)source).setShared(true);
 			sharedNode.setSource(source);
-		
+		}
 		
 		//create graph cell with the attribute map attached to it.
 		SharedNodeGraphCell sharedNodeGraphCell = new SharedNodeGraphCell(x,y,vals,SharedPointer);
@@ -381,7 +382,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		// insert mappings
 		modelNode2graphNode.put(constantNode, constantNodeGraphCell);
 		graphNode2modelNode.put(constantNodeGraphCell, constantNode);
-	    System.out.println("this is a newly mapped constantnode "+constantNode.toString());
+//	    System.out.println("this is a newly mapped constantnode "+constantNode.toString());
 
 		// inform listeners
 		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {
@@ -454,7 +455,7 @@ public class SystemDynamicsGraph extends JGraph implements GraphModelListener {
 		// insert mappings
 		modelNode2graphNode.put(sourceSinkNode, sourceSinkNodeGraphCell);
 		graphNode2modelNode.put(sourceSinkNodeGraphCell, sourceSinkNode);
-	    System.out.println("this is a newly mapped sourceSinknode "+sourceSinkNode.toString());
+//	    System.out.println("this is a newly mapped sourceSinknode "+sourceSinkNode.toString());
 
 		// inform listeners
 		for (SystemDynamicsGraphModifiedEventListener listener : listeners) {

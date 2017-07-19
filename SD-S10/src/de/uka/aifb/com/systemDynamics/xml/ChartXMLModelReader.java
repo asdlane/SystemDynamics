@@ -103,8 +103,8 @@ public class ChartXMLModelReader {
 
 			NodeList ChartlevelNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartLevelNodes/ChartLevelNode", document,
 					XPathConstants.NODESET);
-			System.out.println(ChartlevelNodeElements.getLength());
-			System.out.println(id);
+			// System.out.println(ChartlevelNodeElements.getLength());
+			// System.out.println(id);
 			
 
 			NodeList ChartPlanNodeElements = (NodeList)xpath.evaluate("/Charts/Chart[@id='"+id+"']/ChartPlanNodes/ChartPlanNode", document,
@@ -117,7 +117,7 @@ public class ChartXMLModelReader {
 			for(int j=0;j<ChartlevelNodeElements.getLength();j++){
 				Element ChartlevelNodeElement = (Element)ChartlevelNodeElements.item(j);
 				String levelNodeIdRef = ChartlevelNodeElement.getAttribute("levelNodeIdRef");
-				System.out.println(i);
+				// System.out.println(i);
 				String label = ChartlevelNodeElement.getAttribute("label");
 				blankModel.createChartLevelNode(levelNodeIdRef, label);
 

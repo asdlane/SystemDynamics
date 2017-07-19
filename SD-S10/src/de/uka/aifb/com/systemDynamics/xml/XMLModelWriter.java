@@ -209,7 +209,7 @@ public class XMLModelWriter {
 
 				try{
 					System.out.println("GOT HERE");
-					System.out.println(node2Id.size());
+					// System.out.println(node2Id.size());
 					addPositionInformationToDocument(document.get(i), graph.get(i), graphNodes, flowEdges, dependencyEdges,
 							node2Id);
 				}
@@ -274,7 +274,7 @@ public class XMLModelWriter {
 
 		try{
 
-			System.out.println(graph.model.getSourceSinkNodes().size());
+			// System.out.println(graph.model.getSourceSinkNodes().size());
 			document = createDocumentForModel(graph.model, submodelColor, node2Id, 0, archive);
 			// add position information of nodes and additional control points to DOC document
 
@@ -848,7 +848,7 @@ public class XMLModelWriter {
 				continue;
 			}
 			String modelNodeId = node2Id.get(graph.getModelNode(node));
-			System.out.println("this is node get from graph map cell "+graph.getModelNode(node).toString());
+			// System.out.println("this is node get from graph map cell "+graph.getModelNode(node).toString());
 			
 
 			if (node instanceof AuxiliaryNodeGraphCell) {
@@ -891,7 +891,7 @@ public class XMLModelWriter {
 			}
 			if (node instanceof LevelNodeGraphCell) {
 				try {
-					System.out.println(modelNodeId);
+					// System.out.println(modelNodeId);
 					Element levelNodeElement =
 							(Element)xpath.evaluate("/SubModel/Nodes/LevelNodes/LevelNode[@id='" + modelNodeId + "']",
 									document, XPathConstants.NODE);

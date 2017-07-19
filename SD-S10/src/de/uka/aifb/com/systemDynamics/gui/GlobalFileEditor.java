@@ -75,6 +75,7 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 	private Action saveAction;
 	private Action closeAction;
 	private Action addVarAction;
+	private Action deleteVarAction;
 	private Action openHelpDocAction;
 	private JPanel contentPanel;
 	private JPanel varsPanelPointer;
@@ -144,7 +145,10 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 		closeAction = new closeAction("Close File", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(CLOSE_ICON)), "Close File");
 		
 		
-		addVarAction = new addVarAction("Add Chart", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ADD_VAR_ICON)),
+		addVarAction = new addVarAction("Add Variable", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ADD_VAR_ICON)),
+				"Add Chart");
+		
+		deleteVarAction = new addVarAction("Delete Variable", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ADD_VAR_ICON)),
 				"Add Chart");
 		
 		openHelpDocAction = new openHelpDocAction("Open Help Document", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(HELP_DOC_ICON)),
@@ -206,10 +210,10 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 		      JButton addButton = new JButton("Add new variable");
 		      addButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String name = JOptionPane.showInputDialog(null,"Variable Name:","Name",JOptionPane.PLAIN_MESSAGE);
+						final String name = JOptionPane.showInputDialog(null,"Variable Name:","Name",JOptionPane.PLAIN_MESSAGE);
 						String value = JOptionPane.showInputDialog(null,"Variable Value:","Value",JOptionPane.PLAIN_MESSAGE);
 						
-						JPanel varPanel = new JPanel();
+						final JPanel varPanel = new JPanel();
 						varsPanel.add(varPanel);
 						varPanel.setLayout(new GridLayout(2,1));
 
@@ -304,7 +308,37 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 					    });
 
 					    buttonPanel2.add(editButton);
-					    
+
+					    JButton deleteButton = new JButton("Delete");
+					    deleteButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								Object[] options = { "Yes", "No" };
+								int selectedOption = JOptionPane.showOptionDialog(GlobalFileEditor.this,
+										"Do you really want to delete current variable?",
+										"Confirm deleting",
+										JOptionPane.YES_NO_OPTION,
+										JOptionPane.QUESTION_MESSAGE,
+										null, // don't use a custom Icon
+										options,
+										options[1]); // default button title
+
+								if (selectedOption == 1) {
+									// do not close graph
+									return;
+								}
+								varsPanel.remove(varPanel);
+
+								vars.remove(name);
+								
+
+								contentPanel.repaint();
+								contentPanel.revalidate();
+								
+							}
+
+					    });
+
+					    buttonPanel2.add(deleteButton);
 
 					    buttonsPanel.add("bp2",buttonPanel2);
 					    buttonsPanel.add("bp1",buttonPanel);
@@ -439,9 +473,9 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 		}
 		
 	}
-	private JPanel createVarPanel(String name, String value){
+	private JPanel createVarPanel(final String name, String value){
 			
-			JPanel varPanel = new JPanel();
+			final JPanel varPanel = new JPanel();
 			varPanel.setLayout(new GridLayout(2,1));			
 
 			final JPanel editPanel = new JPanel();
@@ -533,6 +567,37 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 
 		    buttonPanel2.add(editButton);
 		    
+
+		    JButton deleteButton = new JButton("Delete");
+		    deleteButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Object[] options = { "Yes", "No" };
+					int selectedOption = JOptionPane.showOptionDialog(GlobalFileEditor.this,
+							"Do you really want to delete current variable?",
+							"Confirm deleting",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null, // don't use a custom Icon
+							options,
+							options[1]); // default button title
+
+					if (selectedOption == 1) {
+						// do not close graph
+						return;
+					}
+					varsPanelPointer.remove(varPanel);
+
+					vars.remove(name);
+					
+
+					contentPanel.repaint();
+					contentPanel.revalidate();
+					
+				}
+
+		    });
+
+		    buttonPanel2.add(deleteButton);
 
 		    buttonsPanel.add("bp2",buttonPanel2);
 		    buttonsPanel.add("bp1",buttonPanel);
@@ -670,10 +735,10 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 		@Override
 
 		public void actionPerformed(ActionEvent e){
-			String name = JOptionPane.showInputDialog(null,"Variable Name:","Name",JOptionPane.PLAIN_MESSAGE);
+			final String name = JOptionPane.showInputDialog(null,"Variable Name:","Name",JOptionPane.PLAIN_MESSAGE);
 			String value = JOptionPane.showInputDialog(null,"Variable Value:","Value",JOptionPane.PLAIN_MESSAGE);
 			
-			JPanel varPanel = new JPanel();
+			final JPanel varPanel = new JPanel();
 			varsPanelPointer.add(varPanel);
 			varPanel.setLayout(new GridLayout(2,1));
 
@@ -769,6 +834,37 @@ public class GlobalFileEditor extends JFrame implements WindowListener{
 
 		    buttonPanel2.add(editButton);
 		    
+
+		    JButton deleteButton = new JButton("Delete");
+		    deleteButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Object[] options = { "Yes", "No" };
+					int selectedOption = JOptionPane.showOptionDialog(GlobalFileEditor.this,
+							"Do you really want to delete current variable?",
+							"Confirm deleting",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null, // don't use a custom Icon
+							options,
+							options[1]); // default button title
+
+					if (selectedOption == 1) {
+						// do not close graph
+						return;
+					}
+					varsPanelPointer.remove(varPanel);
+
+					vars.remove(name);
+					
+
+					contentPanel.repaint();
+					contentPanel.revalidate();
+					
+				}
+
+		    });
+		    
+		    buttonPanel2.add(deleteButton);
 
 		    buttonsPanel.add("bp2",buttonPanel2);
 		    buttonsPanel.add("bp1",buttonPanel);

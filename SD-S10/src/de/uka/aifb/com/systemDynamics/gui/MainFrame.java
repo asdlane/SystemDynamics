@@ -53,6 +53,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.*;
 
 import org.jgraph.*;
+import org.jgraph.event.GraphSelectionEvent;
+import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
@@ -112,6 +114,7 @@ WindowListener {
 	private static final String FILE_NEW_SSN_ICON = "resources/new_source_sink_node_en_US.png";
 	private static final String FILE_NEW_SSN_de_DE_ICON = "resources/new_source_sink_node_de_DE.png";
 	private static final String SUBMODEL_icon = "resources/submodel.png";
+	private static final String DELETE_icon = "resources/delete.png";
 
 	private static final String FILE_ENTER_ADD_FLOW_MODE_ICON = "resources/disconnect.png";
 	private static final String FILE_LEAVE_ADD_FLOW_MODE_ICON = "resources/connect.png";
@@ -175,6 +178,7 @@ WindowListener {
 	private Action copyActionFunction = javax.swing.TransferHandler.getCopyAction();
 	private Action pasteActionFunction = javax.swing.TransferHandler.getPasteAction();
 	private Action newSubmodelAction;
+	private Action deleteSubmodelAction;
 	private Action importAction;
 	private Action shareAction;
 	private Action addDescriptionAction;
@@ -357,6 +361,9 @@ WindowListener {
 		
 		newSubmodelAction = new NewSubmodelAction("New Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(SUBMODEL_icon)), "Create New Submodel");
 		newSubmodelAction.setEnabled(false);
+		deleteSubmodelAction = new DeleteSubmodelAction("Delete Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(DELETE_icon)), "Delete Submodel");
+		deleteSubmodelAction.setEnabled(false);
+		
 		importAction = new importAction("Import", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(IMPORT_ICON)), "Import Submodel");
 		ArchiveSubmodelAction = new ArchiveSubmodelAction("Archive Submodel", new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(ARCHIVE_ICON)),"Archive Submodel");
 		ArchiveSubmodelAction.setEnabled(false);
@@ -725,6 +732,7 @@ WindowListener {
 		toolBar.add(changeModelNameAction);
 		toolBar.add(addDescriptionAction);
 		toolBar.add(newSubmodelAction);
+		toolBar.add(deleteSubmodelAction);
 
 		toolBar.addSeparator();
 
@@ -925,7 +933,28 @@ WindowListener {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                           Actions
 	////////////////////////////////////////////////////////////////////////////////////////////////////   
+	
+	private class NewGraphSelectionListener implements GraphSelectionListener{
+		
+		private SystemDynamicsGraph thisGraph;
 
+	    public NewGraphSelectionListener(SystemDynamicsGraph thisGraph) {
+	        this.thisGraph=thisGraph;
+	    }
+
+		@Override
+		public void valueChanged(GraphSelectionEvent arg0) {
+			if(arg0.isAddedCell()){
+					for(int i=0; i<graph.size(); i++){
+						if(graph.get(i)!=thisGraph){
+							graph.get(i).getSelectionModel().clearSelection();
+						}
+					}
+			}
+		}
+		
+	}
+	
 	private class NewAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -961,6 +990,7 @@ WindowListener {
 
 				graphNew = new SystemDynamicsGraph(start, MainFrame.this);
 				graph.add(graphNew);
+				graphNew.getSelectionModel().addGraphSelectionListener(new NewGraphSelectionListener(graphNew));
 				GraphNumber.setText("1");
 				if (modelName != null) {
 					DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
@@ -1143,6 +1173,7 @@ WindowListener {
 					saveAction.setEnabled(false);
 					saveAsAction.setEnabled(false);
 					newSubmodelAction.setEnabled(true);
+					deleteSubmodelAction.setEnabled(true);
 					ArchiveSubmodelAction.setEnabled(false);
 					newAuxiliaryNodeAction.setEnabled(true);
 					newConstantNodeAction.setEnabled(true);
@@ -1200,6 +1231,52 @@ WindowListener {
 		
 	}
 	
+	private class DeleteSubmodelAction extends AbstractAction{
+
+
+		public DeleteSubmodelAction(String name, Icon icon, String toolTipText) {
+			super(name, icon);
+
+			putValue(Action.SHORT_DESCRIPTION, toolTipText);
+
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			ArrayList<Integer> SubmodelNumbers = new ArrayList<Integer>();
+			for(int i=1;i<=graph.size();i++){
+				SubmodelNumbers.add(i);
+			}
+			JFrame frame = new JFrame("InputDialog");
+			Object[] choices = SubmodelNumbers.toArray();
+			if(choices.length>0){
+				/** need to change: remove from the sharedlist in other submodels' nodes, set 'shared' attribute if necessary */
+				int subModelIndex = (Integer)JOptionPane.showInputDialog(frame,"Which submodel to delete?","Delete submodel",JOptionPane.PLAIN_MESSAGE,null,choices,choices[0]);
+				SystemDynamicsGraph removed = graph.get(subModelIndex-1);
+				
+				 if(choices.length==1){
+//					graph.remove(subModelIndex-1);
+//					modelPanel.remove(subModelIndex-1);
+//					modelPanel.revalidate();
+				}
+				else{
+					if(removed.model.hasNodesShared()){
+						JOptionPane.showMessageDialog(null, "Cannot share this Node: Submodel "+subModelIndex+" still has some nodes which are shared to other Submodels");
+					}
+					else{		
+						graph.remove(subModelIndex-1);
+						modelPanel.remove(subModelIndex-1);
+						modelPanel.revalidate();
+					}
+				}
+			}
+
+		}
+	}
+	
+	
+	
 	private class NewSubmodelAction extends AbstractAction {
 
 		private static final long serialVersionUID = 1L;
@@ -1217,6 +1294,8 @@ WindowListener {
 			final int subIndex = graph.size();
 			//add it to the model
 			graph.add(newSubmodel);
+			
+			newSubmodel.getSelectionModel().addGraphSelectionListener(new NewGraphSelectionListener(newSubmodel));
 
 			//create scroll pane for the new submodel
 
@@ -1492,6 +1571,8 @@ WindowListener {
 					final SystemDynamicsGraph Submodel = graph.get(i);
 					modelPanel.add(submodelScroll);
 					final int idx = i;
+					graph.get(i).getSelectionModel().addGraphSelectionListener(new NewGraphSelectionListener(graph.get(i)));
+					
 					graph.get(i).addKeyListener(new KeyListener(){
 
 						@Override
@@ -1671,6 +1752,7 @@ WindowListener {
 				changeModelNameAction.setEnabled(true);
 				executeModelAction.setEnabled(true);
 				newSubmodelAction.setEnabled(true);
+				deleteSubmodelAction.setEnabled(true);
 				zoomStandardAction.setEnabled(true);
 				zoomInAction.setEnabled(true);
 				zoomOutAction.setEnabled(true);
@@ -1832,6 +1914,8 @@ WindowListener {
 						graph.get(i).revalidate();
 						graph.get(i).repaint();
 						graph.get(i).enableInputMethods(true);
+						graph.get(i).getSelectionModel().addGraphSelectionListener(new NewGraphSelectionListener(graph.get(i)));
+						
 						graph.get(i).addKeyListener(new KeyListener(){
 
 							@Override
@@ -2017,6 +2101,7 @@ WindowListener {
 					copyAction.setEnabled(true);
 					pasteAction.setEnabled(true);
 					newSubmodelAction.setEnabled(true);
+					deleteSubmodelAction.setEnabled(true);
 					chartDesignerAction.setEnabled(true);
 					addDescriptionAction.setEnabled(true);
 					globalFileEditorAction.setEnabled(true);

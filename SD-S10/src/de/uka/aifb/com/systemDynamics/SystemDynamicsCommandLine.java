@@ -156,7 +156,7 @@ public class SystemDynamicsCommandLine {
 			for(int i=0;i<levelNodes.length;i++){
 //				if(i==0)
 					headers.add("SM"+(model.indexOf(orderedModels.get(k))+1)+":"+levelNodes[i].getNodeName());
-		        	System.out.println("*************** execute values "+levelNodes[i].getNodeName()+" "+levelNodes[i].getStartValue()+" "+levelNodes[i].getCurrentValue());
+//		        	System.out.println("*************** execute values "+levelNodes[i].getNodeName()+" "+levelNodes[i].getStartValue()+" "+levelNodes[i].getCurrentValue());
 //				else
 //					headers.add(levelNodes[i].getNodeName());
 			}
@@ -175,10 +175,10 @@ public class SystemDynamicsCommandLine {
 				
 				for (int j = 0; j < levelNodes.length; j++) {
 					values.get(i+1)[start[model.indexOf(orderedModels.get(k))]+j]=levelNodes[j].getCurrentValue();
-		        	System.out.println("*************** compute next values "+levelNodes[j].getNodeName()+" "+levelNodes[j].getStartValue()+" "+levelNodes[j].getCurrentValue());
+		        	// System.out.println("*************** compute next values "+levelNodes[j].getNodeName()+" "+levelNodes[j].getStartValue()+" "+levelNodes[j].getCurrentValue());
 				}
 
-				System.out.println("&&&&&&&&&&&&  "+values.get(i+1).length);
+				// System.out.println("&&&&&&&&&&&&  "+values.get(i+1).length);
 			}
 			
 
@@ -211,7 +211,6 @@ public class SystemDynamicsCommandLine {
 //				}
 				
 				for(int i=0;i<values.size();i++){
-					System.out.println("&&&&&&&&&&&&&&&&&&&&&&    "+values.get(i).length);
 					csvExport.write(values.get(i));}
 				csvExport.close();
 //				for (int i = 0; i < numberRounds; i++) {
@@ -433,7 +432,31 @@ public class SystemDynamicsCommandLine {
 							preList.putAll(initMap);
 							flag = 1;
 						}
-
+						
+						else if(args[11].equals("0")){
+							int prephase = Integer.parseInt(args[12])-1;
+							int nRounds = Integer.parseInt(args[12])==3?180:90;
+							
+							int i=0;
+							while(true){
+								
+								File f = new File("phase"+prephase+"/"+ initFilename + "_"+i);
+								if(f.exists()) { 
+								    i++;
+								}
+								else
+									break;
+							}
+							
+							i--;
+							
+							
+							initMap = preProcess.cycle0PreProcess("phase"+prephase+"/"+ initFilename + "_"+i,nRounds);
+							preList.putAll(initMap);
+//							System.out.println("0000000000000000000  "+preList.size());
+							flag = 1;
+						}
+						
 //
 //						System.out.println("+++++++++++++++++++++++++++++   clist entrySet");
 //						for(Map.Entry<String, String> e : clist.entrySet() ){
@@ -444,9 +467,7 @@ public class SystemDynamicsCommandLine {
 						
 						modelName = preProcess.preprocess(modelFileName, clist, glist, preList, run, flag);
 					
-						System.out.println("+++++++++++++++++++++++++++++   new transform file name in doMain");
-						System.out.println(modelName);
-						System.out.println("+++++++++++++++++++++++++++++");
+						
 						
 						
 					
@@ -556,7 +577,7 @@ public class SystemDynamicsCommandLine {
 		}
 		System.out.println("Graphs Generated");
 		phaseCycle--;
-		PostProcess.writeInputPhase(args[9], exportFileName, numberRounds, Integer.parseInt(args[12]));
+//		PostProcess.writeInputPhase(args[9], exportFileName, numberRounds, Integer.parseInt(args[12]));
 //		PostProcess.writeInput(exportFileName, numberRounds, Integer.parseInt(args[12]));
 		//Graphs
 		// DrawGraphs graphs = new DrawGraphs();

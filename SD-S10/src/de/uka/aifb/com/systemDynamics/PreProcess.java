@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import com.csvreader.CsvReader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.io.BufferedReader;
@@ -66,7 +67,7 @@ public class PreProcess {
 		
 		for (int index = 0; index < nHeader; index++) {
 			headers[index] = modelOutput.get(index);
-//			System.out.println("+++++++++++++++++++++++++++++");
+//			System.out.println("+++++++++++++++++++++++++++++     phase2PreProcess");
 //			System.out.println(headers[index]);
 //			System.out.println("+++++++++++++++++++++++++++++");
 		}
@@ -89,7 +90,7 @@ public class PreProcess {
 			map.put(headers[index], modelOutput.get(index));
 		}
 		
-//
+
 //		System.out.println("+++++++++++++++++++++++++++++   map entrySet in phase2preprocess for 0 2");
 //		for(Map.Entry<String, String> e : map.entrySet() ){
 //			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
@@ -99,6 +100,47 @@ public class PreProcess {
 		return map;
 	}
 
+	public HashMap<String, String> cycle0PreProcess(String outputName, int nRounds) throws Exception {
+
+		CsvReader modelOutput = new CsvReader(outputName, ';');
+		modelOutput.readHeaders();
+		modelOutput.getCurrentRecord();
+		modelOutput.readRecord();
+		int nHeader = modelOutput.getColumnCount();
+		String headers[] = new String[nHeader];
+		
+		for (int index = 0; index < nHeader; index++) {
+			headers[index] = modelOutput.get(index);
+//			System.out.println("+++++++++++++++++++++++++++++     cycle0PreProcess");
+//			System.out.println(headers[index]);
+//			System.out.println("+++++++++++++++++++++++++++++");
+		}
+		
+		int index = 0;
+		
+		while (index != nRounds) {
+			modelOutput.readRecord();
+
+			index++;
+		}
+
+		// Get Variables
+		HashMap<String, String> map = new HashMap<String, String>();
+		modelOutput.readRecord();
+		long line = modelOutput.getCurrentRecord();
+		for (index = 0; index < nHeader; index++) {
+			map.put(headers[index], modelOutput.get(index));
+		}
+		
+
+//		System.out.println("+++++++++++++++++++++++++++++   map entrySet in phase2preprocess for 0 2");
+//		for(Map.Entry<String, String> e : map.entrySet() ){
+//			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//		}
+//		System.out.println("+++++++++++++++++++++++++++++");
+		
+		return map;
+	}
 	/**
 	 * @param fname
 	 * @param clist
@@ -127,12 +169,12 @@ public class PreProcess {
 				tmplist.put(e.getKey(), e.getValue());
 		}
 		
-
-		System.out.println("+++++++++++++++++++++++++++++   tmp_map entrySet in preprocess");
-		for(Map.Entry<String, String> e : tmplist.entrySet() ){
-			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
-		}
-		System.out.println("+++++++++++++++++++++++++++++");
+//
+//		System.out.println("+++++++++++++++++++++++++++++   tmp_map entrySet in preprocess");
+//		for(Map.Entry<String, String> e : tmplist.entrySet() ){
+//			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//		}
+//		System.out.println("+++++++++++++++++++++++++++++");
 		
 		// System.out.println("Root element :"
 		// + doc.getDocumentElement().getNodeName());
@@ -172,6 +214,9 @@ public class PreProcess {
 					name = attr.getValue();
 			}
 			
+			if(prelist.containsKey(name))
+				oldvalue = Double.parseDouble(prelist.get("SM"+submodelId+":"+name));
+			
 			oldValueMap.put("SM"+submodelId+":"+name,oldvalue);
 		}
 		
@@ -204,12 +249,12 @@ public class PreProcess {
 		transformer.transform(source, result);
 
 		String xmlString = result.getWriter().toString();
-		// System.out.println(xmlString);
+//		 System.out.println("********************************************* "+filename);
 		FileWriter writer = new FileWriter(filename);
 		writer.write(xmlString);
 		writer.flush();
 		writer.close();
-
+		
 	}
 
 	/**
@@ -289,18 +334,18 @@ public class PreProcess {
 
 		NamedNodeMap attrs = nNode.getAttributes();
 
-		System.out.println("+++++++++++++++++++++++++++++   cl_map entrySet in setAttr1");
-		for(Map.Entry<String, String> e : cl_map.entrySet() ){
-			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
-		}
-		System.out.println("+++++++++++++++++++++++++++++");
-		
-
-		System.out.println("+++++++++++++++++++++++++++++   pre_map entrySet in setAttr1");
-		for(Map.Entry<String, String> e : pre_map.entrySet() ){
-			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
-		}
-		System.out.println("+++++++++++++++++++++++++++++");
+//		System.out.println("+++++++++++++++++++++++++++++   cl_map entrySet in setAttr1");
+//		for(Map.Entry<String, String> e : cl_map.entrySet() ){
+//			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//		}
+//		System.out.println("+++++++++++++++++++++++++++++");
+//		
+//
+//		System.out.println("+++++++++++++++++++++++++++++   pre_map entrySet in setAttr1");
+//		for(Map.Entry<String, String> e : pre_map.entrySet() ){
+//			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+//		}
+//		System.out.println("+++++++++++++++++++++++++++++");
 		
 		
 		
@@ -320,13 +365,13 @@ public class PreProcess {
 			int offset = 2;
 			if(flag == 0)
 			{
-				System.out.println("========================== enter here 0 1");
+//				System.out.println("========================== enter here 0 1");
 				if (attribute.getName().equals("name")
 						&& (cl_map.get(attr) != null)) {
 					// System.out.println(attribute.getValue());
 
 
-					System.out.println("========================== enter here 0 2");
+//					System.out.println("========================== enter here 0 2");
 					String processing = cl_map.get(attr);
 					if(processing.endsWith("%"))
 					{
@@ -340,7 +385,7 @@ public class PreProcess {
 					else if(!processing.equals(""))
 					{
 
-						System.out.println("========================== enter here 0 3");
+//						System.out.println("========================== enter here 0 3");
 						Attr tempAttr = (Attr) attrs.item(i + offset);
 						tempAttr.setValue(calculate(cl_map.get(attr),Double.parseDouble(tempAttr.getValue()),oldValueMap));					
 					}
@@ -348,20 +393,19 @@ public class PreProcess {
 			}
 			else
 			{// enter when 0 2
+				
+				
 				if (attribute.getName().equals("name")
 						&& (pre_map.get(attr) != null)) {
-					// System.out.println(attribute.getValue());
-
-					System.out.println("========================== enter here");
 					
-					if(cl_map.get(attr) != null)
+					if(cl_map.get(attr) != null && !cl_map.get(attr).equals("") )
 					{
-						System.out.println("========================== enter here 2 "+cl_map.get(attr));
+//						System.out.println("========================== enter here 2 "+cl_map.get(attr));
 						String processing = cl_map.get(attr);
 						if(processing.endsWith("%"))
 						{
 							Attr tempAttr = (Attr) attrs.item(i + offset);
-							double oldValue = Double.parseDouble(pre_map.get(attribute.getValue()));
+							double oldValue = Double.parseDouble(pre_map.get(attr));
 							String changeString = processing.substring(0, processing.length()-1);
 							double change = (Double.parseDouble(changeString)/100)*oldValue;
 							double newValue = oldValue + change;
@@ -370,14 +414,15 @@ public class PreProcess {
 						else if(!processing.equals(""))
 						{	
 
-							System.out.println("========================== enter here 3");
+//							System.out.println("========================== enter here 3");
 							Attr tempAttr = (Attr) attrs.item(i + offset);
 							tempAttr.setValue(calculate(cl_map.get(attr),Double.parseDouble(tempAttr.getValue()),oldValueMap));				
 						}						
 					}
+					
 					else if(!pre_map.get(attr).equals(""))
 					{
-						Attr tempAttr = (Attr) attrs.item(i + 1);
+						Attr tempAttr = (Attr) attrs.item(i + offset);
 						tempAttr.setValue(pre_map.get(attr));											
 					}
 				}				
@@ -398,11 +443,11 @@ public class PreProcess {
 			String temp = expr.substring(3,expr.length()-1);
 			String[] vars = temp.split(";");
 			String[] compare = vars[0].split("<");
-			System.out.println(temp+ " vars "+ vars[0]+" compare "+compare[0]);
+//			System.out.println(temp+ " vars "+ vars[0]+" compare "+compare[0]);
 			
 			Double var2 = oldValueMap.get(compare[0].trim());
 			
-			System.out.println(temp+ " vars "+ vars[0]+" var2 "+var2);
+//			System.out.println(temp+ " vars "+ vars[0]+" var2 "+var2);
 			
 			Double const1 = compare[1].trim().startsWith("SM")?oldValueMap.get(compare[1].trim()) : Double.parseDouble(compare[1].trim());
 			Double const2 = vars[1].trim().startsWith("SM")?oldValueMap.get(vars[1].trim()) : Double.parseDouble(vars[1].trim());
@@ -417,7 +462,7 @@ public class PreProcess {
 			String[] vars = expr.split("\\+");
 			newValue = oldValueMap.get(vars[0])+oldValueMap.get(vars[1]);
 		}
-		else if(expr.contains("-")){
+		else if(expr.contains("-") && !expr.startsWith("-")){
 			String[] vars = expr.split("-");
 			newValue = oldValueMap.get(vars[0])-oldValueMap.get(vars[1]);
 		}
@@ -434,6 +479,7 @@ public class PreProcess {
 		}
 		return String.valueOf(newValue);
 	}
+
 }
 
 

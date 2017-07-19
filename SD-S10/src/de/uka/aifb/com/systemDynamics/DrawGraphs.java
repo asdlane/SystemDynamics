@@ -220,6 +220,7 @@ public class DrawGraphs {
 
 			for (int j = -1; j < prevPhRun; j++) {
 				String outputFile = getExtFileName(j, prevPh);
+//				System.out.println("############################## "+outputFile+" #####################");
 				CsvReader products = new CsvReader(outputFile, ';');
 				products.skipLine();
 				products.readHeaders();
@@ -297,7 +298,7 @@ public class DrawGraphs {
 							
 							iter +=1;
 						}
-
+//System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^   "+lnode.getNodeName()+"  ^"+products.get("SM1:Reliability_Uplink")+"^");
 						double value = Double.parseDouble(products.get(lnode.getNodeName()));
 
 						if(chartObj.getFStep() == 1)
@@ -753,14 +754,19 @@ public class DrawGraphs {
 								max_xIntercept = 360;
 						}
 						iter +=1;
-					}	
+					}
 					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 					if(chartObj.getFStep() == 1)
 					{
 						int jbounds;
 						for(jbounds = 0; jbounds < (bounds.capacity()-1); jbounds++)
 						{
-							if(value >= bounds.elementAt(jbounds) && value <= bounds.elementAt(jbounds+1))
+							
+//					System.out.println("#$%$@#%$@######################$$$$$$$$$$$$$$$$$$$$$$$$ "+lnode.getNodeName()+" "+value +" "+ bounds.elementAt(jbounds));
+//					System.out.println("jbounds "+jbounds+ " element "+bounds.elementAt(jbounds+1)+" capacity "+bounds.capacity()+" size "+bounds.size());
+					
+					
+					if(value >= bounds.elementAt(jbounds) && value <= bounds.elementAt(jbounds+1))
 								break;
 							else
 								continue;

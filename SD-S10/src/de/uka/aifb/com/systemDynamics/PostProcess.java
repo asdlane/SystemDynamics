@@ -109,9 +109,9 @@ private static void setAttributeValue(HashMap<String,String> hiring_map, Node nN
 	        	
 	        if(attribute.getName().equals("name") && ( hiring_map.get(attribute.getValue()) != null )  )
 	        {
-			System.out.println(attribute.getValue());	        	
+//			System.out.println(attribute.getValue());	        	
 			Attr tempAttr = (Attr) attrs.item(i + 2);
-			System.out.println(tempAttr.getName());
+//			System.out.println(tempAttr.getName());
 	        	tempAttr.setValue(hiring_map.get(attribute.getValue()));
 	        }
 	      }
@@ -199,6 +199,7 @@ public static void writeInputPhase(String inputFile, String outputFileName, int 
 				  writer2.write(pairs.getKey() + "," + modelOutput.get((String)pairs.getKey()));
 			  else
 				  writer2.write(pairs.getKey() + "," + pairs.getValue());
+//		  	System.out.println("#$%$@#%$@######################$$$$$$$$$$$$$$$$$$$$$$$$ "+pairs.getKey()+" "+pairs.getValue()+" "+ modelOutput.get((String)pairs.getKey()));
 			  writer2.newLine();
 	  } 
   

@@ -155,7 +155,7 @@ public class Model {
       
       LevelNode levelNode = new LevelNode(nodeName, startValue, minValue, maxValue, curve, learnerChangeable, shared);
       levelNodes.add(levelNode);
-      System.out.println("this is a newly created levelnode "+levelNode.toString());
+//      System.out.println("this is a newly created levelnode "+levelNode.toString());
       return levelNode;
    }
    public SharedNode createSharedNode(int shareSubModel, String sharedPointer, double nodeVal) {
@@ -199,7 +199,7 @@ public class Model {
       
       ConstantNode constantNode = new ConstantNode(nodeName, constantValue, learnerDecidable, shared);
       constantNodes.add(constantNode);
-      System.out.println("this is a newly created constantnode "+constantNode.toString());
+//      System.out.println("this is a newly created constantnode "+constantNode.toString());
       return constantNode;
    }
    
@@ -231,7 +231,7 @@ public class Model {
       
       SourceSinkNode sourceSinkNode = new SourceSinkNode(shared, id);
       sourceSinkNodes.add(sourceSinkNode);
-      System.out.println("this is a newly created sourcenode "+sourceSinkNode.toString());
+//      System.out.println("this is a newly created sourcenode "+sourceSinkNode.toString());
       return sourceSinkNode;
    }
    public ColoredSourceSinkNode createColoredSourceSinkNode(Color nodeColor, int linksTo) {
@@ -1066,13 +1066,13 @@ public class Model {
       // (i) c) rate nodes and auxiliary nodes must have formulas
       for (RateNode rateNode : rateNodes) {
          if (!rateNode.hasFormula()) {
-        	 System.out.println("*************** rate node "+rateNode.getNodeName());
+//        	 System.out.println("*************** rate node "+rateNode.getNodeName());
             throw new NoFormulaException(rateNode, modelNumber+1);
          }
       }
       
       for (AuxiliaryNode auxiliaryNode : auxiliaryNodes) {
-     	 System.out.println("*************** auxiliary node");
+//     	 System.out.println("*************** auxiliary node");
          if (!auxiliaryNode.hasFormula()) {
             throw new NoFormulaException(auxiliaryNode, modelNumber+1);
          }
@@ -1355,4 +1355,22 @@ public class Model {
 			   sharedLevelNodes.add(sn);
 	   return sharedLevelNodes;
 }
+   
+   public boolean hasNodesShared(){
+	   
+	   for(AuxiliaryNode an: auxiliaryNodes){
+		   if(an.getSharedNodeList().size()>0)
+			   return true;
+	   }
+	   for(LevelNode ln: levelNodes){
+		   if(ln.getSharedNodeList().size()>0)
+			   return true;
+	   }
+	   for(ConstantNode cn: constantNodes){
+		   if(cn.getShared())
+			   return true;
+	   }
+	   
+	   return false;
+   }
 }

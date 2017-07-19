@@ -71,7 +71,7 @@ public class ConstantNode extends AbstractNode implements ASTElement {
 	   this.learnerDecidable = learnerChangeable;
    }
 
-   private void setShared(boolean Shared) {
+   public void setShared(boolean Shared) {
 	// TODO Auto-generated method stub
 	   this.shared = Shared;
 	   

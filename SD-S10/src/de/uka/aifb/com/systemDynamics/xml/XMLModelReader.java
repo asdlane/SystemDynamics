@@ -123,11 +123,11 @@ public class XMLModelReader {
 		HashMap<String,String> levelNodes = new HashMap<String,String>();
 		Iterator itMap= id2levelNode.entrySet().iterator();
 		
-		System.out.println("*+++++++++++++++++++++++++++++   levelnodes size in reader");
-		for(Entry<String, LevelNode> e : id2levelNode.entrySet() ){
-			System.out.println("key  "+e.getKey()+"   size  "+id2levelNode.size());
-		}
-		System.out.println("*+++++++++++++++++++++++++++++");
+		// System.out.println("*+++++++++++++++++++++++++++++   levelnodes size in reader");
+		// for(Entry<String, LevelNode> e : id2levelNode.entrySet() ){
+		// 	System.out.println("key  "+e.getKey()+"   size  "+id2levelNode.size());
+		// }
+		// System.out.println("*+++++++++++++++++++++++++++++");
 		
 		while(itMap.hasNext()){
 			Map.Entry pairs = (Map.Entry)itMap.next();
@@ -142,11 +142,11 @@ public class XMLModelReader {
 	 */
 	public static HashMap<String,String> getLevelNodes(){
 		
-		System.out.println("*+++++++++++++++++++++++++++++   levelnodeInfo entrySet in reader");
-		for(Map.Entry<String, String> e : levelNodeInfo.entrySet() ){
-			System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
-		}
-		System.out.println("*+++++++++++++++++++++++++++++");
+		// System.out.println("*+++++++++++++++++++++++++++++   levelnodeInfo entrySet in reader");
+		// for(Map.Entry<String, String> e : levelNodeInfo.entrySet() ){
+		// 	System.out.println("key  "+e.getKey()+"   value  "+e.getValue());
+		// }
+		// System.out.println("*+++++++++++++++++++++++++++++");
 		
 		return levelNodeInfo;
 	}
@@ -359,7 +359,7 @@ public class XMLModelReader {
 					String id = levelNodeElement.getAttribute("id");
 					String nodeName = levelNodeElement.getAttribute("name");
 					double startValue = new Double(levelNodeElement.getAttribute("startValue"));
-		        	System.out.println("*************** sv "+startValue);
+		        	// System.out.println("*************** sv "+startValue);
 					String minName, maxName, curveName;
 					double minValue, maxValue, curve;
 					minName = levelNodeElement.getAttribute("minValue");
