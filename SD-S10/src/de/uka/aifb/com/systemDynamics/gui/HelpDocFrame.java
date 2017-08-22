@@ -45,13 +45,13 @@ public class HelpDocFrame extends JFrame{
 		commands.add("The value of LN in Submodel 1 equals the value of the Constant");
 		commands.add("SM1:LN, Constant%");
 		commands.add("The value of LN in Submodel 1 is increased by Constant value percentage");
-		commands.add("SM1:LN, SM1:LN+SM2:LN21");
+		commands.add("SM1:LN, SM1-LN+SM2-LN21");
 		commands.add("The value of LN in Submodel 1 equals the sum of LN and LN21 in Submodel 2");
-		commands.add("SM1:LN, SM1:LN-SM2:LN21");
+		commands.add("SM1:LN, SM1-LN-SM2-LN21");
 		commands.add("The value of LN in Submodel 1 equals the subtraction of LN and LN21 in Submodel 2");
-		commands.add("SM1:LN, SM1:LN*SM2:LN21");
+		commands.add("SM1:LN, SM1-LN*SM2-LN21");
 		commands.add("The value of LN in Submodel 1 equals the multiplication of LN and LN21 in Submodel 2");
-		commands.add("SM1:LN, SM1:LN/SM2:LN21");
+		commands.add("SM1:LN, SM1-LN/SM2-LN21");
 		commands.add("The value of LN in Submodel 1 equals the division of LN and LN21 in Submodel 2");
 		commands.add("SM1:LN, IF(VAR1 < VAR2; VAR3 ; VAR4)");
 		commands.add("The value of LN in Submodel 1 equals VAR3 if VAR1 is less than VAR2. Otherwise, it will equal VAR4. VAR can be either a Levelnode or a constant");

@@ -180,7 +180,7 @@ public class DrawGraphs {
 			}
 		}
 
-		int xIntercept = 0, max_xIntercept = 0;
+		int xIntercept = 0, max_xIntercept = 0, min_xIntercept = 0;
 		int rValue = 0;
 		double min = 0, max = 0;
 		int set = 0, prSet = 0;
@@ -194,6 +194,22 @@ public class DrawGraphs {
 				max_xIntercept = 810;
 			else
 				max_xIntercept = 360;
+			
+			if(folder.equals("phase3"))
+				min_xIntercept = 810;
+
+			else if(folder.equals("phase4"))
+				min_xIntercept = 1170;
+
+			else if(folder.equals("phase5"))
+				min_xIntercept = 1530;
+			else
+				min_xIntercept = 1890;
+			
+			if(chartObj.getFStep() == 1 || chartObj.getGlobal() == 2){
+//				System.out.println(chartObj.getName());
+				min_xIntercept = 0;
+			}
 		}
 		double initValue = 0.001;
 
@@ -298,11 +314,11 @@ public class DrawGraphs {
 							
 							iter +=1;
 						}
-//System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^   "+lnode.getNodeName()+"  ^"+products.get("SM1:Reliability_Uplink")+"^");
-						double value = Double.parseDouble(products.get(lnode.getNodeName()));
+					double value = Double.parseDouble(products.get(lnode.getNodeName()));
 
 						if(chartObj.getFStep() == 1)
 						{
+							System.out.println("Fstep 1");
 							int jbounds;
 							for(jbounds = 0; jbounds < (bounds.capacity()-1); jbounds++)
 							{
@@ -319,6 +335,7 @@ public class DrawGraphs {
 						else
 							lnode.getSeries().add(xIntercept, value);						
 
+//						System.out.println("xIntercept "+xIntercept+" "+lnode.getNodeName());
 						if(prSet == 0)
 						{
 							if(lnode.getNodeName().equals(prNodeName))
@@ -694,7 +711,7 @@ public class DrawGraphs {
 					}
 
 					else if(productHeaders[k].equalsIgnoreCase("frr_date")){
-						frr_date_index = k;
+						frr_date_index = k;                                                                
 					}
 
 				}
@@ -752,6 +769,22 @@ public class DrawGraphs {
 								max_xIntercept = (int)cdr_date;
 							else
 								max_xIntercept = 360;
+							
+
+							if(folder.equals("phase3") )
+								min_xIntercept = (int)cdr_date;
+							else if(folder.equals("phase4") )
+								min_xIntercept = (int)frr_date;
+							else if(folder.equals("phase5") )
+								min_xIntercept = (int)prr_date;
+							else
+								min_xIntercept = (int)isr_date;
+							
+							if(chartObj.getFStep() == 1 || chartObj.getGlobal() == 2){
+//								System.out.println("#$%$@#%$@######################$$$$$$$$$$$$$$$$$$$$$$$$ "+chartObj.getName()+" "+chartObj.getGlobal());
+//								
+								min_xIntercept = 0;
+							}
 						}
 						iter +=1;
 					}
@@ -762,11 +795,11 @@ public class DrawGraphs {
 						for(jbounds = 0; jbounds < (bounds.capacity()-1); jbounds++)
 						{
 							
-//					System.out.println("#$%$@#%$@######################$$$$$$$$$$$$$$$$$$$$$$$$ "+lnode.getNodeName()+" "+value +" "+ bounds.elementAt(jbounds));
-//					System.out.println("jbounds "+jbounds+ " element "+bounds.elementAt(jbounds+1)+" capacity "+bounds.capacity()+" size "+bounds.size());
-					
-					
-					if(value >= bounds.elementAt(jbounds) && value <= bounds.elementAt(jbounds+1))
+//							System.out.println("#$%$@#%$@######################$$$$$$$$$$$$$$$$$$$$$$$$ "+lnode.getNodeName()+" "+value +" "+ bounds.elementAt(jbounds));
+//							System.out.println("jbounds "+jbounds+ " element "+bounds.elementAt(jbounds+1)+" capacity "+bounds.capacity()+" size "+bounds.size());
+							
+						
+							if(value >= bounds.elementAt(jbounds) && value <= bounds.elementAt(jbounds+1))
 								break;
 							else
 								continue;
@@ -776,8 +809,11 @@ public class DrawGraphs {
 						else
 							lnode.getSeries().add(xIntercept, bounds.elementAt(jbounds));
 					}
-					else
-						lnode.getSeries().add(xIntercept, value);						
+					else{
+//						System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$   "+xIntercept+"  "+lnode.getNodeName());
+					
+						lnode.getSeries().add(xIntercept, value);
+					}
 
 					if(prSet == 0)
 					{
@@ -841,34 +877,41 @@ public class DrawGraphs {
 		for (PlannedVariableExt plannedExt : planVector) {
 			double [] planValues = new double[4000];
 			int planValueIndex = 0;
-			if (x2 >= max_xIntercept)
+			if (x2 >= max_xIntercept+min_xIntercept)
 				break;
 			XYSeries planSeries = new XYSeries(plannedExt.getLabel());
 			y1 = Double.parseDouble(plannedExt.getStartValue());
 			planValues[planValueIndex] = y1;
 			planValueIndex++;
 			for (Increment inc : plannedExt.getPlannedIncrement()) {
-				if (x2 >= max_xIntercept)
+				if (x2 >= max_xIntercept+min_xIntercept)
 					break;
 				for (i = 0; i < inc.getLength(); i++) {
-					if (x2 >= max_xIntercept)
+					if (x2 >= max_xIntercept+min_xIntercept)
 						break;
 					y2 = inc.getSlope() * (x2 - x1) + y1;
-					planSeries.add(x2, y2);
-					if(inc.getAnnoLabel().isEmpty() == false)
-					{
-						XYTextAnnotation xytextanno;
-						if(inc.getAnnoPosition() == 1)
+					
+//					System.out.println("min_xIntercept "+min_xIntercept+"  x1  "+x1);
+					
+					if (x1 >= min_xIntercept){
+//						System.out.println("added "+x2+"  "+y2+" "+plannedExt.getName());
+						
+						planSeries.add(x2-min_xIntercept, y2);
+						if(inc.getAnnoLabel().isEmpty() == false)
 						{
-							xytextanno = new XYTextAnnotation(inc.getAnnoLabel(),x2,y2);
-							xytextanno.setTextAnchor(TextAnchor.BOTTOM_LEFT);
+							XYTextAnnotation xytextanno;
+							if(inc.getAnnoPosition() == 1)
+							{
+								xytextanno = new XYTextAnnotation(inc.getAnnoLabel(),x2,y2);
+								xytextanno.setTextAnchor(TextAnchor.BOTTOM_LEFT);
+							}
+							else
+							{
+								xytextanno = new XYTextAnnotation(inc.getAnnoLabel(),x1,y1);
+								xytextanno.setTextAnchor(TextAnchor.HALF_ASCENT_LEFT);
+							}
+							xytextannotationList.add(xytextanno);
 						}
-						else
-						{
-							xytextanno = new XYTextAnnotation(inc.getAnnoLabel(),x1,y1);
-							xytextanno.setTextAnchor(TextAnchor.HALF_ASCENT_LEFT);
-						}
-						xytextannotationList.add(xytextanno);
 					}
 					planValues[planValueIndex] = y2;
 					planValueIndex++;

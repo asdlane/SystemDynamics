@@ -145,6 +145,8 @@ public class PlannedXML {
 					if (chartAttr.getName().equals("global")) {
 						if(chartAttr.getValue().equals("1"))
 							chartVariable.setGlobal(1);
+						else if(chartAttr.getValue().equals("2"))
+							chartVariable.setGlobal(2);
 						else
 							chartVariable.setGlobal(0);
 //						chartVariable.setGlobal(chartAttr.getValue());

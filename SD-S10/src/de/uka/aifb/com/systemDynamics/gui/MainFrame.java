@@ -1256,9 +1256,13 @@ WindowListener {
 				SystemDynamicsGraph removed = graph.get(subModelIndex-1);
 				
 				 if(choices.length==1){
+					 System.out.println("tttt");
 //					graph.remove(subModelIndex-1);
-//					modelPanel.remove(subModelIndex-1);
+					graph.get(0).removeAll();
+					graph.get(0).revalidate();
+//					((JScrollPane)modelPanel.getComponent(0)).removeAll();
 //					modelPanel.revalidate();
+					
 				}
 				else{
 					if(removed.model.hasNodesShared()){

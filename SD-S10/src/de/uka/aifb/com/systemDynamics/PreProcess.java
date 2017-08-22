@@ -214,12 +214,15 @@ public class PreProcess {
 					name = attr.getValue();
 			}
 			
-			if(prelist.containsKey(name))
+//			System.out.println("========================== ******** "+name+" "+prelist.containsKey(name));
+			if(prelist.containsKey("SM"+submodelId+":"+name)){
+				
 				oldvalue = Double.parseDouble(prelist.get("SM"+submodelId+":"+name));
-			
+			}
 			oldValueMap.put("SM"+submodelId+":"+name,oldvalue);
 		}
-		
+
+//		System.out.println("========================== "+prelist.get("SM1-ACWP_S0"));
 		for (int temp = 0; temp < lnList.getLength(); temp++) {
 
 			Node nNode = lnList.item(temp);
@@ -397,6 +400,7 @@ public class PreProcess {
 				
 				if (attribute.getName().equals("name")
 						&& (pre_map.get(attr) != null)) {
+//					System.out.println("========================== enter here 1 "+attr+"  ***  "+pre_map.get(attr));
 					
 					if(cl_map.get(attr) != null && !cl_map.get(attr).equals("") )
 					{
@@ -416,6 +420,8 @@ public class PreProcess {
 
 //							System.out.println("========================== enter here 3");
 							Attr tempAttr = (Attr) attrs.item(i + offset);
+//							System.out.println("========================== enter here 3 "+pre_map.get(attr)+oldValueMap.get(attr));
+							
 							tempAttr.setValue(calculate(cl_map.get(attr),Double.parseDouble(tempAttr.getValue()),oldValueMap));				
 						}						
 					}
@@ -433,7 +439,8 @@ public class PreProcess {
 	
 	private String calculate(String expr, double oldValue, Map<String,Double> oldValueMap){
 		double newValue= oldValue;
-		
+
+		System.out.println("*****    "+expr+"     *****");
 		double change = 0;
 		if(expr.startsWith("+")){
 			change = Double.parseDouble(expr.substring(1, expr.length()));
@@ -450,8 +457,14 @@ public class PreProcess {
 //			System.out.println(temp+ " vars "+ vars[0]+" var2 "+var2);
 			
 			Double const1 = compare[1].trim().startsWith("SM")?oldValueMap.get(compare[1].trim()) : Double.parseDouble(compare[1].trim());
-			Double const2 = vars[1].trim().startsWith("SM")?oldValueMap.get(vars[1].trim()) : Double.parseDouble(vars[1].trim());
-			Double const3 = vars[2].trim().startsWith("SM")?oldValueMap.get(vars[2].trim()) : Double.parseDouble(vars[2].trim());
+//			Double const2 = vars[1].trim().startsWith("SM")?oldValueMap.get(vars[1].trim()) : Double.parseDouble(vars[1].trim());
+//			Double const3 = vars[2].trim().startsWith("SM")?oldValueMap.get(vars[2].trim()) : Double.parseDouble(vars[2].trim());
+
+			System.out.println("*****    "+vars[1].trim().startsWith("SM")+"    *****"+vars[2]+"   *****"+oldValueMap.get(vars[1].trim()));
+			Double const2 = vars[1].trim().startsWith("SM")? Double.parseDouble(calculate(vars[1],newValue,oldValueMap)) : Double.parseDouble(vars[1].trim());
+			Double const3 = vars[2].trim().startsWith("SM")? Double.parseDouble(calculate(vars[1],newValue,oldValueMap)) : Double.parseDouble(vars[2].trim());
+			
+			System.out.println("*****  const  "+const2+"    *****"+const3+"   *****"+oldValueMap.get(vars[1].trim()));
 			
 			if(var2 < const1)
 				newValue = const2;
@@ -461,17 +474,25 @@ public class PreProcess {
 		else if(expr.contains("+")){
 			String[] vars = expr.split("\\+");
 			newValue = oldValueMap.get(vars[0])+oldValueMap.get(vars[1]);
+			System.out.println("*****  +newvalue  "+newValue);
+			
 		}
 		else if(expr.contains("-") && !expr.startsWith("-")){
 			String[] vars = expr.split("-");
+			System.out.println("*****  get  "+oldValueMap.get(vars[0])+"    *****"+oldValueMap.get(vars[1]));
+			
 			newValue = oldValueMap.get(vars[0])-oldValueMap.get(vars[1]);
 		}
 		else if(expr.contains("*")){
 			String[] vars = expr.split("\\*");
+			System.out.println("*****  get  "+oldValueMap.get(vars[0])+"    *****"+oldValueMap.get(vars[1]));
+			
 			newValue = oldValueMap.get(vars[0])*oldValueMap.get(vars[1]);
 		}
 		else if(expr.contains("/")){
 			String[] vars = expr.split("/");
+			System.out.println("*****  get  "+oldValueMap.get(vars[0])+"    *****"+oldValueMap.get(vars[1]));
+			
 			newValue = oldValueMap.get(vars[0])/oldValueMap.get(vars[1]);
 		}
 		else{
